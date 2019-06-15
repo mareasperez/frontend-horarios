@@ -1,0 +1,71 @@
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="collapseOne">
+          <i class="fa fa-university"></i> Facultades
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body" style="align-content: center; text-align: center;">
+          <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                CCyTT
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" routerLink="verfacult" routerLinkActive="router-link-active">Ver</a>
+                <a class="dropdown-item" routerLink="addrecinto" routerLinkActive="router-link-active">Agregar Recinto</a>
+                <!-- <a class="dropdown-item" href="#">Borrar Facultad</a> -->
+              </div>
+            </div>
+            <br>
+            <div title="Agregar Facultad"> 
+                <button class="btn btn-success" type="button" routerLink="addfacult" routerLinkActive="router-link-active">
+                    +
+                  </button>
+            </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+          aria-controls="collapseTwo">
+          <i class="fa fa-building"></i> Recintos
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            ATM
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="verrecinto" routerLinkActive="router-link-active">Ver Recinto</a>
+            <a class="dropdown-item" routerLink="delrecinto" routerLinkActive="router-link-active">Borrar Recinto</a>
+            <!-- <a class="dropdown-item" href="#">Borrar Facultad</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+          aria-controls="collapseThree">
+          <i class="fa fa-graduation-cap"></i> Profesores
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+
+      </div>
+    </div>
+  </div>
+</div>
