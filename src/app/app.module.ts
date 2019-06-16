@@ -12,6 +12,9 @@ import { AddfacultComponent } from './components/addfacult/addfacult.component';
 import { AddrecintoComponent } from './components/addrecinto/addrecinto.component';
 import { VerrecintoComponent } from './components/verrecinto/verrecinto.component';
 import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +30,10 @@ import { DelrecintoComponent } from './components/delrecinto/delrecinto.componen
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
