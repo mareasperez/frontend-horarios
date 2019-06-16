@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PruebaComponent } from './prueba/prueba.component';
-import { Prueba2Component } from './prueba2/prueba2.component';
-import { VerfacultComponent } from './verfacult/verfacult.component';
-import { AddfacultComponent } from './addfacult/addfacult.component';
-import { AddrecintoComponent } from './addrecinto/addrecinto.component';
-import { VerrecintoComponent } from './verrecinto/verrecinto.component';
-import { DelrecintoComponent } from './delrecinto/delrecinto.component';
+import { PruebaComponent } from './components/prueba/prueba.component';
+import { Prueba2Component } from './components/prueba2/prueba2.component';
+import { VerfacultComponent } from './components/verfacult/verfacult.component';
+import { AddfacultComponent } from './components/addfacult/addfacult.component';
+import { AddrecintoComponent } from './components/addrecinto/addrecinto.component';
+import { VerrecintoComponent } from './components/verrecinto/verrecinto.component';
+import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
 
 const routes: Routes = [
   {

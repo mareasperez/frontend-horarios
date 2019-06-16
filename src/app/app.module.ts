@@ -3,15 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { ContenidoComponent } from './contenido/contenido.component';
-import { PruebaComponent } from './prueba/prueba.component';
-import { Prueba2Component } from './prueba2/prueba2.component';
-import { VerfacultComponent } from './verfacult/verfacult.component';
-import { AddfacultComponent } from './addfacult/addfacult.component';
-import { AddrecintoComponent } from './addrecinto/addrecinto.component';
-import { VerrecintoComponent } from './verrecinto/verrecinto.component';
-import { DelrecintoComponent } from './delrecinto/delrecinto.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { ContenidoComponent } from './components/contenido/contenido.component';
+import { PruebaComponent } from './components/prueba/prueba.component';
+import { Prueba2Component } from './components/prueba2/prueba2.component';
+import { VerfacultComponent } from './components/verfacult/verfacult.component';
+import { AddfacultComponent } from './components/addfacult/addfacult.component';
+import { AddrecintoComponent } from './components/addrecinto/addrecinto.component';
+import { VerrecintoComponent } from './components/verrecinto/verrecinto.component';
+import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
 @NgModule({
   declarations: [
     AppComponent,
