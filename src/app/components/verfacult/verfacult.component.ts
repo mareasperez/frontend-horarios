@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FacultadSerivice } from 'src/app/services/facultad-serivice';
 
 @Component({
   selector: 'app-verfacult',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VerfacultComponent implements OnInit {
 
-  constructor() { }
+  constructor(private facultaService:FacultadSerivice) { 
+    this.facultaService.getFacultad().subscribe(facultad=> console.log(facultad));
+  }
 
   ngOnInit() {
   }

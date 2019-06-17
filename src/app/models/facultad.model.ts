@@ -3,7 +3,7 @@
 export class FacultadModel{
   
     
-    constructor(  private id: string, private nombre:string){
+    constructor(  public id: string, public nombre:string){
 
     }
 

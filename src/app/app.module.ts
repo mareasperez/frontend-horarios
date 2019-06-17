@@ -14,7 +14,9 @@ import { VerrecintoComponent } from './components/verrecinto/verrecinto.componen
 import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule} from '@angular/material';
-
+import { MainService } from './services/main.service';
+import { FacultadSerivice } from './services/facultad-serivice';
+import { HttpClientModule } from "@angular/common/http";
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,10 +34,11 @@ import {MatButtonModule, MatCheckboxModule} from '@angular/material';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatButtonModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [MainService, FacultadSerivice],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
