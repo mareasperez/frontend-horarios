@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { MatToolbarModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -13,7 +13,7 @@ import { AddrecintoComponent } from './components/addrecinto/addrecinto.componen
 import { VerrecintoComponent } from './components/verrecinto/verrecinto.component';
 import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import { MaterialModule } from './material';
 
 @NgModule({
   declarations: [
@@ -32,8 +32,7 @@ import {MatButtonModule, MatCheckboxModule} from '@angular/material';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatCheckboxModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

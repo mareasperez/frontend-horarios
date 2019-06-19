@@ -1,0 +1,14 @@
+.barrita {
+    background: #3f51b5;
+    position: relative;
+    height: 10%;
+}
+
+.elemento {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.contenidos {
+    height: 90%;
+}
