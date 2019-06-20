@@ -26,18 +26,18 @@ export class MainService {
   create(body:any):Observable<any>{
     let head:any = {}
     head['Content-Type'] = 'application/json';
-    return this.client.post(`${this.api}/${this.resource}`,body, head);
+    return this.client.post(this.getUrl(),body, head);
   }
 
   update(body:any):Observable<any>{
     let head:any = {}
     head['Content-Type'] = 'application/json';
-    return this.client.put(`${this.api}/${this.resource}`,body, head);
+    return this.client.put(this.getUrl(),body, head);
   }
 
-  delete(body:any):Observable<any>{
+  delete(id:any):Observable<any>{
     let head:any = {}
     head['Content-Type'] = 'application/json';
-    return this.client.delete(`${this.api}/${this.resource}`,body,);
+    return this.client.delete(this.getUrl()+id+"/",head);
   }
 }

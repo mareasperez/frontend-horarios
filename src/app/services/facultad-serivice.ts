@@ -24,4 +24,16 @@ export class FacultadSerivice  extends MainService{
       });
    })
   };
+
+  crearFacultad():Observable<any>{
+    let body = {facultad:
+                  {facultad_nombre: "prueba", 
+                  facultad_id:11}};
+    return new Observable(observer => {
+      this.create(body).subscribe(response =>{
+        console.log(response)
+        observer.next(response)
+      })
+    })
+  }
 }

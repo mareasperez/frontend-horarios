@@ -10,9 +10,11 @@ export class VerfacultComponent implements OnInit {
 
   constructor(private facultaService:FacultadSerivice) { 
     this.facultaService.getFacultad().subscribe(facultad=> console.log(facultad));
+    
   }
 
   ngOnInit() {
+    this.facultaService.crearFacultad().subscribe()
   }
 
 }
