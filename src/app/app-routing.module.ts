@@ -9,6 +9,8 @@ import { VerrecintoComponent } from './components/verrecinto/verrecinto.componen
 import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/prueba', pathMatch: 'full' },
+
   {
     path: 'prueba',
     component: PruebaComponent

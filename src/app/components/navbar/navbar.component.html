@@ -1,15 +1,17 @@
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3E65A0">
-    <a class="navbar-brand" href="#"> <i class="fa fa-calendar-minus-o"> </i> UNAN-Le&oacute;n</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="#">Inicio <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="#">SPM</a>
-        <a class="nav-item nav-link" href="#">Pricing</a>
-        <a class="nav-item nav-link disabled" href="#">JKM</a>
-      </div>
-    </div>
-</nav>
-<i class="far fa-calendar-minus"></i>
+<mat-toolbar class="docs-nav-bar barrita">
+    <a class="docs-button mat-button elemento" mat-button (click)="drawer.toggle()"><i class="fa fa-bars" ></i></a>
+    <a class="docs-button mat-button elemento" href="#" mat-button> <i class="fa fa-calendar-minus-o"  > </i> UNAN-Le&oacute;n</a>
+    <!---->
+    <a class="docs-button mat-button elemento" href="#" mat-button disabled>JKM</a>
+  </mat-toolbar>
+  <mat-drawer-container class="example-container contenidos">
+      <mat-drawer #drawer class="example-sidenav" mode="over">
+         <app-contenido></app-contenido>
+         
+        </mat-drawer>
+      
+    <mat-drawer-content>
+       <router-outlet></router-outlet>
+      
+    </mat-drawer-content>
+  </mat-drawer-container>

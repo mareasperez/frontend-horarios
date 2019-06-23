@@ -14,6 +14,10 @@ export class FacultadSerivice  extends MainService{
    }
 
    getFacultad():Observable<FacultadModel>{
+     /*Este metodo obtiene como respuesta de get()
+     un array de facultades. Lo mapea uno a uno a objetos tipo
+     FacultadModel y lo regresa uno a uno.
+     */
      return new Observable(observer =>{
        this.get().subscribe(data=>{
         console.log(data);
@@ -34,6 +38,30 @@ export class FacultadSerivice  extends MainService{
         console.log(response)
         observer.next(response)
       })
+    })
+  }
+
+  updateFaculta(body:any){
+    /* Ejemplo del parametro body
+    let body = {facultad:
+      {facultad_nombre: "prueba", 
+      facultad_id:11}};*/
+      this.update(body).subscribe(data => {
+        /*Impresion de lo que sea que devuelve el servidor
+        como resultado de la llamada put
+        */
+        console.log(data)
+      })
+  }
+
+  deleteFaculta(idFacultad:number){
+    this.delete(idFacultad).subscribe(data =>{
+     
+        /*Impresion de lo que sea que devuelve el servidor
+        como resultado de la llamada delete
+        */
+        console.log(data)
+
     })
   }
 }

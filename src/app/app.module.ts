@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { MatToolbarModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -17,6 +17,8 @@ import {MatButtonModule, MatCheckboxModule} from '@angular/material';
 import { MainService } from './services/main.service';
 import { FacultadSerivice } from './services/facultad-serivice';
 import { HttpClientModule } from "@angular/common/http";
+import { MaterialModule } from './material';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,8 @@ import { HttpClientModule } from "@angular/common/http";
     BrowserAnimationsModule,
     HttpClientModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MaterialModule
   ],
   providers: [MainService, FacultadSerivice],
   bootstrap: [AppComponent]
