@@ -1,3 +1,16 @@
-<p>
-  addfacult works!
-</p>
+<div class="col-md-4 offset-md-4">
+  <div class="card">
+    <div class="card-body">
+      <form>
+        <div class="form-group">
+          <input type="text" name="nombre" placeholder="Nombre de la facultad" [(ngModel)]="facultad.nombre" class="form-control" autofocus> </div>
+        <div class="form-group">
+          <input type="number" name="id" placeholder="id de la facultad" [(ngModel)]="facultad.id" class="form-control">
+        </div>
+        <button class="btn btn-success btn-block" (click)="edit ? updateFacultad() : saveFacultad()">
+          Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

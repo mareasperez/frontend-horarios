@@ -10,22 +10,23 @@
     </div>
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body" style="align-content: center; text-align: center;">
-          <div class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                CCyTT
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" routerLink="verfacult" routerLinkActive="router-link-active">Ver</a>
-                <a class="dropdown-item" routerLink="addrecinto" routerLinkActive="router-link-active">Agregar Recinto</a>
-                <!-- <a class="dropdown-item" href="#">Borrar Facultad</a> -->
-              </div>
-            </div>
-            <br>
-            <div title="Agregar Facultad"> 
-                <button class="btn btn-success" type="button" routerLink="addfacult" routerLinkActive="router-link-active">
-                    +
-                  </button>
-            </div>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            CCyTT
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="facultad/list" routerLinkActive="router-link-active">Ver</a>
+            <a class="dropdown-item" routerLink="addrecinto" routerLinkActive="router-link-active">Agregar Recinto</a>
+            <!-- <a class="dropdown-item" href="#">Borrar Facultad</a> -->
+          </div>
+        </div>
+        <br>
+        <div title="Agregar Facultad">
+          <button class="btn btn-success" type="button" routerLink="facultad/add" routerLinkActive="router-link-active">
+            +
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -41,7 +42,8 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
         <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             ATM
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

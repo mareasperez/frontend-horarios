@@ -9,7 +9,7 @@ import { VerrecintoComponent } from './components/verrecinto/verrecinto.componen
 import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/prueba', pathMatch: 'full' },
+  { path: '', redirectTo: '/facultad/list', pathMatch: 'full' },
 
   {
     path: 'prueba',
@@ -20,11 +20,15 @@ const routes: Routes = [
     component: Prueba2Component
   },
   {
-    path: 'verfacult',
+    path: 'facultad/list',
     component: VerfacultComponent
   },
   {
-    path: 'addfacult',
+    path: 'facultad/add',
+    component: AddfacultComponent
+  },
+  {
+    path: 'facultad/edit/:id',
     component: AddfacultComponent
   },
   {

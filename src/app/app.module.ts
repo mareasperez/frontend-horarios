@@ -18,6 +18,7 @@ import { MainService } from './services/main.service';
 import { FacultadSerivice } from './services/facultad-serivice';
 import { HttpClientModule } from "@angular/common/http";
 import { MaterialModule } from './material';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MaterialModule } from './material';
     HttpClientModule,
     MatButtonModule,
     MatCheckboxModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ],
   providers: [MainService, FacultadSerivice],
   bootstrap: [AppComponent]

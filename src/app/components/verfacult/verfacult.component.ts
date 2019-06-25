@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad-serivice';
+import { FacultadModel } from 'src/app/models/facultad.model';
 
 @Component({
   selector: 'app-verfacult',
@@ -7,14 +8,37 @@ import { FacultadSerivice } from 'src/app/services/facultad-serivice';
   styleUrls: ['./verfacult.component.css']
 })
 export class VerfacultComponent implements OnInit {
+  @HostBinding('class') classes = 'row';
+  public facultades: FacultadModel[] = []
+  constructor(private facultaService: FacultadSerivice) {
 
-  constructor(private facultaService:FacultadSerivice) { 
-    this.facultaService.getFacultad().subscribe(facultad=> console.log(facultad));
-    
+
   }
 
   ngOnInit() {
-    this.facultaService.crearFacultad().subscribe()
+    this.getfacultades()
+
+  }
+  getfacultades() {
+    this.facultades = []
+    this.facultaService.getFacultad().subscribe(
+      res => {
+        this.facultades.push(res);
+      },
+      err => console.error(err)
+    );
+  }
+  deleteFaculta(id: string) {
+    this.facultaService.deleteFaculta(parseInt(id)).subscribe(
+      res => {
+        console.log(res);
+        this.getfacultades();
+      },
+      err => {
+        console.log(err);
+      }
+
+    );
   }
 
 }
