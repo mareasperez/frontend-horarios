@@ -1,0 +1,11 @@
+.grupo {
+    width: 100%;
+}
+
+.especial {
+    width: 50%;
+}
+
+button #DropDownMenuButton::after {
+    align-content: rigth;
+}
