@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 export class AddfacultComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
-  facultad = new FacultadModel('0', '');
+  facultad = new FacultadModel();
   edit: boolean = false;
 
   constructor(private facultadService: FacultadSerivice, private route: Router,private activatedRoute: ActivatedRoute) { }
@@ -44,7 +44,7 @@ export class AddfacultComponent implements OnInit {
   }
   updateFacultad() {
     //console.log(this.facultad);
-    this.facultadService.updateFaculta(this.facultad,this.activatedRoute.snapshot.params.id)
+    this.facultadService.updateFacultad(this.facultad,this.activatedRoute.snapshot.params.id)
     .subscribe(
       res => {
         console.log(res);

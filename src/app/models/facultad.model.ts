@@ -2,12 +2,11 @@
 
 export class FacultadModel {
 
+    public id: string;
+    public nombre: string;
+    
 
-    constructor(public id: string, public nombre: string) {
+    /*getId() { return this.id; }
 
-    }
-
-    getId() { return this.id; }
-
-    getNombre() { return this.nombre; }
+    getNombre() { return this.nombre; }*/
 }

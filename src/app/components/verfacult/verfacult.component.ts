@@ -27,17 +27,15 @@ export class VerfacultComponent implements OnInit {
       },
       err => console.error(err)
     );
+    
   }
   deleteFaculta(id: string) {
-    this.facultaService.deleteFaculta(parseInt(id)).subscribe(
+    this.facultaService.deleteFacultad(parseInt(id)).subscribe(
       res => {
         console.log(res);
         this.getfacultades();
       },
-      err => {
-        console.log(err);
-      }
-
+      err => console.log(err)
     );
   }
 
