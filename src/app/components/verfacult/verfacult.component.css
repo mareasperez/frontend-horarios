@@ -5,7 +5,3 @@
 .especial {
     width: 50%;
 }
-
-button #DropDownMenuButton::after {
-    align-content: rigth;
-}
