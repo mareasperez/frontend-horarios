@@ -30,6 +30,7 @@ export class MainService {
   create(body: any): Observable<any> {
     let head: any = {}
     head['Content-Type'] = 'application/json';
+    console.log('post: ',body);
     return this.client.post(this.getUrl(), body, head);
   }
 

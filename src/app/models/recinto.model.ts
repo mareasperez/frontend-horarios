@@ -1,10 +1,10 @@
 
-export class RecintoModel{
+export class RecintoModel {
 
-                public id:string; 
-                public nombre:string;
-                public ubicacion:string;
-                public facultadId:string;
+  public id: string;
+  public nombre: string;
+  public ubicacion: string;
+  public recinto_facultad: string | number;
 
   /*  getId(){return this.id;}
 

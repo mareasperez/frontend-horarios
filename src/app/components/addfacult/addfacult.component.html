@@ -3,9 +3,9 @@
     <div class="card-body">
       <form>
         <div class="form-group">
-          <input type="text" name="nombre" placeholder="Nombre de la facultad" [(ngModel)]="facultad.nombre" class="form-control" autofocus> </div>
+          <input type="text" name="nombre" placeholder="Nombre de la facultad" [(ngModel)]="facultad.facultad_nombre" class="form-control" autofocus> </div>
         <div class="form-group">
-          <input type="number" name="id" placeholder="id de la facultad" [(ngModel)]="facultad.id" class="form-control">
+          <input type="number" name="id" placeholder="id de la facultad" [(ngModel)]="facultad.facultad_id" class="form-control">
         </div>
         <button class="btn btn-success btn-block" (click)="edit ? updateFacultad() : saveFacultad()">
           Guardar
