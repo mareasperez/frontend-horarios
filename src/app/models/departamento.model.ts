@@ -1,14 +1,8 @@
 
-export class DepartamentoModel{
-    constructor(
-                private id: string,
-                private nombre: string,
-                private facultadId
-    ){}
+export class DepartamentoModel {
 
-    getId(){return this.id;}
+    public id: string;
+    public nombre: string;
+    public facultad;
 
-    getNombre(){return this.nombre;}
-        
-    getFacultadId(){return this.facultadId};
 }
