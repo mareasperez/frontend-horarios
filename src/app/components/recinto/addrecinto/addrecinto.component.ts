@@ -1,6 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
-import { RecintoService } from '../../services/recinto.service';
+import { RecintoService } from '../../../services/recinto.service';
 import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({

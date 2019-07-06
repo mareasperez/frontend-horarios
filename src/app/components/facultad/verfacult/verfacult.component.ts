@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { FacultadSerivice } from 'src/app/services/facultad-serivice';
+import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
 
 @Component({

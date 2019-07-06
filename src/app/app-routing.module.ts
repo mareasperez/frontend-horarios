@@ -1,24 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PruebaComponent } from './components/prueba/prueba.component';
-import { Prueba2Component } from './components/prueba2/prueba2.component';
-import { VerfacultComponent } from './components/verfacult/verfacult.component';
-import { AddfacultComponent } from './components/addfacult/addfacult.component';
-import { AddrecintoComponent } from './components/addrecinto/addrecinto.component';
-import { VerrecintoComponent } from './components/verrecinto/verrecinto.component';
-import { DelrecintoComponent } from './components/delrecinto/delrecinto.component';
+import { VerfacultComponent } from './components/facultad/verfacult/verfacult.component';
+import { AddfacultComponent } from './components/facultad/addfacult/addfacult.component';
+import { AddrecintoComponent } from './components/recinto/addrecinto/addrecinto.component';
+import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/facultad/add', pathMatch: 'full' },
 
-  {
-    path: 'prueba',
-    component: PruebaComponent
-  },
-  {
-    path: 'prueba2',
-    component: Prueba2Component
-  },
   {
     path: 'facultad/list',
     component: VerfacultComponent
@@ -43,10 +32,6 @@ const routes: Routes = [
     path: 'verrecinto',
     component: VerrecintoComponent
   },
-  {
-    path: 'delrecinto',
-    component: DelrecintoComponent
-  }
 ];
 
 @NgModule({
