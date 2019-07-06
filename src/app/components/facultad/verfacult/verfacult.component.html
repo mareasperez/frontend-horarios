@@ -1,19 +1,26 @@
 <div class="card-body" style="align-content: center; text-align: center;">
+  <div *ngIf="alerts">
+    Data Error
+  </div>
   <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px">
     <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       <span class="float-left">{{facultad.nombre}}</span> <span class="dropdown-toggle float-right  "></span>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" [routerLink]="['/facultad/edit', facultad.id]" routerLinkActive="router-link-active">Editar Facultad</a>
-      <a class="dropdown-item" [routerLink]="['/recinto/add', facultad.id]" routerLinkActive="router-link-active">Agregar Recinto</a>
-      <a class="dropdown-item" style="cursor:pointer;" (click)="deleteFaculta(facultad.id)" routerLinkActive="router-link-active">Eliminar Facultad</a>
- 
+      <a class="dropdown-item" [routerLink]="['/facultad/edit', facultad.id]"
+        routerLinkActive="router-link-active">Editar Facultad</a>
+      <a class="dropdown-item" [routerLink]="['/recinto/add', facultad.id]"
+        routerLinkActive="router-link-active">Agregar Recinto</a>
+      <a class="dropdown-item" style="cursor:pointer;" (click)="deleteFaculta(facultad.id)"
+        routerLinkActive="router-link-active">Eliminar Facultad</a>
+
     </div>
   </div>
   <br>
   <div title="Agregar Facultad">
-    <button class="btn btn-success especial" type="button" routerLink="facultad/add" routerLinkActive="router-link-active">
+    <button class="btn btn-success especial" type="button" routerLink="facultad/add"
+      routerLinkActive="router-link-active">
       +
     </button>
   </div>

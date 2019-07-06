@@ -9,7 +9,8 @@ import { FacultadModel } from 'src/app/models/facultad.model';
 })
 export class VerfacultComponent implements OnInit {
   @HostBinding('class') classes = 'row';
-  public facultades: FacultadModel[] = []
+  public facultades: FacultadModel[] = [];
+  public alerts = true;
   constructor(private facultaService: FacultadSerivice) {
 
 
@@ -24,8 +25,12 @@ export class VerfacultComponent implements OnInit {
     this.facultaService.getFacultad().subscribe(
       res => {
         this.facultades.push(res);
+        this.alerts = false;
       },
-      err => console.error(err)
+      err => {
+        console.error(err)
+       
+      }
     );
     
   }
