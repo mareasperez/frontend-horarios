@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
-import {DepartamentoService} from 'src/app/services/departamento.service';
+import { DepartamentoService } from 'src/app/services/departamento.service';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -11,6 +11,8 @@ export class VerfacultComponent implements OnInit {
   @HostBinding('class') classes = 'row';
   public facultades: FacultadModel[] = [];
   public alerts = true;
+  socket: WebSocket;
+
   constructor(private facultaService: FacultadSerivice, private departamentoService: DepartamentoService) {
 
 
@@ -18,7 +20,25 @@ export class VerfacultComponent implements OnInit {
 
   ngOnInit() {
     this.getfacultades();
+    this.setsock()
 
+  }
+  setsock() {
+    this.socket = new WebSocket('ws://localhost:8000/ws/');
+
+    this.socket.onopen = () => {
+      console.log('WebSockets connection created.');
+    };
+
+    this.socket.onmessage = (event) => {
+      //  var data = JSON.parse(event.data);
+      console.log("data from socket:" + event.data);
+      this.getfacultades()
+    };
+
+    if (this.socket.readyState == WebSocket.OPEN) {
+      this.socket.onopen(null);
+    }
   }
   getfacultades() {
     this.facultades = [];

@@ -37,7 +37,7 @@ export class AddfacultComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/facultad/list'])
+          //this.route.navigate(['/facultad/list'])
         },
         err => console.error(err)
       )
