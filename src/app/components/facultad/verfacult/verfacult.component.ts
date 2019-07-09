@@ -13,30 +13,36 @@ export class VerfacultComponent implements OnInit {
   public alerts = true;
   socket: WebSocket;
 
-  constructor(private facultaService: FacultadSerivice, private departamentoService: DepartamentoService) {
+  constructor(private facultaService: FacultadSerivice) {
 
 
   }
 
   ngOnInit() {
     this.getfacultades();
-    this.setsock()
+    this.setsock();
 
   }
   setsock() {
     this.socket = new WebSocket('ws://localhost:8000/ws/');
 
     this.socket.onopen = () => {
-      console.log('WebSockets connection created.');
+      console.log('WebSockets connection created for Facultad');
     };
 
     this.socket.onmessage = (event) => {
       //  var data = JSON.parse(event.data);
-      console.log("data from socket:" + event.data);
-      this.getfacultades()
+      // console.log('data from socket:' + event.data);
+      // this.getfacultades()
+      const action = JSON.parse(event.data);
+      if (action.event === 'New Facultad' || action.event === 'Delete Facultad' || action.event === 'Update Facultad' ) {
+        console.log('ws envia el evento: ', action.event);
+        this.getfacultades();
+      }
+
     };
 
-    if (this.socket.readyState == WebSocket.OPEN) {
+    if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.onopen(null);
     }
   }
@@ -46,6 +52,7 @@ export class VerfacultComponent implements OnInit {
       res => {
         this.facultades.push(res);
         this.alerts = false;
+        console.log(this.facultades);
       },
       err => {
         console.error(err);
