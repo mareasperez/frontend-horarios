@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '../models/api.model';
+import { wsModel } from 'src/app/models/ws.model'
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class MainService {
 
   public client: HttpClient;
   public api = Api;
-
+  public list:any[]=[];
   constructor(client: HttpClient, private resource: string) {
     this.client = client;
   }
@@ -44,5 +45,22 @@ export class MainService {
     let head: any = {}
     head['Content-Type'] = 'application/json';
     return this.client.delete(this.getUrl() + id, head);
+  }
+
+  updateList(data){
+
+    switch(data.event){
+      case 'C':
+        data.data.forEach(el=>{
+          this.list.push(el)
+        })
+        break;
+      case 'U':
+        
+        break;
+      case 'D':
+        break;
+
+    }
   }
 }

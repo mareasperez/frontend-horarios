@@ -36,9 +36,10 @@ export class VerfacultComponent implements OnInit {
       // this.getfacultades()
       const action = JSON.parse(event.data);
       if (action.event === 'New Facultad' || action.event === 'Delete Facultad' || action.event === 'Update Facultad' ) {
-        console.log('ws envia el evento: ', action.event);
         this.getfacultades();
       }
+      console.log('ws envia el evento: ', action);
+
 
     };
 
