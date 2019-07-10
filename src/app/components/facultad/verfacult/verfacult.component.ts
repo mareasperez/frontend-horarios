@@ -15,7 +15,7 @@ export class VerfacultComponent implements OnInit {
 
   constructor(private facultaService: FacultadSerivice) {
 
-
+    this.facultaService.updateList().subscribe();
   }
 
   ngOnInit() {

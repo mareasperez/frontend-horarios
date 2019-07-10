@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '../models/api.model';
 import { wsModel } from 'src/app/models/ws.model'
-import { Observable } from 'rxjs';
+import { Observable,of} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +10,7 @@ export class MainService {
 
   public client: HttpClient;
   public api = Api;
-  public list:any[]=[];
+  public list: any[]=[];
   constructor(client: HttpClient, private resource: string) {
     this.client = client;
   }
@@ -47,7 +47,7 @@ export class MainService {
     return this.client.delete(this.getUrl() + id, head);
   }
 
-  updateList(data){
+  updateList(data:wsModel){
 
     switch(data.event){
       case 'C':
@@ -56,11 +56,15 @@ export class MainService {
         })
         break;
       case 'U':
-        
+        let index = this.list.map(el =>{return el.id}).indexOf(data.data[0].id);
+        this.list.splice(index, 1, data.data[0])
         break;
       case 'D':
+        let indeX = this.list.map(el =>{return el.id}).indexOf(data.data[0].id);
+        this.list.splice(indeX, 1)
         break;
 
     }
+    return of(this.list)
   }
 }
