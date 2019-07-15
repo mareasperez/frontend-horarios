@@ -10,6 +10,8 @@ import { RecintoService } from 'src/app/services/recinto.service';
 export class VerrecintoComponent implements OnInit {
   public recintos: RecintoModel[] = [];
   public alerts = true;
+  public dataSource;
+  displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad'];
   socket: WebSocket;
 // tslint:disable-next-line: no-shadowed-variable
   constructor(private RecintoService: RecintoService) { }
@@ -48,13 +50,15 @@ export class VerrecintoComponent implements OnInit {
         this.recintos.push(res);
         this.alerts = false;
         console.log(this.recintos);
+        this.dataSource = this.recintos;
+        console.log(this.dataSource);
       },
       err => {
         console.error(err);
       }
     );
   }
-  deleteFaculta(id: string) {
+  deleteRecinto(id: string) {
     this.RecintoService.deleteRecinto(id).subscribe(
       res => {
         console.log(res);

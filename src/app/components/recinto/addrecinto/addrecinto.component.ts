@@ -12,7 +12,7 @@ export class AddrecintoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
   recinto = new RecintoModel();
-  edit: boolean = false;
+  edit = false;
 
   constructor(private recintoService: RecintoService, private route: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -43,7 +43,7 @@ export class AddrecintoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/prueba'])
+          this.route.navigate(['/recinto/ver'])
         },
         err => console.error(err)
       )
@@ -54,7 +54,7 @@ export class AddrecintoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/prueba2'])
+          this.route.navigate(['/recinto/ver'])
         },
         err => console.error(err)
       )
