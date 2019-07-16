@@ -4,6 +4,8 @@ import { VerfacultComponent } from './components/facultad/verfacult/verfacult.co
 import { AddfacultComponent } from './components/facultad/addfacult/addfacult.component';
 import { AddrecintoComponent } from './components/recinto/addrecinto/addrecinto.component';
 import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.component';
+import { VerdepartamentoComponent } from './components/departamento/verdepartamento/verdepartamento.component';
+import { AdddepartamentoComponent } from './components/departamento/adddepartamento/adddepartamento.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/facultad/add', pathMatch: 'full' },
@@ -31,6 +33,18 @@ const routes: Routes = [
   {
     path: 'recinto/ver',
     component: VerrecintoComponent
+  },
+  {
+    path: 'departamento/add/:id',
+    component: AdddepartamentoComponent
+  },
+  {
+    path: 'departamento/edit/:id',
+    component: AdddepartamentoComponent
+  },
+  {
+    path: 'departamento/ver',
+    component: VerdepartamentoComponent
   },
 ];
 

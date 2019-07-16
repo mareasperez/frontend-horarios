@@ -9,6 +9,8 @@ import { VerfacultComponent } from './components/facultad/verfacult/verfacult.co
 import { AddfacultComponent } from './components/facultad/addfacult/addfacult.component';
 import { AddrecintoComponent } from './components/recinto/addrecinto/addrecinto.component';
 import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.component';
+import { AdddepartamentoComponent } from './components/departamento/adddepartamento/adddepartamento.component';
+import { VerdepartamentoComponent } from './components/departamento/verdepartamento/verdepartamento.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule} from '@angular/material';
 import { MainService } from './services/main.service';
@@ -26,6 +28,8 @@ import {FormsModule} from '@angular/forms';
     AddfacultComponent,
     AddrecintoComponent,
     VerrecintoComponent,
+    AdddepartamentoComponent,
+    VerdepartamentoComponent,
   ],
   imports: [
     BrowserModule,

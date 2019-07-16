@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from '../../../services/recinto.service';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-addrecinto',
@@ -37,7 +37,7 @@ export class AddrecintoComponent implements OnInit {
   }
 
   saveRecinto() {
-    //console.log(this.facultad);
+    // console.log(this.facultad);
     this.recinto.recinto_facultad = this.activatedRoute.snapshot.params.id;
     this.recintoService.crearRecinto(this.recinto)
       .subscribe(
@@ -49,7 +49,7 @@ export class AddrecintoComponent implements OnInit {
       )
   }
   updateRecinto() {
-    //console.log(this.facultad);
+    // console.log(this.facultad);
     this.recintoService.updateRecinto(this.recinto, this.activatedRoute.snapshot.params.id)
       .subscribe(
         res => {
