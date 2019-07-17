@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from '../../../services/recinto.service';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-addrecinto',
@@ -12,7 +12,7 @@ export class AddrecintoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
   recinto = new RecintoModel();
-  edit: boolean = false;
+  edit = false;
 
   constructor(private recintoService: RecintoService, private route: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -37,24 +37,24 @@ export class AddrecintoComponent implements OnInit {
   }
 
   saveRecinto() {
-    //console.log(this.facultad);
+    // console.log(this.facultad);
     this.recinto.recinto_facultad = this.activatedRoute.snapshot.params.id;
     this.recintoService.crearRecinto(this.recinto)
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/prueba'])
+          this.route.navigate(['/recinto/ver'])
         },
         err => console.error(err)
       )
   }
   updateRecinto() {
-    //console.log(this.facultad);
+    // console.log(this.facultad);
     this.recintoService.updateRecinto(this.recinto, this.activatedRoute.snapshot.params.id)
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/prueba2'])
+          this.route.navigate(['/recinto/ver'])
         },
         err => console.error(err)
       )
