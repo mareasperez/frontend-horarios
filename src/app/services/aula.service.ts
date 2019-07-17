@@ -1,43 +1,39 @@
 import { Injectable } from '@angular/core';
 import { MainService } from './main.service';
+import { AulaModel } from '../models/aula.model';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Observable, observable } from 'rxjs/';
-import { FacultadModel } from '../models/facultad.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FacultadSerivice extends MainService {
-  constructor(facultadHttp: HttpClient) {
-    super(facultadHttp, 'facultad');
-  }
+export class AulaService extends MainService{
 
-  getFacultad(): Observable<FacultadModel> {
+  constructor(aulaHttpClinet: HttpClient) {
+    super(aulaHttpClinet, 'aula')
+   }
+
+  getAula(): Observable<AulaModel> {
     /*Este metodo obtiene como respuesta de get()
     un array de facultades. Lo mapea uno a uno a objetos tipo
     FacultadModel y lo regresa uno a uno.
     */
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.facultad.forEach(el => {
+        data.aula.forEach(el => {
           //console.log(el)
-          let facultad = new FacultadModel();
-          facultad.id = el.facultad_id;
-          facultad.nombre = el.facultad_nombre;
-          this.list.push(facultad);
-          observer.next(facultad);
+          let aula = new AulaModel();
+          aula = Object.assign(el);
+          this.list.push(aula);
+          observer.next(aula);
 
         });
       });
     });
   }
-  getFacultadByID(id: number|string) {
-    return this.getByID(id) 
-      
-  }
 
-  crearFacultad(facultad: FacultadModel): Observable<any> {
-    let body = { facultad: facultad };
+  crearAula(aula: AulaModel): Observable<any> {
+    let body = { aula: aula };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -46,9 +42,9 @@ export class FacultadSerivice extends MainService {
     });
   }
 
-  updateFacultad(facultad: FacultadModel, id: string|number) {
+  updateAula(aula: AulaModel, id: string|number) {
     // Ejemplo del parametro body
-    let body = { facultad: facultad };
+    let body = { aula: aula };
     return this.update(body, id);
     /*return new Observable(observer => {
       this.update(body, id).subscribe(response => {
@@ -61,13 +57,13 @@ export class FacultadSerivice extends MainService {
     });*/
   }
 
-  deleteFacultad(idFacultad: number|string)  {
+  deleteAula(idAula: number|string)  {
     /*return new Observable(observer => {
-      this.delete(idFacultad).subscribe(response => {
+      this.delete(idAula).subscribe(response => {
         // console.log(response)
         observer.next(response);
       });
     });*/
-    return this.delete(idFacultad)
+    return this.delete(idAula)
   }
 }

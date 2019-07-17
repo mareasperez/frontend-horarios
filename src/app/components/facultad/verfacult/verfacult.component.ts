@@ -15,15 +15,14 @@ export class VerfacultComponent implements OnInit {
 
   constructor(private facultaService: FacultadSerivice) {
 
-    this.facultaService.updateList().subscribe();
+    this.facultaService.getList().subscribe(console.log);
   }
 
   ngOnInit() {
     this.getfacultades();
-    this.setsock();
-
+   
   }
-  setsock() {
+ /* setsock() {
     this.socket = new WebSocket('ws://localhost:8000/ws/');
 
     this.socket.onopen = () => {
@@ -46,7 +45,7 @@ export class VerfacultComponent implements OnInit {
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.onopen(null);
     }
-  }
+  }*/
   getfacultades() {
     this.facultades = [];
     this.facultaService.getFacultad().subscribe(

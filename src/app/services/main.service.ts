@@ -47,24 +47,29 @@ export class MainService {
     return this.client.delete(this.getUrl() + id, head);
   }
 
+  getList(){
+    return of(this.list)
+  }
+
   updateList(data:wsModel){
 
     switch(data.event){
-      case 'C':
-        data.data.forEach(el=>{
+      case 'c':
+        /*data.data.forEach(el=>{
           this.list.push(el)
-        })
+        })*/
+        this.list.push(data.data)
         break;
-      case 'U':
+      case 'u':
         let index = this.list.map(el =>{return el.id}).indexOf(data.data[0].id);
         this.list.splice(index, 1, data.data[0])
         break;
-      case 'D':
+      case 'd':
         let indeX = this.list.map(el =>{return el.id}).indexOf(data.data[0].id);
         this.list.splice(indeX, 1)
         break;
 
     }
-    return of(this.list)
+    
   }
 }

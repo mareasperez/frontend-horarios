@@ -1,21 +1,9 @@
 
 
 export class AulaModel{
-    constructor(
-                private id: string,
-                private nombre: string,
-                private capacidad: number,
-                private tipo: string,
-                private recintoId: string
-    ){}
-
-    getId(){return this.id;}
-
-    getNombre(){return this.nombre;}
-
-    getCapacidad(){return this.capacidad;}
-
-    getTipo(){return this.tipo;}
-
-    getIdRecinto(){return this.recintoId;}
+    public  aula_id: string;
+    public  aula_nombre: string;
+    public aula_capacidad: number;
+    public aula_tipo: string;
+    public aula_recinto: string;
 }
