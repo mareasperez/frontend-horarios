@@ -18,6 +18,7 @@ import { FacultadSerivice } from './services/facultad.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material';
 import {FormsModule} from '@angular/forms';
+import { DocenteService } from './services/docente.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import {FormsModule} from '@angular/forms';
     MaterialModule,
     FormsModule
   ],
-  providers: [MainService, FacultadSerivice],
+  providers: [MainService, FacultadSerivice,DocenteService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

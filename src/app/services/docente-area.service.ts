@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class DocenteAreaService extends MainService {
 
   constructor(httpclient:HttpClient) { 
-    super(httpclient,'docenteArea')
+    super(httpclient,'doar')
   }
 
   getDcArea(): Observable<DocenteAreaModel> {
