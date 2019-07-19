@@ -34,8 +34,8 @@ export class DepartamentoService extends MainService {
 
     }
 
-    crearDepartamento(Departamento: DepartamentoModel): Observable<any> {
-        let body = { Departamento: Departamento };
+    crearDepartamento(departamento: DepartamentoModel): Observable<any> {
+        let body = { departamento: departamento };
         return new Observable(observer => {
             this.create(body).subscribe(response => {
                 console.log(response);

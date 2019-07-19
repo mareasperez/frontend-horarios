@@ -28,7 +28,7 @@ export class DocenteHorasService extends MainService{
   }
 
   crearDcHora(docH: DocenteHorasModel): Observable<any> {
-    let body = { docH: docH };
+    let body = { docenteHoras: docH };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -38,7 +38,7 @@ export class DocenteHorasService extends MainService{
   }
 
   updateDcHora(docH: DocenteHorasModel, id: string|number) {
-    let body = { docH: docH };
+    let body = { docenteHoras: docH };
     return this.update(body, id);
  
   }

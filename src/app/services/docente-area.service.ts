@@ -29,7 +29,7 @@ export class DocenteAreaService extends MainService {
   }
 
   crearDcArea(dcArea: DocenteAreaModel): Observable<any> {
-    let body = { dcArea: dcArea };
+    let body = { docenteArea: dcArea };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -40,7 +40,7 @@ export class DocenteAreaService extends MainService {
 
   updateDcArea(dcArea: DocenteAreaModel, id: string|number) {
     // Ejemplo del parametro body
-    let body = { dcArea: dcArea };
+    let body = { docenteArea: dcArea };
     return this.update(body, id);
   }
   deleteDcArea(idDcArea: number|string)  {

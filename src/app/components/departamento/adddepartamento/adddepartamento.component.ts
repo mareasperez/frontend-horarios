@@ -24,8 +24,8 @@ export class AdddepartamentoComponent implements OnInit {
           .subscribe(
             res => {
               console.log(res);
-              this.departamento.id = res.id;
-              this.departamento.nombre = res.nombre;
+              this.departamento.departamento_id = res.id;
+              this.departamento.departamento_nombre = res.nombre;
               this.departamento.departamento_facultad = res.facultad;
               this.edit = true;
             },
