@@ -12,7 +12,7 @@ export class VerdepartamentoComponent implements OnInit {
   public departamentos: DepartamentoModel[] = [];
   public alerts = true;
   public dataSource;
-  displayedColumns: string[] = ['id', 'nombre', 'facultad'];
+  displayedColumns: string[] = ['id', 'nombre', 'facultad', 'opciones'];
   socket: WebSocket;
 // tslint:disable-next-line: no-shadowed-variable
   constructor(private DepartamentoService: DepartamentoService) { }
