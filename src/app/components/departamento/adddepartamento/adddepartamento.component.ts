@@ -17,22 +17,7 @@ export class AdddepartamentoComponent implements OnInit {
   constructor(private departamentoService: DepartamentoService, private route: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    const params = this.activatedRoute.snapshot.params;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit'){
-      if (params.id) {
-        this.departamentoService.getDepartamentoByID(params.id)
-          .subscribe(
-            res => {
-              console.log(res);
-              this.departamento.departamento_id = res.id;
-              this.departamento.departamento_nombre = res.nombre;
-              this.departamento.departamento_facultad = res.facultad;
-              this.edit = true;
-            },
-            err => console.error(err)
-          )
-      }
-    }
+
   }
 
   saveDepartamento() {
@@ -42,10 +27,10 @@ export class AdddepartamentoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/departamento/ver'])
+          this.route.navigate(['/departamento/ver']);
         },
         err => console.error(err)
-      )
+      );
   }
   updateDepartamento() {
     // console.log(this.facultad);
@@ -53,10 +38,10 @@ export class AdddepartamentoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/departamento/ver'])
+          this.route.navigate(['/departamento/ver']);
         },
         err => console.error(err)
-      )
+      );
   }
 
 }

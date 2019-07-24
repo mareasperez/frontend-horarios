@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material';
 import {FormsModule} from '@angular/forms';
 import { DocenteService } from './services/docente.service';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { DocenteService } from './services/docente.service';
     VerrecintoComponent,
     AdddepartamentoComponent,
     VerdepartamentoComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

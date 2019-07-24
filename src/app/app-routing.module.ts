@@ -6,9 +6,10 @@ import { AddrecintoComponent } from './components/recinto/addrecinto/addrecinto.
 import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.component';
 import { VerdepartamentoComponent } from './components/departamento/verdepartamento/verdepartamento.component';
 import { AdddepartamentoComponent } from './components/departamento/adddepartamento/adddepartamento.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/facultad/add', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
     path: 'facultad/list',
@@ -45,6 +46,11 @@ const routes: Routes = [
   {
     path: 'departamento/ver',
     component: VerdepartamentoComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    pathMatch: 'full'
   },
 ];
 

@@ -12,20 +12,12 @@ export class AppComponent implements OnInit{
   title = 'Frontend';
 
   constructor(private wSocket:WsService,
-              private d: DepartamentoService      
-    ){
-   
-  }
+              private d: DepartamentoService
+    ) {
+   }
 
   ngOnInit(){
-    //this.wSocket.setsock();
+    // this.wSocket.setsock();
 
-    let d = new DepartamentoModel();
-    d.departamento_facultad = "22";
-    d.departamento_nombre = "name";
-    d.departamento_id = "50";
-
-    this.d.crearDepartamento(d).subscribe();
-   
   }
 }
