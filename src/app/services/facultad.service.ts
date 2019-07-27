@@ -22,8 +22,8 @@ export class FacultadSerivice extends MainService {
         data.facultad.forEach(el => {
           //console.log(el)
           let facultad = new FacultadModel();
-          facultad.id = el.facultad_id;
-          facultad.nombre = el.facultad_nombre;
+          facultad.facultad_id = el.facultad_id;
+          facultad.facultad_nombre = el.facultad_nombre;
           this.list.push(facultad);
           observer.next(facultad);
 
@@ -32,8 +32,7 @@ export class FacultadSerivice extends MainService {
     });
   }
   getFacultadByID(id: number|string) {
-    return this.getByID(id) 
-      
+    return this.getByID(id);
   }
 
   crearFacultad(facultad: FacultadModel): Observable<any> {

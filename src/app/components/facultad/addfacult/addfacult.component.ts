@@ -22,8 +22,8 @@ export class AddfacultComponent implements OnInit {
         .subscribe(
           res => {
             console.log(res);
-            this.facultad.id = res.id;
-            this.facultad.nombre = res.nombre;
+            this.facultad.facultad_id = res.facultad.facultad_id;
+            this.facultad.facultad_nombre = res.facultad.facultad_nombre;
             this.edit = true;
           },
           err => console.error(err)

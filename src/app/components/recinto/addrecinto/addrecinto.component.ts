@@ -24,10 +24,10 @@ export class AddrecintoComponent implements OnInit {
           .subscribe(
             res => {
               console.log(res);
-              this.recinto.id = res.id;
-              this.recinto.nombre = res.nombre;
-              this.recinto.ubicacion = res.ubicacion;
-              this.recinto.recinto_facultad = params.id;
+              this.recinto.recinto_id = res.recinto.recinto_id;
+              this.recinto.recinto_nombre = res.recinto.recinto_nombre;
+              this.recinto.recinto_ubicacion = res.recinto.recinto_ubicacion;
+              this.recinto.recinto_facultad= res.recinto.recinto_facultad;
               this.edit = true;
             },
             err => console.error(err)

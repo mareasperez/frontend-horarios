@@ -5,21 +5,21 @@
   <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px">
     <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
-      <span class="float-left">{{facultad.nombre}}</span> <span class="dropdown-toggle float-right  "></span>
+      <span class="float-left">{{facultad.facultad_nombre}}</span> <span class="dropdown-toggle float-right  "></span>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" [routerLink]="['/facultad/edit', facultad.id]"
+      <a class="dropdown-item" [routerLink]="['/facultad/edit', facultad.facultad_id]"
         routerLinkActive="router-link-active">Editar Facultad</a>
-      <a class="dropdown-item" [routerLink]="['/recinto/add', facultad.id]"
+      <a class="dropdown-item" [routerLink]="['/recinto/add', facultad.facultad_id]"
         routerLinkActive="router-link-active">Agregar Recinto</a>
-      <a class="dropdown-item" style="cursor:pointer;" (click)="deleteFaculta(facultad.id)"
+      <a class="dropdown-item" style="cursor:pointer;" (click)="deleteFaculta(facultad.facultad_id)"
         routerLinkActive="router-link-active">Eliminar Facultad</a>
 
     </div>
   </div>
   <br>
   <div title="Agregar Facultad">
-    <button class="btn btn-success especial" type="button" routerLink="facultad/add"
+    <button class="btn btn-success especial" type="button" routerLink="/facultad/add"
       routerLinkActive="router-link-active">
       +
     </button>

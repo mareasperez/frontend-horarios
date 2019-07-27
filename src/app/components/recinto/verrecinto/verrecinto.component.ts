@@ -11,7 +11,7 @@ export class VerrecintoComponent implements OnInit {
   public recintos: RecintoModel[] = [];
   public alerts = true;
   public dataSource;
-  displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad'];
+  displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
 // tslint:disable-next-line: no-shadowed-variable
   constructor(private RecintoService: RecintoService) { }

@@ -29,9 +29,7 @@ export class DepartamentoService extends MainService {
     }
 
     getDepartamentoByID(id: number | string) {
-
         return this.getByID(id);
-
     }
 
     crearDepartamento(departamento: DepartamentoModel): Observable<any> {

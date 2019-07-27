@@ -2,8 +2,8 @@
 
 export class FacultadModel {
 
-    public id: string;
-    public nombre: string;
+    public facultad_id: string;
+    public facultad_nombre: string;
     
 
     /*getId() { return this.id; }
