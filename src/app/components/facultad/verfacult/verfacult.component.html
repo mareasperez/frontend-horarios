@@ -2,7 +2,8 @@
   <div *ngIf="alerts">
     Data Error
   </div>
-  <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px">
+  <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px "
+    (contextmenu)="onContextMenu($event, facultad)">
     <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       <span class="float-left">{{facultad.facultad_nombre}}</span> <span class="dropdown-toggle float-right  "></span>
@@ -25,3 +26,16 @@
     </button>
   </div>
 </div>
+<div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
+</div>
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-facultad="facultad">
+    <!-- <div class="bg-primary text-center"><p>{{facultad.facultad_nombre}} </p></div>     sirve para ver el nombre de la facultad que eta siendo editada -->
+    <button mat-menu-item><a [routerLink]="['/facultad/edit', facultad.facultad_id]"
+        routerLinkActive="router-link-active">Editar Facultad</a></button>
+    <button mat-menu-item (click)="editarFacultad(facultad.facultad_id)">Editar Facultad</button>
+    <button mat-menu-item (click)="onContextMenuAction2(facultad)">Eliminar Facultad</button>
+
+  </ng-template>
+</mat-menu>

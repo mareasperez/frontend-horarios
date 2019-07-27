@@ -1,7 +1,9 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
+import { MatMenuTrigger } from '@angular/material';
 import { DepartamentoService } from 'src/app/services/departamento.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -12,15 +14,34 @@ export class VerfacultComponent implements OnInit {
   public facultades: FacultadModel[] = [];
   public alerts = true;
   socket: WebSocket;
+  @ViewChild(MatMenuTrigger, {static: false})
+  contextMenu: MatMenuTrigger;
 
-  constructor(private facultaService: FacultadSerivice) {
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  onContextMenu(event: MouseEvent, facultad: FacultadModel) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = {facultad };
+    this.contextMenu.openMenu();
+  }
+
+
+  constructor(private facultaService: FacultadSerivice, private route: Router) {
 
     this.facultaService.getList().subscribe(console.log);
   }
 
   ngOnInit() {
     this.getfacultades();
-   
+
+  }
+  onContextMenuAction2(facultad: FacultadModel) {
+    alert(`Click on Action 2 for ${facultad.facultad_nombre}`);
+  }
+  editarFacultad(id){
+    this.route.navigate([`/facultad/edit/${id}`]);
   }
  /* setsock() {
     this.socket = new WebSocket('ws://localhost:8000/ws/');
@@ -68,5 +89,4 @@ export class VerfacultComponent implements OnInit {
       err => console.log(err)
     );
   }
-
 }
