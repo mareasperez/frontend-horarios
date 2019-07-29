@@ -1,0 +1,26 @@
+<div class="col-md-4 offset-md-4">
+    <div class="card">
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <input type="number" name="id" placeholder="id del Aula" [(ngModel)]="aula.aula_id" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="nombre" placeholder="Nombre del Aula" [(ngModel)]="aula.aula_nombre" class="form-control" autofocus> 
+        </div>
+          <div class="form-group"> 
+          <input type="number" name="capacidad" placeholder="Capacidad" [(ngModel)]="aula.aula_capacidad" class="form-control">
+          </div>
+          <div class="form-group"> 
+            <input type="number" name="tipo" placeholder="Tipo" [(ngModel)]="aula.aula_tipo" class="form-control">
+            </div>
+            <div class="form-group"> 
+                <input type="number" name="recinto" placeholder="Recinto" [(ngModel)]="aula.aula_recinto" class="form-control" *ngIf="edit">
+                </div>
+          <button class="btn btn-success btn-block" (click)="edit ? updateDepartamento() : saveDepartamento()">
+            Guardar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
