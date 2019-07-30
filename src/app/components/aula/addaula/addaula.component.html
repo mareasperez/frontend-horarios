@@ -17,7 +17,7 @@
             <div class="form-group"> 
                 <input type="number" name="recinto" placeholder="Recinto" [(ngModel)]="aula.aula_recinto" class="form-control" *ngIf="edit">
                 </div>
-          <button class="btn btn-success btn-block" (click)="edit ? updateDepartamento() : saveDepartamento()">
+          <button class="btn btn-success btn-block" (click)="edit ? updateAula() : saveAula()">
             Guardar
           </button>
         </form>
