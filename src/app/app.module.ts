@@ -22,6 +22,8 @@ import { DocenteService } from './services/docente.service';
 import { LoginComponent } from './components/login/login.component';
 import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
+import { VerareaComponent } from './components/area/verarea/verarea.component';
+import { AddareaComponent } from './components/area/addarea/addarea.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { AddaulaComponent } from './components/aula/addaula/addaula.component';
     LoginComponent,
     VeraulaComponent,
     AddaulaComponent,
+    VerareaComponent,
+    AddareaComponent,
   ],
   imports: [
     BrowserModule,
