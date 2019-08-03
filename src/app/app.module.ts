@@ -12,18 +12,19 @@ import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.
 import { AdddepartamentoComponent } from './components/departamento/adddepartamento/adddepartamento.component';
 import { VerdepartamentoComponent } from './components/departamento/verdepartamento/verdepartamento.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MainService } from './services/main.service';
 import { FacultadSerivice } from './services/facultad.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { DocenteService } from './services/docente.service';
 import { LoginComponent } from './components/login/login.component';
 import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -50,9 +51,20 @@ import { AddareaComponent } from './components/area/addarea/addarea.component';
     MatButtonModule,
     MatCheckboxModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: function tokenGetter() {
+          // console.log(localStorage.getItem('access_token'));
+          return localStorage.getItem('access_token');
+        },
+        whitelistedDomains: ['localhost:8000',
+          'http://localhost:8000/api/facultad/'],
+        blacklistedRoutes: ['http://localhost:3000/api/auth/']
+      }
+    })
   ],
-  providers: [MainService, FacultadSerivice,DocenteService],
+  providers: [MainService, FacultadSerivice, DocenteService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
