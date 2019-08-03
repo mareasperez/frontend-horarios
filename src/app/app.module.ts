@@ -24,6 +24,7 @@ import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
+import {AuthGuardService} from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
@@ -64,7 +65,7 @@ import { JwtModule } from '@auth0/angular-jwt';
       }
     })
   ],
-  providers: [MainService, FacultadSerivice, DocenteService],
+  providers: [MainService, FacultadSerivice, DocenteService,AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
