@@ -11,7 +11,7 @@ export class AddfacultComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
   facultad = new FacultadModel();
-  edit: boolean = false;
+  edit = false;
 
   constructor(private facultadService: FacultadSerivice, private route: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -27,30 +27,30 @@ export class AddfacultComponent implements OnInit {
             this.edit = true;
           },
           err => console.error(err)
-        )
+        );
     }
   }
 
   saveFacultad() {
-    //console.log(this.facultad);
+    // console.log(this.facultad);
     this.facultadService.crearFacultad(this.facultad)
       .subscribe(
         res => {
           console.log(res);
-          //this.route.navigate(['/facultad/list'])
+          // this.route.navigate(['/facultad/list'])
         },
         err => console.error(err)
-      )
+      );
   }
   updateFacultad() {
-    //console.log(this.facultad);
+    // console.log(this.facultad);
     this.facultadService.updateFacultad(this.facultad, this.activatedRoute.snapshot.params.id)
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/facultad/list'])
+          this.route.navigate(['/facultad/list']);
         },
         err => console.error(err)
-      )
+      );
   }
 }

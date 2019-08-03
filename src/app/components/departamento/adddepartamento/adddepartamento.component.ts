@@ -30,7 +30,7 @@ export class AdddepartamentoComponent implements OnInit {
               this.edit = true;
             },
             err => console.error(err)
-          )
+          );
       }
     }
   }

@@ -7,11 +7,12 @@ import {JwtService} from '../../services/jwt.service';
 })
 export class NavbarComponent implements OnInit {
 
+  // tslint:disable-next-line: no-shadowed-variable
   constructor(private JwtService: JwtService) { }
 
   ngOnInit() {
   }
-  logout(){
+  logout() {
     this.JwtService.logout();
   }
 }

@@ -58,10 +58,10 @@ export class VerfacultComponent implements OnInit {
           return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
         }),
         take(1)
-      ).subscribe(() => this.close())
+      ).subscribe(() => this.close());
 
   }
-  editarFacultad(facultad){
+  editarFacultad(facultad) {
     this.route.navigate([`/facultad/edit/${facultad.facultad_id}`]);
   }
  /* setsock() {
@@ -111,6 +111,7 @@ export class VerfacultComponent implements OnInit {
     );
   }
   close() {
+    // tslint:disable-next-line: no-unused-expression
     this.sub && this.sub.unsubscribe();
     if (this.overlayRef) {
       this.overlayRef.dispose();

@@ -8,15 +8,16 @@ import { DepartamentoService } from './services/departamento.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'Frontend';
 
-  constructor(private wSocket:WsService,
-              private d: DepartamentoService
-    ) {
-   }
+  constructor(
+    private wSocket: WsService,
+    private d: DepartamentoService
+  ) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.wSocket.setsock();
 
   }

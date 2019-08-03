@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: 'facultad/list',
     component: VerfacultComponent,
-        canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'facultad/add',

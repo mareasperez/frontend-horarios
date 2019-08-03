@@ -31,7 +31,7 @@ export class AddareaComponent implements OnInit {
               this.area.area_nombre = res.area.area_nombre;
             },
             err => console.error(err)
-          )
+          );
       }
     }
   }

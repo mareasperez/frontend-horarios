@@ -18,7 +18,7 @@ export class AddrecintoComponent implements OnInit {
 
   ngOnInit() {
     const params = this.activatedRoute.snapshot.params;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit'){
+    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
       if (params.id) {
         this.recintoService.getRecintoByID(params.id)
           .subscribe(
@@ -27,11 +27,11 @@ export class AddrecintoComponent implements OnInit {
               this.recinto.recinto_id = res.recinto.recinto_id;
               this.recinto.recinto_nombre = res.recinto.recinto_nombre;
               this.recinto.recinto_ubicacion = res.recinto.recinto_ubicacion;
-              this.recinto.recinto_facultad= res.recinto.recinto_facultad;
+              this.recinto.recinto_facultad = res.recinto.recinto_facultad;
               this.edit = true;
             },
             err => console.error(err)
-          )
+          );
       }
     }
   }
@@ -43,10 +43,10 @@ export class AddrecintoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/recinto/ver'])
+          this.route.navigate(['/recinto/ver']);
         },
         err => console.error(err)
-      )
+      );
   }
   updateRecinto() {
     // console.log(this.facultad);
@@ -54,10 +54,10 @@ export class AddrecintoComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/recinto/ver'])
+          this.route.navigate(['/recinto/ver']);
         },
         err => console.error(err)
-      )
+      );
   }
 
 }
