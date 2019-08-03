@@ -1,0 +1,56 @@
+<h1>
+  Aulas del Recinto:
+</h1>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let aula"> {{aula.aula_id}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let aula"> {{aula.aula_nombre}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="capacidad">
+      <th mat-header-cell *matHeaderCellDef> Capacidad </th>
+      <td mat-cell *matCellDef="let aula"> {{aula.aula_capacidad}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+      <td mat-cell *matCellDef="let aula"> {{aula.aula_tipo}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="recinto">
+        <th mat-header-cell *matHeaderCellDef> Recinto </th>
+        <td mat-cell *matCellDef="let aula"> {{aula.aula_recinto}} </td>
+      </ng-container>
+
+    <ng-container matColumnDef="opciones">
+        <th mat-header-cell *matHeaderCellDef> opciones </th>
+        <td mat-cell *matCellDef="let aula"> 
+          <div class="opciones">
+              <button class="btn btn-danger btnlogin" (click)="deleteaula(aula.aula_id)">
+                  <i class="fas fa-trash-alt"></i>
+              </button>
+              <button class="btn btn-success btnlogin" [routerLink]="['/recinto/aula/edit', aula.aula_id]"
+              routerLinkActive="router-link-active">
+                  <i class="fas fa-edit"></i>
+              </button>
+          </div>
+        </td>
+      </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  

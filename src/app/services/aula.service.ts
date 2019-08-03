@@ -31,6 +31,11 @@ export class AulaService extends MainService{
       });
     });
   }
+  getAulaByID(id: number|string) {
+   
+    return this.getByID(id);
+     
+  }
 
   crearAula(aula: AulaModel): Observable<any> {
     let body = { aula: aula };

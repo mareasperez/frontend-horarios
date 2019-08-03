@@ -7,6 +7,10 @@ import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.
 import { VerdepartamentoComponent } from './components/departamento/verdepartamento/verdepartamento.component';
 import { AdddepartamentoComponent } from './components/departamento/adddepartamento/adddepartamento.component';
 import { LoginComponent } from './components/login/login.component';
+import { VeraulaComponent } from './components/aula/veraula/veraula.component';
+import { AddaulaComponent } from './components/aula/addaula/addaula.component';
+import { VerareaComponent } from './components/area/verarea/verarea.component';
+import { AddareaComponent } from './components/area/addarea/addarea.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -36,6 +40,18 @@ const routes: Routes = [
     component: VerrecintoComponent
   },
   {
+    path: 'recinto/aula/ver',
+    component: VeraulaComponent
+  },
+  {
+    path: 'recinto/aula/add/:id',
+    component: AddaulaComponent
+  },
+  {
+    path: 'recinto/aula/edit/:id',
+    component: AddaulaComponent
+  },
+  {
     path: 'departamento/add/:id',
     component: AdddepartamentoComponent
   },
@@ -51,6 +67,18 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     pathMatch: 'full'
+  },
+  {
+    path: 'area/ver',
+    component: VerareaComponent
+  },
+  {
+    path: 'area/add',
+    component: AddareaComponent
+  },
+  {
+    path: 'area/edit/:id',
+    component: AddareaComponent
   },
 ];
 
