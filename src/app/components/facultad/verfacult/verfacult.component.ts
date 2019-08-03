@@ -1,9 +1,11 @@
-import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, ViewContainerRef, TemplateRef } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
-import { MatMenuTrigger } from '@angular/material';
-import { DepartamentoService } from 'src/app/services/departamento.service';
 import { Router } from '@angular/router';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { fromEvent, Subscription } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -14,21 +16,11 @@ export class VerfacultComponent implements OnInit {
   public facultades: FacultadModel[] = [];
   public alerts = true;
   socket: WebSocket;
-  @ViewChild(MatMenuTrigger, {static: false})
-  contextMenu: MatMenuTrigger;
-
-  contextMenuPosition = { x: '0px', y: '0px' };
-
-  onContextMenu(event: MouseEvent, facultad: FacultadModel) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = {facultad };
-    this.contextMenu.openMenu();
-  }
-
-
-  constructor(private facultaService: FacultadSerivice, private route: Router) {
+  @ViewChild('userMenu', {static: false}) userMenu: TemplateRef<any>;
+  overlayRef: OverlayRef | null;
+  sub: Subscription;
+  // tslint:disable-next-line: max-line-length
+  constructor(private facultaService: FacultadSerivice, private route: Router, public overlay: Overlay, public viewContainerRef: ViewContainerRef) {
 
     this.facultaService.getList().subscribe(console.log);
   }
@@ -37,11 +29,40 @@ export class VerfacultComponent implements OnInit {
     this.getfacultades();
 
   }
-  onContextMenuAction2(facultad: FacultadModel) {
-    alert(`Click on Action 2 for ${facultad.facultad_nombre}`);
+  open({ x, y }: MouseEvent, facultad) {
+    this.close();
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo({ x, y })
+      .withPositions([
+        {
+          originX: 'end',
+          originY: 'bottom',
+          overlayX: 'end',
+          overlayY: 'top',
+        }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(this.userMenu, this.viewContainerRef, {
+      $implicit: facultad
+    }));
+
+    this.sub = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter(event => {
+          const clickTarget = event.target as HTMLElement;
+          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
+        }),
+        take(1)
+      ).subscribe(() => this.close())
+
   }
-  editarFacultad(id){
-    this.route.navigate([`/facultad/edit/${id}`]);
+  editarFacultad(facultad){
+    this.route.navigate([`/facultad/edit/${facultad.facultad_id}`]);
   }
  /* setsock() {
     this.socket = new WebSocket('ws://localhost:8000/ws/');
@@ -88,5 +109,12 @@ export class VerfacultComponent implements OnInit {
       },
       err => console.log(err)
     );
+  }
+  close() {
+    this.sub && this.sub.unsubscribe();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
   }
 }
