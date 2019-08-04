@@ -61,7 +61,7 @@ import { JwtModule } from '@auth0/angular-jwt';
       config: {
         tokenGetter: function tokenGetter() {
           // console.log(localStorage.getItem('access_token'));
-          return localStorage.getItem('access_token');
+          return localStorage.getItem('access');
         },
         whitelistedDomains: ['localhost:8000',
           'http://localhost:8000/api/facultad/'],

@@ -11,21 +11,22 @@ export class JwtService {
   constructor(private httpClient: HttpClient, public jwtHelper: JwtHelperService) { }
 
   login(username: string, password: string) {
-    return this.httpClient.post<{ access_token: string }>('http://localhost:8000/api/auth/', { username, password }).pipe(tap(res => {
-      localStorage.setItem('access_token', res.access_token);
+    return this.httpClient.post<{ access: string }>('http://localhost:8000/api/auth/', { username, password }).pipe(tap(res => {
+      console.log(res.access);
+      localStorage.setItem('access', String(res.access));
     }));
   }
 
   logout() {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('access');
   }
 
   public get loggedIn(): boolean {
-    return localStorage.getItem('access_token') !== null;
+    return localStorage.getItem('access') !== null;
   }
 
   public isAuthenticated(): boolean {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access');
     // Check whether the token is expired and return
     // true or false
     return !this.jwtHelper.isTokenExpired(token);
