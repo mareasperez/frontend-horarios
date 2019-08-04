@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {JwtService} from '../../services/jwt.service';
+import { variable } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -14,5 +15,10 @@ export class NavbarComponent implements OnInit {
   }
   logout() {
     this.JwtService.logout();
+  }
+
+  okay(): boolean {
+    var aux = this.JwtService.loggedIn;
+    return aux;
   }
 }

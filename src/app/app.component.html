@@ -1,1 +1,2 @@
-<app-navbar class="pantalla"></app-navbar>
+<app-login *ngIf="!verificar()"></app-login>
+<app-navbar class="pantalla" *ngIf="verificar()"></app-navbar>

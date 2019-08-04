@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WsService } from './services/ws.service';
 import { DepartamentoModel } from './models/departamento.model';
 import { DepartamentoService } from './services/departamento.service';
+import { JwtService } from './services/jwt.service';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +14,17 @@ export class AppComponent implements OnInit {
 
   constructor(
     private wSocket: WsService,
-    private d: DepartamentoService
+    private d: DepartamentoService,
+    private JwtService: JwtService
   ) {
   }
 
   ngOnInit() {
     // this.wSocket.setsock();
 
+  }
+  verificar(): boolean {
+    var aux = this.JwtService.loggedIn;
+    return aux;
   }
 }
