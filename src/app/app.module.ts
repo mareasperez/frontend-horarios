@@ -24,6 +24,8 @@ import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
+import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
+import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { AddareaComponent } from './components/area/addarea/addarea.component';
     AddaulaComponent,
     VerareaComponent,
     AddareaComponent,
+    VerdocenteComponent,
+    AdddocenteComponent,
   ],
   imports: [
     BrowserModule,
