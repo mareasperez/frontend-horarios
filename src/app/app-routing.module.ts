@@ -26,47 +26,58 @@ const routes: Routes = [
   },
   {
     path: 'facultad/add',
-    component: AddfacultComponent
+    component: AddfacultComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'facultad/edit/:id',
-    component: AddfacultComponent
+    component: AddfacultComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'recinto/add/:id',
-    component: AddrecintoComponent
+    component: AddrecintoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'recinto/edit/:id',
-    component: AddrecintoComponent
+    component: AddrecintoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'recinto/ver',
-    component: VerrecintoComponent
+    component: VerrecintoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'recinto/aula/ver',
-    component: VeraulaComponent
+    component: VeraulaComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'recinto/aula/add/:id',
-    component: AddaulaComponent
+    component: AddaulaComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'recinto/aula/edit/:id',
-    component: AddaulaComponent
+    component: AddaulaComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'departamento/add/:id',
-    component: AdddepartamentoComponent
+    component: AdddepartamentoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'departamento/edit/:id',
-    component: AdddepartamentoComponent
+    component: AdddepartamentoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'departamento/ver',
-    component: VerdepartamentoComponent
+    component: VerdepartamentoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -75,15 +86,18 @@ const routes: Routes = [
   },
   {
     path: 'area/ver',
-    component: VerareaComponent
+    component: VerareaComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'area/add',
-    component: AddareaComponent
+    component: AddareaComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'area/edit/:id',
-    component: AddareaComponent
+    component: AddareaComponent,
+    canActivate: [AuthGuard]
   },
 ];
 
