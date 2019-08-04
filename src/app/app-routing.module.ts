@@ -11,13 +11,18 @@ import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
+import {
+  AuthGuardService as AuthGuard
+} from './services/auth-guard.service';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
     path: 'facultad/list',
-    component: VerfacultComponent
+    component: VerfacultComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'facultad/add',
