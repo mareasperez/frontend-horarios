@@ -24,13 +24,10 @@ import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
-<<<<<<< HEAD
 import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
-=======
 import {AuthGuardService} from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
->>>>>>> ad015a8d090429cf8db195d7e148ee78be7f3d08
 
 @NgModule({
   declarations: [
