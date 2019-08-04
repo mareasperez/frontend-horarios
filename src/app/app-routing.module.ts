@@ -79,11 +79,11 @@ const routes: Routes = [
     component: VerdepartamentoComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: 'login',
-    component: LoginComponent,
-    pathMatch: 'full'
-  },
+  // {
+  //   path: 'login',
+  //   component: LoginComponent,
+  //   pathMatch: 'full'
+  // },
   {
     path: 'area/ver',
     component: VerareaComponent,
