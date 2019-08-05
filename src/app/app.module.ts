@@ -28,6 +28,8 @@ import { VerdocenteComponent } from './components/docente/verdocente/verdocente.
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
+import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { JwtModule } from '@auth0/angular-jwt';
     AddareaComponent,
     VerdocenteComponent,
     AdddocenteComponent,
+    AddplanestudioComponent,
+    VerplanestudioComponent,
   ],
   imports: [
     BrowserModule,

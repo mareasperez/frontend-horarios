@@ -14,6 +14,8 @@ import { AddareaComponent } from './components/area/addarea/addarea.component';
 import {
   AuthGuardService as AuthGuard
 } from './services/auth-guard.service';
+import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
+import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 
 
 const routes: Routes = [
@@ -97,6 +99,21 @@ const routes: Routes = [
   {
     path: 'area/edit/:id',
     component: AddareaComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'docente/ver',
+    component: VerdocenteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'docente/add',
+    component: AdddocenteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'docente/edit/:id',
+    component: AdddocenteComponent,
     canActivate: [AuthGuard]
   },
 ];
