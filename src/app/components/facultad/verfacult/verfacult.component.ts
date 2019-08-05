@@ -6,6 +6,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { fromEvent, Subscription } from 'rxjs';
 import { take, filter } from 'rxjs/operators';
+import { JwtService } from 'src/app/services/jwt.service';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -20,13 +21,14 @@ export class VerfacultComponent implements OnInit {
   overlayRef: OverlayRef | null;
   sub: Subscription;
   // tslint:disable-next-line: max-line-length
-  constructor(private facultaService: FacultadSerivice, private route: Router, public overlay: Overlay, public viewContainerRef: ViewContainerRef) {
+  constructor(private facultaService: FacultadSerivice, private route: Router, public overlay: Overlay, public viewContainerRef: ViewContainerRef, private jwt: JwtService) {
 
     this.facultaService.getList().subscribe(console.log);
   }
 
   ngOnInit() {
     this.getfacultades();
+    this.setsock();
 
   }
   open({ x, y }: MouseEvent, facultad) {
@@ -64,8 +66,8 @@ export class VerfacultComponent implements OnInit {
   editarFacultad(facultad) {
     this.route.navigate([`/facultad/edit/${facultad.facultad_id}`]);
   }
- /* setsock() {
-    this.socket = new WebSocket('ws://localhost:8000/ws/');
+  setsock() {
+    this.socket = new WebSocket(`ws://localhost:8000/ws/?token=${this.jwt.Token}`);
 
     this.socket.onopen = () => {
       console.log('WebSockets connection created for Facultad');
@@ -87,7 +89,7 @@ export class VerfacultComponent implements OnInit {
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.onopen(null);
     }
-  }*/
+  }
   getfacultades() {
     this.facultades = [];
     this.facultaService.getFacultad().subscribe(

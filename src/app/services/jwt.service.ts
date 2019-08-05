@@ -11,9 +11,9 @@ export class JwtService {
   constructor(private httpClient: HttpClient, public jwtHelper: JwtHelperService) { }
 
   login(username: string, password: string) {
-    return this.httpClient.post<{ access: string }>('http://localhost:8000/api/auth/', { username, password }).pipe(tap(res => {
-      console.log(res.access);
-      localStorage.setItem('access', String(res.access));
+    return this.httpClient.post<{ token: string }>('http://localhost:8000/api/auth/', { username, password }).pipe(tap(res => {
+      console.log(res.token);
+      localStorage.setItem('access', String(res.token));
     }));
   }
 
@@ -30,5 +30,8 @@ export class JwtService {
     // Check whether the token is expired and return
     // true or false
     return !this.jwtHelper.isTokenExpired(token);
+  }
+  public get Token(): string {
+    return localStorage.getItem('access');
   }
 }
