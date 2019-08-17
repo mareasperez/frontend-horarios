@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MainService } from './main.service';
-import { AulaModel } from '../models/aula.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { AulaModel } from '../models/aula.model';
+import { MainService } from './main.service';
 
 @Injectable()
 export class AulaService extends MainService{

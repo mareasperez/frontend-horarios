@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DepartamentoModel } from '../models/departamento.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { DepartamentoModel } from '../models/departamento.model';
 import { MainService } from './main.service';
 
 
