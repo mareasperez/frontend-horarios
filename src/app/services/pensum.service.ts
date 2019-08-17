@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlanEstudioModel } from '../models/planEstudio';
+import { MainService } from './main.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PensumService extends MainService {
 
   constructor(Http: HttpClient) {

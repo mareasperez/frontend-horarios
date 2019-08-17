@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DocenteModel } from '../models/docente.model';
 import { Observable } from 'rxjs';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
+import { MainService } from './main.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DocenteService extends MainService{
 
   constructor(docenteHttpClient:HttpClient) {

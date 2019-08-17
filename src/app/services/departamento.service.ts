@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { DepartamentoModel } from '../models/departamento.model';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MainService } from './main.service';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DepartamentoService extends MainService {
 
     constructor(DepartamentoHttp: HttpClient) {

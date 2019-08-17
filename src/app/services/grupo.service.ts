@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MainService } from './main.service';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { GrupoModel } from '../models/grupo.model';
+import { MainService } from './main.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class GrupoService extends MainService {
 
   constructor(Http: HttpClient) {

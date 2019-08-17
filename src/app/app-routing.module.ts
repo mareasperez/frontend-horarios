@@ -11,9 +11,7 @@ import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
-import {
-  AuthGuardService as AuthGuard
-} from './services/auth-guard.service';
+import {  AuthGuardService as AuthGuard} from './services/auth-guard.service';
 import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
@@ -39,7 +37,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'recinto/add/:id',
+    path: 'recinto/add',
     component: AddrecintoComponent,
     canActivate: [AuthGuard]
   },
@@ -59,7 +57,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'recinto/aula/add/:id',
+    path: 'recinto/aula/add',
     component: AddaulaComponent,
     canActivate: [AuthGuard]
   },
@@ -69,7 +67,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'departamento/add/:id',
+    path: 'departamento/add',
     component: AdddepartamentoComponent,
     canActivate: [AuthGuard]
   },

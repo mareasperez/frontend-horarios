@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlanificacionModel } from '../models/planificacion.model';
+import { MainService } from './main.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PlanificacionService extends MainService{
 
   constructor(Http: HttpClient) {

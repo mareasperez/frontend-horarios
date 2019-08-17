@@ -30,6 +30,23 @@ import {AuthGuardService} from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { JWTtokenGetter } from './token.getter';
+import { RecintoService } from './services/recinto.service';
+import { PlanificacionService } from './services/planificacion.service';
+import { HorarioService } from './services/horario.service';
+import { JwtService } from './services/jwt.service';
+import { PensumService } from './services/pensum.service';
+import { WsService } from './services/ws.service';
+import { AreaService } from './services/area.service';
+import { AulaService } from './services/aula.service';
+import { ComponenteService } from './services/componente.service';
+import { CarreraService } from './services/carrera.service';
+import { DepartamentoService } from './services/departamento.service';
+import { DocenteHorasService } from './services/docente-horas.service';
+import { DocenteAreaService } from './services/docente-area.service';
+import { GrupoService } from './services/grupo.service';
 
 @NgModule({
   declarations: [
@@ -62,18 +79,32 @@ import { VerplanestudioComponent } from './components/planestudio/verplanestudio
     MaterialModule,
     FormsModule,
     JwtModule.forRoot({
-      config: {
-        tokenGetter: function tokenGetter() {
-          // console.log(localStorage.getItem('access_token'));
-          return localStorage.getItem('access');
-        },
-        whitelistedDomains: ['localhost:8000',
-          'http://localhost:8000/api/facultad/'],
-        blacklistedRoutes: ['http://localhost:3000/api/auth/']
-      }
-    })
+      config: {tokenGetter: JWTtokenGetter,
+      whitelistedDomains: ['localhost:8000','http://localhost:8000/api/facultad/','localhost:4200'],
+      blacklistedRoutes: ['http://localhost:3000/api/auth/'],
+      },
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [MainService, FacultadSerivice, DocenteService, AuthGuardService],
+  providers: [MainService,
+    FacultadSerivice,
+    DocenteService,
+    AuthGuardService,
+    RecintoService,
+    PlanificacionService,
+    HorarioService,
+    JwtService,
+    PensumService,
+    WsService,
+    AreaService,
+    AulaService,ComponenteService,
+    CarreraService,
+    DepartamentoService,
+    DocenteHorasService,
+    DocenteAreaService,
+    GrupoService
+  
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
