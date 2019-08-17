@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Api } from '../models/api.model';
-import { wsModel } from 'src/app/models/ws.model'
 import { Observable,of} from 'rxjs';
-@Injectable({
-  providedIn: 'root'
-})
+import { HttpClient } from '@angular/common/http';
+import { wsModel } from 'src/app/models/ws.model'
+import { Api } from 'src/app/models/api.model';
+
+@Injectable() 
 export class MainService {
 
   public client: HttpClient;

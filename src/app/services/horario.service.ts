@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { HorarioModel } from '../models/horario.model';
 import { MainService } from './main.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class HorarioService extends MainService {
 
   constructor(Http: HttpClient) {

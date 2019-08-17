@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CarreraModel } from '../models/carrera.model';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MainService } from './main.service';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CarreraService extends MainService {
 
   constructor(carreraHttp: HttpClient) {

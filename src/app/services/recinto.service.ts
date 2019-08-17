@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
-import { RecintoModel } from '../models/recinto.model';
 import { Observable } from 'rxjs';
+import { RecintoModel } from '../models/recinto.model';
+import { MainService } from './main.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RecintoService extends MainService {
 
   constructor(recintoHttp: HttpClient) {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MainService } from './main.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AreaModel } from '../models/area.model';
+import { MainService } from './main.service';
 
 @Injectable({
   providedIn: 'root'
