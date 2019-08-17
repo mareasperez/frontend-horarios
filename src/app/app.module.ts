@@ -73,7 +73,7 @@ import { VerplanestudioComponent } from './components/planestudio/verplanestudio
       }
     })
   ],
-  providers: [MainService, FacultadSerivice, DocenteService,AuthGuardService],
+  providers: [MainService, FacultadSerivice, DocenteService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
