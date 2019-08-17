@@ -6,9 +6,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class PensumService extends MainService {
-
+  public resource = "pde"
   constructor(Http: HttpClient) {
-    super(Http, 'pde');
+    super(Http);
   }
   getPlanDeEstudios(): Observable<PlanEstudioModel> {
     

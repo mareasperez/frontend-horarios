@@ -8,9 +8,9 @@ import { MainService } from './main.service';
   providedIn: 'root'
 })
 export class AreaService extends MainService {
-
+  public resource = "area"
   constructor(httpclient:HttpClient) {
-    super(httpclient,'area')
+    super(httpclient)
    }
 
    getAreas(): Observable <AreaModel> {

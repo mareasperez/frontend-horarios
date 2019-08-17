@@ -6,9 +6,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class ComponenteService  extends MainService {
-
+  public resource = "componente"
   constructor(httpclient: HttpClient) { 
-    super(httpclient, 'componente')
+    super(httpclient)
   }
    getComponentes(): Observable <ComponenteModel> {
     return new Observable(observer => {

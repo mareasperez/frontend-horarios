@@ -7,9 +7,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class CarreraService extends MainService {
-
+  public resource = "carrera"
   constructor(carreraHttp: HttpClient) {
-    super(carreraHttp, 'carrera');
+    super(carreraHttp);
   }
 
   getCarrera(): Observable<CarreraModel> {

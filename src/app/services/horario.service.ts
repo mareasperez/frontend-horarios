@@ -6,9 +6,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class HorarioService extends MainService {
-
+  public resource = "horario"
   constructor(Http: HttpClient) {
-    super(Http, 'horario');
+    super(Http);
   }
 
   getHorarios(): Observable<HorarioModel> {

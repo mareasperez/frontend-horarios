@@ -14,6 +14,8 @@ import { AddareaComponent } from './components/area/addarea/addarea.component';
 import {  AuthGuardService as AuthGuard} from './services/auth-guard.service';
 import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
+import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
+import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 
 
 const routes: Routes = [
@@ -112,6 +114,21 @@ const routes: Routes = [
   {
     path: 'docente/edit/:id',
     component: AdddocenteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'planestudio/ver',
+    component: VerplanestudioComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'planestudio/add',
+    component: AddplanestudioComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'planestudio/edit/:id',
+    component: AddplanestudioComponent,
     canActivate: [AuthGuard]
   },
 ];

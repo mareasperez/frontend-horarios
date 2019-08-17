@@ -5,9 +5,9 @@ import { DocenteHorasModel } from '../models/docente.horas.model';
 import { MainService } from './main.service';
 @Injectable()
 export class DocenteHorasService extends MainService{
-
+  public resource = "doho"
   constructor(httpclient:HttpClient) {
-    super(httpclient,'doho')
+    super(httpclient)
    }
 
   getDcHoras(): Observable <DocenteHorasModel> {

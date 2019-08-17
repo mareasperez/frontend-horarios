@@ -29,7 +29,7 @@ import { AdddocenteComponent } from './components/docente/adddocente/adddocente.
 import {AuthGuardService} from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
-import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
+import { VerplanestudioComponent} from './components/planestudio/verplanestudio/verplanestudio.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { JWTtokenGetter } from './token.getter';
@@ -80,7 +80,7 @@ import { GrupoService } from './services/grupo.service';
     FormsModule,
     JwtModule.forRoot({
       config: {tokenGetter: JWTtokenGetter,
-      whitelistedDomains: ['localhost:8000','http://localhost:8000/api/facultad/','localhost:4200'],
+      whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/', 'localhost:4200'],
       blacklistedRoutes: ['http://localhost:3000/api/auth/'],
       },
     }),
@@ -97,13 +97,15 @@ import { GrupoService } from './services/grupo.service';
     PensumService,
     WsService,
     AreaService,
-    AulaService,ComponenteService,
+    AulaService,
+    ComponenteService,
     CarreraService,
     DepartamentoService,
     DocenteHorasService,
     DocenteAreaService,
-    GrupoService
-  
+    GrupoService,
+    VerplanestudioComponent,
+    AddplanestudioComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -6,9 +6,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class RecintoService extends MainService {
-
+  public resource = "recinto"
   constructor(recintoHttp: HttpClient) {
-    super(recintoHttp, 'recinto');
+    super(recintoHttp);
   }
 
   getRecinto(): Observable<RecintoModel> {

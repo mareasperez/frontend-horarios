@@ -16,12 +16,10 @@
 
         ],
         "urls": [
-          "https://code.jquery.com/jquery-3.3.1.slim.min.js",
-          "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ,
-          "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ,
-          "https://fonts.googleapis.com/css?family=Roboto:300,400,500",
-          "https://fonts.googleapis.com/icon?family=Material+Icons" ,
-          "https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          "https://cdnjs.cloudflare.com/ajax/libs/popper.js/**" ,
+          "https://stackpath.bootstrapcdn.com/bootstrap/**" ,
+          "https://fonts.googleapis.com/**",
+          "https://use.fontawesome.com/releases/**"
         ]
       }
     }, {
@@ -40,7 +38,7 @@
     {
       "name": "horarios-gui",
       "urls": [
-        "http://localhost:8000/v1/**",
+        "http://localhost:8000/api/**",
         "http://localhost:4200**",
         "https://192.168.1.**"
        
@@ -48,9 +46,9 @@
       "version": "1",
       "cacheConfig": {
         "maxSize": "200",
-        "maxAge": "30d",
-        "timeout": "",
-        "strategy": "freshness"
+        "maxAge": "1d",
+        "timeout": "5s",
+        "strategy": "performance"
       }
     }
   ]

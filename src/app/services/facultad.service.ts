@@ -8,8 +8,9 @@ import { MainService } from './main.service';
   providedIn: 'root'
 })
 export class FacultadSerivice extends MainService {
+  public resource = "facultad"
   constructor(facultadHttp: HttpClient) {
-    super(facultadHttp, 'facultad');
+    super(facultadHttp);
   }
 
   getFacultad(): Observable<FacultadModel> {

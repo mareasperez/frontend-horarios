@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable,of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { wsModel } from 'src/app/models/ws.model'
+import { wsModel } from 'src/app/models/ws.model';
 import { Api } from 'src/app/models/api.model';
 
-@Injectable() 
+@Injectable()
 export class MainService {
 
   public client: HttpClient;
   public api = Api;
   public list: any[]=[];
-  constructor(client: HttpClient, private resource: string) {
+  public resource: string
+  constructor(client: HttpClient) {
     this.client = client;
   }
 

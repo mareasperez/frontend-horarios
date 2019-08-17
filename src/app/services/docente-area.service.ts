@@ -6,9 +6,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class DocenteAreaService extends MainService {
-
+  public resource = "doar"
   constructor(httpclient:HttpClient) { 
-    super(httpclient,'doar')
+    super(httpclient)
   }
 
   getDcArea(): Observable<DocenteAreaModel> {

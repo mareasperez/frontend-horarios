@@ -6,9 +6,9 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class GrupoService extends MainService {
-
+  public resource = "grupo"
   constructor(Http: HttpClient) {
-    super(Http, 'grupo');
+    super(Http);
   }
   getGrupos(): Observable<GrupoModel> {
     

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   verificar(): boolean {
     var aux = this.JwtService.loggedIn;
     var aux2 = this.JwtService.isAuthenticated();
-    var aux3 = aux && aux2;
-    return aux3;
+    return aux && aux2;
+    
   }
 }
