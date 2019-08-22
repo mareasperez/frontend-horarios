@@ -6,17 +6,17 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class HorarioService extends MainService {
-  public resource = "horario"
+  public resource = 'horario';
   constructor(Http: HttpClient) {
     super(Http);
   }
 
   getHorarios(): Observable<HorarioModel> {
-    
+
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.horario.forEach(el => {
-          //console.log(el)
+        data.horarios.forEach(el => {
+          console.log(el);
           let horario = new HorarioModel();
           horario = Object.assign(el);
           observer.next(horario);
@@ -26,13 +26,13 @@ export class HorarioService extends MainService {
   }
 
   getHorarioByID(id: number|string) {
-   
+
     return this.getByID(id);
-     
+
   }
 
   crearHorario(horario: HorarioModel): Observable<any> {
-    let body = { horario: horario };
+    const body = { horario };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -43,11 +43,14 @@ export class HorarioService extends MainService {
 
   updateHorario(horario: HorarioModel, id: string|number) {
     // Ejemplo del parametro body
-    let body = { horario: horario };
+    const body = { horario };
     return this.update(body, id);
   }
 
   deleteHorario(idhorario: number|string)  {
-    return this.delete(idhorario)
+    return this.delete(idhorario);
+  }
+  getHorarioByFilter(filtro: string, id: string|number ): Observable<HorarioModel> {
+    return this.getByFiltro(filtro, id);
   }
 }
