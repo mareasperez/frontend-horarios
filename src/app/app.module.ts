@@ -17,7 +17,7 @@ import { MainService } from './services/main.service';
 import { FacultadSerivice } from './services/facultad.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DocenteService } from './services/docente.service';
 import { LoginComponent } from './components/login/login.component';
 import { VeraulaComponent } from './components/aula/veraula/veraula.component';
@@ -78,6 +78,7 @@ import { GrupoService } from './services/grupo.service';
     MatCheckboxModule,
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {tokenGetter: JWTtokenGetter,
       whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/', 'localhost:4200'],
