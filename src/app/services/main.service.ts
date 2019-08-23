@@ -9,8 +9,8 @@ export class MainService {
 
   public client: HttpClient;
   public api = Api;
-  public list: any[]=[];
-  public resource: string
+  public list: any[] = [];
+  public resource: string;
   constructor(client: HttpClient) {
     this.client = client;
   }
@@ -23,53 +23,57 @@ export class MainService {
     return this.client.get<any>(this.getUrl());
 
   }
-  getByID(id:number|string): Observable<any> {
+  getByID(id: number|string): Observable<any> {
     return this.client.get<any>(`${this.getUrl()}${id}`);
 
   }
 
   create(body: any): Observable<any> {
-    let head: any = {}
+    const head: any = {};
     head['Content-Type'] = 'application/json';
-    console.log('post: ',body);
+    console.log('post: ', body);
     return this.client.post(this.getUrl(), body, head);
   }
 
-  update(body: any,id: string|number): Observable<any> {
-    let head: any = {}
+  update(body: any, id: string|number): Observable<any> {
+    const head: any = {};
     head['Content-Type'] = 'application/json';
     return this.client.put(`${this.getUrl()}${id}`, body, head);
   }
 
   delete(id: any): Observable<any> {
-    let head: any = {}
+    const head: any = {};
     head['Content-Type'] = 'application/json';
     return this.client.delete(this.getUrl() + id, head);
   }
 
-  getList(){
-    return of(this.list)
+  getList() {
+    return of(this.list);
   }
 
-  updateList(data:wsModel){
+  getByFiltro(filtro: string, id: string|number): Observable<any> {
+    return this.client.get<any>(`${this.getUrl()}${filtro}=${id}`);
+  }
 
-    switch(data.event){
+  updateList(data: wsModel) {
+
+    switch (data.event) {
       case 'c':
         /*data.data.forEach(el=>{
           this.list.push(el)
         })*/
-        this.list.push(data.data)
+        this.list.push(data.data);
         break;
       case 'u':
-        let index = this.list.map(el =>{return el.id}).indexOf(data.data[0].id);
-        this.list.splice(index, 1, data.data[0])
+        const index = this.list.map(el => el.id).indexOf(data.data[0].id);
+        this.list.splice(index, 1, data.data[0]);
         break;
       case 'd':
-        let indeX = this.list.map(el =>{return el.id}).indexOf(data.data[0].id);
-        this.list.splice(indeX, 1)
+        const indeX = this.list.map(el => el.id).indexOf(data.data[0].id);
+        this.list.splice(indeX, 1);
         break;
 
     }
-    
+
   }
 }
