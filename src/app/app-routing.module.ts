@@ -67,7 +67,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'recinto/aula/add',
+    path: 'recinto/aula/add/:id',
     component: AddaulaComponent,
     canActivate: [AuthGuard]
   },

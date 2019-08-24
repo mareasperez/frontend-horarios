@@ -18,6 +18,7 @@ export class AddareaComponent implements OnInit {
   constructor(private areaService: AreaService, private route: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.area.area_id = null;
     const params = this.activatedRoute.snapshot.params;
     console.log(this.activatedRoute.snapshot.url[1].path);
     if (this.activatedRoute.snapshot.url[1].path === 'edit') {
@@ -27,8 +28,8 @@ export class AddareaComponent implements OnInit {
           .subscribe(
             res => {
               console.log( 'lo que tiene res es', res);
-              this.area.area_id = res.area.area_id;
               this.area.area_nombre = res.area.area_nombre;
+              this.area.area_id = this.activatedRoute.snapshot.params.id;
             },
             err => console.error(err)
           );
