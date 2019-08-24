@@ -17,13 +17,18 @@ import { AdddocenteComponent } from './components/docente/adddocente/adddocente.
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 import { HorariosComponent } from './components/horarios/horarios.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', component: LoginComponent, pathMatch: 'full' },
   {
     path: 'horarios',
     component: HorariosComponent,
+    canActivate: [AuthGuard]
+  }, {
+    path: 'home',
+    component: HomeComponent,
     canActivate: [AuthGuard]
   },
   {

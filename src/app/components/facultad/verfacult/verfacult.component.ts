@@ -96,7 +96,7 @@ export class VerfacultComponent implements OnInit {
       res => {
         this.facultades.push(res);
         this.alerts = false;
-        console.log(this.facultades);
+        //console.log(this.facultades);
       },
       err => {
         console.error(err);
