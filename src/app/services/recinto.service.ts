@@ -6,17 +6,17 @@ import { MainService } from './main.service';
 
 @Injectable()
 export class RecintoService extends MainService {
-  public resource = "recinto"
+  public resource = 'recinto'
   constructor(recintoHttp: HttpClient) {
     super(recintoHttp);
   }
 
   getRecinto(): Observable<RecintoModel> {
-    
+
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.recinto.forEach(el => {
-          //console.log(el)
+          // console.log(el)
           let recinto = new RecintoModel();
           recinto = Object.assign(el);
           observer.next(recinto);
@@ -26,13 +26,13 @@ export class RecintoService extends MainService {
   }
 
   getRecintoByID(id: number|string) {
-   
+
     return this.getByID(id);
-     
+
   }
 
   crearRecinto(recinto: RecintoModel): Observable<any> {
-    let body = { recinto: recinto };
+    const body = { recinto };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -43,11 +43,23 @@ export class RecintoService extends MainService {
 
   updateRecinto(recinto: RecintoModel, id: string|number) {
     // Ejemplo del parametro body
-    let body = { recinto: recinto };
+    const body = { recinto };
     return this.update(body, id);
   }
 
   deleteRecinto(idRecinto: number|string)  {
-    return this.delete(idRecinto)
+    return this.delete(idRecinto);
   }
+  getRecintoByFilter(filtro: string, id: string|number ): Observable<RecintoModel> {
+    return new Observable(observer => {
+    this.getByFiltro(filtro, id).subscribe(data => {
+      data.recinto.forEach(el => {
+        // console.log(el)
+        let recinto = new RecintoModel();
+        recinto = Object.assign(el);
+        observer.next(recinto);
+      });
+    });
+  });
+}
 }
