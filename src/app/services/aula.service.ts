@@ -51,4 +51,16 @@ export class AulaService extends MainService{
   deleteAula(idAula: number|string)  {
     return this.delete(idAula)
   }
+  getAulaByFilter(filtro: string, id: string|number ): Observable<AulaModel> {
+    return new Observable(observer => {
+    this.getByFiltro(filtro, id).subscribe(data => {
+      data.aula.forEach(el => {
+        // console.log(el)
+        let aula = new AulaModel();
+        aula = Object.assign(el);
+        observer.next(aula);
+      });
+    });
+  });
+}
 }
