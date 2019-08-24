@@ -19,6 +19,7 @@ export class AddaulaComponent implements OnInit {
   ngOnInit() {
     const params = this.activatedRoute.snapshot.params;
     console.log(this.activatedRoute.snapshot.url[2].path);
+    this.aula.aula_id = null;
     if (this.activatedRoute.snapshot.url[2].path === 'edit') {
       if (params.id) {
         this.edit = true;
@@ -26,7 +27,7 @@ export class AddaulaComponent implements OnInit {
           .subscribe(
             res => {
               console.log( 'lo que tiene res es', res);
-              this.aula.aula_id = res.aula.aula_id;
+              this.aula.aula_id = this.activatedRoute.snapshot.params.id;
               this.aula.aula_nombre = res.aula.aula_nombre;
               this.aula.aula_capacidad = res.aula.aula_capacidad;
               this.aula.aula_tipo = res.aula.aula_tipo;
@@ -45,18 +46,18 @@ export class AddaulaComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/aula/ver']);
+          this.route.navigate(['/recinto/aula/ver']);
         },
         err => console.error(err)
       );
   }
   updateAula() {
-    // console.log(this.facultad);
+    console.log('si entro al update');
     this.aulaService.updateAula(this.aula, this.activatedRoute.snapshot.params.id)
       .subscribe(
         res => {
           console.log(res);
-          this.route.navigate(['/aula/ver']);
+          this.route.navigate(['/recinto/aula/ver']);
         },
         err => console.error(err)
       );
