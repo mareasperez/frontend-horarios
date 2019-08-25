@@ -1,6 +1,6 @@
 export class PlanEstudioModel{
-    pde_id: string;
-    pde_nombre: string;
-    pde_anyo: string;
-    pde_carrera: string;
+   public pde_id: number;
+   public pde_nombre: string;
+   public pde_anyo: number;
+   public pde_carrera: number;
 }
