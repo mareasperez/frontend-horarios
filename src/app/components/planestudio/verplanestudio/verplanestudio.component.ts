@@ -9,14 +9,15 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 })
 export class VerplanestudioComponent implements OnInit {
 
-
+  public pde:PlanEstudioModel[] = [];
   public alerts = true;
-  public dataSource:PlanEstudioModel[] = [];;
+  public dataSource;
   displayedColumns: string[] = ['id', 'nombre', 'anyo', 'carrera', 'opciones'];
   socket: WebSocket;
   constructor(private PlanEstudioService: PlanEstudioService) {
     this.PlanEstudioService.getPlanEstudio().subscribe(plan=>{
-      this.dataSource.push(plan)
+      this.pde.push(plan)
+      this.dataSource = this.pde;
       console.log(this.dataSource);
       })
       
