@@ -17,6 +17,7 @@ export class AdddocenteComponent implements OnInit {
   constructor(private docenteService: DocenteService, private route: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.docente.docente_id = null;
     const params = this.activatedRoute.snapshot.params;
     if (this.activatedRoute.snapshot.url[1].path === 'edit') {
       this.edit = true;
@@ -25,7 +26,7 @@ export class AdddocenteComponent implements OnInit {
           .subscribe(
             res => {
               console.log( 'lo que tiene res es', res);
-              this.docente.docente_id = res.docente.docente_id;
+              // this.docente.docente_id = res.docente.docente_id;
               this.docente.docente_nombre = res.docente.docente_nombre;
               this.docente.docente_tipo_contrato = res.docente.docente_tipo_contrato;
               this.docente.docente_inss = res.docente.docente_inss;
@@ -48,7 +49,7 @@ export class AdddocenteComponent implements OnInit {
       );
   }
   updateDocente() {
-    // console.log(this.facultad);
+    console.log('estamos en el update prro');
     this.docenteService.updateDocente(this.docente, this.activatedRoute.snapshot.params.id)
       .subscribe(
         res => {
