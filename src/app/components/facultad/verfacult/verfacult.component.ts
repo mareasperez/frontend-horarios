@@ -21,14 +21,18 @@ export class VerfacultComponent implements OnInit {
   overlayRef: OverlayRef | null;
   sub: Subscription;
   // tslint:disable-next-line: max-line-length
-  constructor(private facultaService: FacultadSerivice, private route: Router, public overlay: Overlay, public viewContainerRef: ViewContainerRef, private jwt: JwtService) {
+  constructor(private facultaService: FacultadSerivice,
+              private route: Router,
+              public overlay: Overlay,
+              public viewContainerRef: ViewContainerRef,
+              private jwt: JwtService) {
 
     this.facultaService.getList().subscribe(console.log);
   }
 
   ngOnInit() {
     this.getfacultades();
-    this.setsock();
+    //this.setsock();
 
   }
   open({ x, y }: MouseEvent, facultad) {
@@ -66,7 +70,7 @@ export class VerfacultComponent implements OnInit {
   editarFacultad(facultad) {
     this.route.navigate([`/facultad/edit/${facultad.facultad_id}`]);
   }
-  setsock() {
+  /*setsock() {
     this.socket = new WebSocket(`ws://localhost:8000/ws/?token=${this.jwt.Token}`);
 
     this.socket.onopen = () => {
@@ -89,11 +93,12 @@ export class VerfacultComponent implements OnInit {
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.onopen(null);
     }
-  }
+  }*/
   getfacultades() {
     this.facultades = [];
     this.facultaService.getFacultad().subscribe(
       res => {
+        console.log(res)
         this.facultades.push(res);
         this.alerts = false;
         //console.log(this.facultades);

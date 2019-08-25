@@ -9,18 +9,24 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 })
 export class VerplanestudioComponent implements OnInit {
 
-  public pde: PlanEstudioModel[] = [];
+
   public alerts = true;
-  public dataSource;
+  public dataSource:PlanEstudioModel[] = [];;
   displayedColumns: string[] = ['id', 'nombre', 'anyo', 'carrera', 'opciones'];
   socket: WebSocket;
-  constructor(private PlanEstudioService: PlanEstudioService) { }
+  constructor(private PlanEstudioService: PlanEstudioService) {
+    this.PlanEstudioService.getPlanEstudio().subscribe(plan=>{
+      this.dataSource.push(plan)
+      console.log(this.dataSource);
+      })
+      
+   }
 
   ngOnInit() {
-    this.getPlanEstudio();
-    this.setsock();
+   // this.getPlanEstudio();
+   // this.setsock();
   }
-  setsock() {
+  /*setsock() {
     this.socket = new WebSocket('ws://localhost:8000/ws/');
 
     this.socket.onopen = () => {
@@ -55,16 +61,20 @@ export class VerplanestudioComponent implements OnInit {
         console.error(err);
       }
     );
-  }
-  deletePlanEstudio(id: string) {
+  }*/
+
+
+  /*deletePlanEstudio(id: string) {
     this.PlanEstudioService.deletePde(id)
     .subscribe(
       res => {
         console.log(res);
-        this.getPlanEstudio();
+        //this.getPlanEstudio();
       },
       err => console.log(err)
     );
-  }
+  }*/
+
+  
 
 }

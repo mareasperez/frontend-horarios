@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.wSocket.setsock();
+    this.wSocket.setsock();
 
   }
   verificar(): boolean {
