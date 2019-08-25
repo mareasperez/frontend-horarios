@@ -19,8 +19,7 @@ export class FacultadSerivice extends MainService {
         data.facultad.forEach(el => {
           //console.log(el)
           let facultad = new FacultadModel();
-          facultad.facultad_id = el.facultad_id;
-          facultad.facultad_nombre = el.facultad_nombre;
+          facultad = Object.assign(facultad,el); //Tipar Objeto
           this.list.push(facultad);
           observer.next(facultad);
 
