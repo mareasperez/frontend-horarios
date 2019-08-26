@@ -6,7 +6,6 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { fromEvent, Subscription } from 'rxjs';
 import { take, filter } from 'rxjs/operators';
-import { JwtService } from 'src/app/services/jwt.service';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -17,17 +16,20 @@ export class VerfacultComponent implements OnInit {
   public facultades: FacultadModel[] = [];
   public alerts = true;
   socket: WebSocket;
+  public facultad_id:number = 0;
   @ViewChild('userMenu', {static: false}) userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
   sub: Subscription;
+  public hide: boolean = true;
+  editing = false;
   // tslint:disable-next-line: max-line-length
-  constructor(private facultaService: FacultadSerivice,
+  constructor(private facultadService: FacultadSerivice,
               private route: Router,
               public overlay: Overlay,
               public viewContainerRef: ViewContainerRef,
-              private jwt: JwtService) {
+             ) {
 
-    this.facultaService.getList().subscribe(console.log);
+    this.facultadService.getList().subscribe(console.log);
   }
 
   ngOnInit() {
@@ -67,36 +69,10 @@ export class VerfacultComponent implements OnInit {
       ).subscribe(() => this.close());
 
   }
-  editarFacultad(facultad) {
-    this.route.navigate([`/facultad/edit/${facultad.facultad_id}`]);
-  }
-  /*setsock() {
-    this.socket = new WebSocket(`ws://localhost:8000/ws/?token=${this.jwt.Token}`);
-
-    this.socket.onopen = () => {
-      console.log('WebSockets connection created for Facultad');
-    };
-
-    this.socket.onmessage = (event) => {
-      //  var data = JSON.parse(event.data);
-      // console.log('data from socket:' + event.data);
-      // this.getfacultades()
-      const action = JSON.parse(event.data);
-      if (action.event === 'New Facultad' || action.event === 'Delete Facultad' || action.event === 'Update Facultad' ) {
-        this.getfacultades();
-      }
-      console.log('ws envia el evento: ', action);
-
-
-    };
-
-    if (this.socket.readyState === WebSocket.OPEN) {
-      this.socket.onopen(null);
-    }
-  }*/
+  
   getfacultades() {
     this.facultades = [];
-    this.facultaService.getFacultad().subscribe(
+    this.facultadService.getFacultad().subscribe(
       res => {
         console.log(res)
         this.facultades.push(res);
@@ -109,7 +85,7 @@ export class VerfacultComponent implements OnInit {
     );
   }
   deleteFaculta(id: string) {
-    this.facultaService.deleteFacultad(id).subscribe(
+    this.facultadService.deleteFacultad(id).subscribe(
       res => {
         console.log(res);
         this.getfacultades();
@@ -124,5 +100,51 @@ export class VerfacultComponent implements OnInit {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+  }
+
+  filterAction(e){
+    console.log(e)
+    if(e.type === 0){
+        this.saveFacultad(e.data);
+    }
+    else{
+      this.updateFacultad(e)
+    }
+
+  }
+
+  saveFacultad(data) {
+    //console.log("s", data)
+    let facultad = new FacultadModel();
+    this.editing = true
+    facultad.facultad_nombre = data.nombre;
+    facultad.facultad_id = null;
+    this.facultadService.crearFacultad(facultad).subscribe(res=>{
+      this.editing = false
+    })
+  }
+  updateFacultad(data) {
+ //console.log("u",data)
+
+    let facultad = new FacultadModel();
+    this.editing = true
+    facultad.facultad_nombre = data.data.nombre;
+    this.facultadService.updateFacultad(facultad, data.type)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.route.navigate(['/facultad/list']);
+        },
+        err => console.error(err)
+      );
+  }
+
+  showAdd(id?:number){
+    this.facultad_id = id
+    this.hide = false;
+  }
+
+  hideform(e){
+    this.hide = e;
   }
 }
