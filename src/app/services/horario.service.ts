@@ -50,7 +50,13 @@ export class HorarioService extends MainService {
   deleteHorario(idhorario: number|string)  {
     return this.delete(idhorario);
   }
-  getHorarioByFilter(filtro: string, id: string|number ): Observable<HorarioModel> {
-    return this.getByFiltro(filtro, id);
+  getHorarioByFilter(filtro: string, id: string|number ): Observable<HorarioModel[]> {
+    return new Observable(observer => {
+      this.getByFiltro(filtro, id).subscribe(data => {
+          let horario = new HorarioModel();
+          horario = Object.assign(horario,data); //Tipar Objeto
+          observer.next(data);
+      });
+    });
   }
 }

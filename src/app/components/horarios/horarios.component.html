@@ -7,7 +7,8 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<div *ngIf="selectedF"><p> Selected Facultad: {{selectedF.facultad_id}} </p>
+<div *ngIf="selectedF">
+  <p> Selected Facultad: {{selectedF.facultad_id}} </p>
 </div>
 
 <div *ngIf="recintos.length>0">
@@ -20,20 +21,53 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <div *ngIf="selectedR"><p> Selected Recinto: {{selectedR.recinto_id}} </p></div>
-  
+  <div *ngIf="selectedR">
+    <p> Selected Recinto: {{selectedR.recinto_id}} </p>
+  </div>
+
 </div>
 <div *ngIf="aulas.length>0">
-        <h4>Seleccione Aula</h4>
-        <mat-form-field>
-          <mat-label>Recinto</mat-label>
-          <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="getHorarioByFilter('horario_aula', $event.value.aula_id)">
-            <mat-option *ngFor="let aula of aulas" [value]="aula">
-              {{aula.aula_nombre}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div *ngIf="selectedA"><p> Selected Aula: {{selectedA.aula_id}} </p></div>
-        
-      </div>
-      
+  <h4>Seleccione Aula</h4>
+  <mat-form-field>
+    <mat-label>Recinto</mat-label>
+    <mat-select [(ngModel)]="selectedA" name="aula"
+      (selectionChange)="getHorarioByFilter('horario_aula', $event.value.aula_id)">
+      <mat-option *ngFor="let aula of aulas" [value]="aula">
+        {{aula.aula_nombre}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="selectedA">
+    <p> Selected Aula: {{selectedA.aula_id}} </p>
+  </div>
+
+</div>
+<div *ngIf="horarios.length===30">
+  <div class="example-container">
+    <h2>To do</h2>
+  
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="todo"
+      [cdkDropListConnectedTo]="[doneList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of lunes" cdkDrag>{{item.horario_hora}}</div>
+    </div>
+  </div>
+  
+  <div class="example-container">
+    <h2>Done</h2>
+  
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="done"
+      [cdkDropListConnectedTo]="[todoList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of martes" cdkDrag>{{item.horario_hora}}</div>
+    </div>
+  </div>
+</div>
