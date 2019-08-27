@@ -4,7 +4,7 @@ import { FacultadModel } from 'src/app/models/facultad.model';
 import { Router } from '@angular/router';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, Subscription, Observable } from 'rxjs';
 import { take, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-verfacult',
@@ -17,6 +17,7 @@ export class VerfacultComponent implements OnInit {
   public alerts = true;
   socket: WebSocket;
   public facultad_id:number = 0;
+  public a:Observable<any[]>;
   @ViewChild('userMenu', {static: false}) userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
   sub: Subscription;
@@ -29,11 +30,14 @@ export class VerfacultComponent implements OnInit {
               public viewContainerRef: ViewContainerRef,
              ) {
 
-    this.facultadService.getList().subscribe(console.log);
+    this.a = this.facultadService.getList();
   }
 
   ngOnInit() {
     this.getfacultades();
+    this.a.subscribe(res=>{
+      this.facultades = res;
+    })
     //this.setsock();
 
   }
@@ -74,10 +78,9 @@ export class VerfacultComponent implements OnInit {
     this.facultades = [];
     this.facultadService.getFacultad().subscribe(
       res => {
-        console.log(res)
+        //console.log(res)
         this.facultades.push(res);
         this.alerts = false;
-        //console.log(this.facultades);
       },
       err => {
         console.error(err);

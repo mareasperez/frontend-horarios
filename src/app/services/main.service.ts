@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { wsModel } from 'src/app/models/ws.model';
 import { Api } from 'src/app/models/api.model';
@@ -10,6 +10,8 @@ export class MainService {
   public client: HttpClient;
   public api = Api;
   public list: any[] = [];
+  public list$ = new Subject<any[]>()
+
   public resource: string;
   constructor(client: HttpClient) {
     this.client = client;
@@ -48,7 +50,7 @@ export class MainService {
   }
 
   getList() {
-    return of(this.list);
+    return this.list$.asObservable();
   }
 
   getByFiltro(filtro: string, id: string|number): Observable<any> {
@@ -56,24 +58,5 @@ export class MainService {
   }
 
   updateList(data: wsModel) {
-
-    switch (data.event) {
-      case 'c':
-        /*data.data.forEach(el=>{
-          this.list.push(el)
-        })*/
-        this.list.push(data.data);
-        break;
-      case 'u':
-        const index = this.list.map(el => el.id).indexOf(data.data[0].id);
-        this.list.splice(index, 1, data.data[0]);
-        break;
-      case 'd':
-        const indeX = this.list.map(el => el.id).indexOf(data.data[0].id);
-        this.list.splice(indeX, 1);
-        break;
-
-    }
-
   }
 }
