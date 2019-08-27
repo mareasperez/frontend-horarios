@@ -41,9 +41,9 @@ export class DepartamentoService extends MainService {
         });
     }
 
-    updateDepartamento(Departamento: DepartamentoModel, id: string | number) {
+    updateDepartamento(departamento: DepartamentoModel, id: string | number) {
         // Ejemplo del parametro body
-        let body = { Departamento: Departamento };
+        let body = { departamento: departamento };
         return this.update(body, id);
     }
 
