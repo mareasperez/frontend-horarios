@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DocenteHorasModel } from '../models/docente.horas.model';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 @Injectable()
 export class DocenteHorasService extends MainService{
   public resource = "doho"
@@ -45,4 +46,33 @@ export class DocenteHorasService extends MainService{
   
     return this.delete(iddocH)
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let dco = new DocenteHorasModel();
+         dco = Object.assign(dco,data.data);
+         console.log(dco)
+         data.data = dco;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.dh_id).indexOf(data.data.dh_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.dh_id !== data.data.dh_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
+
 }

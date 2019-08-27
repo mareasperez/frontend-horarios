@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { GrupoModel } from '../models/grupo.model';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class GrupoService extends MainService {
@@ -49,4 +50,33 @@ export class GrupoService extends MainService {
   deleteGrupo(idgrupo: number|string)  {
     return this.delete(idgrupo)
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let grupo = new GrupoModel();
+         grupo = Object.assign(grupo,data.data);
+         console.log(grupo)
+         data.data = grupo;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.grupo_id).indexOf(data.data.grupo_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.grupo_id !== data.data.grupo_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
+
 }

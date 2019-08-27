@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlanificacionModel } from '../models/planificacion.model';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class PlanificacionService extends MainService{
@@ -49,4 +50,33 @@ export class PlanificacionService extends MainService{
   deletePlanificacion(idplanificacion: number|string)  {
     return this.delete(idplanificacion)
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let planificacion = new PlanificacionModel();
+         planificacion = Object.assign(planificacion,data.data);
+         console.log(planificacion)
+         data.data = planificacion;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.planificacion_id).indexOf(data.data.planificacion_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.planificacion_id !== data.data.planificacion_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
+
 }
