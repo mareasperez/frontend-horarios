@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HorarioModel } from '../models/horario.model';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class HorarioService extends MainService {
@@ -59,4 +60,33 @@ export class HorarioService extends MainService {
       });
     });
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let horario = new HorarioModel();
+         horario = Object.assign(horario,data.data);
+         console.log(horario)
+         data.data = horario;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.horario_id).indexOf(data.data.horario_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.horario_id !== data.data.horario_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
+
 }

@@ -3,6 +3,7 @@ import { CarreraModel } from '../models/carrera.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 
 @Injectable()
@@ -51,4 +52,31 @@ export class CarreraService extends MainService {
   deleteCarrera(idCarrera: number|string)  {
     return this.delete(idCarrera)
   }
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let carrera = new CarreraModel();
+         carrera = Object.assign(carrera,data.data);
+         console.log(carrera)
+         data.data = carrera;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.carrera_id).indexOf(data.data.carrera_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.carrera_id !== data.data.carrera_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
 }

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlanEstudioModel } from '../models/planEstudio';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
+import { PensumModel } from '../models/pensum.model';
 
 @Injectable()
 export class PensumService extends MainService {
@@ -49,4 +51,33 @@ export class PensumService extends MainService {
   deletePlanDeEstudio(idplanDeEstudio: number|string)  {
     return this.delete(idplanDeEstudio)
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let pensum = new PensumModel();
+         pensum = Object.assign(pensum,data.data);
+         console.log(pensum)
+         data.data = pensum;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.pensum_id).indexOf(data.data.pensum_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.pensum_id !== data.data.pensum_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
+
 }
