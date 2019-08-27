@@ -1,36 +1,48 @@
-<div class="card-body" style="align-content: center; text-align: center;">
-  <div *ngIf="alerts">
-    Data Error
-  </div>
-  <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px "
-  (contextmenu)="open($event, facultad); $event. preventDefault();">
-    <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-      aria-haspopup="true" aria-expanded="false">
-      <span class="float-left">{{facultad.facultad_nombre}}</span> <span class="dropdown-toggle float-right  "></span>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" [routerLink]="['/facultad/edit', facultad.facultad_id]"
-        routerLinkActive="router-link-active">Editar Facultad</a>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card-body" style="align-content: center; text-align: center;">
+          <div *ngIf="alerts">
+            Data Error
+          </div>
+          <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px "
+          (contextmenu)="open($event, facultad); $event. preventDefault();">
+          <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <span class="float-left">{{facultad.facultad_nombre}}</span> <span class="dropdown-toggle float-right  "></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" (click)="showAdd(facultad.facultad_id)"
+          routerLinkActive="router-link-active">Editar Facultad</a>
       <a class="dropdown-item" [routerLink]="['/recinto/add', facultad.facultad_id]"
-        routerLinkActive="router-link-active">Agregar Recinto</a>
+      routerLinkActive="router-link-active">Agregar Recinto</a>
       <a class="dropdown-item" style="cursor:pointer;" (click)="deleteFaculta(facultad.facultad_id)"
-        routerLinkActive="router-link-active">Eliminar Facultad</a>
+      routerLinkActive="router-link-active">Eliminar Facultad</a>
 
     </div>
   </div>
-  <br>
-  <div title="Agregar Facultad">
-    <button class="btn btn-success especial" type="button" routerLink="/facultad/add"
-      routerLinkActive="router-link-active">
-      +
-    </button>
+ 
+  <!--<mat-list>
+    <mat-list-item *ngFor="let i of a">
+      item {{i}}
+    </mat-list-item>
+  </mat-list>-->
+  </div>
+
+
+      <ng-template #userMenu let-facultad>
+        <section class="user-menu">
+            <div (click)="delete(facultad)">Delete {{facultad.facultad_nombre}}</div>
+            <div>Send to</div>
+          </section>
+        </ng-template>
+    </div>
+    <div class="col-lg-4">
+      <div class="container">
+        <button mat-raised-button (click)="showAdd(0)"><mat-icon>add</mat-icon>Agregar</button>
+      </div>
+          <app-addfacult [hidden]="hide" [id]="facultad_id" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
+
+    </div>
   </div>
 </div>
-
-
-<ng-template #userMenu let-facultad>
-    <section class="user-menu">
-      <div (click)="delete(facultad)">Delete {{facultad.facultad_nombre}}</div>
-      <div>Send to</div>
-    </section>
-  </ng-template>

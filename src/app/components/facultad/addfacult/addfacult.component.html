@@ -5,9 +5,10 @@
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre">
       </mat-form-field>
-      <button class="ml-1" mat-raised-button color="primary" (click)="saveFacultad()"
+      <button class="ml-1" mat-raised-button color="primary" 
+      (click)="sendData()"
       [disabled]="form.invalid"
-      ><mat-icon>add</mat-icon> Agregar</button>
+      ><mat-icon>save</mat-icon> Guardar</button>
     </form>
 
   </div>

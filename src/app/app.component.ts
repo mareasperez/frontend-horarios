@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private wSocket: WsService,
-    private d: DepartamentoService,
     private JwtService: JwtService
   ) {
   }

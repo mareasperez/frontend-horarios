@@ -3,6 +3,7 @@ import { DocenteAreaModel } from '../models/docente.area.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class DocenteAreaService extends MainService {
@@ -44,4 +45,33 @@ export class DocenteAreaService extends MainService {
   deleteDcArea(idDcArea: number|string)  {
     return this.delete(idDcArea)
   }
+  
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let docenteA = new DocenteAreaModel();
+         docenteA = Object.assign(docenteA,data.data);
+         console.log(docenteA)
+         data.data = docenteA;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.docenteA_id).indexOf(data.data.docenteA_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.docenteA_id !== data.data.docenteA_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
+
 }

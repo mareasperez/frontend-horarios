@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/';
 import { FacultadModel } from '../models/facultad.model';
 import { MainService } from './main.service';
+import { wsModel } from 'src/app/models/ws.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,33 @@ export class FacultadSerivice extends MainService {
   deleteFacultad(idFacultad: number|string)  {
 
     return this.delete(idFacultad)
+  }
+
+  updateList(data: wsModel) {
+   // console.log(data)
+    switch (data.event) {
+      case 'c':
+       // console.log("Crear")
+        let facultad = new FacultadModel();
+        facultad = Object.assign(facultad,data.data);
+        console.log(facultad)
+        data.data = facultad;
+        this.list.push(data.data);
+        this.list$.next(this.list)
+        break;
+      case 'u':
+      //  console.log("update")
+        const index = this.list.map(el => el.facultad_id).indexOf(data.data.facultad_id);
+        this.list.splice(index, 1, data.data);
+        this.list$.next(this.list)
+        break;
+      case 'd':
+       // console.log("delete")
+        this.list = this.list.filter(el=>el.facultad_id !== data.data.facultad_id);
+        this.list$.next(this.list)
+        break;
+
+    }
+
   }
 }

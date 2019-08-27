@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AreaModel } from '../models/area.model';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,4 +49,31 @@ export class AreaService extends MainService {
   
     return this.delete(idarea)
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+        let area = new AreaModel();
+        area = Object.assign(area,data.data);
+        console.log(area)
+        data.data = area;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.area_id).indexOf(data.data.area_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.area_id !== data.data.area_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+    }
 }

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AulaModel } from '../models/aula.model';
 import { MainService } from './main.service';
+import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class AulaService extends MainService{
@@ -51,6 +52,34 @@ export class AulaService extends MainService{
   deleteAula(idAula: number|string)  {
     return this.delete(idAula)
   }
+
+  updateList(data: wsModel) {
+    // console.log(data)
+     switch (data.event) {
+       case 'c':
+        // console.log("Crear")
+         let aula = new AulaModel();
+         aula = Object.assign(aula,data.data);
+         console.log(aula)
+         data.data = aula;
+         this.list.push(data.data);
+         this.list$.next(this.list)
+         break;
+       case 'u':
+       //  console.log("update")
+         const index = this.list.map(el => el.aula_id).indexOf(data.data.aula_id);
+         this.list.splice(index, 1, data.data);
+         this.list$.next(this.list)
+         break;
+       case 'd':
+        // console.log("delete")
+         this.list = this.list.filter(el=>el.aula_id !== data.data.aula_id);
+         this.list$.next(this.list)
+         break;
+ 
+     }
+ 
+   }
   getAulaByFilter(filtro: string, id: string|number ): Observable<AulaModel> {
     return new Observable(observer => {
     this.getByFiltro(filtro, id).subscribe(data => {
