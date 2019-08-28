@@ -53,10 +53,16 @@ export class HorarioService extends MainService {
   }
   getHorarioByFilter(filtro: string, id: string|number ): Observable<HorarioModel[]> {
     return new Observable(observer => {
-      this.getByFiltro(filtro, id).subscribe(data => {
+       this.getByFiltro(filtro, id).subscribe((data:any) => {
+         let horarios =[]
+        console.log(data)
+        data.horario.forEach(el=>{
+
           let horario = new HorarioModel();
-          horario = Object.assign(horario,data); //Tipar Objeto
-          observer.next(data);
+          horario = Object.assign(horario,el); //Tipar Objeto
+          horarios.push(horario)
+        })
+          observer.next(horarios);
       });
     });
   }

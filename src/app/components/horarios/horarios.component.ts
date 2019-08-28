@@ -109,8 +109,10 @@ export class HorariosComponent implements OnInit {
     this.service.getHorarioByFilter(filtro, id).subscribe(
       res => {
         this.horarios = res;
-        console.log(this.horarios, this.horarios.length);
-        this.ordenar();
+        console.log(this.horarios)
+
+        /*console.log(this.horarios, this.horarios.length);
+        this.ordenar();*/
         
       },
       err => {
