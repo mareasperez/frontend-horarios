@@ -16,14 +16,14 @@ import { VerdocenteComponent } from './components/docente/verdocente/verdocente.
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
-import { HorariosComponent } from './components/horarios/horarios.component';
+import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   {
-    path: 'horarios',
+    path: 'reporte/horarios',
     component: HorariosComponent,
     canActivate: [AuthGuard]
   }, {

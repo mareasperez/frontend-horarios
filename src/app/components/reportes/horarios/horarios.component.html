@@ -43,9 +43,35 @@
 
 </div>
 <div *ngIf="horarios.length===30">
-  <div class="example-container">
-    <h2>To do</h2>
-  
+    <!-- <h2>entro </h2>
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-lg-3">Panel lateral</div>
+        <div class="col-lg-9" cdkDropListGroup>
+          <h5>Regilla de horarios</h5>
+          <div class=" row drag-list-container" >
+            <div class="col-lg-2 Ocuped">07:00 AM</div>
+            <ul class="text-none col-lg-2 drag-list"
+            *ngFor="let dia of array" 
+              cdkDropList
+              [cdkDropListData]="item"
+              (cdkDropListDropped)="drop($event)">
+              <li flex class="drag-item pl-3 mt-3 " *ngFor="let hora of dia" cdkDrag>
+                  <span *ngIf="hora.horario_grupo" class="Ocuped"> Grupo: {{hora.horario_grupo}} </span>
+                  <span *ngIf="hora.horario_grupo===null"> Vacio</span>
+              </li>
+          </ul>
+          </div>
+        </div>
+      
+        </div> -->
+        <mat-grid-list cols="5" rowHeight="2:1" *ngFor="let dias of array">
+          <mat-grid-tile *ngFor="let horas of dias">{{horas.horario_hora}}</mat-grid-tile>
+        </mat-grid-list>
+
+      <!-- </div> -->
+  <!-- <div *ngFor="let dia of array" class="container-fluid">
+    <h2>dia</h2>
     <div
       cdkDropList
       #todoList="cdkDropList"
@@ -53,21 +79,10 @@
       [cdkDropListConnectedTo]="[doneList]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of lunes" cdkDrag>{{item.horario_hora}}</div>
+      <div class="example-box" *ngFor="let item of dia" cdkDrag>{{item.horario_hora}}
+          <span *ngIf="item.horario_grupo"> Grupo: {{item.horario_grupo}} </span>
+          <span *ngIf="item.horario_grupo===null"> Vacio</span>
+      </div>
     </div>
-  </div>
-  
-  <div class="example-container">
-    <h2>Done</h2>
-  
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of martes" cdkDrag>{{item.horario_hora}}</div>
-    </div>
-  </div>
+  </div> -->
 </div>

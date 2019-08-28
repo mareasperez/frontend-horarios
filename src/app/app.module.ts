@@ -47,7 +47,7 @@ import { DepartamentoService } from './services/departamento.service';
 import { DocenteHorasService } from './services/docente-horas.service';
 import { DocenteAreaService } from './services/docente-area.service';
 import { GrupoService } from './services/grupo.service';
-import { HorariosComponent } from './components/horarios/horarios.component';
+import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
 
 @NgModule({

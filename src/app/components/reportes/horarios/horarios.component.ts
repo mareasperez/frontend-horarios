@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HorarioService } from '../../services/horario.service';
-import { HorarioModel } from '../../models/horario.model';
+import { HorarioService } from '../../../services/horario.service';
+import { HorarioModel } from '../../../models/horario.model';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { RecintoService } from 'src/app/services/recinto.service';
@@ -17,26 +17,12 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 export class HorariosComponent implements OnInit {
   public horarios: HorarioModel[] = [];
   public array: any[] = [];
-  public lunes: HorarioModel[] = [];
-  public martes: HorarioModel[] = [];
-  public miercoles: HorarioModel[] = [];
-  public jueves: HorarioModel[] = [];
-  public viernes: HorarioModel[] = [];
-  public sab: HorarioModel[] = [];
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
-
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
+  public primera: HorarioModel[] = [];
+  public segunda: HorarioModel[] = [];
+  public tercera: HorarioModel[] = [];
+  public cuarta: HorarioModel[] = [];
+  public quinta: HorarioModel[] = [];
+  public sexta: HorarioModel[] = [];
 
   selectedF: FacultadModel;
   selectedR: RecintoModel;
@@ -109,11 +95,10 @@ export class HorariosComponent implements OnInit {
     this.service.getHorarioByFilter(filtro, id).subscribe(
       res => {
         this.horarios = res;
-        console.log(this.horarios)
+        // console.log(this.horarios);
 
-        /*console.log(this.horarios, this.horarios.length);
-        this.ordenar();*/
-        
+        // console.log(this.horarios, this.horarios.length);
+        this.ordenar();
       },
       err => {
         console.error(err);
@@ -132,32 +117,34 @@ export class HorariosComponent implements OnInit {
     }
   }
   ordenar() {
+    this.vaciar();
     console.log('se llamo al ordenar');
     this.horarios.forEach(dia => {
-      console.log('llego', dia);
+      // console.log('llego', dia);
       switch (dia.horario_hora) {
         case '7': {
-          this.lunes.push(dia);
+          this.primera.push(dia);
           break;
         }
         case '9': {
-          this.martes.push(dia);
+          this.segunda.push(dia);
           break;
         }
         case '11': {
-          this.miercoles.push(dia);
+          this.tercera.push(dia);
           break;
         }
         case '13': {
-          this.jueves.push(dia);
+          console.log('llego al jueves y se debe meter: ', dia);
+          this.cuarta.push(dia);
           break;
         }
         case '15': {
-          this.viernes.push(dia);
+          this.quinta.push(dia);
           break;
         }
-        case '15': {
-          this.sab.push(dia);
+        case '17': {
+          this.sexta.push(dia);
           break;
         }
         default:
@@ -167,5 +154,21 @@ export class HorariosComponent implements OnInit {
           }
       }
     });
+    this.array.push(this.primera);
+    this.array.push(this.segunda);
+    this.array.push(this.tercera);
+    this.array.push(this.cuarta);
+    this.array.push(this.quinta);
+    this.array.push(this.sexta);
+
+  }
+  vaciar() {
+    this.array = [];
+    this.primera = [];
+    this.segunda = [];
+    this.tercera = [];
+    this.cuarta = [];
+    this.quinta = [];
+    this.sexta = [];
   }
 }
