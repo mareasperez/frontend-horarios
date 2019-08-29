@@ -31,66 +31,34 @@
   </div>
 
   <div class="col">
-      <div *ngIf="aulas.length>0">
-          <h4>Seleccione Aula</h4>
-          <mat-form-field>
-            <mat-label>Recinto</mat-label>
-            <mat-select [(ngModel)]="selectedA" name="aula"
-              (selectionChange)="getHorarioByFilter('horario_aula', $event.value.aula_id)">
-              <mat-option *ngFor="let aula of aulas" [value]="aula">
-                {{aula.aula_nombre}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div *ngIf="selectedA">
-            <p> Selected Aula: {{selectedA.aula_id}} </p>
-          </div>
-        </div>
+    <div *ngIf="aulas.length>0">
+      <h4>Seleccione Aula</h4>
+      <mat-form-field>
+        <mat-label>Recinto</mat-label>
+        <mat-select [(ngModel)]="selectedA" name="aula"
+          (selectionChange)="getHorarioByFilter('horario_aula', $event.value.aula_id)">
+          <mat-option *ngFor="let aula of aulas" [value]="aula">
+            {{aula.aula_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedA">
+        <!-- <p> Selected Aula: {{selectedA.aula_id}} </p> -->
+      </div>
+    </div>
   </div>
-  
+
 
 </div>
 <div *ngIf="array.length===6">
-  <!-- <h2>entro </h2>
-    <div class="container-fluid">
-        <div class="row">
-        <div class="col-lg-3">Panel lateral</div>
-        <div class="col-lg-9" cdkDropListGroup>
-          <h5>Regilla de horarios</h5>
-          <div class=" row drag-list-container" >
-            <div class="col-lg-2 Ocuped">07:00 AM</div>
-            <ul class="text-none col-lg-2 drag-list"
-            *ngFor="let dia of array" 
-              cdkDropList
-              [cdkDropListData]="item"
-              (cdkDropListDropped)="drop($event)">
-              <li flex class="drag-item pl-3 mt-3 " *ngFor="let hora of dia" cdkDrag>
-                  <span *ngIf="hora.horario_grupo" class="Ocuped"> Grupo: {{hora.horario_grupo}} </span>
-                  <span *ngIf="hora.horario_grupo===null"> Vacio</span>
-              </li>
-          </ul>
-          </div>
-        </div>
-      
-        </div> -->
   <mat-grid-list cols="5" rowHeight="2:1" *ngFor="let dias of array">
-    <mat-grid-tile *ngFor="let horas of dias">{{horas.horario_hora}}</mat-grid-tile>
-  </mat-grid-list>
-
-  <!-- </div> -->
-  <!-- <div *ngFor="let dia of array" class="container-fluid">
-    <h2>dia</h2>
-    <div
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="[doneList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of dia" cdkDrag>{{item.horario_hora}}
-          <span *ngIf="item.horario_grupo"> Grupo: {{item.horario_grupo}} </span>
-          <span *ngIf="item.horario_grupo===null"> Vacio</span>
+    <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas.horario_vacio ? 'true' : 'false'">
+      <div *ngIf="horas !== undefined" >
+        <div>{{horas.horario_dia}}</div>
+        <div >{{horas.horario_aula}}</div>
+        <div>{{horas.horario_grupo}}</div>
       </div>
-    </div>
-  </div> -->
+    </mat-grid-tile>
+
+  </mat-grid-list>
 </div>

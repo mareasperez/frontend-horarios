@@ -16,14 +16,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 })
 export class HorariosComponent implements OnInit {
   public horarios: HorarioModel[] = [];
-  public array: any[] = [];
-  public primera: HorarioModel[] = [];
-  public segunda: HorarioModel[] = [];
-  public tercera: HorarioModel[] = [];
-  public cuarta: HorarioModel[] = [];
-  public quinta: HorarioModel[] = [];
-  public sexta: HorarioModel[] = [];
-
+  public array: any[][] = new Array();
   selectedF: FacultadModel;
   selectedR: RecintoModel;
   selectedA: AulaModel;
@@ -98,7 +91,7 @@ export class HorariosComponent implements OnInit {
         // console.log(this.horarios);
 
         // console.log(this.horarios, this.horarios.length);
-        this.ordenar();
+        this.fun();
       },
       err => {
         console.error(err);
@@ -116,59 +109,102 @@ export class HorariosComponent implements OnInit {
         event.currentIndex);
     }
   }
-  ordenar() {
-    this.vaciar();
-    console.log('se llamo al ordenar');
+  fun() {
+    let i = 0;
+    let j = 0;
+    let vacio = new HorarioModel();
+    vacio.horario_aula = '-';
+    vacio.horario_dia = '-';
+    vacio.horario_hora = 0;
+    vacio.horario_grupo = '-';
+    vacio.horario_id = '-';
+    vacio.horario_vacio = true;
+    for (let aux = 0; aux < 6; aux++) {
+      this.array[aux] = [];
+    }
+    for (let aux = 0; aux < 5; aux++) {
+      for (let aux2 = 0; aux2 < 6; aux2++) {
+        this.array[aux2][aux] = vacio;
+      }
+    }
     this.horarios.forEach(dia => {
-      // console.log('llego', dia);
-      switch (dia.horario_hora) {
-        case 7: {
-          this.primera.push(dia);
+      switch (dia.horario_dia) {
+        case 'Lunes': {
+          i = 0;
           break;
         }
-        case 9: {
-          this.segunda.push(dia);
+        case 'Martes': {
+          i = 1;
+
           break;
         }
-        case 11: {
-          this.tercera.push(dia);
+        case 'Miercoles': {
+          i = 2;
+
           break;
         }
-        case 13: {
-          // console.log('llego al jueves y se debe meter: ', dia);
-          this.cuarta.push(dia);
+        case 'jueves': {
+          i = 3;
+
           break;
         }
-        case 15: {
-          this.quinta.push(dia);
-          break;
-        }
-        case 17: {
-          this.sexta.push(dia);
+        case 'Viernes': {
+          i = 4;
           break;
         }
         default:
           {
-            console.log('No such day exists!');
+            console.log('No such day exists!', dia);
             break;
           }
       }
+      switch (dia.horario_hora) {
+        case 7: {
+          j = 0;
+          break;
+        }
+        case 9: {
+          j = 1;
+          break;
+        }
+        case 11: {
+          j = 2;
+          break;
+        }
+        case 13: {
+          // console.log('llego al jueves y se debe meter: ', dia);
+          j = 3;
+          break;
+        }
+        case 15: {
+          j = 4;
+          break;
+        }
+        case 17: {
+          j = 5;
+          break;
+        }
+        default:
+          {
+            console.log('No such day exists!', dia);
+            break;
+          }
+      }
+      console.log(dia);
+      // if (dia === undefined) {
+      //   dia = new HorarioModel();
+      //   dia.horario_hora = j;
+      //   dia.horario_dia = '-';
+      //   dia.horario_aula = '12';
+      //   dia.horario_vacio = true;
+      //   dia.horario_grupo = 'los';
+      // }
+      this.array[j][i] = dia;
+      i = 0;
+      j = 0;
+
     });
-    this.array.push(this.primera);
-    this.array.push(this.segunda);
-    this.array.push(this.tercera);
-    this.array.push(this.cuarta);
-    this.array.push(this.quinta);
-    this.array.push(this.sexta);
     console.log(this.array);
   }
-  vaciar() {
-    this.array = [];
-    this.primera = [];
-    this.segunda = [];
-    this.tercera = [];
-    this.cuarta = [];
-    this.quinta = [];
-    this.sexta = [];
-  }
+
 }
