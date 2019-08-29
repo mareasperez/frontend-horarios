@@ -122,28 +122,28 @@ export class HorariosComponent implements OnInit {
     this.horarios.forEach(dia => {
       // console.log('llego', dia);
       switch (dia.horario_hora) {
-        case '7': {
+        case 7: {
           this.primera.push(dia);
           break;
         }
-        case '9': {
+        case 9: {
           this.segunda.push(dia);
           break;
         }
-        case '11': {
+        case 11: {
           this.tercera.push(dia);
           break;
         }
-        case '13': {
-          console.log('llego al jueves y se debe meter: ', dia);
+        case 13: {
+          // console.log('llego al jueves y se debe meter: ', dia);
           this.cuarta.push(dia);
           break;
         }
-        case '15': {
+        case 15: {
           this.quinta.push(dia);
           break;
         }
-        case '17': {
+        case 17: {
           this.sexta.push(dia);
           break;
         }
@@ -160,7 +160,7 @@ export class HorariosComponent implements OnInit {
     this.array.push(this.cuarta);
     this.array.push(this.quinta);
     this.array.push(this.sexta);
-
+    console.log(this.array);
   }
   vaciar() {
     this.array = [];
