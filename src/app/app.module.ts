@@ -49,6 +49,7 @@ import { DocenteAreaService } from './services/docente-area.service';
 import { GrupoService } from './services/grupo.service';
 import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
+import { ComponentesComponent } from './components/componentes/componentes.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { HomeComponent } from './components/home/home.component';
     VerplanestudioComponent,
     HorariosComponent,
     HomeComponent,
+    ComponentesComponent,
   ],
   imports: [
     BrowserModule,

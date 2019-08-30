@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad.service'
 import { RecintoService } from './recinto.service';
 import { JwtService } from './jwt.service';
+import { ComponenteService } from './componente.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +11,7 @@ export class WsService {
 
   constructor(private facultaService:FacultadSerivice,
               private recintoService:RecintoService,
+              private componenteService:ComponenteService,
               private jwt: JwtService
     ) { }
 
@@ -25,10 +27,13 @@ export class WsService {
         let action = JSON.parse(event.data);
         switch(action.model){
           case 'facultad':
-            this.facultaService.updateList(action)
+            this.facultaService.updateList(action);
             break;
           case 'recinto':
             break;
+          case 'componente':
+            this.componenteService.updateList(action);
+
         }
       };
   

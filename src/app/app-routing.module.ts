@@ -18,6 +18,7 @@ import { VerplanestudioComponent } from './components/planestudio/verplanestudio
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
+import { ComponentesComponent } from './components/componentes/componentes.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,10 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     canActivate: [AuthGuard]
+  },
+  {path: 'componente',
+   component: ComponentesComponent,
+   canActivate: [AuthGuard]
   },
   {
     path: 'facultad/list',
