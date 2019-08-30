@@ -8,6 +8,11 @@ import { RecintoModel } from 'src/app/models/recinto.model';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ActivatedRoute } from '@angular/router';
+import { DepartamentoModel } from 'src/app/models/departamento.model';
+import { DepartamentoService } from 'src/app/services/departamento.service';
+import { DocenteModel } from 'src/app/models/docente.model';
+import { DocenteService } from 'src/app/services/docente.service';
 
 @Component({
   selector: 'app-horarios',
@@ -20,15 +25,46 @@ export class HorariosComponent implements OnInit {
   selectedF: FacultadModel;
   selectedR: RecintoModel;
   selectedA: AulaModel;
-  // tslint:disable-next-line: max-line-length
-  constructor(private service: HorarioService, private fserv: FacultadSerivice, private rserv: RecintoService, private aserv: AulaService) { }
-
+  selectedD: HorarioModel;
+  selectedDocente: DocenteModel;
+  docentes: DocenteModel[] = [];
   facultades: FacultadModel[] = [];
   recintos: RecintoModel[] = [];
   aulas: AulaModel[] = [];
+  departamentos: DepartamentoModel[] = [];
+  reporte: string;
+  constructor(private service: HorarioService,
+              private fserv: FacultadSerivice,
+              private rserv: RecintoService,
+              private aserv: AulaService,
+              private dserv: DepartamentoService,
+              private route: ActivatedRoute,
+              private docenteS: DocenteService) { }
   ngOnInit() {
     this.getFacultades();
+    this.reporte = (this.route.snapshot.queryParamMap.get('reporte'));
 
+  }
+  filtros(filtro: string, id: number) {
+    console.log('llego: ', id);
+    switch (filtro) {
+      case 'docente': {
+        this.getDepartamentos(id);
+        break;
+      }
+      case 'aula': {
+        this.getRecintos(id);
+        break;
+      }
+      case 'grupo': {
+        console.log('se llama grupos');
+        break;
+      }
+
+      default: {
+        console.log('no hay filtro para eso');
+      }
+    }
   }
   getFacultades() {
     this.selectedA = null;
@@ -36,16 +72,29 @@ export class HorariosComponent implements OnInit {
     this.fserv.getFacultad().subscribe(
       res => {
         this.facultades.push(res);
-        console.log('largo de recinto: ', this.recintos.length);
       },
       err => {
         console.error(err);
       }
     );
   }
-  getRecintos(f: FacultadModel) {
+  getDepartamentos(id: number) {
+    this.departamentos = [];
+    console.log('hika: ', id);
+    this.dserv.getDepartamentoByFilter('departamento_facultad', id).subscribe(
+      res => {
+        console.log('se metera: ', res);
+        this.departamentos.push(res);
+        // console.log(this.recintos);
+      },
+      err => {
+        console.error(err);
+      }
+    );
+  }
+  getRecintos(id: number) {
     this.recintos = [];
-    this.rserv.getRecintoByFilter('recinto_facultad', f.facultad_id).subscribe(
+    this.rserv.getRecintoByFilter('recinto_facultad', id).subscribe(
       res => {
         // console.log('se metera: ',res)
         this.recintos.push(res);
@@ -56,9 +105,23 @@ export class HorariosComponent implements OnInit {
       }
     );
   }
-  getAulas(r: RecintoModel) {
+  getDocentes(id: number) {
+    this.docentes = [];
+    console.log('el id es:', id);
+    this.docenteS.getDocenteByFilter('docente_departamento', id).subscribe(
+      res => {
+        // console.log('se metera: ',res)
+        this.docentes.push(res);
+        // console.log(this.recintos);
+      },
+      err => {
+        console.error(err);
+      }
+    );
+  }
+  getAulas(id: number) {
     this.aulas = [];
-    this.aserv.getAulaByFilter('aula_recinto', r.recinto_id).subscribe(
+    this.aserv.getAulaByFilter('aula_recinto', id).subscribe(
       res => {
         // console.log('se metera: ', res);
         this.aulas.push(res);
@@ -82,7 +145,7 @@ export class HorariosComponent implements OnInit {
       }
     );
   }
-  getHorarioByFilter(filtro: string, id: string | number) {
+  getHorarioByFilter(filtro: string, id: number) {
     this.horarios = [];
     // abajo se tiene que obviamente mandar los arg de filtrado
     this.service.getHorarioByFilter(filtro, id).subscribe(
@@ -112,7 +175,7 @@ export class HorariosComponent implements OnInit {
   fun() {
     let i = 0;
     let j = 0;
-    let vacio = new HorarioModel();
+    const vacio = new HorarioModel();
     vacio.horario_aula = '-';
     vacio.horario_dia = '-';
     vacio.horario_hora = 0;
