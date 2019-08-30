@@ -41,6 +41,7 @@ export class HorariosComponent implements OnInit {
               private route: ActivatedRoute,
               private docenteS: DocenteService) { }
   ngOnInit() {
+
     this.getFacultades();
     this.reporte = (this.route.snapshot.queryParamMap.get('reporte'));
 
@@ -254,14 +255,6 @@ export class HorariosComponent implements OnInit {
           }
       }
       console.log(dia);
-      // if (dia === undefined) {
-      //   dia = new HorarioModel();
-      //   dia.horario_hora = j;
-      //   dia.horario_dia = '-';
-      //   dia.horario_aula = '12';
-      //   dia.horario_vacio = true;
-      //   dia.horario_grupo = 'los';
-      // }
       this.array[j][i] = dia;
       i = 0;
       j = 0;

@@ -7,9 +7,9 @@
     </mat-menu>
     
     <mat-menu #horarios="matMenu">
-      <button mat-menu-item routerLink="/reporte/horarios">Docente</button>
-      <button mat-menu-item>Grupo</button>
-      <button mat-menu-item>Aula</button>
+      <button mat-menu-item (click)="go('docente')">Docente</button>
+      <button mat-menu-item (click)="go('grupo')">Grupo</button>
+      <button mat-menu-item (click)="go('aula')">Aula</button>
     </mat-menu>
     <mat-menu #cargaAc="matMenu">
       <button mat-menu-item routerLink="#">algo</button>

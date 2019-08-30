@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contenido',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContenidoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
-
+  go(rep: string) {
+    this.router.navigate(['/reporte/horarios'], { queryParams: { reporte: rep } });
+  }
 }

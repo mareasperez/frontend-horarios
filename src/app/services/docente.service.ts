@@ -7,7 +7,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class DocenteService extends MainService {
-  public resource = 'docente'
+  public resource = 'docente';
   constructor(docenteHttpClient: HttpClient) {
     super(docenteHttpClient);
    }
