@@ -13,6 +13,10 @@ import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
+import { CarreraModel } from 'src/app/models/carrera.model';
+import { CarreraService } from 'src/app/services/carrera.service';
+import { GrupoService } from 'src/app/services/grupo.service';
+import { GrupoModel } from 'src/app/models/grupo.model';
 
 @Component({
   selector: 'app-horarios',
@@ -27,18 +31,24 @@ export class HorariosComponent implements OnInit {
   selectedA: AulaModel;
   selectedD: HorarioModel;
   selectedDocente: DocenteModel;
+  selectedCarrera: CarreraModel;
+  selectedGrupo: GrupoModel;
   docentes: DocenteModel[] = [];
   facultades: FacultadModel[] = [];
   recintos: RecintoModel[] = [];
   aulas: AulaModel[] = [];
   departamentos: DepartamentoModel[] = [];
+  carreras: CarreraModel[] = [];
+  grupos: GrupoModel[] = [];
   reporte: string;
   constructor(private service: HorarioService,
+              private gserv: GrupoService,
               private fserv: FacultadSerivice,
               private rserv: RecintoService,
               private aserv: AulaService,
               private dserv: DepartamentoService,
               private route: ActivatedRoute,
+              private cserv: CarreraService,
               private docenteS: DocenteService) { }
   ngOnInit() {
 
@@ -59,6 +69,7 @@ export class HorariosComponent implements OnInit {
       }
       case 'grupo': {
         console.log('se llama grupos');
+        this.getDepartamentos(id);
         break;
       }
 
@@ -106,19 +117,35 @@ export class HorariosComponent implements OnInit {
       }
     );
   }
-  getDocentes(id: number) {
-    this.docentes = [];
-    console.log('el id es:', id);
-    this.docenteS.getDocenteByFilter('docente_departamento', id).subscribe(
-      res => {
-        // console.log('se metera: ',res)
-        this.docentes.push(res);
-        // console.log(this.recintos);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+  getDocentesOrCarreras(id: number) {
+    if (this.reporte === 'docente') {
+      this.docentes = [];
+      console.log('el id es:', id);
+      this.docenteS.getDocenteByFilter('docente_departamento', id).subscribe(
+        res => {
+          // console.log('se metera: ',res)
+          this.docentes.push(res);
+          // console.log(this.recintos);
+        },
+        err => {
+          console.error(err);
+        }
+      );
+    } else {
+      this.carreras = [];
+      console.log('el id es:', id);
+      this.cserv.getCarreraByFiltro('carrera_departamento', id).subscribe(
+        res => {
+          // console.log('se metera: ',res)
+          this.carreras.push(res);
+          console.log(this.carreras);
+        },
+        err => {
+          console.error(err);
+        }
+      );
+    }
+
   }
   getAulas(id: number) {
     this.aulas = [];
@@ -146,6 +173,21 @@ export class HorariosComponent implements OnInit {
       }
     );
   }
+
+  getGrupos(filtro: string, id: number) {
+    this.grupos = [];
+    // abajo se tiene que obviamente mandar los arg de filtrado
+    this.gserv.gerGrupoByFilter(filtro, id).subscribe(
+      res => {
+        this.grupos.push(res);
+        console.log(this.grupos);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  }
+
   getHorarioByFilter(filtro: string, id: number) {
     this.horarios = [];
     // abajo se tiene que obviamente mandar los arg de filtrado
@@ -163,16 +205,7 @@ export class HorariosComponent implements OnInit {
     );
 
   }
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
-  }
+
   fun() {
     let i = 0;
     let j = 0;

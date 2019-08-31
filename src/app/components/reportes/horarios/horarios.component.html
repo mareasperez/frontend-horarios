@@ -1,3 +1,4 @@
+<!-- Traer facultades y mostrarlas, y en dependencia de lo que se tenga en el queryString se llamara a mostrar elementos -->
 <div class="row">
   <div class="col">
     <h4>Seleccione Facultad</h4>
@@ -9,12 +10,13 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-    <!-- facultades -->
     <div *ngIf="selectedF">
       <p> Selected Facultad: {{selectedF.facultad_id}} </p>
     </div>
   </div>
+
+
+  <!-- se piden recintos y se muestran recintos y al escoger recinto se mandara a traer aulas  -->
   <div *ngIf="reporte==='aula'" class="col">
     <div *ngIf="recintos.length>0">
       <h4>Seleccione Recinto</h4>
@@ -31,7 +33,9 @@
       </div>
     </div>
   </div>
-  <!-- aulas -->
+
+
+  <!-- se pediran aulas del recinto previamente escogido y se mostraran para escoger de cual de ellas mostrar el horario -->
   <div *ngIf="reporte==='aula'" class="col">
     <div *ngIf="aulas.length>0">
       <h4>Seleccione Aula</h4>
@@ -49,14 +53,17 @@
       </div>
     </div>
   </div>
-  <!-- departamento -->
-  <div *ngIf="reporte==='docente'" class="col">
+
+
+  <!-- se pediran los departamentos de la facultad escogida y mostraran para que se escoja el departamento -->
+  
+  <div *ngIf="reporte!=='aula'" class="col">
     <div *ngIf="departamentos.length>0">
       <h4>Seleccione Departamento</h4>
       <mat-form-field>
         <mat-label>Departamento</mat-label>
         <mat-select [(ngModel)]="selectedD" name="departamento"
-          (selectionChange)="getDocentes($event.value.departamento_id)">
+          (selectionChange)="getDocentesOrCarreras($event.value.departamento_id)">
           <mat-option *ngFor="let departamento of departamentos" [value]="departamento">
             {{departamento.departamento_nombre}}
           </mat-option>
@@ -69,12 +76,13 @@
   </div>
 
 
+  <!-- se muestran los docentes del departamento para que se seleccione de cual mostrar los horarios -->
   <div *ngIf="reporte==='docente'" class="col">
     <div *ngIf="docentes.length>0">
       <h4>Seleccione Docente</h4>
       <mat-form-field>
         <mat-label>Docentes</mat-label>
-        <mat-select [(ngModel)]="selectedDocente" name="aula"
+        <mat-select [(ngModel)]="selectedDocente" name="docente"
           (selectionChange)="getHorarioByFilter('horario_docente', $event.value.docente_id)">
           <mat-option *ngFor="let docente of docentes" [value]="docente">
             {{docente.docente_nombre}}
@@ -87,6 +95,43 @@
     </div>
   </div>
 
+  <!-- se piden carreras y se muestran  para su seleccion  -->
+  <div *ngIf="reporte==='grupo'" class="col">
+    <div *ngIf="carreras.length>0">
+      <h4>Seleccione Carrera</h4>
+      <mat-form-field>
+        <mat-label>Carrera</mat-label>
+        <mat-select [(ngModel)]="selectedCarrera" name="carrera"
+          (selectionChange)="getGrupos('grupo_carrera', $event.value.carrera_id)">
+          <mat-option *ngFor="let carrera of carreras" [value]="carrera">
+            {{carrera.carrera_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedCarrera">
+        <p> Selected Carrera: {{selectedCarrera.carrera_id}} </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="reporte==='grupo'" class="col">
+    <div *ngIf="grupos.length>0">
+      <h4>Seleccione Grupo</h4>
+      <mat-form-field>
+        <mat-label>Grupo</mat-label>
+        <mat-select [(ngModel)]="selectedGrupo" name="grupo"
+          (selectionChange)="getHorarioByFilter('horario_grupo', $event.value.grupo_id)">
+          <mat-option *ngFor="let grupo of grupos" [value]="grupo">
+            Grupo: {{grupo.numero}} de {{grupo.grupo_componente}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedGrupo">
+        <p> Selected Grupo: {{selectedGrupo.grupo_id}} </p>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- horarios -->
 <div *ngIf="array.length===6">

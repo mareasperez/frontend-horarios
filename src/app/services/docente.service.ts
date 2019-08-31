@@ -53,7 +53,7 @@ export class DocenteService extends MainService {
         data.docente.forEach(el => {
           // console.log(el)
           let docente = new DocenteModel();
-          docente = Object.assign(el);
+          docente = Object.assign(docente, el);
           observer.next(docente);
         });
       });

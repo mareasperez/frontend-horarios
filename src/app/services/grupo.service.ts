@@ -50,7 +50,18 @@ export class GrupoService extends MainService {
   deleteGrupo(idgrupo: number|string)  {
     return this.delete(idgrupo)
   }
-
+  gerGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
+    return new Observable(observer => {
+      this.getByFiltro(filtro, id).subscribe(data => {
+        data.grupo.forEach(el => {
+          // console.log(el)
+          let grupo = new GrupoModel();
+          grupo = Object.assign(grupo, el);
+          observer.next(grupo);
+        });
+      });
+    });
+  }
   updateList(data: wsModel) {
     // console.log(data)
      switch (data.event) {
