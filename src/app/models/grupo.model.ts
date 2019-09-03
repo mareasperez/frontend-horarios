@@ -1,4 +1,4 @@
-export class GrupoModel{
+export class GrupoModel {
     grupo_id: string;
     grupo_numero: string;
     grupo_max_capacidad: string;
@@ -8,4 +8,5 @@ export class GrupoModel{
     grupo_componente: string;
     grupo_docente: string;
     grupo_planificacion: string;
+    grupo_planta: boolean;
 }

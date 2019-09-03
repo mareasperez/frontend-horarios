@@ -1,0 +1,81 @@
+<div class="container-fluid">
+  <mat-card>
+    <div class="row">
+      <div class="col-12 float-right">
+        <button mat-raised-button color="primary" (click)="add = true">
+          <mat-icon>add</mat-icon>Agregar
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-8">
+        <mat-list>
+          <mat-list-item *ngFor="let grupo of grupos"> grupo: {{grupo.grupo_id}} componente: {{grupo.grupo_componente}}
+            <span style="flex: 1 1 auto"></span>
+            <mat-icon style="color:red">delete</mat-icon>
+            <mat-icon style="color:green">edit</mat-icon>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <span *ngIf="add">
+          <form [formGroup]="form" class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+              <mat-label>numero de grupo</mat-label>
+              <input matInput formControlName="grupo_numero">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Maxima capacidad</mat-label>
+              <input matInput formControlName="grupo_max_capacidad">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <input matInput formControlName="grupo_tipo">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Modo</mat-label>
+              <input matInput formControlName="grupo_modo">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cantidad de horas </mat-label>
+              <input matInput formControlName="grupo_horas_clase">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Componente</mat-label>
+              <mat-select [value]="selected" formControlName="grupo_componente">
+                <mat-option value="0">Componentes...</mat-option>
+                <mat-option *ngFor="let componente of componentes" [value]="componente.componente_id">
+                  {{componente.componente_nombre}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Docente</mat-label>
+              <mat-select [(value)]="selected2" formControlName="grupo_docente">
+                <mat-option value="0">Docente...</mat-option>
+                <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Planificacion</mat-label>
+              <mat-select [(value)]="selected2" formControlName="grupo_planificacion">
+                <mat-option value="0">Planificacion...</mat-option>
+                <mat-option *ngFor="let planificacion of planificaciones" [value]="planificacion.planificacion_id">
+                  {{planificacion.planificacion_id}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput formControlName="grupo_planta">
+              <mat-checkbox>Planta</mat-checkbox>
+            </mat-form-field>
+            <button mat-raised-button type="button" class="float-rigth" color="primary" (click)="createComponente()">
+              <mat-icon>save</mat-icon>Guardar
+            </button>
+          </form>
+        </span>
+      </div>
+    </div>
+  </mat-card>
+</div>

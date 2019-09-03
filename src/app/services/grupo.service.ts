@@ -7,18 +7,17 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class GrupoService extends MainService {
-  public resource = "grupo"
+  public resource = 'grupo';
   constructor(Http: HttpClient) {
     super(Http);
   }
   getGrupos(): Observable<GrupoModel> {
-    
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.grupo.forEach(el => {
-          //console.log(el)
+        data.grupos.forEach(el => {
+          // console.log(el)
           let grupo = new GrupoModel();
-          grupo = Object.assign(el);
+          grupo = Object.assign(grupo, el);
           observer.next(grupo);
         });
       });
@@ -26,13 +25,13 @@ export class GrupoService extends MainService {
   }
 
   getGrupoByID(id: number|string) {
-   
+
     return this.getByID(id);
-     
+
   }
 
   crearGrupo(grupo: GrupoModel): Observable<any> {
-    let body = { grupo: grupo };
+    const body = { grupo };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -43,12 +42,12 @@ export class GrupoService extends MainService {
 
   updategrupo(grupo: GrupoModel, id: string|number) {
     // Ejemplo del parametro body
-    let body = { grupo: grupo };
+    const body = { grupo };
     return this.update(body, id);
   }
 
   deleteGrupo(idgrupo: number|string)  {
-    return this.delete(idgrupo)
+    return this.delete(idgrupo);
   }
   gerGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
     return new Observable(observer => {
@@ -68,26 +67,26 @@ export class GrupoService extends MainService {
        case 'c':
         // console.log("Crear")
          let grupo = new GrupoModel();
-         grupo = Object.assign(grupo,data.data);
-         console.log(grupo)
+         grupo = Object.assign(grupo, data.data);
+         console.log(grupo);
          data.data = grupo;
          this.list.push(data.data);
-         this.list$.next(this.list)
+         this.list$.next(this.list);
          break;
        case 'u':
        //  console.log("update")
          const index = this.list.map(el => el.grupo_id).indexOf(data.data.grupo_id);
          this.list.splice(index, 1, data.data);
-         this.list$.next(this.list)
+         this.list$.next(this.list);
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.grupo_id !== data.data.grupo_id);
-         this.list$.next(this.list)
+         this.list = this.list.filter(el => el.grupo_id !== data.data.grupo_id);
+         this.list$.next(this.list);
          break;
- 
+
      }
- 
+
    }
 
 }

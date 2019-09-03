@@ -19,6 +19,7 @@ import { AddplanestudioComponent } from './components/planestudio/addplanestudio
 import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
+import { GrupoComponent } from './components/grupo/grupo.component';
 
 
 const routes: Routes = [
@@ -144,6 +145,11 @@ const routes: Routes = [
   {
     path: 'planestudio/edit/:id',
     component: AddplanestudioComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'grupos',
+    component: GrupoComponent,
     canActivate: [AuthGuard]
   },
 ];
