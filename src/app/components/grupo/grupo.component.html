@@ -36,7 +36,7 @@
               <mat-label>Modo</mat-label>
               <input matInput formControlName="grupo_modo">
             </mat-form-field>
-
+            <mat-checkbox formControlName="grupo_planta">Check me!</mat-checkbox>
             <mat-form-field appearance="outline">
               <mat-label>Cantidad de horas </mat-label>
               <input matInput formControlName="grupo_horas_clase">
@@ -51,7 +51,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Docente</mat-label>
-              <mat-select [(value)]="selected2" formControlName="grupo_docente">
+              <mat-select [(value)]="selected" formControlName="grupo_docente">
                 <mat-option value="0">Docente...</mat-option>
                 <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}
                 </mat-option>
@@ -66,11 +66,8 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field>
-              <input matInput formControlName="grupo_planta">
-              <mat-checkbox>Planta</mat-checkbox>
-            </mat-form-field>
-            <button mat-raised-button type="button" class="float-rigth" color="primary" (click)="createComponente()">
+
+            <button mat-raised-button type="button" class="float-rigth" color="primary" (click)="createComponente()" [disabled]="form.invalid || editing">
               <mat-icon>save</mat-icon>Guardar
             </button>
           </form>
