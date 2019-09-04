@@ -17,6 +17,7 @@ export class AdddepartamentoComponent implements OnInit {
   constructor(private departamentoService: DepartamentoService, private route: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.departamento.departamento_id = null;
     const params = this.activatedRoute.snapshot.params;
     if (this.activatedRoute.snapshot.url[1].path === 'edit') {
       if (params.id) {
@@ -24,7 +25,6 @@ export class AdddepartamentoComponent implements OnInit {
           .subscribe(
             res => {
               console.log( 'lo que tiene res es', res);
-              this.departamento.departamento_id = res.departamento.departamento_id;
               this.departamento.departamento_nombre = res.departamento.departamento_nombre;
               this.departamento.departamento_facultad = res.departamento.departamento_facultad;
               this.edit = true;
