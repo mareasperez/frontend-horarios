@@ -47,8 +47,10 @@ import { DepartamentoService } from './services/departamento.service';
 import { DocenteHorasService } from './services/docente-horas.service';
 import { DocenteAreaService } from './services/docente-area.service';
 import { GrupoService } from './services/grupo.service';
-import { HorariosComponent } from './components/horarios/horarios.component';
+import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
+import { ComponentesComponent } from './components/componentes/componentes.component';
+import { GrupoComponent } from './components/grupo/grupo.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { HomeComponent } from './components/home/home.component';
     VerplanestudioComponent,
     HorariosComponent,
     HomeComponent,
+    ComponentesComponent,
+    GrupoComponent,
   ],
   imports: [
     BrowserModule,

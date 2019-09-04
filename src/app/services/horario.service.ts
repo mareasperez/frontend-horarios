@@ -26,7 +26,7 @@ export class HorarioService extends MainService {
     });
   }
 
-  getHorarioByID(id: number|string) {
+  getHorarioByID(id: number | string) {
 
     return this.getByID(id);
 
@@ -42,57 +42,56 @@ export class HorarioService extends MainService {
     });
   }
 
-  updateHorario(horario: HorarioModel, id: string|number) {
+  updateHorario(horario: HorarioModel, id: string | number) {
     // Ejemplo del parametro body
     const body = { horario };
     return this.update(body, id);
   }
 
-  deleteHorario(idhorario: number|string)  {
+  deleteHorario(idhorario: number | string) {
     return this.delete(idhorario);
   }
-  getHorarioByFilter(filtro: string, id: string|number ): Observable<HorarioModel[]> {
+  getHorarioByFilter(filtro: string, id: string | number): Observable<HorarioModel[]> {
     return new Observable(observer => {
-       this.getByFiltro(filtro, id).subscribe((data:any) => {
-         let horarios =[]
-        console.log(data)
-        data.horario.forEach(el=>{
-
+      this.getByFiltro(filtro, id).subscribe((data: any) => {
+        let horarios = [];
+        console.log(data);
+        data.horario.forEach(el => {
           let horario = new HorarioModel();
-          horario = Object.assign(horario,el); //Tipar Objeto
-          horarios.push(horario)
-        })
-          observer.next(horarios);
+          horario = Object.assign(horario, el); // Tipar Objeto
+          horarios.push(horario);
+        });
+        observer.next(horarios);
       });
     });
   }
 
   updateList(data: wsModel) {
     // console.log(data)
-     switch (data.event) {
-       case 'c':
+    switch (data.event) {
+      case 'c':
         // console.log("Crear")
-         let horario = new HorarioModel();
-         horario = Object.assign(horario,data.data);
-         console.log(horario)
-         data.data = horario;
-         this.list.push(data.data);
-         this.list$.next(this.list)
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.horario_id).indexOf(data.data.horario_id);
-         this.list.splice(index, 1, data.data);
-         this.list$.next(this.list)
-         break;
-       case 'd':
+        let horario = new HorarioModel();
+        horario = Object.assign(horario, data.data);
+        console.log(horario);
+        data.data = horario;
+        this.list.push(data.data);
+        this.list$.next(this.list);
+        break;
+      case 'u':
+        //  console.log("update")
+        const index = this.list.map(el => el.horario_id).indexOf(data.data.horario_id);
+        this.list.splice(index, 1, data.data);
+        this.list$.next(this.list);
+        break;
+      case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.horario_id !== data.data.horario_id);
-         this.list$.next(this.list)
-         break;
- 
-     }
- 
-   }
+        this.list = this.list.filter(el => el.horario_id !== data.data.horario_id);
+        this.list$.next(this.list);
+        break;
+
+    }
+
+  }
 
 }

@@ -50,33 +50,45 @@ export class DepartamentoService extends MainService {
     deleteDepartamento(idDepartamento: number | string) {
         return this.delete(idDepartamento);
     }
+    getDepartamentoByFilter(filtro: string, id: string | number): Observable<DepartamentoModel> {
+        return new Observable(observer => {
+            console.log('se va a mandar a pedir al api:', filtro,' ',id);
+            this.getByFiltro(filtro, id).subscribe(data => {
+                data.departamento.forEach(el => {
+                    let departamento = new DepartamentoModel();
+                    departamento = Object.assign(el);
+                    observer.next(departamento);
+                });
+            });
+        });
+    }
 
     updateList(data: wsModel) {
-    // console.log(data)
-     switch (data.event) {
-       case 'c':
-        // console.log("Crear")
-         let departamento = new DepartamentoModel();
-         departamento = Object.assign(departamento,data.data);
-         console.log(departamento)
-         data.data = departamento;
-         this.list.push(data.data);
-         this.list$.next(this.list)
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.departamento_id).indexOf(data.data.departamento_id);
-         this.list.splice(index, 1, data.data);
-         this.list$.next(this.list)
-         break;
-       case 'd':
-        // console.log("delete")
-         this.list = this.list.filter(el=>el.departamento_id !== data.data.departamento_id);
-         this.list$.next(this.list)
-         break;
- 
-     }
- 
-   }
+        // console.log(data)
+        switch (data.event) {
+            case 'c':
+                // console.log("Crear")
+                let departamento = new DepartamentoModel();
+                departamento = Object.assign(departamento, data.data);
+                console.log(departamento)
+                data.data = departamento;
+                this.list.push(data.data);
+                this.list$.next(this.list)
+                break;
+            case 'u':
+                //  console.log("update")
+                const index = this.list.map(el => el.departamento_id).indexOf(data.data.departamento_id);
+                this.list.splice(index, 1, data.data);
+                this.list$.next(this.list)
+                break;
+            case 'd':
+                // console.log("delete")
+                this.list = this.list.filter(el => el.departamento_id !== data.data.departamento_id);
+                this.list$.next(this.list)
+                break;
+
+        }
+
+    }
 
 }

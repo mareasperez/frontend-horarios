@@ -1,0 +1,61 @@
+
+<div class="container-fluid">
+    <mat-card>
+    <div class="row">
+        <div class="col-12 float-right">
+            <button mat-raised-button color="primary" (click)="add = true"><mat-icon>add</mat-icon>Agregar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-md-8">
+            <mat-list>
+                <mat-list-item *ngFor="let comp of componentes">{{comp.componente_nombre}}
+                     <span style="flex: 1 1 auto"></span> 
+                     <mat-icon style="color:red">delete</mat-icon>  
+                     <mat-icon style="color:green">edit</mat-icon>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <span *ngIf="add">
+            <form [formGroup]="form" class="d-flex flex-column">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="componente_nombre" >
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>horas teocicas</mat-label>
+                    <input matInput formControlName="componente_cht">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>horas practicas</mat-label>
+                    <input matInput formControlName="componente_chp">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Ciclo</mat-label>
+                    <input matInput formControlName="componente_ciclo">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Area</mat-label>
+                    <mat-select [value]="selected" formControlName="componente_area">
+                        <mat-option value="0">area...</mat-option>
+                        <mat-option *ngFor="let area of areas" [value]="area.area_id">{{area.area_nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">        
+                    <mat-label>Plan de estudios</mat-label>            
+                    <mat-select [(value)]="selected2" formControlName="componente_pde">
+                        <mat-option value="0">plan de estudios...</mat-option>
+                        <mat-option *ngFor="let pde of pdes" [value]="pde.pde_id">{{pde.pde_nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-raised-button type="button" class="float-rigth" color="primary"
+                 (click)="createComponente()" [disabled]="form.invalid || editing"
+                 
+                 ><mat-icon>save</mat-icon>Guardar</button>
+            </form>
+            </span>
+        </div>
+</div>
+</mat-card>
+</div>

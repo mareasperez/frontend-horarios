@@ -14,7 +14,7 @@ export class CarreraService extends MainService {
   }
 
   getCarrera(): Observable<CarreraModel> {
-    
+
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.carrera.forEach(el => {
@@ -27,10 +27,10 @@ export class CarreraService extends MainService {
     });
   }
 
-  getCarreraByID(id: number|string) {
-   
+  getCarreraByID(id: number | string) {
+
     return this.getByID(id);
-     
+
   }
 
   crearCarrera(carrera: CarreraModel): Observable<any> {
@@ -43,40 +43,53 @@ export class CarreraService extends MainService {
     });
   }
 
-  updateCarrera(carrera: CarreraModel, id: string|number) {
+  updateCarrera(carrera: CarreraModel, id: string | number) {
     // Ejemplo del parametro body
     let body = { carrera: carrera };
     return this.update(body, id);
   }
 
-  deleteCarrera(idCarrera: number|string)  {
-    return this.delete(idCarrera)
+  deleteCarrera(idCarrera: number | string) {
+    return this.delete(idCarrera);
+  }
+
+  getCarreraByFiltro(filtro: string, id: number): Observable<CarreraModel> {
+    return new Observable(observer => {
+      this.getByFiltro(filtro, id).subscribe(data => {
+        data.carrera.forEach(el => {
+          // console.log(el)
+          let carrera = new CarreraModel();
+          carrera = Object.assign(carrera, el);
+          observer.next(carrera);
+        });
+      });
+    });
   }
   updateList(data: wsModel) {
     // console.log(data)
-     switch (data.event) {
-       case 'c':
+    switch (data.event) {
+      case 'c':
         // console.log("Crear")
-         let carrera = new CarreraModel();
-         carrera = Object.assign(carrera,data.data);
-         console.log(carrera)
-         data.data = carrera;
-         this.list.push(data.data);
-         this.list$.next(this.list)
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.carrera_id).indexOf(data.data.carrera_id);
-         this.list.splice(index, 1, data.data);
-         this.list$.next(this.list)
-         break;
-       case 'd':
+        let carrera = new CarreraModel();
+        carrera = Object.assign(carrera, data.data);
+        console.log(carrera)
+        data.data = carrera;
+        this.list.push(data.data);
+        this.list$.next(this.list)
+        break;
+      case 'u':
+        //  console.log("update")
+        const index = this.list.map(el => el.carrera_id).indexOf(data.data.carrera_id);
+        this.list.splice(index, 1, data.data);
+        this.list$.next(this.list)
+        break;
+      case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.carrera_id !== data.data.carrera_id);
-         this.list$.next(this.list)
-         break;
- 
-     }
- 
-   }
+        this.list = this.list.filter(el => el.carrera_id !== data.data.carrera_id);
+        this.list$.next(this.list)
+        break;
+
+    }
+
+  }
 }

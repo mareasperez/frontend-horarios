@@ -17,7 +17,7 @@ export class ComponenteService  extends MainService {
         data.componente.forEach(el => {
           //console.log(el)
           let componente = new ComponenteModel();
-          componente = Object.assign(el);
+          componente = Object.assign(componente,el);
           this.list.push(componente);
           observer.next(componente);
 
@@ -49,6 +49,7 @@ export class ComponenteService  extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    
      switch (data.event) {
        case 'c':
         // console.log("Crear")

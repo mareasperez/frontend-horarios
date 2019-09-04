@@ -16,20 +16,26 @@ import { VerdocenteComponent } from './components/docente/verdocente/verdocente.
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
-import { HorariosComponent } from './components/horarios/horarios.component';
+import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
+import { ComponentesComponent } from './components/componentes/componentes.component';
+import { GrupoComponent } from './components/grupo/grupo.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   {
-    path: 'horarios',
+    path: 'reporte/horarios',
     component: HorariosComponent,
     canActivate: [AuthGuard]
   }, {
     path: 'home',
     component: HomeComponent,
     canActivate: [AuthGuard]
+  },
+  {path: 'componente',
+   component: ComponentesComponent,
+   canActivate: [AuthGuard]
   },
   {
     path: 'facultad/list',
@@ -139,6 +145,11 @@ const routes: Routes = [
   {
     path: 'planestudio/edit/:id',
     component: AddplanestudioComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'grupos',
+    component: GrupoComponent,
     canActivate: [AuthGuard]
   },
 ];
