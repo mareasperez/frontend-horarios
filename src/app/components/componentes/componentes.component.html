@@ -3,16 +3,24 @@
     <mat-card>
     <div class="row">
         <div class="col-12 float-right">
-            <button mat-raised-button color="primary" (click)="add = true"><mat-icon>add</mat-icon>Agregar</button>
+            <button mat-raised-button color="primary" (click)="createForm(0)">
+                <mat-icon>add</mat-icon>Agregar</button>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-8 col-md-8">
-            <mat-list>
-                <mat-list-item *ngFor="let comp of componentes">{{comp.componente_nombre}}
+            <mat-list *ngIf="componentes.length>0">
+                <mat-list-item *ngFor="let comp of componentes"
+                >{{comp.componente_nombre}}
                      <span style="flex: 1 1 auto"></span> 
-                     <mat-icon style="color:red">delete</mat-icon>  
-                     <mat-icon style="color:green">edit</mat-icon>
+                     <button mat-icon-button  [value]="comp.componente_id"
+                     (click)="delComponente(comp.componente_id)">
+                         <mat-icon  style="color:red" >delete</mat-icon>  
+                    </button>
+                    <button mat-icon-button  [value]="comp.componente_id"
+                     (click)="createForm(1, comp.componente_id)">
+                         <mat-icon style="color:green">edit</mat-icon>
+                    </button>
                 </mat-list-item>
             </mat-list>
         </div>
@@ -50,9 +58,10 @@
                     </mat-select>
                 </mat-form-field>
                 <button mat-raised-button type="button" class="float-rigth" color="primary"
-                 (click)="createComponente()" [disabled]="form.invalid || editing"
-                 
-                 ><mat-icon>save</mat-icon>Guardar</button>
+                    (click)="form.value.componente_id === null ? saveComponente(0):saveComponente(1)"
+                    [disabled]="form.invalid || editing">
+                        <mat-icon>save</mat-icon>Guardar
+                </button>
             </form>
             </span>
         </div>
