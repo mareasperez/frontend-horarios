@@ -1,8 +1,14 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { AreaModel } from 'src/app/models/area.model';
 import { AreaService } from 'src/app/services/area.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+interface DialogData{
+  type:string;
+  name:string
+  id?:string
+}
 @Component({
   selector: 'app-addarea',
   templateUrl: './addarea.component.html',
@@ -15,49 +21,13 @@ export class AddareaComponent implements OnInit {
   area = new AreaModel();
   edit = false;
 
-  constructor(private areaService: AreaService, private route: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private areaService: AreaService,
+    public dialogRef: MatDialogRef<AddareaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+              
+    ) { }
 
-  ngOnInit() {
-    this.area.area_id = null;
-    const params = this.activatedRoute.snapshot.params;
-    console.log(this.activatedRoute.snapshot.url[1].path);
-    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
-      if (params.id) {
-        this.edit = true;
-        this.areaService.getByID(params.id)
-          .subscribe(
-            res => {
-              console.log( 'lo que tiene res es', res);
-              this.area.area_nombre = res.area.area_nombre;
-              this.area.area_id = this.activatedRoute.snapshot.params.id;
-            },
-            err => console.error(err)
-          );
-      }
-    }
-  }
+  ngOnInit() {}
 
-  saveArea() {
-    // console.log(this.facultad);
-    this.areaService.crearArea(this.area)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/area/ver']);
-        },
-        err => console.error(err)
-      );
-  }
-  updateArea() {
-    // console.log(this.facultad);
-    this.areaService.updateArea(this.area, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/area/ver']);
-        },
-        err => console.error(err)
-      );
-  }
-
+   
 }

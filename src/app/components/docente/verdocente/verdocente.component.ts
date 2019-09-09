@@ -18,31 +18,8 @@ export class VerdocenteComponent implements OnInit {
 
   ngOnInit() {
     this.getDocente();
-    this.setsock();
   }
-  setsock() {
-    this.socket = new WebSocket('ws://localhost:8000/ws/');
-
-    this.socket.onopen = () => {
-      console.log('WebSockets connection created for Docente');
-    };
-
-    this.socket.onmessage = (event) => {
-      //  var data = JSON.parse(event.data);
-      // console.log('data from socket:' + event.data);
-      // this.getRecintoes()
-      const action = JSON.parse(event.data);
-      if (action.event === 'New Docente' || action.event === 'Delete Docente' || action.event === 'Update Docente' ) {
-        console.log('ws envia el evento: ', action.event);
-        this.getDocente();
-      }
-
-    };
-
-    if (this.socket.readyState === WebSocket.OPEN) {
-      this.socket.onopen(null);
-    }
-  }
+  
   getDocente() {
     this.docentes = [];
     this.DocenteService.getDocente().subscribe(

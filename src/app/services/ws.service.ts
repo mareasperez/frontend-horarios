@@ -3,6 +3,7 @@ import { FacultadSerivice } from 'src/app/services/facultad.service'
 import { RecintoService } from './recinto.service';
 import { JwtService } from './jwt.service';
 import { ComponenteService } from './componente.service';
+import { AreaService } from './area.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +13,7 @@ export class WsService {
   constructor(private facultaService:FacultadSerivice,
               private recintoService:RecintoService,
               private componenteService:ComponenteService,
+              private area$:AreaService,
               private jwt: JwtService
     ) { }
 
@@ -26,6 +28,8 @@ export class WsService {
       this.socket.onmessage = (event) => {
         let action = JSON.parse(event.data);
         switch(action.model){
+          case 'area':
+            this.area$.updateList(action)
           case 'facultad':
             this.facultaService.updateList(action);
             break;
