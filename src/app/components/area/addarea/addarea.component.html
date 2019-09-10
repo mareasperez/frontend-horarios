@@ -8,7 +8,7 @@
           <div class="form-group">
             <input type="text" name="nombre" placeholder="Nombre del Area" [(ngModel)]="area.area_nombre" class="form-control" autofocus> 
         </div>
-          <button class="btn btn-success btn-block" (click)="edit ? updateArea() : saveArea()">
+          <button class="btn btn-success btn-block" (click)="data.type !== 'c' ? updateArea() : saveArea()">
             Guardar
           </button>
         </form>
