@@ -12,8 +12,14 @@
         <mat-list>
           <mat-list-item *ngFor="let grupo of grupos"> grupo: {{grupo.grupo_id}} componente: {{grupo.grupo_componente}}
             <span style="flex: 1 1 auto"></span>
-            <mat-icon style="color:red">delete</mat-icon>
-            <mat-icon style="color:green">edit</mat-icon>
+            <button mat-icon-button  [value]="grupo.grupo_id"
+                     (click)="delGrupo(grupo.grupo_id)">
+                         <mat-icon  style="color:red" >delete</mat-icon>  
+                    </button>
+                    <button mat-icon-button  [value]="grupo.grupo_id"
+                     (click)="createForm(1, grupo.grupo_id)">
+                         <mat-icon style="color:green">edit</mat-icon>
+                    </button>
           </mat-list-item>
         </mat-list>
       </div>
@@ -67,7 +73,9 @@
               </mat-select>
             </mat-form-field>
 
-            <button mat-raised-button type="button" class="float-rigth" color="primary" (click)="createComponente()" [disabled]="form.invalid || editing">
+            <button mat-raised-button type="button" class="float-rigth" color="primary"
+              (click)="form.value.grupo_id === null ? saveGrupo(0):saveGrupo(1)"
+              [disabled]="form.invalid || editing">
               <mat-icon>save</mat-icon>Guardar
             </button>
           </form>
