@@ -49,6 +49,7 @@ export class ComponentesComponent implements OnInit {
   }
 
   createForm(flag:number, id?:string){
+    console.log(flag)
     if(flag === 0){
       this.form = this.fb.group({
         componente_id:null,
@@ -73,8 +74,8 @@ export class ComponentesComponent implements OnInit {
         componente_pde:new FormControl(comp.componente_pde,[Validators.required])
 
       })
-      this.add = true;
     }
+    this.add = true;
   }
 
   saveComponente(flag:number){
