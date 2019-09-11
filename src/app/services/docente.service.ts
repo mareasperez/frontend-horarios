@@ -16,9 +16,9 @@ export class DocenteService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.docente.forEach(el => {
-          // console.log(el)
           let docente = new DocenteModel();
-          docente = Object.assign(el);
+          docente = Object.assign(docente,el);
+         // console.log(el, docente)
           this.list.push(docente);
           observer.next(docente);
 
@@ -61,25 +61,27 @@ export class DocenteService extends MainService {
   }
 
   updateList(data: wsModel) {
-    // console.log(data)
+     console.log(data)
      switch (data.event) {
        case 'c':
-        // console.log("Crear")
+        console.log("Crear")
          let docente = new DocenteModel();
          docente = Object.assign(docente, data.data);
-         console.log(docente);
+         //console.log(docente);
          data.data = docente;
          this.list.push(data.data);
          this.list$.next(this.list);
          break;
        case 'u':
-       //  console.log("update")
+         console.log("update")
+         let Udocente = new DocenteModel();
+         Udocente = Object.assign(Udocente, data.data);
          const index = this.list.map(el => el.docente_id).indexOf(data.data.docente_id);
-         this.list.splice(index, 1, data.data);
+         this.list.splice(index, 1, Udocente);
          this.list$.next(this.list);
          break;
        case 'd':
-        // console.log("delete")
+        console.log("delete")
          this.list = this.list.filter(el => el.docente_id !== data.data.docente_id);
          this.list$.next(this.list);
          break;

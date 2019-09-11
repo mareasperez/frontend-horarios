@@ -1,63 +1,92 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { DepartamentoService } from 'src/app/services/departamento.service';
+import { DepartamentoModel } from 'src/app/models/departamento.model';
+import { Observable, Subscription } from 'rxjs';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+interface DialogData{
+  type:string;
+  doc?:DocenteModel;
+}
 @Component({
   selector: 'app-adddocente',
   templateUrl: './adddocente.component.html',
   styleUrls: ['./adddocente.component.scss']
 })
-export class AdddocenteComponent implements OnInit {
+export class AdddocenteComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
 
   docente = new DocenteModel();
+  public departamentos:DepartamentoModel[]=[]
   edit = false;
+  subs:Subscription[]=[];
+  public selected:string = "0";
+  public form:FormGroup;
+  public refDepartamento: Observable<any>;
 
-  constructor(private docenteService: DocenteService, private route: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private docenteService: DocenteService,
+              private departamento$: DepartamentoService,
+              public dialogRef: MatDialogRef<AdddocenteComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private fb:FormBuilder
+   ) { 
+     this.departamento$.getDepartamento().subscribe(res=>this.departamentos.push(res))
+     this.refDepartamento = this.departamento$.getList()
+   }
 
   ngOnInit() {
-    this.docente.docente_id = null;
-    const params = this.activatedRoute.snapshot.params;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
-      this.edit = true;
-      if (params.id) {
-        this.docenteService.getByID(params.id)
-          .subscribe(
-            res => {
-              console.log( 'lo que tiene res es', res);
-              // this.docente.docente_id = res.docente.docente_id;
-              this.docente.docente_nombre = res.docente.docente_nombre;
-              this.docente.docente_tipo_contrato = res.docente.docente_tipo_contrato;
-              this.docente.docente_inss = res.docente.docente_inss;
-              this.docente.docente_departamento = res.docente.docente_departamento;
-            },
-            err => console.error(err)
-          );
-      }
+   this.subs.push(
+      this.refDepartamento.subscribe(deps=>this.departamentos = deps)
+    );
+    this.createForm()
+  }
+
+  ngOnDestroy(){
+    this.subs.map(sub=>sub.unsubscribe())
+  }
+
+  createForm( id?:string){
+    if(this.data.type === "c"){
+    this.form = this.fb.group({
+      docente_id: null,
+      docente_nombre: new FormControl('', [Validators.required]),
+      docente_inss: new FormControl('', [Validators.required]),
+      docente_tipo_contrato: new FormControl('', [Validators.required]),
+      docente_departamento: new FormControl('', [Validators.required])
+ 
+     })
+    }else{
+      this.form = this.fb.group({
+        docente_id: this.data.doc.docente_id,
+        docente_nombre: new FormControl(this.data.doc.docente_nombre, [Validators.required]),
+        docente_inss: new FormControl(this.data.doc.docente_inss, [Validators.required]),
+        docente_tipo_contrato: new FormControl(this.data.doc.docente_tipo_contrato, [Validators.required]),
+        docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
+   
+       })
     }
   }
 
   saveDocente() {
-    this.docenteService.crearDocente(this.docente)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/docente/ver']);
-        },
-        err => console.error(err)
-      );
+    let doc = new DocenteModel();
+    doc = Object.assign(doc, this.form.value)
+    console.log(doc)
+    this.subs.push(
+      this.docenteService.crearDocente(doc)
+        .subscribe(res=>this.dialogRef.close())
+    );
   }
   updateDocente() {
-    console.log('estamos en el update prro');
-    this.docenteService.updateDocente(this.docente, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/docente/ver']);
-        },
-        err => console.error(err)
-      );
+    let doc = new DocenteModel();
+    doc = Object.assign(doc,this.form.value)
+    console.log(doc)
+    this.subs.push(
+      this.docenteService.updateDocente(doc, doc.docente_id)
+        .subscribe(res => this.dialogRef.close())
+    );
   }
 
 
