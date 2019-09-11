@@ -20,6 +20,7 @@ export class GrupoComponent implements OnInit {
   public ref: Observable<any[]>;
   public refComp: Observable<any[]>;
   public refPlan: Observable<any[]>;
+  public refDoc: Observable<any[]>;
   // arrays de datos
   public grupos: GrupoModel[] = [];
   public componentes: ComponenteModel[] = [];
@@ -47,13 +48,14 @@ export class GrupoComponent implements OnInit {
     this.ref = this._grupo.getList();
     this.refComp = this._componente.getList();
     this.refPlan = this._planificacion.getList();
-
+    this.refDoc = this._docente.getList();
   }
 
   ngOnInit() {
-    this.ref.subscribe(data => this.componentes = data);
+    this.ref.subscribe(data => this.grupos = data);
     this.refComp.subscribe(data => this.componentes = data);
     this.refPlan.subscribe(data => this.planificaciones = data);
+    this.refDoc.subscribe(data => this.docentes = data);
     // this.createForm();
 
   }
@@ -73,9 +75,10 @@ export class GrupoComponent implements OnInit {
         grupo_planta: new FormControl('', [Validators.required])
 
       });
+      
     } else {
-      let grupo = this.grupos.find(el => el.grupo_id === id)
-      console.log(grupo)
+      const grupo = this.grupos.find(el => el.grupo_id === id);
+      console.log(grupo);
       this.form = this.fb.group({
         grupo_id: new FormControl(grupo.grupo_id),
         grupo_numero: new FormControl(grupo.grupo_numero, [Validators.required, Validators.min(1)]),
@@ -89,17 +92,18 @@ export class GrupoComponent implements OnInit {
         grupo_planta: new FormControl(grupo.grupo_planta, [Validators.required])
 
       });
-      this.add = true;
+
     }
+    this.add = true;
   }
-  saveGrupo(flag:number){
-    if(flag===0){
+  saveGrupo(flag: number) {
+    if (flag === 0) {
       this.createGrupo();
-    }else{
-      this.editGrupo(this.form.value.grupo_id)
+    } else {
+      this.editGrupo(this.form.value.grupo_id);
     }
 
-  };
+  }
   createGrupo() {
     this.editing = true;
     let grupo = new GrupoModel();
@@ -110,15 +114,15 @@ export class GrupoComponent implements OnInit {
       this.add = false;
     });
   }
-  delGrupo(e){
+  delGrupo(e) {
     this._grupo.deleteGrupo(e).subscribe();
   }
-  editGrupo(id:string){
+  editGrupo(id: string) {
     this.editing = true;
-    this._grupo.updategrupo(this.form.value,id).subscribe(res=>{
-      this.form.reset()
+    this._grupo.updategrupo(this.form.value, id).subscribe(res => {
+      this.form.reset();
       this.editing = false;
-      this.add = false
-    })
+      this.add = false;
+    });
   }
 }
