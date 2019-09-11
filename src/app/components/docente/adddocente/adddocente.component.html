@@ -1,26 +1,30 @@
-<div class="col-md-4 offset-md-4">
-    <div class="card">
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <input type="number" name="id" placeholder="id del docente" [(ngModel)]="docente.docente_id" class="form-control">
-          </div>
-          <div class="form-group">
-            <input type="text" name="nombre" placeholder="Nombre del Docente" [(ngModel)]="docente.docente_nombre" class="form-control" autofocus> 
-        </div>
-          <div class="form-group"> 
-          <input type="text" name="contrato" placeholder="Tipo de Contrato" [(ngModel)]="docente.docente_tipo_contrato" class="form-control">
-          </div>
-          <div class="form-group"> 
-            <input type="text" name="inss" placeholder="No de INSS" [(ngModel)]="docente.docente_inss" class="form-control">
-            </div>
-            <div class="form-group"> 
-                <input type="number" name="departamento" placeholder="Departamento" [(ngModel)]="docente.docente_departamento" class="form-control">
-                </div>
-          <button class="btn btn-success btn-block" (click)="edit ? updateDocente() : saveDocente()">
+<div class="container-fluid">
+   <mat-card>
+        <form [formGroup]="form" *ngIf="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input formControlName="docente_nombre" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de contrato</mat-label>
+              <input formControlName="docente_tipo_contrato" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Inss</mat-label>
+              <input formControlName="docente_inss" matInput>
+            </mat-form-field>
+            <mat-form-field  appearance="outline">
+              <mat-label>Departamento</mat-label>
+                <mat-select formControlName="docente_departamento" ([value])="selected">
+                  <mat-option value="0">Departamento...</mat-option>
+                  <mat-option *ngFor="let dep of departamentos" [value]="dep.departamento_id">
+                    {{dep.departamento_nombre}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveDocente():updateDocente()">
             Guardar
           </button>
         </form>
-      </div>
-    </div>
+    </mat-card>
   </div>

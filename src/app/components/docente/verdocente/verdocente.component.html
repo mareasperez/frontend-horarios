@@ -1,8 +1,14 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="container-fluid">
+  <div class="row">
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
+  <h1>Docentes</h1>
+  <span style="flex: 1 1 auto"></span>
+  <button mat-icon-button color="primary" (click)="openDialog('c')">
+    <mat-icon>add</mat-icon> Agregar
+  </button>
+  </div>
+</div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Position Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -38,8 +44,7 @@
               <button class="btn btn-danger btnlogin" (click)="deleteDocente(docente.docente_id)">
                   <i class="fas fa-trash-alt"></i>
               </button>
-              <button class="btn btn-success btnlogin" [routerLink]="['/docente/edit', docente.docente_id]"
-              routerLinkActive="router-link-active">
+              <button class="btn btn-success btnlogin" (click)="openDialog('u',docente.docente_id )">
                   <i class="fas fa-edit"></i>
               </button>
           </div>

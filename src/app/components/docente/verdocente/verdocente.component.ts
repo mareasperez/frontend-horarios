@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
+import { AdddocenteComponent } from '../adddocente/adddocente.component';
+import { MatDialog } from '@angular/material';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -9,40 +12,57 @@ import { DocenteService } from 'src/app/services/docente.service';
 export class VerdocenteComponent implements OnInit {
 
   public docentes: DocenteModel[] = [];
+  public refDocentes:Observable<any>;
   public alerts = true;
   public dataSource;
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
   socket: WebSocket;
 // tslint:disable-next-line: no-shadowed-variable
-  constructor(private DocenteService: DocenteService) { }
+  constructor(private DocenteService: DocenteService,
+              private dialog: MatDialog 
+
+    ) { 
+      this.DocenteService.getDocente().subscribe(res=>{
+        console.log(res)
+        this.docentes.push(res);
+        this.dataSource = this.docentes;
+
+      });
+      this.refDocentes = this.DocenteService.getList();
+    }
 
   ngOnInit() {
-    this.getDocente();
-  }
+    this.refDocentes.subscribe(data=>{
+      this.dataSource = [];
+      data.map(doc=>{
+        this.dataSource.push(doc);
+      });
+  })
+}
   
-  getDocente() {
-    this.docentes = [];
-    this.DocenteService.getDocente().subscribe(
-      res => {
-        this.docentes.push(res);
-        this.alerts = false;
-        console.log(this.docentes);
-        this.dataSource = this.docentes;
-        console.log(this.dataSource);
-      },
-      err => {
-        console.error(err);
-      }
-    );
-  }
+  
   deleteDocente(id: string) {
     this.DocenteService.deleteDocente(id).subscribe(
       res => {
         console.log(res);
-        this.getDocente();
       },
       err => console.log(err)
     );
+  }
+
+  openDialog(tipo, id?:string): void {
+    if(tipo === 'c'){
+      const dialogRef = this.dialog.open(AdddocenteComponent, {
+        width: '450px',
+        data: {type:tipo}      
+      });
+    }else{
+      let docente = this.docentes.find(d=>d.docente_id ===Number(id))
+      const dialogRef = this.dialog.open(AdddocenteComponent, {
+        width: '450px',
+        data: {type:tipo, doc:docente }      
+      });
+    }
   }
 
 }
