@@ -52,7 +52,10 @@ export class GrupoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ref.subscribe(data => this.grupos = data);
+    this.ref.subscribe(data => {
+    this.grupos = data;
+    console.log('la data es: ', data);
+    });
     this.refComp.subscribe(data => this.componentes = data);
     this.refPlan.subscribe(data => this.planificaciones = data);
     this.refDoc.subscribe(data => this.docentes = data);
@@ -60,7 +63,7 @@ export class GrupoComponent implements OnInit {
 
   }
 
-  createForm(flag: number, id?: string) {
+  createForm(flag: number, id?: number) {
     if (flag === 0) {
       this.form = this.fb.group({
         grupo_id: null,
@@ -72,10 +75,9 @@ export class GrupoComponent implements OnInit {
         grupo_componente: new FormControl('', [Validators.required]),
         grupo_docente: new FormControl('', [Validators.required]),
         grupo_planificacion: new FormControl('', [Validators.required]),
-        grupo_planta: new FormControl('', [Validators.required])
+        grupo_planta: new FormControl(false, [Validators.required])
 
       });
-      
     } else {
       const grupo = this.grupos.find(el => el.grupo_id === id);
       console.log(grupo);
@@ -114,10 +116,10 @@ export class GrupoComponent implements OnInit {
       this.add = false;
     });
   }
-  delGrupo(e) {
+  delGrupo(e: number) {
     this._grupo.deleteGrupo(e).subscribe();
   }
-  editGrupo(id: string) {
+  editGrupo(id: number) {
     this.editing = true;
     this._grupo.updategrupo(this.form.value, id).subscribe(res => {
       this.form.reset();

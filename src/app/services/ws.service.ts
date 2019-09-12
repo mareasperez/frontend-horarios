@@ -6,6 +6,7 @@ import { ComponenteService } from './componente.service';
 import { AreaService } from './area.service';
 import { DocenteService } from './docente.service';
 import { PlanEstudioService } from './plan-estudio.service';
+import { GrupoService } from './grupo.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +19,7 @@ export class WsService {
               private area$:AreaService,
               private docente$:DocenteService,
               private pde$:PlanEstudioService,
+              private grupoS:GrupoService,
               private jwt: JwtService
     ) { }
 
@@ -51,6 +53,9 @@ export class WsService {
             this.pde$.updateList(action);
             break;
 
+          case 'grupo':
+            this.grupoS.updateList(action);
+            break;
         }
       };
   

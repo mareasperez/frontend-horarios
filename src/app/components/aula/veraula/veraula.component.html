@@ -1,6 +1,13 @@
 <h1>
   Aulas del Recinto:
 </h1>
+<div class="row">
+    <div class="col-12 float-right">
+      <button mat-raised-button color="primary" routerLink="/aula/add">
+        <mat-icon>add</mat-icon>Agregar
+      </button>
+    </div>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
@@ -41,7 +48,7 @@
               <button class="btn btn-danger btnlogin" (click)="deleteAula(aula.aula_id)">
                   <i class="fas fa-trash-alt"></i>
               </button>
-              <button class="btn btn-success btnlogin" [routerLink]="['/recinto/aula/edit', aula.aula_id]"
+              <button class="btn btn-success btnlogin" [routerLink]="['/aula/edit', aula.aula_id]"
               routerLinkActive="router-link-active">
                   <i class="fas fa-edit"></i>
               </button>
