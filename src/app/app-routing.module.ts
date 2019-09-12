@@ -68,17 +68,17 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'recinto/aula/ver',
+    path: 'aula/ver',
     component: VeraulaComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'recinto/aula/add/:id',
+    path: 'aula/add',
     component: AddaulaComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'recinto/aula/edit/:id',
+    path: 'aula/edit/:id',
     component: AddaulaComponent,
     canActivate: [AuthGuard]
   },
