@@ -5,6 +5,7 @@ import { JwtService } from './jwt.service';
 import { ComponenteService } from './componente.service';
 import { AreaService } from './area.service';
 import { DocenteService } from './docente.service';
+import { PlanEstudioService } from './plan-estudio.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +17,7 @@ export class WsService {
               private componenteService:ComponenteService,
               private area$:AreaService,
               private docente$:DocenteService,
+              private pde$:PlanEstudioService,
               private jwt: JwtService
     ) { }
 
@@ -29,6 +31,7 @@ export class WsService {
   
       this.socket.onmessage = (event) => {
         let action = JSON.parse(event.data);
+        console.log(action)
         switch(action.model){
           case 'area':
             this.area$.updateList(action);
@@ -43,6 +46,9 @@ export class WsService {
             break;
           case 'componente':
             this.componenteService.updateList(action);
+            break;
+          case 'plan_de_estudio':
+            this.pde$.updateList(action);
             break;
 
         }

@@ -69,7 +69,7 @@ export class DocenteService extends MainService {
          docente = Object.assign(docente, data.data);
          //console.log(docente);
          data.data = docente;
-         this.list.push(data.data);
+         this.list.push(docente);
          this.list$.next(this.list);
          break;
        case 'u':
