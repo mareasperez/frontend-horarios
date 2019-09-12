@@ -51,6 +51,7 @@ import { HorariosComponent } from './components/reportes/horarios/horarios.compo
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
+import { CargaComponent } from './components/reportes/carga/carga.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { GrupoComponent } from './components/grupo/grupo.component';
     HomeComponent,
     ComponentesComponent,
     GrupoComponent,
+    CargaComponent,
   ],
   imports: [
     BrowserModule,
