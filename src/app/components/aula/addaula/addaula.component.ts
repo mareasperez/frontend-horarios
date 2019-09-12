@@ -70,7 +70,8 @@ export class AddaulaComponent implements OnInit {
   }
   updateAula() {
     console.log('si entro al update');
-    this.aulaService.updateAula(this.aula, this.aula.aula_recinto)
+    console.log('se edita el id: ', this.aula.aula_id);
+    this.aulaService.updateAula(this.aula, this.aula.aula_id)
       .subscribe(
         res => {
           console.log(res);
