@@ -4,10 +4,10 @@ import { AreaService } from 'src/app/services/area.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs';
 
-interface DialogData{
-  type:string;
-  name?:string
-  id?:string
+interface DialogData {
+  type: string;
+  name?: string;
+  id?: string;
 }
 @Component({
   selector: 'app-addarea',
@@ -20,12 +20,11 @@ export class AddareaComponent implements OnInit, OnDestroy {
 
   public area = new AreaModel();
   edit = false;
-  sub:Subscription;
+  sub: Subscription;
 
   constructor(private areaService: AreaService,
-    public dialogRef: MatDialogRef<AddareaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-              
+              public dialogRef: MatDialogRef<AddareaComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData
     ) { }
 
   ngOnInit() {
@@ -33,21 +32,19 @@ export class AddareaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    if(this.sub !==undefined){
-      this.sub.unsubscribe()
+    if (this.sub !== undefined) {
+      this.sub.unsubscribe();
     }
   }
 
   updateArea(){
     this.area.area_id = this.data.id
-    this.sub = this.areaService.updateArea(this.area, this.area.area_id).subscribe(res=>this.dialogRef.close())
+    this.sub = this.areaService.updateArea(this.area, this.area.area_id).subscribe(res => this.dialogRef.close());
   }
 
   saveArea(){
     this.area.area_id = null;
-    this.sub = this.areaService.crearArea(this.area).subscribe(res=>this.dialogRef.close())
+    this.sub = this.areaService.crearArea(this.area).subscribe(res => this.dialogRef.close());
 
   }
-
-   
 }

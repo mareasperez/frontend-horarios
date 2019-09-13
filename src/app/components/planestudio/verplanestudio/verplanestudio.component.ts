@@ -20,7 +20,6 @@ export class VerplanestudioComponent implements OnInit {
       this.dataSource = this.pde;
       console.log(this.dataSource);
       })
-      
    }
 
   ngOnInit() {

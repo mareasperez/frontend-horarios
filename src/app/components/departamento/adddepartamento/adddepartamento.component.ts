@@ -1,7 +1,15 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
-import { Router, ActivatedRoute } from '@angular/router';
 import { DepartamentoService } from 'src/app/services/departamento.service';
+import { Subscription } from 'rxjs';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+interface DialogData {
+  type: string;
+  name?: string;
+  id?: string;
+  facultad?: string;
+}
 
 @Component({
   selector: 'app-adddepartamento',
@@ -11,52 +19,37 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
 export class AdddepartamentoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
-  departamento = new DepartamentoModel();
+  public departamento = new DepartamentoModel();
   edit = false;
+  sub: Subscription;
 
-  constructor(private departamentoService: DepartamentoService, private route: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private departamentoService: DepartamentoService,
+              public dialogRef: MatDialogRef<AdddepartamentoComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData
+    ) { }
 
   ngOnInit() {
-    this.departamento.departamento_id = null;
-    const params = this.activatedRoute.snapshot.params;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
-      if (params.id) {
-        this.departamentoService.getDepartamentoByID(params.id)
-          .subscribe(
-            res => {
-              console.log( 'lo que tiene res es', res);
-              this.departamento.departamento_nombre = res.departamento.departamento_nombre;
-              this.departamento.departamento_facultad = res.departamento.departamento_facultad;
-              this.edit = true;
-            },
-            err => console.error(err)
-          );
-      }
+    this.departamento.departamento_nombre = this.data.name;
+    this.departamento.departamento_facultad = this.data.facultad;
+  }
+
+  ngOnDestroy() {
+    if (this.sub !== undefined) {
+      this.sub.unsubscribe();
     }
   }
 
-  saveDepartamento() {
-    // console.log(this.facultad);
-    this.departamento.departamento_facultad = this.activatedRoute.snapshot.params.id;
-    this.departamentoService.crearDepartamento(this.departamento)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/departamento/ver']);
-        },
-        err => console.error(err)
-      );
-  }
   updateDepartamento() {
-    // console.log(this.facultad);
-    this.departamentoService.updateDepartamento(this.departamento, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/departamento/ver']);
-        },
-        err => console.error(err)
-      );
+    console.log('se llama updaye');
+    this.departamento.departamento_id = this.data.id;
+    this.sub = this.departamentoService.updateDepartamento(this.departamento, this.departamento.departamento_id)
+    .subscribe(res => this.dialogRef.close());
+  }
+
+  saveDepartamento() {
+    this.departamento.departamento_id = null;
+    this.sub = this.departamentoService.crearDepartamento(this.departamento).subscribe(res => this.dialogRef.close());
+
   }
 
 }
