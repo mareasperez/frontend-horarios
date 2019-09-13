@@ -6,17 +6,22 @@ import { ComponenteService } from './componente.service';
 import { AreaService } from './area.service';
 import { DocenteService } from './docente.service';
 import { DepartamentoService } from './departamento.service';
+import { PlanEstudioService } from './plan-estudio.service';
+import { GrupoService } from './grupo.service';
+import { DepartamentoModel } from '../models/departamento.model';
 @Injectable({
   providedIn: 'root'
 })
 export class WsService {
   socket: WebSocket;
 
-  constructor(private facultaService: FacultadSerivice,
-              private recintoService: RecintoService,
-              private componenteService: ComponenteService,
-              private area$: AreaService,
-              private docente$: DocenteService,
+  constructor(private facultaService:FacultadSerivice,
+              private recintoService:RecintoService,
+              private componenteService:ComponenteService,
+              private area$:AreaService,
+              private docente$:DocenteService,
+              private pde$:PlanEstudioService,
+              private grupoS:GrupoService,
               private jwt: JwtService,
               private departamento$: DepartamentoService
     ) { }
@@ -30,8 +35,9 @@ export class WsService {
       };
 
       this.socket.onmessage = (event) => {
-        const action = JSON.parse(event.data);
-        switch (action.model) {
+        let action = JSON.parse(event.data);
+        console.log(action)
+        switch(action.model){
           case 'area':
             this.area$.updateList(action);
             break;
@@ -48,6 +54,13 @@ export class WsService {
             break;
           case 'departamento':
             this.departamento$.updateList(action);
+            break;
+          case 'plan_de_estudio':
+            this.pde$.updateList(action);
+            break;
+
+          case 'grupo':
+            this.grupoS.updateList(action);
             break;
         }
       };

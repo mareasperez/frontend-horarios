@@ -1,52 +1,87 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { CarreraService } from 'src/app/services/carrera.service';
+import { CarreraModel } from 'src/app/models/carrera.model';
+import { Observable, Subscription } from 'rxjs';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
-import { Router, ActivatedRoute } from '@angular/router';
-
+interface DialogData{
+  type:string;
+  plan?:PlanEstudioModel;
+}
 @Component({
   selector: 'app-addplanestudio',
   templateUrl: './addplanestudio.component.html',
   styleUrls: ['./addplanestudio.component.scss']
 })
 export class AddplanestudioComponent implements OnInit {
-  @HostBinding('class') classes = 'row';
-
-  planDeEstudio = new PlanEstudioModel();
-  edit = false;
-
-  constructor(private planDeEstudioService: PlanEstudioService, private route: Router, private activatedRoute: ActivatedRoute) { }
+  public form:FormGroup;
+  public carreras:CarreraModel[]=[];
+  public refCarrera:Observable<any>;
+  public selected:string = "0";
+  subs:Subscription[]=[];
+  constructor(private carrera$:CarreraService,
+              private plan$:PlanEstudioService,
+              public dialogRef: MatDialogRef<AddplanestudioComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private fb:FormBuilder
+    ) { 
+      this.carrera$.getCarrera().subscribe(res=>{
+        this.carreras.push(res);
+      })
+      this.refCarrera = this.carrera$.getList();
+    }
 
   ngOnInit() {
-    const params = this.activatedRoute.snapshot.params;
-    console.log(this.activatedRoute.snapshot.url[1].path);
-    this.planDeEstudio.pde_id = null;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
-      if (params.id) {
-        this.edit = true;
-        this.planDeEstudioService.getPlanEstudioByID(params.id)
-          .subscribe(
-            res => {
-              console.log( 'lo que tiene res es', res);
-              this.planDeEstudio.pde_nombre = res.planDeEstudio.pde_nombre;
-              this.planDeEstudio.pde_anyo = res.planDeEstudio.pde_anyo;
-              this.planDeEstudio.pde_carrera = res.planDeEstudio.pde_carrera;
-            },
-            err => console.error(err)
-          )
-      }
-    }
+    this.refCarrera.subscribe(data=>{
+      this.carreras = data;
+    })
+
+    this.createForm();
+
   }
 
-  savePde() {
-    // console.log(this.facultad);
-    this.planDeEstudioService.crearPlanEstudio(this.planDeEstudio)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/planestudio/ver']);
-        },
-        err => console.error(err)
-      );
+
+  createForm( id?:string){
+    if(this.data.type === 'c'){
+      this.form = this.fb.group({
+        pde_id: null,
+        pde_nombre: new FormControl('', [Validators.required]) ,
+        pde_anyo: new FormControl('', [Validators.required]) ,
+        pde_carrera: new FormControl('', [Validators.required]) 
+
+      })
+   }else{
+     console.log(this.data.plan)
+     
+    this.form = this.fb.group({
+      pde_nombre: new FormControl(this.data.plan.pde_nombre, [Validators.required]) ,
+      pde_anyo: new FormControl(this.data.plan.pde_anyo, [Validators.required]) ,
+      pde_carrera: new FormControl(this.data.plan.pde_carrera, [Validators.required]) ,
+      pde_id: new FormControl(this.data.plan.pde_id) 
+
+    })
+   }
+  }
+
+  createPlan(){
+    let plan = new PlanEstudioModel();
+    plan = Object.assign(plan, this.form.value);
+    this.subs.push(
+      this.plan$.crearPlanEstudio(plan)
+     .subscribe(res=> this.dialogRef.close())
+    );
+  }
+
+  updatePlan(){
+    let plan = new PlanEstudioModel();
+    plan = Object.assign(plan, this.form.value);
+    console.log(plan);
+    this.subs.push(
+      this.plan$.updatePlanEstudio(plan, plan.pde_id)
+     .subscribe(res=> this.dialogRef.close())
+    );
   }
   updatePde() {
     console.log('si entro al update');

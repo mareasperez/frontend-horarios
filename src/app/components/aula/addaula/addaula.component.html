@@ -11,9 +11,23 @@
           <div class="form-group"> 
             <input type="number" name="tipo" placeholder="Tipo" [(ngModel)]="aula.aula_tipo" class="form-control">
             </div>
-            <div class="form-group"> 
+            <!-- <div class="form-group"> 
                 <input type="number" name="recinto" placeholder="Recinto" [(ngModel)]="aula.aula_recinto" class="form-control" *ngIf="edit">
-                </div>
+                </div> -->
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Recinto</mat-label>
+                    <mat-select [value]="selected" formControlName="aula_recinto">
+                      <mat-option value="0">Recintos...</mat-option>
+                      <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">
+                        {{recinto.recinto_nombre}}</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                  <mat-form-field>
+                      <mat-select placeholder="Select recinto of Recintos" name="recinto"  [(ngModel)]="aula.aula_recinto" >
+                        <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id" >{{ recinto.recinto_nombre }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    
           <button class="btn btn-success btn-block" (click)="edit ? updateAula() : saveAula()">
             Guardar
           </button>

@@ -18,9 +18,10 @@ export class PlanEstudioService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.planDeEstudio.forEach(el => {
-          let planDeEstudio = new PlanEstudioModel();
-          planDeEstudio = Object.assign(planDeEstudio,el); //Tipar Objeto
-          observer.next(planDeEstudio);
+          let pde = new PlanEstudioModel();
+          pde = Object.assign(pde,el); //Tipar Objeto
+          this.list.push(pde)
+          observer.next(pde);
         });
       });
     });
@@ -31,10 +32,9 @@ export class PlanEstudioService extends MainService {
   }
 
   crearPlanEstudio(pde: PlanEstudioModel): Observable<any> {
-    let body = { pde: pde };
+    let body = { planDeEstudio: pde };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
         observer.next(response);
       });
     });
@@ -42,7 +42,7 @@ export class PlanEstudioService extends MainService {
 
   updatePlanEstudio(pde: PlanEstudioModel, id: string|number) {
     // Ejemplo del parametro body
-    let body = { pde: pde };
+    let body = { planDeEstudio: pde };
     return this.update(body, id);
   }
 

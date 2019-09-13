@@ -1,5 +1,5 @@
 export class GrupoModel {
-    grupo_id: string;
+    grupo_id: number;
     grupo_numero: string;
     grupo_max_capacidad: string;
     grupo_tipo: string;
