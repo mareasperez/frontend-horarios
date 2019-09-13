@@ -18,9 +18,9 @@ export class PlanEstudioService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.planDeEstudio.forEach(el => {
-          let pde = new PlanEstudioModel();
-          pde = Object.assign(pde,el); //Tipar Objeto
-          observer.next(pde);
+          let planDeEstudio = new PlanEstudioModel();
+          planDeEstudio = Object.assign(planDeEstudio,el); //Tipar Objeto
+          observer.next(planDeEstudio);
         });
       });
     });
