@@ -1,1 +1,6 @@
-<p>carga works!</p>
+<div *ngFor="let item of array">
+  <div>{{item[0]}}</div>
+  <div *ngFor="let grupo of item[1]">
+    {{grupo.grupo_componente}}
+  </div>
+</div>

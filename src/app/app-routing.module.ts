@@ -11,7 +11,7 @@ import { VeraulaComponent } from './components/aula/veraula/veraula.component';
 import { AddaulaComponent } from './components/aula/addaula/addaula.component';
 import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
-import {  AuthGuardService as AuthGuard} from './services/auth-guard.service';
+import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
@@ -20,22 +20,30 @@ import { HorariosComponent } from './components/reportes/horarios/horarios.compo
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
+import { CargaComponent } from './components/reportes/carga/carga.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   {
+    path: 'reporte/carga',
+    component: CargaComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'reporte/horarios',
     component: HorariosComponent,
     canActivate: [AuthGuard]
-  }, {
+  },
+  {
     path: 'home',
     component: HomeComponent,
     canActivate: [AuthGuard]
   },
-  {path: 'componente',
-   component: ComponentesComponent,
-   canActivate: [AuthGuard]
+  {
+    path: 'componente',
+    component: ComponentesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'facultad/list',
