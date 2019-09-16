@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-
+import { Observable, Subscription, from } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
+import { FacultadModel } from 'src/app/models/facultad.model';
+import { FacultadSerivice } from 'src/app/services/facultad.service';
 @Component({
   selector: 'app-verdepartamento',
   templateUrl: './verdepartamento.component.html',
@@ -10,62 +14,53 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
 export class VerdepartamentoComponent implements OnInit {
 
   public departamentos: DepartamentoModel[] = [];
-  public alerts = true;
-  public dataSource;
-  displayedColumns: string[] = ['id', 'nombre', 'facultad', 'opciones'];
-  socket: WebSocket;
-// tslint:disable-next-line: no-shadowed-variable
-  constructor(private DepartamentoService: DepartamentoService) { }
+  public facultades: FacultadModel [] = [];
+  // tslint:disable-next-line: no-shadowed-variable
+  public ref: Observable<any[]>;
+  public refDepartamento: Observable<any[]>;
+  sub: Subscription;
+  constructor(
+    private _departamento: DepartamentoService,
+    private _facultad: FacultadSerivice;
+    private dialog: MatDialog
+    ) {
+    this._departamento.getDepartamento().subscribe(res => this.departamentos.push(res));
+    this._facultad.getFacultad().subscribe(res2 => this.facultades.push(res2));
+    this.refDepartamento = this._departamento.getList();
+  }
 
   ngOnInit() {
-    this.getDepartamento();
-    this.setsock();
+    this.refDepartamento.subscribe(data => {
+      this.departamentos = data;
+    });
   }
-  setsock() {
-    this.socket = new WebSocket('ws://localhost:8000/ws/');
 
-    this.socket.onopen = () => {
-      console.log('WebSockets connection created for Departamento');
-    };
-
-    this.socket.onmessage = (event) => {
-      //  var data = JSON.parse(event.data);
-      // console.log('data from socket:' + event.data);
-      // this.getRecintoes()
-      const action = JSON.parse(event.data);
-      if (action.event === 'New Departamento' || action.event === 'Delete Departamento' || action.event === 'Update Departamento' ) {
-        console.log('ws envia el evento: ', action.event);
-        this.getDepartamento();
-      }
-
-    };
-
-    if (this.socket.readyState === WebSocket.OPEN) {
-      this.socket.onopen(null);
+  ngOnDestroy() {
+    if (this.sub !== undefined) {
+      this.sub.unsubscribe();
     }
   }
-  getDepartamento() {
-    this.departamentos = [];
-    this.DepartamentoService.getDepartamento().subscribe(
-      res => {
-        this.departamentos.push(res);
-        this.alerts = false;
-        console.log(this.departamentos);
-        this.dataSource = this.departamentos;
-        console.log(this.dataSource);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+
+  delDepartamento(id: any) {
+    this.sub = this._departamento.deleteDepartamento(id).subscribe()
   }
-  deleteDepartamento(id: string) {
-    this.DepartamentoService.deleteDepartamento(id).subscribe(
-      res => {
-        console.log(res);
-        this.getDepartamento();
-      },
-      err => console.log(err)
-    );
+
+  openDialog(tipo, nombre?, idd?, facultadd?): void {
+    if (tipo === 'c') {
+      const dialogRef = this.dialog.open(AdddepartamentoComponent, {
+        width: '450px',
+        data: {type: tipo}
+      });
+    } else {
+      console.log('se llamo al upd con los valores:', tipo, nombre, idd, facultadd);
+
+      const dialogRef = this.dialog.open(AdddepartamentoComponent, {
+        width: '450px',
+        data: {type: tipo, name: nombre, id: idd, facultad: facultadd}
+      });
+    }
+  }
+  nFacultad(id: any) {
+    const result = this.facultades.facultad_id.;
   }
 }

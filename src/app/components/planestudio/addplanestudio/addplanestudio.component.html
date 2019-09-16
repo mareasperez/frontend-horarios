@@ -1,1 +1,32 @@
-<p>addplanestudio works!</p>
+<div class="container-fluid">
+    <h3>Agregar plan de estudio</h3>
+    <mat-card>
+
+        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="pde_nombre" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <input type="number" formControlName="pde_anyo" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Carrera</mat-label>
+                <mat-select ([value])="selected" formControlName="pde_carrera">
+                    <mat-option value="0">Carrera...</mat-option>
+                    <mat-option  *ngFor="let carrera of carreras" [value]="carrera.carrera_id">
+                        {{carrera.carrera_nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>    
+            <button mat-raised-button color="primary" 
+            (click)="data.type === 'c' ? createPlan():updatePlan()">
+                <mat-icon>save</mat-icon>Guardar
+            </button>
+            <button mat-raised-button (click)="dialogRef.close()" color="warn" class="mt-1">
+                <mat-icon>cancel</mat-icon>Cancelar
+            </button>      
+        </form>
+    </mat-card>
+</div>

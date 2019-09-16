@@ -1,17 +1,14 @@
-<div class="col-md-4 offset-md-4">
+<div class="col-12">
     <div class="card">
       <div class="card-body">
         <form>
           <div class="form-group">
-            <input type="number" name="id" placeholder="id del departamento" [(ngModel)]="departamento.departamento_id" class="form-control">
-          </div>
-          <div class="form-group">
             <input type="text" name="nombre" placeholder="Nombre del Departamento" [(ngModel)]="departamento.departamento_nombre" class="form-control" autofocus> 
         </div>
-          <div class="form-group"> 
-          <input type="number" name="facultad" placeholder="facultad" [(ngModel)]="departamento.departamento_facultad" class="form-control" *ngIf="edit">
-          </div>
-          <button class="btn btn-success btn-block" (click)="edit ? updateDepartamento() : saveDepartamento()">
+        <div class="form-group">
+            <input type="text" name="facultad" placeholder="Nombre de la Facultad" [(ngModel)]="departamento.departamento_facultad" class="form-control"> 
+        </div>
+          <button class="btn btn-success btn-block" (click)="data.type !== 'c' ? updateDepartamento() : saveDepartamento()">
             Guardar
           </button>
         </form>
