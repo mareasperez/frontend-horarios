@@ -21,7 +21,7 @@ export class VerdepartamentoComponent implements OnInit {
   sub: Subscription;
   constructor(
     private _departamento: DepartamentoService,
-    private _facultad: FacultadSerivice;
+    private _facultad: FacultadSerivice,
     private dialog: MatDialog
     ) {
     this._departamento.getDepartamento().subscribe(res => this.departamentos.push(res));
@@ -60,7 +60,7 @@ export class VerdepartamentoComponent implements OnInit {
       });
     }
   }
-  nFacultad(id: any) {
-    const result = this.facultades.facultad_id.;
-  }
+  // nFacultad(id: any) {
+  //   const result = this.facultades;
+  // }
 }

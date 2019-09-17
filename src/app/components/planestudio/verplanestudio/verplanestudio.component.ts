@@ -12,24 +12,23 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class VerplanestudioComponent implements OnInit, OnDestroy {
 
-  public pde:PlanEstudioModel[] = [];
+  public pde: PlanEstudioModel[] = [];
   public alerts = true;
   public dataSource;
-  private subs:Subscription[]=[];
-  public refPde:Observable<any>
+  private subs: Subscription [] = [];
+  public refPde: Observable <any>;
   displayedColumns: string[] = ['id', 'nombre', 'anyo', 'carrera', 'opciones'];
   socket: WebSocket;
   constructor(private PlanEstudioService: PlanEstudioService,
-              private dialog: MatDialog 
+              private dialog: MatDialog
 
     ) {
-    this.subs.push( this.PlanEstudioService.getPlanEstudio().subscribe(plan=>{
+    this.subs.push( this.PlanEstudioService.getPlanEstudio().subscribe(plan => {
         this.pde.push(plan)
         this.dataSource = this.pde;
         })
     );
     this.refPde = this.PlanEstudioService.getList();
-      
    }
 
   ngOnInit() {
@@ -37,7 +36,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
       this.refPde.subscribe(data=>{
         this.dataSource = []
         this.pde = data;
-        data.map(p=>{
+        data.map(p => {
           this.dataSource.push(p)
         })
       })
@@ -64,18 +63,16 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     if(tipo === 'c'){
       const dialogRef = this.dialog.open(AddplanestudioComponent, {
         width: '450px',
-        data: {type:tipo}      
+        data: {type: tipo}
       });
-    }else{
+    } else {
 
-      let pde = this.pde.find(p=>p.pde_id == id)
+      let pde = this.pde.find(p => p.pde_id === id);
       const dialogRef = this.dialog.open(AddplanestudioComponent, {
         width: '450px',
-        data: {type:tipo, plan:pde}      
+        data: {type: tipo, plan: pde}
       });
     }
   }
-
-  
 
 }
