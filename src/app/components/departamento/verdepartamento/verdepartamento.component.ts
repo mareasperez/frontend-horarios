@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
+
 @Component({
   selector: 'app-verdepartamento',
   templateUrl: './verdepartamento.component.html',
@@ -45,18 +46,18 @@ export class VerdepartamentoComponent implements OnInit {
     this.sub = this._departamento.deleteDepartamento(id).subscribe()
   }
 
-  openDialog(tipo, nombre?, idd?, facultadd?): void {
+  openDialog(tipo, id?): void {
     if (tipo === 'c') {
       const dialogRef = this.dialog.open(AdddepartamentoComponent, {
         width: '450px',
         data: {type: tipo}
       });
     } else {
-      console.log('se llamo al upd con los valores:', tipo, nombre, idd, facultadd);
-
+      console.log('el tipo es', tipo);
+      let departamento = this.departamentos.find(d => d.departamento_id === id);
       const dialogRef = this.dialog.open(AdddepartamentoComponent, {
         width: '450px',
-        data: {type: tipo, name: nombre, id: idd, facultad: facultadd}
+        data: {type: tipo, dep: departamento}
       });
     }
   }

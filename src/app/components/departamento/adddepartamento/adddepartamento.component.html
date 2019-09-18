@@ -1,4 +1,4 @@
-<div class="col-12">
+<!-- <div class="col-12">
     <div class="card">
       <div class="card-body">
         <form>
@@ -15,3 +15,26 @@
       </div>
     </div>
   </div>
+   -->
+   <div class="container-fluid">
+    <mat-card>
+         <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+             <mat-form-field appearance="outline">
+               <mat-label>Nombre</mat-label>
+               <input formControlName="departamento_nombre" matInput>
+             </mat-form-field>
+             <mat-form-field  appearance="outline">
+               <mat-label>Departamento</mat-label>
+                 <mat-select formControlName="departamento_facultad" ([value])="selected">
+                   <mat-option value="0">Facultad...</mat-option>
+                   <mat-option *ngFor="let facultad of facultades" [value]="facultad.facultad_id">
+                     {{facultad.facultad_nombre}}
+                   </mat-option>
+                 </mat-select>
+               </mat-form-field>
+           <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveDepartamento():updateDepartamento()">
+             Guardar
+           </button>
+         </form>
+     </mat-card>
+   </div>

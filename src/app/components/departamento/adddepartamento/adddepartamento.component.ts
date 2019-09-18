@@ -1,14 +1,15 @@
 import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { FacultadModel } from 'src/app/models/facultad.model';
 
 interface DialogData {
   type: string;
-  name?: string;
-  id?: string;
-  facultad?: string;
+  dep?: DepartamentoModel;
 }
 
 @Component({
@@ -20,36 +21,69 @@ export class AdddepartamentoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
   public departamento = new DepartamentoModel();
+  public facultades: FacultadModel [] = [];
   edit = false;
-  sub: Subscription;
+  subs: Subscription [] = [];
+  public selected = '0';
+  public form: FormGroup;
+  public refFacultad: Observable<any>;
 
   constructor(private departamentoService: DepartamentoService,
+              private facultad$: FacultadSerivice,
               public dialogRef: MatDialogRef<AdddepartamentoComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData
-    ) { }
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private fb: FormBuilder
+    ) {
+      this.facultad$.getFacultad().subscribe(res => this.facultades.push(res));
+      this.refFacultad = this.facultad$.getList();
+    }
 
   ngOnInit() {
-    this.departamento.departamento_nombre = this.data.name;
-    this.departamento.departamento_facultad = this.data.facultad;
+    this.subs.push(
+      this.refFacultad.subscribe(facs => this.facultades = facs)
+    );
+    this.createForm();
   }
 
   ngOnDestroy() {
-    if (this.sub !== undefined) {
-      this.sub.unsubscribe();
+    this.subs.map(sub => sub.unsubscribe());
+  }
+
+  createForm( id?: string) {
+    if (this.data.type === 'c') {
+    this.form = this.fb.group({
+      departamento_id: null,
+      departamento_nombre: new FormControl('', [Validators.required]),
+      departamento_facultad: new FormControl('', [Validators.required])
+
+     });
+    } else {
+      this.form = this.fb.group({
+        departamento_id: this.data.dep.departamento_id,
+        departamento_nombre: new FormControl(this.data.dep.departamento_nombre, [Validators.required]),
+        departamento_facultad: new FormControl(this.data.dep.departamento_facultad, [Validators.required])
+       });
     }
   }
 
-  updateDepartamento() {
-    console.log('se llama updaye');
-    this.departamento.departamento_id = this.data.id;
-    this.sub = this.departamentoService.updateDepartamento(this.departamento, this.departamento.departamento_id)
-    .subscribe(res => this.dialogRef.close());
+  saveDepartamento() {
+    let dep = new DepartamentoModel();
+    dep = Object.assign(dep, this.form.value);
+    console.log(dep);
+    this.subs.push(
+      this.departamentoService.crearDepartamento(dep)
+      .subscribe(res => this.dialogRef.close())
+    );
   }
 
-  saveDepartamento() {
-    this.departamento.departamento_id = null;
-    this.sub = this.departamentoService.crearDepartamento(this.departamento).subscribe(res => this.dialogRef.close());
-
+  updateDepartamento() {
+    let dep = new DepartamentoModel();
+    dep = Object.assign(dep, this.form.value);
+    console.log(dep);
+    this.subs.push(
+      this.departamentoService.updateDepartamento(dep, dep.departamento_id)
+        .subscribe(res => this.dialogRef.close())
+    );
   }
 
 }

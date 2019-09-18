@@ -60,7 +60,7 @@ export class VerdocenteComponent implements OnInit {
       let docente = this.docentes.find(d=>d.docente_id ===Number(id))
       const dialogRef = this.dialog.open(AdddocenteComponent, {
         width: '450px',
-        data: {type:tipo, doc:docente }      
+        data: {type:tipo, doc:docente }
       });
     }
   }
