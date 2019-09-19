@@ -129,6 +129,7 @@ export class CargaComponent implements OnInit {
 
 
       });
+      this.reportes.push(reporte);
 
     });
 
