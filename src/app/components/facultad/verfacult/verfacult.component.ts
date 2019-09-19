@@ -29,13 +29,15 @@ export class VerfacultComponent implements OnInit {
               public overlay: Overlay,
               public viewContainerRef: ViewContainerRef,
              ) {
-
+    this.facultadService.getFacultad().subscribe(res=>{
+      this.facultades.push(res)
+    })
     this.a = this.facultadService.getList();
   }
 
   ngOnInit() {
-    this.getfacultades();
     this.a.subscribe(res=>{
+      console.log(res)
       this.facultades = res;
     })
     //this.setsock();
@@ -107,7 +109,7 @@ export class VerfacultComponent implements OnInit {
 
   filterAction(e){
     console.log(e)
-    if(e.type === 0){
+    if(e.id === 0){
         this.saveFacultad(e.data);
     }
     else{
@@ -132,17 +134,17 @@ export class VerfacultComponent implements OnInit {
     let facultad = new FacultadModel();
     this.editing = true
     facultad.facultad_nombre = data.data.nombre;
-    this.facultadService.updateFacultad(facultad, data.type)
+    this.facultadService.updateFacultad(facultad, data.id)
       .subscribe(
         res => {
-          console.log(res);
-          this.route.navigate(['/facultad/list']);
+         
         },
         err => console.error(err)
       );
   }
 
   showAdd(id?:number){
+    console.log("show add")
     this.facultad_id = id
     this.hide = false;
   }
