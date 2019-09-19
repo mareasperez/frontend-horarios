@@ -28,8 +28,6 @@ export class CargaComponent implements OnInit {
   // reporte
   public refGr: Observable<any[]>;
   public reportes: ReporteCargaModel[] = [];
-  public array: any[][] = new Array();
-
 
   // listas de objetos
   public carreras: CarreraModel[] = [];
@@ -91,15 +89,16 @@ export class CargaComponent implements OnInit {
     const reporte = new ReporteCargaModel();
     const rr: RComponent[] = [];
     let p = new Promise<any>((resolve, reject) => {
+      console.log(docente.docente_nombre);
       reporte.docente = docente.docente_nombre;
       reporte.componente = rr;
       const gr = grupos.filter(grupo => grupo.grupo_docente === docente.docente_id);
       resolve(gr);
     });
     p.then((gr) => {
-      // console.log('gr', gr);
-      grupos.forEach(grupo => {
-        // console.log('entro al foreach');
+      console.log('gr', gr);
+      gr.forEach(grupo => {
+        console.log('entro al foreach');
         // console.log(grupo);
         const rp: RComponent = new RComponent();
         rp.componente = grupo.grupo_componente;
@@ -125,10 +124,8 @@ export class CargaComponent implements OnInit {
             reporte.componente.push(rp);
             // console.log('rp: ', rp);
             console.log('reporte:', reporte);
-            this.reportes.push(reporte);
           });
         });
-
 
 
       });
