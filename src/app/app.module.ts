@@ -80,7 +80,7 @@ import { DocAreaComponent } from './components/doc-area/doc-area.component';
     ComponentesComponent,
     GrupoComponent,
     CargaComponent,
-    CargaHorariaComponent,
+    CargasComponent,
     DocAreaComponent,
   ],
   imports: [

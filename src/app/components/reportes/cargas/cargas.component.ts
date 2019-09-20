@@ -13,15 +13,16 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { RComponent } from 'src/app/models/rcomponentes';
-import { async } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-carga-horaria',
-  templateUrl: './carga-horaria.component.html',
-  styleUrls: ['./carga-horaria.component.scss']
+  templateUrl: './cargas.component.html',
+  styleUrls: ['./cargas.component.scss']
 })
 export class CargasComponent implements OnInit {
   public reportes: ReporteCargaModel[] = [];
+  public query: string;
   // listas de objetos
   public carreras: CarreraModel[] = [];
   public pdes: PlanEstudioModel[] = [];
@@ -35,6 +36,7 @@ export class CargasComponent implements OnInit {
     private _grupos: GrupoService,
     private _pde: PlanEstudioService,
     private _componente: ComponenteService,
+    private route: ActivatedRoute
   ) {
     this._grupos.getGrupos().subscribe(res => this.grupos.push(res));
     this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
@@ -44,6 +46,7 @@ export class CargasComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.query = (this.route.snapshot.queryParamMap.get('reporte'));
     let i = 0;
     console.log('init');
     await this.foo().then(
