@@ -2,9 +2,6 @@
   <div class="row">
     <div class="col-lg-8">
       <div class="card-body" style="align-content: center; text-align: center;">
-          <div *ngIf="alerts">
-            Data Error
-          </div>
           <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px "
           (contextmenu)="open($event, facultad); $event. preventDefault();">
           <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"

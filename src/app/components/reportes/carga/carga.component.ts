@@ -14,6 +14,7 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-carga',
@@ -27,8 +28,6 @@ export class CargaComponent implements OnInit {
   // reporte
   public refGr: Observable<any[]>;
   public reportes: ReporteCargaModel[] = [];
-  public array: any[][] = new Array();
-
 
   // listas de objetos
   public carreras: CarreraModel[] = [];
@@ -45,58 +44,96 @@ export class CargaComponent implements OnInit {
     private _pde: PlanEstudioService,
     private _componente: ComponenteService,
   ) {
-    let index = 0;
+    const index = 0;
 
     this._grupos.getGrupos().subscribe(res => {
       this.grupos.push(res);
     });
-    this._docente.getDocente().subscribe(res => {
-      this.docentes.push(res);
-      this.hola(res, index);
-      index++;
-    });
+
     this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
     this._componente.getComponentes().subscribe(res => this.componentes.push(res));
     this._carrera.getCarrera().subscribe(res => this.carreras.push(res));
+    this._docente.getDocente().subscribe(res => {
+      this.docentes.push(res);
+    });
     this.refDoc = this._docente.getList();
     this.refGr = this._grupos.getList();
   }
 
   async ngOnInit() {
-    this.refDoc.subscribe(
-      data => this.docentes = data,
-      err => console.error('Observer got an error: ' + err),
-      () => console.log('Observer got a complete notification'));
+    let i = 0;
+    console.log('init');
+    await this.foo().then(
+      () => {
+        this.docentes.forEach(docente => {
+          console.log('docentes: ', this.docentes);
+          this.sinc(docente, i, this.grupos);
+          i++;
+        });
+      });
+
   }
-  async hola(docente: DocenteModel, i: number) {
-    // obtener grupos del docente
-    let reporte = new ReporteCargaModel();
-    reporte.docente = docente.docente_nombre;
-    const grupos = await this.grupos.filter(grupo => grupo.grupo_docente === docente.docente_id);
-    // si no se declara el [i] antes de igualar el [x] da error
-    if (this.array[i] === undefined) {
-      this.array[i] = [];
-      console.log('no estaba declarado el array');
-    }
-    this.array[i][0] = docente.docente_nombre;
-    this.array[i][1] = grupos;
-    console.log(this.array);
-    grupos.forEach(async grupo => {
-      console.log('entro al foreach');
-      console.log(grupo);
-      let rp: RComponent = new RComponent();
-      rp.componente = grupo.grupo_componente;
-      console.log('Docente: ', docente.docente_nombre, 'componente: ', rp.componente );
-      rp.grupo_numero = grupo.grupo_numero;
-      rp.horas = grupo.grupo_horas_clase;
-      const comp = await this.componentes.filter(componente => componente.componente_id === grupo.grupo_componente);
-      rp.componente = comp[0].componente_nombre;
-      const plande = await this.pdes.filter(pde => pde.pde_id === comp[0].componente_pde);
-      const carrera = await this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
-      rp.carrera = carrera[0].carrera_nombre;
-      console.log(rp);
-      reporte.componente.push(rp);
+  async foo() {
+    await this.sleep(1000);
+    console.log(1);
+    await this.sleep(1000);
+    await this.sleep(1000);
+    console.log(3);
+  }
+
+  sleep(ms = 0) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+  sinc(docente: DocenteModel, i: number, grupos) {
+    const reporte = new ReporteCargaModel();
+    const rr: RComponent[] = [];
+    let p = new Promise<any>((resolve, reject) => {
+      console.log(docente.docente_nombre);
+      reporte.docente = docente.docente_nombre;
+      reporte.componente = rr;
+      const gr = grupos.filter(grupo => grupo.grupo_docente === docente.docente_id);
+      resolve(gr);
     });
-    console.log(reporte);
+    p.then((gr) => {
+      console.log('gr', gr);
+      gr.forEach(grupo => {
+        console.log('entro al foreach');
+        // console.log(grupo);
+        const rp: RComponent = new RComponent();
+        rp.componente = grupo.grupo_componente;
+        // console.log('Docente: ', docente.docente_nombre, 'componente: ', rp.componente);
+        rp.grupo_numero = grupo.grupo_numero;
+        rp.horas = grupo.grupo_horas_clase;
+        let p2 = new Promise<any>((resolve, reject) => {
+          const comp = this.componentes.filter(componente => componente.componente_id === grupo.grupo_componente);
+          resolve(comp);
+        });
+        p2.then((comp) => {
+          // console.log('comp: ', comp);
+          rp.componente = comp[0].componente_nombre;
+          let p3 = new Promise<any>((resolve, reject) => {
+            const plande = this.pdes.filter(pde => Number(pde.pde_id) === comp[0].componente_pde);
+            // console.log('plan antes: ', plande);
+            resolve(plande);
+          });
+          p3.then((plande) => {
+            // console.log('plan despues:', plande);
+            const carrera = this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
+            rp.carrera = carrera[0].carrera_nombre;
+            reporte.componente.push(rp);
+            // console.log('rp: ', rp);
+            console.log('reporte:', reporte);
+          });
+        });
+
+
+      });
+      this.reportes.push(reporte);
+
+    });
+
+
   }
 }
+

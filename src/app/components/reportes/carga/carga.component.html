@@ -1,6 +1,6 @@
-<div *ngFor="let item of array">
-  <div>{{item[0]}}</div>
-  <div *ngFor="let grupo of item[1]">
-    {{grupo.grupo_componente}}
+<div *ngFor="let reporte of reportes">
+  <div>{{reporte.docente}}</div>
+  <div *ngFor="let componente of reporte.componente ">
+    {{componente.componente}}
   </div>
 </div>
