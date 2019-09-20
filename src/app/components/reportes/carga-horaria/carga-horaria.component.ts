@@ -50,7 +50,7 @@ export class CargaHorariaComponent implements OnInit {
     await this.foo().then(
       () => {
         this.docentes.forEach(docente => {
-          this.reporteHorarios(docente, i, this.grupos);
+          this.reporteHorarios(docente, this.grupos);
           i++;
         });
       });
@@ -66,7 +66,7 @@ export class CargaHorariaComponent implements OnInit {
   sleep(ms = 0) {
     return new Promise(r => setTimeout(r, ms));
   }
-  async reporteHorarios(docente: DocenteModel, i: number, grupos: GrupoModel[]) {
+  async reporteHorarios(docente: DocenteModel, grupos: GrupoModel[]) {
     const reporte = new ReporteCargaModel();
     const rr: RComponent[] = [];
     reporte.componente = rr;
