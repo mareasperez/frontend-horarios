@@ -3,16 +3,21 @@
 }
 
 .warning {
-    background-color: yellow;
-    width: 100%;
+    background-color: #d6c502;
 }
 
 .success {
-    background-color: green;
-    width: 100%;
+    background-color: #2eab00;
 }
 
 .danger {
-    background-color: red;
+    background-color: #c41000;
+}
+
+.horas {
     width: 100%;
+    text-align: right;
+    padding: 5px;
+    color: white;
+    font-weight: bold;
 }

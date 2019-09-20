@@ -22,9 +22,9 @@
                 <td class="col-2">{{componente.horas}}</td>
             </tr>
         </table>
-        <div *ngIf="reporte.suma<reporte.th" class="warning">{{reporte.suma}}/{{reporte.th}}</div>
-        <div *ngIf="reporte.suma==reporte.th" class="success">{{reporte.suma}}/{{reporte.th}}</div>
-        <div *ngIf="reporte.suma>reporte.th" class="danger">{{reporte.suma}}/{{reporte.th}}</div>
+        <div *ngIf="reporte.suma<reporte.th" class="warning horas">{{reporte.suma}}/{{reporte.th}}</div>
+        <div *ngIf="reporte.suma==reporte.th" class="success horas">{{reporte.suma}}/{{reporte.th}}</div>
+        <div *ngIf="reporte.suma>reporte.th" class="danger horas">{{reporte.suma}}/{{reporte.th}}</div>
         <br>
     </div>
 </div>
