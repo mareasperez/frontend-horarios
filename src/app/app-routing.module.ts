@@ -21,7 +21,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
-import { CargaHorariaComponent } from './components/reportes/carga-horaria/carga-horaria.component';
+import { CargasComponent } from './components/reportes/cargas/cargas.component';
 
 
 const routes: Routes = [
@@ -32,8 +32,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'reporte/carga-horaria',
-    component: CargaHorariaComponent,
+    path: 'reporte/cargas',
+    component: CargasComponent,
     canActivate: [AuthGuard]
   },
   {

@@ -20,7 +20,7 @@ import { async } from '@angular/core/testing';
   templateUrl: './carga-horaria.component.html',
   styleUrls: ['./carga-horaria.component.scss']
 })
-export class CargaHorariaComponent implements OnInit {
+export class CargasComponent implements OnInit {
   public reportes: ReporteCargaModel[] = [];
   // listas de objetos
   public carreras: CarreraModel[] = [];
@@ -33,7 +33,6 @@ export class CargaHorariaComponent implements OnInit {
     private _carrera: CarreraService,
     private _docente: DocenteService,
     private _grupos: GrupoService,
-    private _planificacion: PlanificacionService,
     private _pde: PlanEstudioService,
     private _componente: ComponenteService,
   ) {
