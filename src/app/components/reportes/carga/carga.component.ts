@@ -112,6 +112,7 @@ export class CargaComponent implements OnInit {
         p2.then((comp) => {
           // console.log('comp: ', comp);
           rp.componente = comp[0].componente_nombre;
+          rp.anyo = comp[0].componente_ciclo;
           let p3 = new Promise<any>((resolve, reject) => {
             const plande = this.pdes.filter(pde => Number(pde.pde_id) === comp[0].componente_pde);
             // console.log('plan antes: ', plande);

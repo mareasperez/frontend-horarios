@@ -1,6 +1,6 @@
 <div *ngFor="let reporte of reportes">
-  <div>{{reporte.docente}}</div>
+  <div><h1>{{reporte.docente}}</h1></div>
   <div *ngFor="let componente of reporte.componente ">
-    {{componente.componente}}
+    {{componente.componente}}  carrera: {{componente.carrera}} anyo: {{componente.anyo/2}} numero de grupo:{{componente.grupo_numero}} numero de horas: {{componente.horas}}
   </div>
 </div>
