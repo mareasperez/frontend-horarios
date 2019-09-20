@@ -24,26 +24,6 @@ export class VerrecintoComponent implements OnInit {
     this.getRecinto();
     // this.setsock();
   }
-  // setsock() {
-  //   this.socket = new WebSocket('ws://localhost:8000/ws/');
-
-  //   this.socket.onopen = () => {
-  //     console.log('WebSockets connection created for Recinto');
-  //   };
-
-  //   this.socket.onmessage = (event) => {
-  //     const action = JSON.parse(event.data);
-  //     if (action.event === 'New Recinto' || action.event === 'Delete Recinto' || action.event === 'Update Recinto') {
-  //       console.log('ws envia el evento: ', action.event);
-  //       this.getRecinto();
-  //     }
-
-  //   };
-
-  //   if (this.socket.readyState === WebSocket.OPEN) {
-  //     this.socket.onopen(null);
-  //   }
-  // }
   getRecinto() {
     this.recintos = [];
     this.RecintoService.getRecinto().subscribe(

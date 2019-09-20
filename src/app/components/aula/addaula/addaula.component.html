@@ -1,37 +1,26 @@
 <div class="col-md-4 offset-md-4">
     <div class="card">
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <input type="text" name="nombre" placeholder="Nombre del Aula" [(ngModel)]="aula.aula_nombre" class="form-control" autofocus> 
-        </div>
-          <div class="form-group"> 
-          <input type="number" name="capacidad" placeholder="Capacidad" [(ngModel)]="aula.aula_capacidad" class="form-control">
-          </div>
-          <div class="form-group"> 
-            <input type="number" name="tipo" placeholder="Tipo" [(ngModel)]="aula.aula_tipo" class="form-control">
-            </div>
-            <!-- <div class="form-group"> 
-                <input type="number" name="recinto" placeholder="Recinto" [(ngModel)]="aula.aula_recinto" class="form-control" *ngIf="edit">
-                </div> -->
-                <!-- <mat-form-field appearance="outline">
-                    <mat-label>Recinto</mat-label>
-                    <mat-select [value]="selected" formControlName="aula_recinto">
-                      <mat-option value="0">Recintos...</mat-option>
-                      <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">
-                        {{recinto.recinto_nombre}}</mat-option>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <input type="text" name="nombre" placeholder="Nombre del Aula" [(ngModel)]="aula.aula_nombre" class="form-control" autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="capacidad" placeholder="Capacidad" [(ngModel)]="aula.aula_capacidad" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="tipo" placeholder="Tipo" [(ngModel)]="aula.aula_tipo" class="form-control">
+                </div>
+                <mat-form-field>
+                    <mat-select placeholder="Select recinto of Recintos" name="recinto" [(ngModel)]="aula.aula_recinto">
+                        <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
                     </mat-select>
-                  </mat-form-field> -->
-                  <mat-form-field>
-                      <mat-select placeholder="Select recinto of Recintos" name="recinto"  [(ngModel)]="aula.aula_recinto" >
-                        <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id" >{{ recinto.recinto_nombre }}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    
-          <button class="btn btn-success btn-block" (click)="edit ? updateAula() : saveAula()">
-            Guardar
-          </button>
-        </form>
-      </div>
+                </mat-form-field>
+
+                <button class="btn btn-success btn-block" (click)="edit ? updateAula() : saveAula()">
+                  Guardar
+                </button>
+            </form>
+        </div>
     </div>
-  </div>
+</div>

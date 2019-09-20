@@ -24,6 +24,8 @@ export class CargasComponent implements OnInit {
   public reportes: ReporteCargaModel[] = [];
   public query: string;
   // listas de objetos
+  public hdocente = 0;
+  displayedColumns: string[] = ['id'];
   public carreras: CarreraModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public planficacion: PlanificacionModel[] = [];
@@ -72,6 +74,8 @@ export class CargasComponent implements OnInit {
     const reporte = new ReporteCargaModel();
     const rr: RComponent[] = [];
     reporte.componente = rr;
+    reporte.suma = 0;
+    reporte.th = 3;
     reporte.docente = docente.docente_nombre;
     const gr = await grupos.filter(grupo => grupo.grupo_docente === docente.docente_id);
     // console.log(reporte.docente, ' ', gr);
@@ -114,6 +118,8 @@ export class CargasComponent implements OnInit {
             const carrera = await this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
             rp.carrera = carrera[0].carrera_nombre;
             reporte.componente.push(rp);
+            reporte.suma = reporte.suma + grupo.grupo_horas_clase;
+            // console.log(this.suma);
             // console.log('rp: ', rp);
             // console.log('reporte:', reporte);
           }

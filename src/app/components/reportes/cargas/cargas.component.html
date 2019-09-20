@@ -1,7 +1,30 @@
-<div *ngFor="let reporte of reportes">
-    <div><h1>{{reporte.docente}}</h1></div>
-    <div *ngFor="let componente of reporte.componente ">
-      {{componente.componente}}  carrera: {{componente.carrera}} anyo: {{componente.anyo/2}} numero de grupo:{{componente.grupo_numero}} numero de horas: {{componente.horas}}
+<div mat-card class="flexbox-parent">
+    <div class="centrar">
+        <h4>Universidad Nacional Autónoma de Nicaragua</h4>
+        <h5>UNAN - León</h5>
+        <h6>Departamento de Computación</h6>
+        <h6>Reporte de Docencia Directa por Componentes II Semestre 2019</h6>
     </div>
-  </div>
-  
+    <div *ngFor="let reporte of reportes">
+        <table style="width: 100%" class="table">
+            <tr class="thead-dark row">
+                <th class="col-4">{{reporte.docente}}</th>
+                <th class="col-2">Carrera</th>
+                <th class="col-2">A&ntilde;o</th>
+                <th class="col-2">No de Grupo</th>
+                <th class="col-2">No de Hora</th>
+            </tr>
+            <tr *ngFor="let componente of reporte.componente" class="row">
+                <td class="col-4">{{componente.componente}}</td>
+                <td class="col-2">{{componente.carrera}}</td>
+                <td class="col-2">{{componente.anyo/2}}</td>
+                <td class="col-2">{{componente.grupo_numero}}</td>
+                <td class="col-2">{{componente.horas}}</td>
+            </tr>
+        </table>
+        <div *ngIf="reporte.suma<reporte.th" class="warning">{{reporte.suma}}/{{reporte.th}}</div>
+        <div *ngIf="reporte.suma==reporte.th" class="success">{{reporte.suma}}/{{reporte.th}}</div>
+        <div *ngIf="reporte.suma>reporte.th" class="danger">{{reporte.suma}}/{{reporte.th}}</div>
+        <br>
+    </div>
+</div>
