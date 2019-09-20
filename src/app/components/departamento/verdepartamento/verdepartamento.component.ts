@@ -54,7 +54,7 @@ export class VerdepartamentoComponent implements OnInit {
       });
     } else {
       console.log('el tipo es', tipo);
-      let departamento = this.departamentos.find(d => d.departamento_id === id);
+      const departamento = this.departamentos.find(d => d.departamento_id === id);
       const dialogRef = this.dialog.open(AdddepartamentoComponent, {
         width: '450px',
         data: {type: tipo, dep: departamento}
