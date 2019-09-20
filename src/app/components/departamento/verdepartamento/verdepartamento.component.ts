@@ -16,7 +16,6 @@ export class VerdepartamentoComponent implements OnInit {
 
   public departamentos: DepartamentoModel[] = [];
   public facultades: FacultadModel [] = [];
-  // tslint:disable-next-line: no-shadowed-variable
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
   sub: Subscription;
@@ -37,6 +36,7 @@ export class VerdepartamentoComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this._departamento.list = [];
     if (this.sub !== undefined) {
       this.sub.unsubscribe();
     }
@@ -61,7 +61,4 @@ export class VerdepartamentoComponent implements OnInit {
       });
     }
   }
-  // nFacultad(id: any) {
-  //   const result = this.facultades;
-  // }
 }

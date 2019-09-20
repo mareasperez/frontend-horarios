@@ -15,35 +15,35 @@ export class VerrecintoComponent implements OnInit {
   public dataSource;
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
-// tslint:disable-next-line: no-shadowed-variable
+  // tslint:disable-next-line: no-shadowed-variable
   constructor(private RecintoService: RecintoService,
               private dialog: MatDialog
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.getRecinto();
-    this.setsock();
+    // this.setsock();
   }
-  setsock() {
-    this.socket = new WebSocket('ws://localhost:8000/ws/');
+  // setsock() {
+  //   this.socket = new WebSocket('ws://localhost:8000/ws/');
 
-    this.socket.onopen = () => {
-      console.log('WebSockets connection created for Recinto');
-    };
+  //   this.socket.onopen = () => {
+  //     console.log('WebSockets connection created for Recinto');
+  //   };
 
-    this.socket.onmessage = (event) => {
-      const action = JSON.parse(event.data);
-      if (action.event === 'New Recinto' || action.event === 'Delete Recinto' || action.event === 'Update Recinto' ) {
-        console.log('ws envia el evento: ', action.event);
-        this.getRecinto();
-      }
+  //   this.socket.onmessage = (event) => {
+  //     const action = JSON.parse(event.data);
+  //     if (action.event === 'New Recinto' || action.event === 'Delete Recinto' || action.event === 'Update Recinto') {
+  //       console.log('ws envia el evento: ', action.event);
+  //       this.getRecinto();
+  //     }
 
-    };
+  //   };
 
-    if (this.socket.readyState === WebSocket.OPEN) {
-      this.socket.onopen(null);
-    }
-  }
+  //   if (this.socket.readyState === WebSocket.OPEN) {
+  //     this.socket.onopen(null);
+  //   }
+  // }
   getRecinto() {
     this.recintos = [];
     this.RecintoService.getRecinto().subscribe(
@@ -63,14 +63,14 @@ export class VerrecintoComponent implements OnInit {
     if (tipo === 'c') {
       const dialogRef = this.dialog.open(AddrecintoComponent, {
         width: '450px',
-        data: {type: tipo}
+        data: { type: tipo }
       });
     } else {
-      console.log( 'e l tipo es', tipo);
+      console.log('e l tipo es', tipo);
       const recinto = this.recintos.find(d => d.recinto_id === id);
       const dialogRef = this.dialog.open(AddrecintoComponent, {
         width: '450px',
-        data: {type: tipo, res: recinto}
+        data: { type: tipo, rec: recinto }
       });
     }
   }

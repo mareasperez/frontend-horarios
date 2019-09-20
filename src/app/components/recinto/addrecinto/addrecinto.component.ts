@@ -1,8 +1,15 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from '../../../services/recinto.service';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { Subscription, Observable } from 'rxjs';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FacultadModel } from 'src/app/models/facultad.model';
+import { FacultadSerivice } from 'src/app/services/facultad.service';
+interface DialogData {
+  type: string;
+  rec?: RecintoModel;
+}
 @Component({
   selector: 'app-addrecinto',
   templateUrl: './addrecinto.component.html',
@@ -11,53 +18,69 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AddrecintoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
-  recinto = new RecintoModel();
+  public recinto = new RecintoModel();
+  public facultades: FacultadModel [] = [];
   edit = false;
+  subs: Subscription [] = [];
+  public selected = '0';
+  public form: FormGroup;
+  public refFacultad: Observable<any>;
 
-  constructor(private recintoService: RecintoService, private route: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private recintoService: RecintoService,
+              private facultad$: FacultadSerivice,
+              public dialogRef: MatDialogRef<AddrecintoComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private fb: FormBuilder
+    ) {
+      this.facultad$.getFacultad().subscribe(res => this.facultades.push(res));
+      this.refFacultad = this.facultad$.getList();
+    }
 
   ngOnInit() {
-    const params = this.activatedRoute.snapshot.params;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
-      if (params.id) {
-        this.recintoService.getRecintoByID(params.id)
-          .subscribe(
-            res => {
-              console.log(res);
-              this.recinto.recinto_id = res.recinto.recinto_id;
-              this.recinto.recinto_nombre = res.recinto.recinto_nombre;
-              this.recinto.recinto_ubicacion = res.recinto.recinto_ubicacion;
-              this.recinto.recinto_facultad = res.recinto.recinto_facultad;
-              this.edit = true;
-            },
-            err => console.error(err)
-          );
-      }
+    this.subs.push(
+      this.refFacultad.subscribe(recs => this.facultades = recs)
+    );
+    this.createForm();
+  }
+
+  ngOnDestroy() {
+    this.subs.map(sub => sub.unsubscribe());
+  }
+  createForm( id?: string ) {
+    if (this.data.type === 'c') {
+      this.form = this.fb.group({
+        recinto_id: null,
+        recinto_nombre: new FormControl('', [Validators.required]),
+        recinto_ubicacion: new FormControl('', [Validators.required]),
+        recinto_facultad: new FormControl('', [Validators.required])
+      });
+    } else {
+      this.form = this.fb.group({
+        recinto_id: this.data.rec.recinto_id,
+        recinto_nombre: new FormControl(this.data.rec.recinto_nombre, [Validators.required]),
+        recinto_ubicacion: new FormControl(this.data.rec.recinto_ubicacion, [Validators.required]),
+        recinto_facultad: new FormControl(this.data.rec.recinto_facultad, [Validators.required])
+      });
     }
   }
 
   saveRecinto() {
-    // console.log(this.facultad);
-    this.recinto.recinto_facultad = this.activatedRoute.snapshot.params.id;
-    this.recintoService.crearRecinto(this.recinto)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/recinto/ver']);
-        },
-        err => console.error(err)
-      );
+    let rec = new RecintoModel();
+    rec = Object.assign(rec, this.form.value);
+    console.log(rec);
+    this.subs.push(
+      this.recintoService.crearRecinto(rec)
+      .subscribe(res => this.dialogRef.close())
+    );
   }
   updateRecinto() {
-    // console.log(this.facultad);
-    this.recintoService.updateRecinto(this.recinto, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/recinto/ver']);
-        },
-        err => console.error(err)
-      );
+    let rec = new RecintoModel();
+    rec = Object.assign(rec, this.form.value);
+    console.log(rec);
+    this.subs.push(
+      this.recintoService.updateRecinto(rec, rec.recinto_id)
+      .subscribe(res => this.dialogRef.close())
+    );
   }
 
 }
