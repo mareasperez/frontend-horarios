@@ -1,22 +1,26 @@
-<div class="col-md-4 offset-md-4">
-  <div class="card">
-    <div class="card-body">
-      <form>
-        <div class="form-group">
-          <input type="text" name="nombre" placeholder="Nombre del recinto" [(ngModel)]="recinto.recinto_nombre" class="form-control" autofocus> </div>
-        <div class="form-group">
-          <input type="number" name="id" placeholder="id del recinto" [(ngModel)]="recinto.recinto_id" class="form-control">
-        </div>
-        <div class="form-group">
-        <input type="text" name="ubicacion" placeholder="Geo tap" [(ngModel)]="recinto.recinto_ubicacion" class="form-control">
-        </div>
-        <div class="form-group"> 
-        <input type="text" name="facultad" placeholder="facultad" [(ngModel)]="recinto.recinto_facultad" class="form-control" *ngIf="edit">
-        </div>
-        <button class="btn btn-success btn-block" (click)="edit ? updateRecinto() : saveRecinto()">
+<div class="container-fluid">
+    <mat-card>
+        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="recinto_nombre" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Ubicaci&oacute;n</mat-label>
+                <input formControlName="recinto_ubicacion" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Facultad</mat-label>
+                <mat-select formControlName="recinto_facultad" ([value])="selected">
+                    <mat-option value="0">Facultad...</mat-option>
+                    <mat-option *ngFor="let facultad of facultades" [value]="facultad.facultad_id">
+                        {{facultad.facultad_nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveRecinto():updateRecinto()">
           Guardar
         </button>
-      </form>
-    </div>
-  </div>
+        </form>
+    </mat-card>
 </div>

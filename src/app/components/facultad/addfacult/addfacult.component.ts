@@ -26,7 +26,7 @@ export class AddfacultComponent implements OnInit {
 
   sendData(){
     console.log(this.id)
-    this.dataFacultad.emit({type:this.id,data:this.form.value})
+    this.dataFacultad.emit({id:this.id,data:this.form.value})
     this.hideAdd.emit(true)
 
   }

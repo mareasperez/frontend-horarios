@@ -20,7 +20,7 @@ export class AreaService extends MainService {
         data.area.forEach(el => {
           //console.log(el)
           let area = new AreaModel();
-          area = Object.assign(el);
+          area = Object.assign(area,el);
           this.list.push(area);
           observer.next(area);
 
@@ -52,25 +52,29 @@ export class AreaService extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let area = new AreaModel();
+    area = Object.assign(area,data.data);
+
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-        let area = new AreaModel();
-        area = Object.assign(area,data.data);
-        console.log(area)
         data.data = area;
-         this.list.push(data.data);
+         this.list.push(area);
+         console.log(this.list)
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
          const index = this.list.map(el => el.area_id).indexOf(data.data.area_id);
-         this.list.splice(index, 1, data.data);
+         this.list.splice(index, 1, area);
+         console.log(this.list)
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.area_id !== data.data.area_id);
+         let list = this.list.filter(el=>el.area_id !== area.area_id);
+         console.log(list)
+         this.list = list
          this.list$.next(this.list)
          break;
  

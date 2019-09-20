@@ -6,6 +6,8 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { AreaService } from 'src/app/services/area.service';
+import { AreaModel } from 'src/app/models/area.model';
 
 interface DialogData {
   type: string;
@@ -21,19 +23,26 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
 
   docente = new DocenteModel();
   public departamentos: DepartamentoModel[] = [];
+  public areas:AreaModel[]=[]
+  public areasSelecteds:string[]=[]
+
   edit = false;
   subs: Subscription[] = [];
   public selected = '0';
   public form: FormGroup;
   public refDepartamento: Observable<any>;
+  public refArea: Observable<any>;
 
   constructor(private docenteService: DocenteService,
               private departamento$: DepartamentoService,
+              private _area:AreaService,
               public dialogRef: MatDialogRef<AdddocenteComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private fb: FormBuilder
    ) {
      this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
+     this._area.getAreas().subscribe(res => this.areas.push(res))
+     this.refArea = this._area.getList()
      this.refDepartamento = this.departamento$.getList();
    }
 
@@ -41,10 +50,16 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
    this.subs.push(
       this.refDepartamento.subscribe(deps => this.departamentos = deps)
     );
+    this.subs.push(
+      this.refArea.subscribe(areas=> this.areas = areas)
+    );
    this.createForm();
   }
 
   ngOnDestroy() {
+    this._area.list = []
+    this.departamento$.list = []
+    this.docenteService.list = []
     this.subs.map(sub => sub.unsubscribe());
   }
 
@@ -73,21 +88,25 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   saveDocente() {
     let doc = new DocenteModel();
     doc = Object.assign(doc, this.form.value);
-    console.log(doc);
     this.subs.push(
       this.docenteService.crearDocente(doc)
         .subscribe(res => this.dialogRef.close())
     );
+    console.log(this.areasSelecteds)
+
   }
   updateDocente() {
     let doc = new DocenteModel();
     doc = Object.assign(doc, this.form.value);
-    console.log(doc);
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(res => this.dialogRef.close())
-    );
+        );
+    
   }
 
+  add_area(permisos){
+    this.areasSelecteds = permisos._value
+  }
 
 }

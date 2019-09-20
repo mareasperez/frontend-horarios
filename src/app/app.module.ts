@@ -53,6 +53,7 @@ import { ComponentesComponent } from './components/componentes/componentes.compo
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargaHorariaComponent } from './components/reportes/carga-horaria/carga-horaria.component';
+import { DocAreaComponent } from './components/doc-area/doc-area.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { CargaHorariaComponent } from './components/reportes/carga-horaria/carga
     GrupoComponent,
     CargaComponent,
     CargaHorariaComponent,
+    DocAreaComponent,
   ],
   imports: [
     BrowserModule,
