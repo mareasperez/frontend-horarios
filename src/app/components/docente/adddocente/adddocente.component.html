@@ -5,14 +5,16 @@
               <mat-label>Nombre</mat-label>
               <input formControlName="docente_nombre" matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Tipo de contrato</mat-label>
-              <input formControlName="docente_tipo_contrato" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Inss</mat-label>
-              <input formControlName="docente_inss" matInput>
-            </mat-form-field>
+            <span>
+              <mat-form-field class="col-6" appearance="outline">
+                <mat-label>Tipo de contrato</mat-label>
+                <input formControlName="docente_tipo_contrato" matInput>
+              </mat-form-field>
+              <mat-form-field class="col-6" appearance="outline">
+                <mat-label>Inss</mat-label>
+                <input formControlName="docente_inss" matInput>
+              </mat-form-field>
+            </span>
             <mat-form-field  appearance="outline">
               <mat-label>Departamento</mat-label>
                 <mat-select formControlName="docente_departamento" ([value])="selected">
@@ -22,6 +24,14 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+              <mat-selection-list #permisos style="height: 200px; overflow: auto"  appearance="outline">
+                <mat-label>Areas</mat-label>
+                <mat-list-option *ngFor="let area of areas" [value]="area.area_id"
+                [selected]="area.selected" (click)="add_area(permisos)"
+                >
+                  {{area.area_nombre}}
+                </mat-list-option>
+              </mat-selection-list>
           <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveDocente():updateDocente()">
             Guardar
           </button>
