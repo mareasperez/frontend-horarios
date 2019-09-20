@@ -57,6 +57,9 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this._area.list = []
+    this.departamento$.list = []
+    this.docenteService.list = []
     this.subs.map(sub => sub.unsubscribe());
   }
 
@@ -85,30 +88,25 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   saveDocente() {
     let doc = new DocenteModel();
     doc = Object.assign(doc, this.form.value);
-    console.log(doc);
     this.subs.push(
       this.docenteService.crearDocente(doc)
         .subscribe(res => this.dialogRef.close())
     );
+    console.log(this.areasSelecteds)
+
   }
   updateDocente() {
     let doc = new DocenteModel();
     doc = Object.assign(doc, this.form.value);
-    console.log(doc);
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(res => this.dialogRef.close())
-    );
+        );
     
   }
 
-  add_permissions(permisos){
-    
-    permisos.selectedOptions.selected.map(item=>{
-      let area = new AreaModel()
-      area = this.areas.find(a=>permisos)
-      this.areasSelecteds.push(area.area_id)
-    })
+  add_area(permisos){
+    this.areasSelecteds = permisos._value
   }
 
 }
