@@ -36,7 +36,7 @@ export class CargasComponent implements OnInit {
     private _grupos: GrupoService,
     private _pde: PlanEstudioService,
     private _componente: ComponenteService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this._grupos.getGrupos().subscribe(res => this.grupos.push(res));
     this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
@@ -52,7 +52,7 @@ export class CargasComponent implements OnInit {
     await this.foo().then(
       () => {
         this.docentes.forEach(docente => {
-          this.reporteHorarios(docente, this.grupos);
+          this.reporte(docente, this.grupos);
           i++;
         });
       });
@@ -68,7 +68,7 @@ export class CargasComponent implements OnInit {
   sleep(ms = 0) {
     return new Promise(r => setTimeout(r, ms));
   }
-  async reporteHorarios(docente: DocenteModel, grupos: GrupoModel[]) {
+  async reporte(docente: DocenteModel, grupos: GrupoModel[]) {
     const reporte = new ReporteCargaModel();
     const rr: RComponent[] = [];
     reporte.componente = rr;
@@ -76,25 +76,71 @@ export class CargasComponent implements OnInit {
     const gr = await grupos.filter(grupo => grupo.grupo_docente === docente.docente_id);
     // console.log(reporte.docente, ' ', gr);
     for (const grupo of gr) {
-      if (!grupo.grupo_planta) {
-        // console.log(grupo);
-        const rp: RComponent = new RComponent();
-        rp.componente = grupo.grupo_componente;
-        // console.log('Docente: ', docente.docente_nombre, 'componente: ', rp.componente);
-        rp.grupo_numero = grupo.grupo_numero;
-        rp.horas = grupo.grupo_horas_clase;
-        const comp = await this.componentes.filter(componente => componente.componente_id === grupo.grupo_componente);
-        rp.componente = comp[0].componente_nombre;
-        rp.anyo = comp[0].componente_ciclo;
-        const plande = await this.pdes.filter(pde => Number(pde.pde_id) === comp[0].componente_pde);
-        const carrera = await this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
-        rp.carrera = carrera[0].carrera_nombre;
-        reporte.componente.push(rp);
-        // console.log('rp: ', rp);
-        // console.log('reporte:', reporte);
+      switch (this.query) {
+        // solo la carga de los docentes que tienen carga de horario
+        case 'cargahoraria': {
+          if (!grupo.grupo_planta) {
+            const rp: RComponent = new RComponent();
+            // console.log(grupo);
+            rp.componente = grupo.grupo_componente;
+            // console.log('Docente: ', docente.docente_nombre, 'componente: ', rp.componente);
+            rp.grupo_numero = grupo.grupo_numero;
+            rp.horas = grupo.grupo_horas_clase;
+            const comp = await this.componentes.filter(componente => componente.componente_id === grupo.grupo_componente);
+            rp.componente = comp[0].componente_nombre;
+            rp.anyo = comp[0].componente_ciclo;
+            const plande = await this.pdes.filter(pde => Number(pde.pde_id) === comp[0].componente_pde);
+            const carrera = await this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
+            rp.carrera = carrera[0].carrera_nombre;
+            reporte.componente.push(rp);
+            // console.log('rp: ', rp);
+            // console.log('reporte:', reporte);
+          }
+          break;
+        }
+        // carga de los docentes que tienen carga de planta
+        case 'cargaplanta': {
+          if (grupo.grupo_planta) {
+            const rp: RComponent = new RComponent();
+            // console.log(grupo);
+            rp.componente = grupo.grupo_componente;
+            // console.log('Docente: ', docente.docente_nombre, 'componente: ', rp.componente);
+            rp.grupo_numero = grupo.grupo_numero;
+            rp.horas = grupo.grupo_horas_clase;
+            const comp = await this.componentes.filter(componente => componente.componente_id === grupo.grupo_componente);
+            rp.componente = comp[0].componente_nombre;
+            rp.anyo = comp[0].componente_ciclo;
+            const plande = await this.pdes.filter(pde => Number(pde.pde_id) === comp[0].componente_pde);
+            const carrera = await this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
+            rp.carrera = carrera[0].carrera_nombre;
+            reporte.componente.push(rp);
+            // console.log('rp: ', rp);
+            // console.log('reporte:', reporte);
+          }
+          break;
+        }
+        case 'cargaacademica': {
+          const rp: RComponent = new RComponent();
+          // console.log(grupo);
+          rp.componente = grupo.grupo_componente;
+          // console.log('Docente: ', docente.docente_nombre, 'componente: ', rp.componente);
+          rp.grupo_numero = grupo.grupo_numero;
+          rp.horas = grupo.grupo_horas_clase;
+          const comp = await this.componentes.filter(componente => componente.componente_id === grupo.grupo_componente);
+          rp.componente = comp[0].componente_nombre;
+          rp.anyo = comp[0].componente_ciclo;
+          const plande = await this.pdes.filter(pde => Number(pde.pde_id) === comp[0].componente_pde);
+          const carrera = await this.carreras.filter(carr => carr.carrera_id === plande[0].pde_carrera);
+          rp.carrera = carrera[0].carrera_nombre;
+          reporte.componente.push(rp);
+          // console.log('rp: ', rp);
+          // console.log('reporte:', reporte);
+          break;
+        }
+        default: {
+          console.log('no hay filtro para eso');
+        }
       }
-
-
     }
     if (reporte.componente.length > 0) {
       console.log(reporte.componente.length);

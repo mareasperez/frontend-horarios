@@ -12,7 +12,7 @@ export class ContenidoComponent implements OnInit {
 
   ngOnInit() {
   }
-  go(rep: string) {
-    this.router.navigate(['/reporte/horarios'], { queryParams: { reporte: rep } });
+  go(redir: string, rep: string) {
+    this.router.navigate([`/reporte/${redir}`], { queryParams: { reporte: rep } });
   }
 }
