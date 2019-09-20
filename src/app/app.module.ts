@@ -52,6 +52,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
+import { DocAreaComponent } from './components/doc-area/doc-area.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { CargaComponent } from './components/reportes/carga/carga.component';
     ComponentesComponent,
     GrupoComponent,
     CargaComponent,
+    DocAreaComponent,
   ],
   imports: [
     BrowserModule,

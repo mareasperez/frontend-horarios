@@ -26,11 +26,14 @@ export class VerareaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.refArea.subscribe(data=>{
+      console.log(data)
+      this.areas=[];
       this.areas = data;
     });
   }
 
   ngOnDestroy(){
+    this._area.list = []
     if(this.sub !==undefined){
       this.sub.unsubscribe()
     }
