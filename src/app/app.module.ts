@@ -52,6 +52,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
+import { CargaHorariaComponent } from './components/reportes/carga-horaria/carga-horaria.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { CargaComponent } from './components/reportes/carga/carga.component';
     ComponentesComponent,
     GrupoComponent,
     CargaComponent,
+    CargaHorariaComponent,
   ],
   imports: [
     BrowserModule,

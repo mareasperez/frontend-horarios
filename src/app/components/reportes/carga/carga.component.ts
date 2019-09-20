@@ -44,18 +44,11 @@ export class CargaComponent implements OnInit {
     private _pde: PlanEstudioService,
     private _componente: ComponenteService,
   ) {
-    const index = 0;
-
-    this._grupos.getGrupos().subscribe(res => {
-      this.grupos.push(res);
-    });
-
+    this._grupos.getGrupos().subscribe(res => this.grupos.push(res));
     this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
     this._componente.getComponentes().subscribe(res => this.componentes.push(res));
     this._carrera.getCarrera().subscribe(res => this.carreras.push(res));
-    this._docente.getDocente().subscribe(res => {
-      this.docentes.push(res);
-    });
+    this._docente.getDocente().subscribe(res => this.docentes.push(res));
     this.refDoc = this._docente.getList();
     this.refGr = this._grupos.getList();
   }
