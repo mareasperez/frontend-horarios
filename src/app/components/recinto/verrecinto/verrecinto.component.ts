@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
+import { MatDialog } from '@angular/material';
+import { AddrecintoComponent } from '../addrecinto/addrecinto.component';
 
 @Component({
   selector: 'app-verrecinto',
@@ -14,7 +16,9 @@ export class VerrecintoComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
 // tslint:disable-next-line: no-shadowed-variable
-  constructor(private RecintoService: RecintoService) { }
+  constructor(private RecintoService: RecintoService,
+              private dialog: MatDialog
+    ) { }
 
   ngOnInit() {
     this.getRecinto();
@@ -28,9 +32,6 @@ export class VerrecintoComponent implements OnInit {
     };
 
     this.socket.onmessage = (event) => {
-      //  var data = JSON.parse(event.data);
-      // console.log('data from socket:' + event.data);
-      // this.getRecintoes()
       const action = JSON.parse(event.data);
       if (action.event === 'New Recinto' || action.event === 'Delete Recinto' || action.event === 'Update Recinto' ) {
         console.log('ws envia el evento: ', action.event);
@@ -57,6 +58,21 @@ export class VerrecintoComponent implements OnInit {
         console.error(err);
       }
     );
+  }
+  openDialog(tipo, id?): void {
+    if (tipo === 'c') {
+      const dialogRef = this.dialog.open(AddrecintoComponent, {
+        width: '450px',
+        data: {type: tipo}
+      });
+    } else {
+      console.log( 'e l tipo es', tipo);
+      const recinto = this.recintos.find(d => d.recinto_id === id);
+      const dialogRef = this.dialog.open(AddrecintoComponent, {
+        width: '450px',
+        data: {type: tipo, res: recinto}
+      });
+    }
   }
   deleteRecinto(id: string) {
     this.RecintoService.deleteRecinto(id).subscribe(
