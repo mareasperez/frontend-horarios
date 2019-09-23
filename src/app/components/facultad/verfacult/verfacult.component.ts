@@ -16,33 +16,39 @@ export class VerfacultComponent implements OnInit {
   public facultades: FacultadModel[] = [];
   public alerts = true;
   socket: WebSocket;
-  public facultad_id:number = 0;
-  public a:Observable<any[]>;
-  @ViewChild('userMenu', {static: false}) userMenu: TemplateRef<any>;
+  public facultad_id = 0;
+  public a: Observable<any[]>;
+  @ViewChild('userMenu', { static: false }) userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
   sub: Subscription;
-  public hide: boolean = true;
+  public hide = true;
   editing = false;
   // tslint:disable-next-line: max-line-length
   constructor(private facultadService: FacultadSerivice,
-              private route: Router,
               public overlay: Overlay,
-              public viewContainerRef: ViewContainerRef,
-             ) {
-    this.facultadService.getFacultad().subscribe(res=>{
-      this.facultades.push(res)
-    })
+              public viewContainerRef: ViewContainerRef
+  ) {
+    this.facultadService.getFacultad().subscribe(res => {
+      this.facultades.push(res);
+    });
     this.a = this.facultadService.getList();
   }
 
   ngOnInit() {
-    this.a.subscribe(res=>{
-      console.log(res)
+    this.a.subscribe(res => {
+      console.log(res);
       this.facultades = res;
-    })
-    //this.setsock();
+    });
 
   }
+
+  ngOnDestroy() {
+    this.facultadService.list = [];
+    if (this.sub !== undefined) {
+      this.sub.unsubscribe();
+    }
+  }
+
   open({ x, y }: MouseEvent, facultad) {
     this.close();
     const positionStrategy = this.overlay.position()
@@ -75,12 +81,12 @@ export class VerfacultComponent implements OnInit {
       ).subscribe(() => this.close());
 
   }
-  
+
   getfacultades() {
     this.facultades = [];
     this.facultadService.getFacultad().subscribe(
       res => {
-        //console.log(res)
+        // console.log(res)
         this.facultades.push(res);
         this.alerts = false;
       },
@@ -107,49 +113,48 @@ export class VerfacultComponent implements OnInit {
     }
   }
 
-  filterAction(e){
-    console.log(e)
-    if(e.id === 0){
-        this.saveFacultad(e.data);
-    }
-    else{
-      this.updateFacultad(e)
+  filterAction(e) {
+    console.log(e);
+    if (e.id === 0) {
+      this.saveFacultad(e.data);
+    } else {
+      this.updateFacultad(e);
     }
 
   }
 
   saveFacultad(data) {
-    //console.log("s", data)
-    let facultad = new FacultadModel();
-    this.editing = true
+    // console.log("s", data)
+    const facultad = new FacultadModel();
+    this.editing = true;
     facultad.facultad_nombre = data.nombre;
     facultad.facultad_id = null;
-    this.facultadService.crearFacultad(facultad).subscribe(res=>{
-      this.editing = false
-    })
+    this.facultadService.crearFacultad(facultad).subscribe(res => {
+      this.editing = false;
+    });
   }
   updateFacultad(data) {
- //console.log("u",data)
+    // console.log("u",data)
 
-    let facultad = new FacultadModel();
-    this.editing = true
+    const facultad = new FacultadModel();
+    this.editing = true;
     facultad.facultad_nombre = data.data.nombre;
     this.facultadService.updateFacultad(facultad, data.id)
       .subscribe(
         res => {
-         
+
         },
         err => console.error(err)
       );
   }
 
-  showAdd(id?:number){
-    console.log("show add")
-    this.facultad_id = id
+  showAdd(id?: number) {
+    console.log('show add');
+    this.facultad_id = id;
     this.hide = false;
   }
 
-  hideform(e){
+  hideform(e) {
     this.hide = e;
   }
 }

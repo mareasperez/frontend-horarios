@@ -75,7 +75,7 @@ export class CargasComponent implements OnInit {
     const rr: RComponent[] = [];
     reporte.componente = rr;
     reporte.suma = 0;
-    reporte.th = 3;
+    reporte.th = 4;
     reporte.docente = docente.docente_nombre;
     const gr = await grupos.filter(grupo => grupo.grupo_docente === docente.docente_id);
     // console.log(reporte.docente, ' ', gr);
