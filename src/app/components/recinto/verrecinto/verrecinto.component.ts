@@ -42,6 +42,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
       console.log(data);
 
       this.dataSource = [];
+      this.recintos = data
       data.map(recinto=> this.dataSource.push(recinto));
     })
   }

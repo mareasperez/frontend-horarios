@@ -37,6 +37,7 @@ export class VerdocenteComponent implements OnInit {
       this.refDocentes.subscribe(data=>{
         console.log(data)
         this.dataSource = [];
+        this.docentes = data
         data.map(doc=>{
           this.dataSource.push(doc);
         });

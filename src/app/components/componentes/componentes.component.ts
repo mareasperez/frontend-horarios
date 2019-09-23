@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ComponenteService } from 'src/app/services/componente.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { AreaService } from 'src/app/services/area.service';
@@ -13,7 +13,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
   templateUrl: './componentes.component.html',
   styleUrls: ['./componentes.component.scss']
 })
-export class ComponentesComponent implements OnInit {
+export class ComponentesComponent implements OnInit, OnDestroy {
   public ref:Observable<any[]>;
   public refArea:Observable<any[]>;
   public refPde:Observable<any[]>;
@@ -25,16 +25,19 @@ export class ComponentesComponent implements OnInit {
   public selected2:string = "0";
   public add:boolean = false;
   public editing:boolean = false;
-
+  subs:Subscription[]=[]
   constructor(private comService:ComponenteService,
               private _area:AreaService,
               private _pde:PlanEstudioService,
               private fb:FormBuilder
 
   ) { 
-    this.comService.getComponentes().subscribe(res=>this.componentes.push(res));
-    this._area.getAreas().subscribe(res=>this.areas.push(res))
-    this._pde.getPlanEstudio().subscribe(res=>this.pdes.push(res))
+    this.subs.push(
+      this.comService.getComponentes().subscribe(res=>this.componentes.push(res)))
+    this.subs.push(
+      this._area.getAreas().subscribe(res=>this.areas.push(res)))
+    this.subs.push(
+      this._pde.getPlanEstudio().subscribe(res=>this.pdes.push(res)))
     this.ref = this.comService.getList();
     this.refArea = this._area.getList();
     this.refPde = this._pde.getList();
@@ -42,10 +45,21 @@ export class ComponentesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ref.subscribe(data=>this.componentes = data);
-    this.refArea.subscribe(data=>this.areas = data);
-    this.refPde.subscribe(data=>this.pdes = data);
+    this.subs.push(
+      this.ref.subscribe(data=>this.componentes = data));
+    this.subs.push(
+      this.refArea.subscribe(data=>this.areas = data));
+    this.subs.push(
+      this.refPde.subscribe(data=>this.pdes = data));
    // this.createForm(0);
+  }
+
+  ngOnDestroy(){
+    this._area.list = []
+    this._pde.list = []
+    this.comService.list = []
+    this.subs.map(sub=>sub.unsubscribe())
+
   }
 
   createForm(flag:number, id?:string){
