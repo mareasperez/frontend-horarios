@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, ViewChild, ViewContainerRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, ViewContainerRef, TemplateRef, OnDestroy } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { take, filter } from 'rxjs/operators';
   templateUrl: './verfacult.component.html',
   styleUrls: ['./verfacult.component.css']
 })
-export class VerfacultComponent implements OnInit {
+export class VerfacultComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
   public facultades: FacultadModel[] = [];
   public alerts = true;
@@ -20,35 +20,39 @@ export class VerfacultComponent implements OnInit {
   public a: Observable<any[]>;
   @ViewChild('userMenu', { static: false }) userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
-  sub: Subscription;
-  public hide = true;
+  sub:Subscription
+  subs: Subscription[]=[];
+  public hide: boolean = true;
   editing = false;
   // tslint:disable-next-line: max-line-length
   constructor(private facultadService: FacultadSerivice,
               public overlay: Overlay,
-              public viewContainerRef: ViewContainerRef
-  ) {
-    this.facultadService.getFacultad().subscribe(res => {
-      this.facultades.push(res);
-    });
+              public viewContainerRef: ViewContainerRef,
+             ) {
+    this.subs.push(this.facultadService.getFacultad()
+      .subscribe(res=>{
+        this.facultades.push(res)
+      })
+    );
     this.a = this.facultadService.getList();
   }
 
   ngOnInit() {
-    this.a.subscribe(res => {
-      console.log(res);
+    this.subs.push(this.a.subscribe(res=>{
+      console.log(res)
       this.facultades = res;
-    });
+    })
+    );
+    //this.setsock();
 
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(){
     this.facultadService.list = [];
-    if (this.sub !== undefined) {
-      this.sub.unsubscribe();
-    }
+    this.subs.map(sub=>sub.unsubscribe())
   }
 
+  on
   open({ x, y }: MouseEvent, facultad) {
     this.close();
     const positionStrategy = this.overlay.position()

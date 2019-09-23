@@ -29,7 +29,7 @@
 
       <ng-template #userMenu let-facultad>
         <section class="user-menu">
-            <div (click)="delete(facultad)">Delete {{facultad.facultad_nombre}}</div>
+            <div (click)="deleteFaculta(facultad.facultad_id)">Delete {{facultad.facultad_nombre}}</div>
             <div>Send to</div>
           </section>
         </ng-template>

@@ -1,30 +1,68 @@
-<div mat-card class="flexbox-parent">
+<div class="row" *ngIf="!loader && reportes.length==0">
+  <div class="col">
+    <h4>Seleccione Planificacion</h4>
+    <mat-form-field>
+      <mat-label>Planificacion</mat-label>
+      <mat-select name="planificacion"
+      [(ngModel)]="selectPlani" (selectionChange)="seleccion($event.value)">
+        <mat-option *ngFor="let planificacion of planificaciones" [value]="planificacion">
+          {{planificacion.planificacion_anyo_lectivo}}
+          Semestre
+          {{planificacion.planificacion_semestre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+</div>
+<div *ngIf="loader" class="google-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+
+<div *ngIf="visible">
+  <div mat-card class="flexbox-parent">
     <div class="centrar">
-        <h4>Universidad Nacional Autónoma de Nicaragua</h4>
-        <h5>UNAN - León</h5>
-        <h6>Departamento de Computación</h6>
-        <h6>Reporte de Docencia Directa por Componentes II Semestre 2019</h6>
+      <h4>Universidad Nacional Autónoma de Nicaragua</h4>
+      <h5>UNAN - León</h5>
+      <h6>Departamento de Computación</h6>
+      <h6 *ngIf="selectPlani">
+        <span *ngIf="query != 'cargahoraria'; else horaria">
+          Reporte de Docencia Directa por Docentes
+        </span>
+        <ng-template #horaria>
+          Reporte de Carga Horaria De Docencia Directa
+        </ng-template>
+        <span *ngIf="selectPlani.planificacion_semestre == 2">ll</span>
+        <span *ngIf="selectPlani.planificacion_semestre == 1">l</span>
+        semestre {{selectPlani.planificacion_anyo_lectivo}}
+      </h6>
     </div>
+
     <div *ngFor="let reporte of reportes">
-        <table style="width: 100%" class="table">
-            <tr class="thead-dark row">
-                <th class="col-4">{{reporte.docente}}</th>
-                <th class="col-2">Carrera</th>
-                <th class="col-2">A&ntilde;o</th>
-                <th class="col-2">No de Grupo</th>
-                <th class="col-2">No de Hora</th>
-            </tr>
-            <tr *ngFor="let componente of reporte.componente" class="row">
-                <td class="col-4">{{componente.componente}}</td>
-                <td class="col-2">{{componente.carrera}}</td>
-                <td class="col-2">{{componente.anyo/2}}</td>
-                <td class="col-2">{{componente.grupo_numero}}</td>
-                <td class="col-2">{{componente.horas}}</td>
-            </tr>
-        </table>
-        <div *ngIf="reporte.suma<reporte.th" class="warning horas">{{reporte.suma}}/{{reporte.th}}</div>
-        <div *ngIf="reporte.suma==reporte.th" class="success horas">{{reporte.suma}}/{{reporte.th}}</div>
-        <div *ngIf="reporte.suma>reporte.th" class="danger horas">{{reporte.suma}}/{{reporte.th}}</div>
-        <br>
+      <table style="width: 100%" class="table">
+        <tr class="thead-dark row">
+          <th class="col-4">{{reporte.docente}}</th>
+          <th class="col-2">Carrera</th>
+          <th class="col-2">A&ntilde;o</th>
+          <th class="col-2">No de Grupo</th>
+          <th class="col-2">No de Hora</th>
+        </tr>
+        <tr *ngFor="let componente of reporte.componente" class="row">
+          <td class="col-4">{{componente.componente}}</td>
+          <td class="col-2">{{componente.carrera}}</td>
+          <td class="col-2">{{componente.anyo/2}}</td>
+          <td class="col-2">{{componente.grupo_numero}}</td>
+          <td class="col-2">{{componente.horas}}</td>
+        </tr>
+      </table>
+      <div *ngIf="reporte.suma<reporte.th" class="warning horas">{{reporte.suma}}/{{reporte.th}}</div>
+      <div *ngIf="reporte.suma==reporte.th" class="success horas">{{reporte.suma}}/{{reporte.th}}</div>
+      <div *ngIf="reporte.suma>reporte.th" class="danger horas">{{reporte.suma}}/{{reporte.th}}</div>
+      <br>
     </div>
+  </div>
 </div>
