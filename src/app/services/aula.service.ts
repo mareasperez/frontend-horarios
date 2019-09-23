@@ -55,25 +55,25 @@ export class AulaService extends MainService{
 
   updateList(data: wsModel) {
     // console.log(data)
+    let aula = new AulaModel();
+    aula = Object.assign(aula,data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let aula = new AulaModel();
-         aula = Object.assign(aula,data.data);
          console.log(aula)
          data.data = aula;
-         this.list.push(data.data);
+         this.list.push(aula);
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.aula_id).indexOf(data.data.aula_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.aula_id).indexOf(aula.aula_id);
+         this.list.splice(index, 1, aula);
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.aula_id !== data.data.aula_id);
+         this.list = this.list.filter(el=>el.aula_id !== aula.aula_id);
          this.list$.next(this.list)
          break;
  

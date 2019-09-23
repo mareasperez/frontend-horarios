@@ -1,43 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { MatDialog } from '@angular/material';
 import { AddrecintoComponent } from '../addrecinto/addrecinto.component';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-verrecinto',
   templateUrl: './verrecinto.component.html',
   styleUrls: ['./verrecinto.component.css']
 })
-export class VerrecintoComponent implements OnInit {
+export class VerrecintoComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   public alerts = true;
+  public subs:Subscription[] = []
   public dataSource;
+  refRecinto: Observable<any[]>
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
   // tslint:disable-next-line: no-shadowed-variable
   constructor(private RecintoService: RecintoService,
               private dialog: MatDialog
-  ) { }
-
-  ngOnInit() {
-    this.getRecinto();
-    // this.setsock();
-  }
-  getRecinto() {
-    this.recintos = [];
+  ) { 
     this.RecintoService.getRecinto().subscribe(
       res => {
         this.recintos.push(res);
         this.alerts = false;
-        console.log(this.recintos);
+        //console.log(this.recintos);
         this.dataSource = this.recintos;
         console.log(this.dataSource);
       },
-      err => {
-        console.error(err);
-      }
+      err => console.error(err)
     );
+    this.refRecinto = RecintoService.getList();
+
+  }
+
+  ngOnInit() {
+    // this.setsock();
+    this.refRecinto.subscribe(data=>{
+      console.log(data);
+
+      this.dataSource = [];
+      data.map(recinto=> this.dataSource.push(recinto));
+    })
+  }
+
+  ngOnDestroy(){
+    this.RecintoService.list = [];
+
+  }
+  getRecinto() {
+    //this.recintos = [];
+    
   }
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
@@ -46,7 +61,6 @@ export class VerrecintoComponent implements OnInit {
         data: { type: tipo }
       });
     } else {
-      console.log('e l tipo es', tipo);
       const recinto = this.recintos.find(d => d.recinto_id === id);
       const dialogRef = this.dialog.open(AddrecintoComponent, {
         width: '450px',

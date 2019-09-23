@@ -48,6 +48,7 @@ export class WsService {
             this.docente$.updateList(action);
             break;
           case 'recinto':
+            this.recintoService.updateList(action);
             break;
           case 'componente':
             this.componenteService.updateList(action);

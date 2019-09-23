@@ -19,7 +19,8 @@ export class HorarioService extends MainService {
         data.horarios.forEach(el => {
           console.log(el);
           let horario = new HorarioModel();
-          horario = Object.assign(el);
+          horario = Object.assign(horario,el);
+          this.list.push(horario)
           observer.next(horario);
         });
       });
@@ -68,25 +69,24 @@ export class HorarioService extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let horario = new HorarioModel();
+    horario = Object.assign(horario, data.data);
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        let horario = new HorarioModel();
-        horario = Object.assign(horario, data.data);
-        console.log(horario);
-        data.data = horario;
-        this.list.push(data.data);
+
+        this.list.push(horario);
         this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
-        const index = this.list.map(el => el.horario_id).indexOf(data.data.horario_id);
-        this.list.splice(index, 1, data.data);
+        const index = this.list.map(el => el.horario_id).indexOf(horario.horario_id);
+        this.list.splice(index, 1, horario);
         this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
-        this.list = this.list.filter(el => el.horario_id !== data.data.horario_id);
+        this.list = this.list.filter(el => el.horario_id !== horario.horario_id);
         this.list$.next(this.list);
         break;
 

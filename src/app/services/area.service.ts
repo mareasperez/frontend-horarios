@@ -60,14 +60,12 @@ export class AreaService extends MainService {
         // console.log("Crear")
         data.data = area;
          this.list.push(area);
-         console.log(this.list)
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.area_id).indexOf(data.data.area_id);
+         const index = this.list.map(el => el.area_id).indexOf(area.area_id);
          this.list.splice(index, 1, area);
-         console.log(this.list)
          this.list$.next(this.list)
          break;
        case 'd':

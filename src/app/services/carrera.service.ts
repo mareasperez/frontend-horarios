@@ -60,6 +60,7 @@ export class CarreraService extends MainService {
           // console.log(el)
           let carrera = new CarreraModel();
           carrera = Object.assign(carrera, el);
+          this.list.push(carrera)
           observer.next(carrera);
         });
       });
@@ -67,25 +68,25 @@ export class CarreraService extends MainService {
   }
   updateList(data: wsModel) {
     // console.log(data)
+    let carrera = new CarreraModel();
+    carrera = Object.assign(carrera, data.data);
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        let carrera = new CarreraModel();
-        carrera = Object.assign(carrera, data.data);
         console.log(carrera)
         data.data = carrera;
-        this.list.push(data.data);
+        this.list.push(carrera);
         this.list$.next(this.list)
         break;
       case 'u':
         //  console.log("update")
-        const index = this.list.map(el => el.carrera_id).indexOf(data.data.carrera_id);
-        this.list.splice(index, 1, data.data);
+        const index = this.list.map(el => el.carrera_id).indexOf(carrera.carrera_id);
+        this.list.splice(index, 1, carrera);
         this.list$.next(this.list)
         break;
       case 'd':
         // console.log("delete")
-        this.list = this.list.filter(el => el.carrera_id !== data.data.carrera_id);
+        this.list = this.list.filter(el => el.carrera_id !== carrera.carrera_id);
         this.list$.next(this.list)
         break;
 

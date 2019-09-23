@@ -54,25 +54,25 @@ export class PensumService extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let pensum = new PensumModel();
+    pensum = Object.assign(pensum,data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let pensum = new PensumModel();
-         pensum = Object.assign(pensum,data.data);
          console.log(pensum)
          data.data = pensum;
-         this.list.push(data.data);
+         this.list.push(pensum);
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.pensum_id).indexOf(data.data.pensum_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.pensum_id).indexOf(pensum.pensum_id);
+         this.list.splice(index, 1, pensum);
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.pensum_id !== data.data.pensum_id);
+         this.list = this.list.filter(el=>el.pensum_id !== pensum.pensum_id);
          this.list$.next(this.list)
          break;
  

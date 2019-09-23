@@ -44,6 +44,7 @@ export class AddrecintoComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.facultad$.list = []
     this.subs.map(sub => sub.unsubscribe());
   }
   createForm( id?: string ) {

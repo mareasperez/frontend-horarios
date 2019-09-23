@@ -48,25 +48,25 @@ export class DocenteAreaService extends MainService {
   
   updateList(data: wsModel) {
     // console.log(data)
+    let docenteA = new DocenteAreaModel();
+    docenteA = Object.assign(docenteA,data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let docenteA = new DocenteAreaModel();
-         docenteA = Object.assign(docenteA,data.data);
          console.log(docenteA)
          data.data = docenteA;
-         this.list.push(data.data);
+         this.list.push(docenteA);
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.docenteA_id).indexOf(data.data.docenteA_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.da_id).indexOf(docenteA.da_id);
+         this.list.splice(index, 1, docenteA);
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.docenteA_id !== data.data.docenteA_id);
+         this.list = this.list.filter(el=>el.da_id !== docenteA.da_id);
          this.list$.next(this.list)
          break;
  

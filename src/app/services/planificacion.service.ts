@@ -18,7 +18,8 @@ export class PlanificacionService extends MainService{
         data.planificacion.forEach(el => {
           //console.log(el)
           let planificacion = new PlanificacionModel();
-          planificacion = Object.assign(el);
+          planificacion = Object.assign(planificacion,el);
+          this.list.push(planificacion)
           observer.next(planificacion);
         });
       });
@@ -53,25 +54,25 @@ export class PlanificacionService extends MainService{
 
   updateList(data: wsModel) {
     // console.log(data)
+    let planificacion = new PlanificacionModel();
+    planificacion = Object.assign(planificacion,data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let planificacion = new PlanificacionModel();
-         planificacion = Object.assign(planificacion,data.data);
          console.log(planificacion)
          data.data = planificacion;
-         this.list.push(data.data);
+         this.list.push(planificacion);
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.planificacion_id).indexOf(data.data.planificacion_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.planificacion_id).indexOf(planificacion.planificacion_id);
+         this.list.splice(index, 1, planificacion);
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.planificacion_id !== data.data.planificacion_id);
+         this.list = this.list.filter(el=>el.planificacion_id !== planificacion.planificacion_id);
          this.list$.next(this.list)
          break;
  

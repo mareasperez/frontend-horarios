@@ -57,18 +57,18 @@ export class ComponenteService  extends MainService {
          componente = Object.assign(componente,data.data);
          console.log(componente)
          data.data = componente;
-         this.list.push(data.data);
+         this.list.push(componente);
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.componente_id).indexOf(data.data.componente_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.componente_id).indexOf(componente.componente_id);
+         this.list.splice(index, 1, componente);
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.componente_id !== data.data.componente_id);
+         this.list = this.list.filter(el=>el.componente_id !== componente.componente_id);
          this.list$.next(this.list)
          break;
  
