@@ -54,6 +54,8 @@ import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocAreaComponent } from './components/doc-area/doc-area.component';
+import { PlanificacionComponent } from './components/planificacion/planificacion.component';
+import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +84,8 @@ import { DocAreaComponent } from './components/doc-area/doc-area.component';
     CargaComponent,
     CargasComponent,
     DocAreaComponent,
+    PlanificacionComponent,
+    AddPlanificacionComponent,
   ],
   imports: [
     BrowserModule,

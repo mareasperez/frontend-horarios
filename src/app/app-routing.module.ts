@@ -22,6 +22,7 @@ import { ComponentesComponent } from './components/componentes/componentes.compo
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
+import { PlanificacionComponent } from './components/planificacion/planificacion.component';
 
 
 const routes: Routes = [
@@ -166,6 +167,11 @@ const routes: Routes = [
     component: GrupoComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'planificacion',
+    component: PlanificacionComponent,
+    canActivate:[AuthGuard]
+  }
 ];
 
 @NgModule({
