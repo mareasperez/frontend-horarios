@@ -21,6 +21,8 @@ export class CarreraService extends MainService {
           //console.log(el)
           let carrera = new CarreraModel();
           carrera = Object.assign(el);
+          carrera = Object.assign(carrera, el);
+          this.list.push(carrera);
           observer.next(carrera);
         });
       });

@@ -17,6 +17,13 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
+import { PlanificacionService } from 'src/app/services/planificacion.service';
+import { DocenteHorasService } from 'src/app/services/docente-horas.service';
+import { ComponenteService } from 'src/app/services/componente.service';
+import { ComponenteModel } from 'src/app/models/componente.model';
+import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
+import { PlanEstudioModel } from 'src/app/models/planEstudio';
+import { HorarioViewModel } from 'src/app/models/horarioView.model';
 
 @Component({
   selector: 'app-horarios',
@@ -33,6 +40,8 @@ export class HorariosComponent implements OnInit {
   selectedDocente: DocenteModel;
   selectedCarrera: CarreraModel;
   selectedGrupo: GrupoModel;
+  componentes: ComponenteModel[] = [];
+  pdes: PlanEstudioModel[] = [];
   docentes: DocenteModel[] = [];
   facultades: FacultadModel[] = [];
   recintos: RecintoModel[] = [];
@@ -41,23 +50,38 @@ export class HorariosComponent implements OnInit {
   carreras: CarreraModel[] = [];
   grupos: GrupoModel[] = [];
   reporte: string;
-  constructor(private service: HorarioService,
-              private gserv: GrupoService,
-              private fserv: FacultadSerivice,
-              private rserv: RecintoService,
-              private aserv: AulaService,
-              private dserv: DepartamentoService,
-              private route: ActivatedRoute,
-              private cserv: CarreraService,
-              private docenteS: DocenteService) { }
+  constructor(
+    // tslint:disable: variable-name
+    private _doho: DocenteHorasService,
+    private _planificacion: PlanificacionService,
+    private _horario: HorarioService,
+    private _grupo: GrupoService,
+    private _facultad: FacultadSerivice,
+    private _recinto: RecintoService,
+    private _aula: AulaService,
+    private _departamento: DepartamentoService,
+    private route: ActivatedRoute,
+    private _carrera: CarreraService,
+    private _docente: DocenteService,
+    private _componente: ComponenteService,
+    private _pde: PlanEstudioService) { }
   ngOnInit() {
-
-    this.getFacultades();
+    this._componente.getComponentes().subscribe(res => this.componentes.push(res));
+    this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
+    this._planificacion.getPlanificaciones().subscribe();
+    this._grupo.getGrupos().subscribe();
+    this._carrera.getCarrera().subscribe();
+    this._docente.getDocente().subscribe();
+    this._doho.getDcHoras().subscribe();
+    this._departamento.getDepartamento().subscribe();
+    this._recinto.getRecinto().subscribe();
+    this._aula.getAula().subscribe();
     this.reporte = (this.route.snapshot.queryParamMap.get('reporte'));
+    this._horario.getHorarios().subscribe();
+    this.getFacultades();
 
   }
   filtros(filtro: string, id: number) {
-    console.log('llego: ', id);
     switch (filtro) {
       case 'docente': {
         this.getDepartamentos(id);
@@ -81,7 +105,7 @@ export class HorariosComponent implements OnInit {
   getFacultades() {
     this.selectedA = null;
     this.selectedR = null;
-    this.fserv.getFacultad().subscribe(
+    this._facultad.getFacultad().subscribe(
       res => {
         this.facultades.push(res);
       },
@@ -90,120 +114,57 @@ export class HorariosComponent implements OnInit {
       }
     );
   }
-  getDepartamentos(id: number) {
+  async getDepartamentos(id: number) {
     this.departamentos = [];
-    console.log('hika: ', id);
-    this.dserv.getDepartamentoByFilter('departamento_facultad', id).subscribe(
-      res => {
-        console.log('se metera: ', res);
-        this.departamentos.push(res);
-        // console.log(this.recintos);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+    this.departamentos = await this._departamento.list.filter(dep => dep.departamento_facultad === id);
   }
-  getRecintos(id: number) {
+  async getRecintos(id: number) {
     this.recintos = [];
-    this.rserv.getRecintoByFilter('recinto_facultad', id).subscribe(
-      res => {
-        // console.log('se metera: ',res)
-        this.recintos.push(res);
-        // console.log(this.recintos);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+    this.recintos = await this._recinto.list.filter(recinto => recinto.recinto_facultad === id);
   }
-  getDocentesOrCarreras(id: number) {
+  async getDocentesOrCarreras(id: number) {
     if (this.reporte === 'docente') {
       this.docentes = [];
-      console.log('el id es:', id);
-      this.docenteS.getDocenteByFilter('docente_departamento', id).subscribe(
-        res => {
-          // console.log('se metera: ',res)
-          this.docentes.push(res);
-          // console.log(this.recintos);
-        },
-        err => {
-          console.error(err);
-        }
-      );
+      this.docentes = await this._docente.list.filter(doc => doc.docente_departamento === id);
     } else {
       this.carreras = [];
-      console.log('el id es:', id);
-      this.cserv.getCarreraByFiltro('carrera_departamento', id).subscribe(
-        res => {
-          // console.log('se metera: ',res)
-          this.carreras.push(res);
-          console.log(this.carreras);
-        },
-        err => {
-          console.error(err);
-        }
-      );
+      this.carreras = await this._carrera.list.filter(carr => carr.carrera_departamento === id);
     }
-
   }
-  getAulas(id: number) {
+  async getAulas(id: number) {
     this.aulas = [];
-    this.aserv.getAulaByFilter('aula_recinto', id).subscribe(
-      res => {
-        // console.log('se metera: ', res);
-        this.aulas.push(res);
-        // console.log(this.aulas);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+    this.aulas = await this._aula.list.filter(aula => aula.aula_recinto === id);
   }
 
-  getHorarios() {
-    this.horarios = [];
-    this.service.getHorarios().subscribe(
-      res => {
-        this.horarios.push(res);
-        // console.log(this.horarios);
-      },
-      err => {
-        console.error(err);
-      }
-    );
-  }
-
-  getGrupos(filtro: string, id: number) {
+  async getGrupos(id: number) {
     this.grupos = [];
-    // abajo se tiene que obviamente mandar los arg de filtrado
-    this.gserv.gerGrupoByFilter(filtro, id).subscribe(
-      res => {
-        this.grupos.push(res);
-        console.log(this.grupos);
-      },
-      err => {
-        console.error(err);
-      },
-    );
+    console.log(this._grupo.list);
+    for (const grupo of this._grupo.list) {
+      const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
+      const pd = await this.pdes.find(p => p.pde_id === comp.componente_pde);
+      if (pd.pde_carrera === id) {
+        this.grupos.push(grupo);
+        console.log('se agrego: ', grupo);
+      }
+    }
   }
 
-  getHorarioByFilter(filtro: string, id: number) {
+  async getHorarioByFilter(query: string, id: number) {
     this.horarios = [];
-    // abajo se tiene que obviamente mandar los arg de filtrado
-    this.service.getHorarioByFilter(filtro, id).subscribe(
-      res => {
-        this.horarios = res;
-        // console.log(this.horarios);
-
-        // console.log(this.horarios, this.horarios.length);
-        this.fun();
-      },
-      err => {
-        console.error(err);
-      },
-    );
-
+    if (query === 'docente') {
+      console.log('el id docente es: ', id);
+      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_docente) === id);
+    }
+    if (query === 'grupo') {
+      console.log('el id grupo es: ', id);
+      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_grupo) === id);
+    }
+    if (query === 'aula') {
+      console.log('el id de aula es: ', id);
+      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_aula) === id);
+    }
+    console.log(this.horarios);
+    this.fun();
   }
 
   fun() {

@@ -17,10 +17,10 @@ export class HorarioService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.horarios.forEach(el => {
-          console.log(el);
+          // console.log(el);
           let horario = new HorarioModel();
-          horario = Object.assign(horario,el);
-          this.list.push(horario)
+          horario = Object.assign(horario, el);
+          this.list.push(horario);
           observer.next(horario);
         });
       });

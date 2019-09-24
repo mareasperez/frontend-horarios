@@ -18,6 +18,7 @@ export class GrupoService extends MainService {
           // console.log(el)
           let grupo = new GrupoModel();
           grupo = Object.assign(grupo, el);
+          this.list.push(grupo);
           observer.next(grupo);
         });
       });
