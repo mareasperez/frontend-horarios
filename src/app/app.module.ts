@@ -68,6 +68,7 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     VerrecintoComponent,
     AdddepartamentoComponent,
     VerdepartamentoComponent,
+    AddPlanificacionComponent,
     LoginComponent,
     VeraulaComponent,
     AddaulaComponent,
@@ -85,7 +86,6 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     CargasComponent,
     DocAreaComponent,
     PlanificacionComponent,
-    AddPlanificacionComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,9 +122,7 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     DepartamentoService,
     DocenteHorasService,
     DocenteAreaService,
-    GrupoService,
-    VerplanestudioComponent,
-    AddplanestudioComponent
+    GrupoService
   ],
   bootstrap: [AppComponent]
 })

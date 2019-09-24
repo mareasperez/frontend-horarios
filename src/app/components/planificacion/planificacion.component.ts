@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { Observable, Subscription } from 'rxjs';
 import { AddPlanificacionComponent } from './add-planificacion/add-planificacion.component';
-import { MatDialog } from '@angular/material';
-import * as $ from 'jquery';
+
 
 @Component({
   selector: 'app-planificacion',
@@ -33,6 +33,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
         this.planificaciones = data
       })
     );
+
   }
 
   ngOnDestroy(){
@@ -52,14 +53,14 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
 
   openDialog(tipo, id?): void {
     if(tipo === 'c'){
-      const dialogRef = this.dialog.open(AddPlanificacionComponent, {
+       this.dialog.open(AddPlanificacionComponent, {
         width: '450px',
         data: {type: tipo}
       });
     } else {
 
       let plan = this.planificaciones.find(p => p.planificacion_id === id);
-      const dialogRef = this.dialog.open(AddPlanificacionComponent, {
+       this.dialog.open(AddPlanificacionComponent, {
         width: '450px',
         data: {type: tipo, plan: plan}
       });
