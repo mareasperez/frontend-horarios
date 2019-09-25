@@ -52,25 +52,25 @@ export class PlanEstudioService extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let pde = new PlanEstudioModel();
+    pde = Object.assign(pde,data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let pde = new PlanEstudioModel();
-         pde = Object.assign(pde,data.data);
          console.log(pde)
          data.data = pde;
-         this.list.push(data.data);
+         this.list.push(pde);
          this.list$.next(this.list)
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.pde_id).indexOf(data.data.pde_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.pde_id).indexOf(pde.pde_id);
+         this.list.splice(index, 1, pde);
          this.list$.next(this.list)
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.pde_id !== data.data.pde_id);
+         this.list = this.list.filter(el=>el.pde_id !== pde.pde_id);
          this.list$.next(this.list)
          break;
  

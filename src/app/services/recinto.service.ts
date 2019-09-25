@@ -19,7 +19,8 @@ export class RecintoService extends MainService {
         data.recinto.forEach(el => {
           // console.log(el)
           let recinto = new RecintoModel();
-          recinto = Object.assign(el);
+          recinto = Object.assign(recinto,el);
+          this.list.push(recinto)
           observer.next(recinto);
         });
       });
@@ -54,25 +55,25 @@ export class RecintoService extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let recinto = new RecintoModel();
+    recinto = Object.assign(recinto, data.data);
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        let recinto = new RecintoModel();
-        recinto = Object.assign(recinto, data.data);
-        console.log(recinto)
-        data.data = recinto;
-        this.list.push(data.data);
+        this.list.push(recinto);
+        console.log(this.list)
         this.list$.next(this.list)
         break;
       case 'u':
         //  console.log("update")
-        const index = this.list.map(el => el.recinto_id).indexOf(data.data.recinto_id);
-        this.list.splice(index, 1, data.data);
+        const index = this.list.map(el => el.recinto_id).indexOf(recinto.recinto_id);
+        this.list.splice(index, 1, recinto);
+        console.log(this.list)
         this.list$.next(this.list)
         break;
       case 'd':
         // console.log("delete")
-        this.list = this.list.filter(el => el.recinto_id !== data.data.recinto_id);
+        this.list = this.list.filter(el => el.recinto_id !== recinto.recinto_id);
         this.list$.next(this.list)
         break;
 

@@ -18,6 +18,7 @@ export class GrupoService extends MainService {
           // console.log(el)
           let grupo = new GrupoModel();
           grupo = Object.assign(grupo, el);
+          this.list.push(grupo);
           observer.next(grupo);
         });
       });
@@ -56,6 +57,7 @@ export class GrupoService extends MainService {
           // console.log(el)
           let grupo = new GrupoModel();
           grupo = Object.assign(grupo, el);
+          this.list.push(grupo)
           observer.next(grupo);
         });
       });
@@ -63,25 +65,25 @@ export class GrupoService extends MainService {
   }
   updateList(data: wsModel) {
     // console.log(data)
+    let grupo = new GrupoModel();
+    grupo = Object.assign(grupo, data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let grupo = new GrupoModel();
-         grupo = Object.assign(grupo, data.data);
-         console.log(grupo);
+        // console.log(grupo);
          data.data = grupo;
-         this.list.push(data.data);
+         this.list.push(grupo);
          this.list$.next(this.list);
          break;
        case 'u':
        //  console.log("update")
-         const index = this.list.map(el => el.grupo_id).indexOf(data.data.grupo_id);
-         this.list.splice(index, 1, data.data);
+         const index = this.list.map(el => el.grupo_id).indexOf(grupo.grupo_id);
+         this.list.splice(index, 1, grupo);
          this.list$.next(this.list);
          break;
        case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el => el.grupo_id !== data.data.grupo_id);
+         this.list = this.list.filter(el => el.grupo_id !== grupo.grupo_id);
          this.list$.next(this.list);
          break;
 

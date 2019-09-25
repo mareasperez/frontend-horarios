@@ -44,6 +44,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.PlanEstudioService.list = []
     this.subs.map(sub=>sub.unsubscribe())
   }
 

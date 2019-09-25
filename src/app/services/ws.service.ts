@@ -9,6 +9,7 @@ import { DepartamentoService } from './departamento.service';
 import { PlanEstudioService } from './plan-estudio.service';
 import { GrupoService } from './grupo.service';
 import { DepartamentoModel } from '../models/departamento.model';
+import { PlanificacionService } from './planificacion.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +22,7 @@ export class WsService {
               private area$:AreaService,
               private docente$:DocenteService,
               private pde$:PlanEstudioService,
+              private _pnf:PlanificacionService,
               private grupoS:GrupoService,
               private jwt: JwtService,
               private departamento$: DepartamentoService
@@ -48,6 +50,7 @@ export class WsService {
             this.docente$.updateList(action);
             break;
           case 'recinto':
+            this.recintoService.updateList(action);
             break;
           case 'componente':
             this.componenteService.updateList(action);
@@ -57,6 +60,9 @@ export class WsService {
             break;
           case 'plan_de_estudio':
             this.pde$.updateList(action);
+            break;
+          case 'planificacion':
+            this._pnf.updateList(action);
             break;
 
           case 'grupo':

@@ -3,7 +3,7 @@ import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { AdddocenteComponent } from '../adddocente/adddocente.component';
 import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -12,9 +12,10 @@ import { Observable } from 'rxjs';
 export class VerdocenteComponent implements OnInit {
 
   public docentes: DocenteModel[] = [];
-  public refDocentes:Observable<any>;
+  public refDocentes:Observable<any[]>;
   public alerts = true;
   public dataSource;
+  subs:Subscription[]=[]
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
   socket: WebSocket;
 // tslint:disable-next-line: no-shadowed-variable
@@ -32,12 +33,16 @@ export class VerdocenteComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.refDocentes.subscribe(data=>{
-      this.dataSource = [];
-      data.map(doc=>{
-        this.dataSource.push(doc);
-      });
-  })
+    this.subs.push( 
+      this.refDocentes.subscribe(data=>{
+        console.log(data)
+        this.dataSource = [];
+        this.docentes = data
+        data.map(doc=>{
+          this.dataSource.push(doc);
+        });
+      })
+  )
 }
   
   

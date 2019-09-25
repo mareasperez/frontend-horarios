@@ -42,7 +42,7 @@
       <mat-form-field>
         <mat-label>Recinto</mat-label>
         <mat-select [(ngModel)]="selectedA" name="aula"
-          (selectionChange)="getHorarioByFilter('horario_aula', $event.value.aula_id)">
+          (selectionChange)="getHorarioByFilter('aula', $event.value.aula_id)">
           <mat-option *ngFor="let aula of aulas" [value]="aula">
             {{aula.aula_nombre}}
           </mat-option>
@@ -83,7 +83,7 @@
       <mat-form-field>
         <mat-label>Docentes</mat-label>
         <mat-select [(ngModel)]="selectedDocente" name="docente"
-          (selectionChange)="getHorarioByFilter('horario_docente', $event.value.docente_id)">
+          (selectionChange)="getHorarioByFilter('docente', $event.value.docente_id)">
           <mat-option *ngFor="let docente of docentes" [value]="docente">
             {{docente.docente_nombre}}
           </mat-option>
@@ -102,7 +102,7 @@
       <mat-form-field>
         <mat-label>Carrera</mat-label>
         <mat-select [(ngModel)]="selectedCarrera" name="carrera"
-          (selectionChange)="getGrupos('grupo_carrera', $event.value.carrera_id)">
+          (selectionChange)="getGrupos($event.value.carrera_id)">
           <mat-option *ngFor="let carrera of carreras" [value]="carrera">
             {{carrera.carrera_nombre}}
           </mat-option>
@@ -121,9 +121,9 @@
       <mat-form-field>
         <mat-label>Grupo</mat-label>
         <mat-select [(ngModel)]="selectedGrupo" name="grupo"
-          (selectionChange)="getHorarioByFilter('horario_grupo', $event.value.grupo_id)">
+          (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id)">
           <mat-option *ngFor="let grupo of grupos" [value]="grupo">
-            Grupo: {{grupo.numero}} de {{grupo.grupo_componente}}
+            Grupo: {{grupo.grupo_numero}} de {{grupo.grupo_componente}}
           </mat-option>
         </mat-select>
       </mat-form-field>

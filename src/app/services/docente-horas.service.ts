@@ -49,25 +49,25 @@ export class DocenteHorasService extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let dco = new DocenteHorasModel();
+    dco = Object.assign(dco, data.data);
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        let dco = new DocenteHorasModel();
-        dco = Object.assign(dco, data.data);
-        console.log(dco);
+    //    console.log(dco);
         data.data = dco;
-        this.list.push(data.data);
+        this.list.push(dco);
         this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
-        const index = this.list.map(el => el.dh_id).indexOf(data.data.dh_id);
-        this.list.splice(index, 1, data.data);
+        const index = this.list.map(el => el.dh_id).indexOf(dco.dh_id);
+        this.list.splice(index, 1, dco);
         this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
-        this.list = this.list.filter(el => el.dh_id !== data.data.dh_id);
+        this.list = this.list.filter(el => el.dh_id !== dco.dh_id);
         this.list$.next(this.list);
         break;
 

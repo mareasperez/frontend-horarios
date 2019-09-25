@@ -1,10 +1,11 @@
 
 export class RecintoModel {
 
-  public recinto_id: string;
+  // tslint:disable: variable-name
+  public recinto_id: number;
   public recinto_nombre: string;
   public recinto_ubicacion: string;
-  public recinto_facultad: string | number;
+  public recinto_facultad: number;
 
   /*
   getId(){return this.id;}

@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <div class="row">
+            <h3>Planificaciones semestrales</h3> 
+            <span style="flex: 1 1 auto"></span>
+            <button mat-raised-button color="primary" (click)="openDialog('c')">
+              <mat-icon>add</mat-icon> Agregar
+            </button>
+    </div>
+             
+           
+    <div class="row">
+        <mat-list>
+            <mat-list-item *ngFor="let plan of planificaciones">
+                Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+                <button mat-icon-button (click)="delPlan(plan.planificacion_id)" color="warn"><mat-icon>delete</mat-icon></button>
+                <button mat-icon-button (click)="openDialog('u',plan.planificacion_id)" color="success"><mat-icon>edit</mat-icon></button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>

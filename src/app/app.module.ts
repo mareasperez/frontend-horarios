@@ -56,6 +56,8 @@ import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocAreaComponent } from './components/doc-area/doc-area.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
+import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
+import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.
     VerrecintoComponent,
     AdddepartamentoComponent,
     VerdepartamentoComponent,
+    PlanificacionComponent,
     LoginComponent,
     VeraulaComponent,
     AddaulaComponent,
@@ -86,6 +89,8 @@ import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.
     DocAreaComponent,
     AddcarreraComponent,
     VercarreraComponent,
+    AddPlanificacionComponent,
+  ], entryComponents: [AddPlanificacionComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,9 +127,7 @@ import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.
     DepartamentoService,
     DocenteHorasService,
     DocenteAreaService,
-    GrupoService,
-    VerplanestudioComponent,
-    AddplanestudioComponent
+    GrupoService
   ],
   bootstrap: [AppComponent]
 })

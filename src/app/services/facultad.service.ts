@@ -56,25 +56,24 @@ export class FacultadSerivice extends MainService {
 
   updateList(data: wsModel) {
    // console.log(data)
+   let facultad = new FacultadModel();
+   facultad = Object.assign(facultad,data.data);
     switch (data.event) {
       case 'c':
        // console.log("Crear")
-        let facultad = new FacultadModel();
-        facultad = Object.assign(facultad,data.data);
         console.log(facultad)
-        data.data = facultad;
-        this.list.push(data.data);
+        this.list.push(facultad);
         this.list$.next(this.list)
         break;
       case 'u':
       //  console.log("update")
-        const index = this.list.map(el => el.facultad_id).indexOf(data.data.facultad_id);
-        this.list.splice(index, 1, data.data);
+        const index = this.list.map(el => el.facultad_id).indexOf(facultad.facultad_id);
+        this.list.splice(index, 1, facultad);
         this.list$.next(this.list)
         break;
       case 'd':
        // console.log("delete")
-        this.list = this.list.filter(el=>el.facultad_id !== data.data.facultad_id);
+        this.list = this.list.filter(el=>el.facultad_id !== facultad.facultad_id);
         this.list$.next(this.list)
         break;
 

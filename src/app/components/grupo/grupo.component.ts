@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { ComponenteService } from 'src/app/services/componente.service';
@@ -16,7 +16,7 @@ import { DocenteModel } from 'src/app/models/docente.model';
   templateUrl: './grupo.component.html',
   styleUrls: ['./grupo.component.scss']
 })
-export class GrupoComponent implements OnInit {
+export class GrupoComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refComp: Observable<any[]>;
   public refPlan: Observable<any[]>;
@@ -33,6 +33,7 @@ export class GrupoComponent implements OnInit {
   // validacion de edicion o creacion
   public add = false;
   public editing = false;
+  subs:Subscription[]=[]
 
   constructor(
     private fb: FormBuilder,
@@ -41,10 +42,22 @@ export class GrupoComponent implements OnInit {
     private _planificacion: PlanificacionService,
     private _docente: DocenteService
   ) {
-    this._grupo.getGrupos().subscribe(res => this.grupos.push(res));
-    this._componente.getComponentes().subscribe(res => this.componentes.push(res));
-    this._planificacion.getPlanificaciones().subscribe(res => this.planificaciones.push(res));
-    this._docente.getDocente().subscribe(res => this.docentes.push(res));
+    this.subs.push(
+      this._grupo.getGrupos()
+        .subscribe(res => this.grupos.push(res)));
+
+    this.subs.push(
+      this._componente.getComponentes()
+        .subscribe(res => this.componentes.push(res)));
+
+    this.subs.push(
+      this._planificacion.getPlanificaciones()
+        .subscribe(res => this.planificaciones.push(res)));
+
+    this.subs.push(
+      this._docente.getDocente()
+        .subscribe(res => this.docentes.push(res)));
+
     this.ref = this._grupo.getList();
     this.refComp = this._componente.getList();
     this.refPlan = this._planificacion.getList();
@@ -62,6 +75,16 @@ export class GrupoComponent implements OnInit {
     // this.createForm();
 
   }
+
+  ngOnDestroy(){
+    this._componente.list = []
+    this._docente.list = []
+    this._grupo.list = []
+    this._planificacion.list = []
+    this.subs.map(sub=>sub.unsubscribe())
+
+  }
+
 
   createForm(flag: number, id?: number) {
     if (flag === 0) {
