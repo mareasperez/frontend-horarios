@@ -8,6 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
+import { DocenteAreaService } from 'src/app/services/docente-area.service';
 
 interface DialogData {
   type: string;
@@ -36,6 +37,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   constructor(private docenteService: DocenteService,
               private departamento$: DepartamentoService,
               private _area:AreaService,
+              private _doc_ar:DocenteAreaService,
               public dialogRef: MatDialogRef<AdddocenteComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private fb: FormBuilder
@@ -59,7 +61,8 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._area.list = []
     this.departamento$.list = []
-    this.docenteService.list = []
+    console.log(window.location.href)
+    //this.docenteService.list = []
     this.subs.map(sub => sub.unsubscribe());
   }
 
@@ -90,7 +93,10 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     doc = Object.assign(doc, this.form.value);
     this.subs.push(
       this.docenteService.crearDocente(doc)
-        .subscribe(res => this.dialogRef.close())
+        .subscribe(res => {
+          console.log(res)
+          this.post_areas()
+        })
     );
     console.log(this.areasSelecteds)
 
@@ -100,9 +106,18 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     doc = Object.assign(doc, this.form.value);
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
-        .subscribe(res => this.dialogRef.close())
+        .subscribe(res =>{
+          console.log(res)
+           this.post_areas()
+          })
         );
     
+  }
+
+  post_areas(){
+    this._doc_ar.crearDcArea(this.docenteService.list[this.docenteService.list.length -1].docente_id, this.areasSelecteds)
+    .subscribe(res=>this.dialogRef.close())
+
   }
 
   add_area(permisos){
