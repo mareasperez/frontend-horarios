@@ -18,7 +18,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
   public refArea:Observable<any[]>;
   sub:Subscription;
   constructor(private  _area: AreaService,
-              private dialog: MatDialog     
+              private dialog: MatDialog
     ) { 
     this._area.getAreas().subscribe(res=>this.areas.push(res))
     this.refArea = this._area.getList();
