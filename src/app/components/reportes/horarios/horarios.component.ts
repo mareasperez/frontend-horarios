@@ -152,20 +152,33 @@ export class HorariosComponent implements OnInit {
   async getHorarioByFilter(query: string, id: number) {
     this.horarios = [];
     if (query === 'docente') {
-      console.log('el id docente es: ', id);
-      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_docente) === id);
+      const p = new Promise<any>((resolve, reject) => {
+        console.log('el id docente es: ', id);
+        this._horario.getHorarioByFilter('horario_docente', id).subscribe(res => resolve(res));
+      });
+      p.then((gr) => {
+        this.horarios = gr;
+      });
+      p.finally(() => {
+        console.log(this.horarios);
+        this.fun();
+      });
     }
     if (query === 'grupo') {
       console.log('el id grupo es: ', id);
       this.horarios = await this._horario.list.filter(horario => Number(horario.horario_grupo) === id);
+      console.log(this.horarios);
+      this.fun();
     }
     if (query === 'aula') {
       console.log('el id de aula es: ', id);
       this.horarios = await this._horario.list.filter(horario => Number(horario.horario_aula) === id);
+      console.log(this.horarios);
+      this.fun();
     }
-    console.log(this.horarios);
-    this.fun();
+
   }
+
 
   fun() {
     let i = 0;
