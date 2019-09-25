@@ -54,7 +54,7 @@ import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocAreaComponent } from './components/doc-area/doc-area.component';
-import { PlanificacionComponent } from './components/planificacion/planificacion.component';
+import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
 import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
 
 @NgModule({
@@ -68,7 +68,7 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     VerrecintoComponent,
     AdddepartamentoComponent,
     VerdepartamentoComponent,
-    AddPlanificacionComponent,
+    PlanificacionComponent,
     LoginComponent,
     VeraulaComponent,
     AddaulaComponent,
@@ -85,7 +85,8 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     CargaComponent,
     CargasComponent,
     DocAreaComponent,
-    PlanificacionComponent,
+    AddPlanificacionComponent,
+  ], entryComponents: [AddPlanificacionComponent,
   ],
   imports: [
     BrowserModule,

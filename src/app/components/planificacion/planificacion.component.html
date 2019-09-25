@@ -13,7 +13,7 @@
             <mat-list-item *ngFor="let plan of planificaciones">
                 Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
                 <button mat-icon-button (click)="delPlan(plan.planificacion_id)" color="warn"><mat-icon>delete</mat-icon></button>
-                <button mat-icon-button (click)="editPlan(plan.planificacion_id)" color="success"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button (click)="openDialog('u',plan.planificacion_id)" color="success"><mat-icon>edit</mat-icon></button>
             </mat-list-item>
         </mat-list>
     </div>

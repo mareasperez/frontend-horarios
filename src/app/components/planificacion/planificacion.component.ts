@@ -30,6 +30,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.push(
       this.refPla.subscribe(data=>{
+        console.log(data)
         this.planificaciones = data
       })
     );
@@ -44,12 +45,6 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   delPlan(id){
     this._planificacion.deletePlanificacion(id).subscribe()
   }
-
-  editPlan(id:string){
-    let plan = this.planificaciones.find(plan=>plan.planificacion_id===id)
-    this._planificacion.updatePlanificacion(plan, plan.planificacion_id).subscribe()
-  }
-
 
   openDialog(tipo, id?): void {
     if(tipo === 'c'){
