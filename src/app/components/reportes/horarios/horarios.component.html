@@ -56,7 +56,7 @@
 
 
   <!-- se pediran los departamentos de la facultad escogida y mostraran para que se escoja el departamento -->
-  
+
   <div *ngIf="reporte!=='aula'" class="col">
     <div *ngIf="departamentos.length>0">
       <h4>Seleccione Departamento</h4>
@@ -101,8 +101,7 @@
       <h4>Seleccione Carrera</h4>
       <mat-form-field>
         <mat-label>Carrera</mat-label>
-        <mat-select [(ngModel)]="selectedCarrera" name="carrera"
-          (selectionChange)="getGrupos($event.value.carrera_id)">
+        <mat-select [(ngModel)]="selectedCarrera" name="carrera" (selectionChange)="getGrupos($event.value.carrera_id)">
           <mat-option *ngFor="let carrera of carreras" [value]="carrera">
             {{carrera.carrera_nombre}}
           </mat-option>
@@ -138,9 +137,13 @@
   <mat-grid-list cols="5" rowHeight="2:1" *ngFor="let dias of array">
     <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas.horario_vacio ? 'true' : 'false'">
       <div *ngIf="horas !== undefined">
-        <div>{{horas.horario_dia}}</div>
-        <div>{{horas.horario_aula}}</div>
-        <div>{{horas.horario_grupo}}</div>
+        <div *ngIf="horas.horario_vacio; else mostrar">-</div>
+        <ng-template #mostrar>
+          <div>{{horas.componente}}</div>
+          <div>{{horas.aula}}</div>
+          <div>{{horas.docente}}</div>
+          <div>{{horas.grupo}}</div>
+        </ng-template>
       </div>
     </mat-grid-tile>
 
