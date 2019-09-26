@@ -49,12 +49,12 @@ export class ComponenteService  extends MainService {
 
   updateList(data: wsModel) {
     // console.log(data)
+    let componente = new ComponenteModel();
+    componente = Object.assign(componente,data.data);
     
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         let componente = new ComponenteModel();
-         componente = Object.assign(componente,data.data);
          console.log(componente)
          data.data = componente;
          this.list.push(componente);
