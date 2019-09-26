@@ -50,6 +50,7 @@ export class HorariosComponent implements OnInit {
   carreras: CarreraModel[] = [];
   grupos: GrupoModel[] = [];
   reporte: string;
+  anyos = [1, 2, 3, 4, 5];
   constructor(
     // tslint:disable: variable-name
     private _doho: DocenteHorasService,
@@ -96,7 +97,10 @@ export class HorariosComponent implements OnInit {
         this.getDepartamentos(id);
         break;
       }
-
+      case 'anyo': {
+        this.getDepartamentos(id);
+        break;
+      }
       default: {
         console.log('no hay filtro para eso');
       }
@@ -147,6 +151,22 @@ export class HorariosComponent implements OnInit {
         console.log('se agrego: ', grupo);
       }
     }
+  }
+  async getHorarioByAnyo(anyo) {
+    this.grupos = [];
+    const a = [];
+    a[0] = (anyo - 1) + anyo;
+    a[1] = anyo + anyo;
+    console.log(a);
+    for (const grupo of this._grupo.list) {
+      const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
+      const pd = await this.pdes.find(p => p.pde_id === comp.componente_pde);
+      if (pd.pde_carrera === this.selectedCarrera.carrera_id && (comp.componente_ciclo === a[0] || comp.componente_ciclo === a[1])) {
+        this.grupos.push(grupo);
+        console.log('se agrego: ', grupo);
+      }
+    }
+
   }
 
   async getHorarioByFilter(query: string, id: number) {
