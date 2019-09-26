@@ -56,6 +56,7 @@ import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocAreaComponent } from './components/doc-area/doc-area.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
 import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
+import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     CargasComponent,
     DocAreaComponent,
     AddPlanificacionComponent,
+    HorariosAnyoComponent,
   ], entryComponents: [AddPlanificacionComponent,
   ],
   imports: [

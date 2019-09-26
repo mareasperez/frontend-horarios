@@ -11,13 +11,14 @@
       <button mat-menu-item (click)="go('horarios','docente')">Docente</button>
       <button mat-menu-item (click)="go('horarios','grupo')">Grupo</button>
       <button mat-menu-item (click)="go('horarios','aula')">Aula</button>
+      <button mat-menu-item routerLink="/reporte/horarios/anyo">Anyo</button>
     </mat-menu>
     <mat-menu #cargaAc="matMenu">
       <button mat-menu-item routerLink="/reporte/carga">Carga Total metodo routerLink</button>
       <button mat-menu-item (click)="go('cargas','cargahoraria')">Carga Horaria</button>
       <button mat-menu-item (click)="go('cargas','cargaplanta')">Carga Planta</button>
       <button mat-menu-item (click)="go('cargas','cargaacademica')">Carga Total metodo redirect</button>
-
+      
 
       <button mat-menu-item>algo</button>
     </mat-menu>

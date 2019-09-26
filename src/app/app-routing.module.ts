@@ -23,6 +23,7 @@ import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { PlanificacionComponent } from './components/planificacion/planificacion.component';
+import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,11 @@ const routes: Routes = [
   {
     path: 'reporte/horarios',
     component: HorariosComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'reporte/horarios/anyo',
+    component: HorariosAnyoComponent,
     canActivate: [AuthGuard]
   },
   {
