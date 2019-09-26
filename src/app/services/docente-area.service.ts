@@ -18,7 +18,7 @@ export class DocenteAreaService extends MainService {
         data.docenteArea.forEach(el => {
           //console.log(el)
           let docenteArea = new DocenteAreaModel();
-          docenteArea = Object.assign(el);
+          docenteArea = Object.assign(docenteArea,el);
           this.list.push(docenteArea);
           observer.next(docenteArea);
 
@@ -27,8 +27,8 @@ export class DocenteAreaService extends MainService {
     });
   }
 
-  crearDcArea(dcArea: DocenteAreaModel): Observable<any> {
-    let body = { docenteArea: dcArea };
+  crearDcArea(docenteId, areas:any[]): Observable<any> {
+    let body = { docenteArea: [{"da_docente":docenteId, "da_area":areas}]};
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
