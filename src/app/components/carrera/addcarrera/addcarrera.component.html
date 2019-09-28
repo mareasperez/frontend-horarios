@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <mat-card>
+        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="carrera_nombre" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="carrera_departamento" ([value])="selected">
+                    <mat-option value="0">Departamento...</mat-option>
+                    <mat-option *ngFor="let departamento of departamentos" [value]="departamento.departamento_id">
+                        {{departamento.departamento_nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveCarrera():updateCarrera()">
+          Guardar
+        </button>
+        </form>
+    </mat-card>
+</div>

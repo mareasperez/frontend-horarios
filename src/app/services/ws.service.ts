@@ -8,24 +8,25 @@ import { DocenteService } from './docente.service';
 import { DepartamentoService } from './departamento.service';
 import { PlanEstudioService } from './plan-estudio.service';
 import { GrupoService } from './grupo.service';
-import { DepartamentoModel } from '../models/departamento.model';
 import { PlanificacionService } from './planificacion.service';
+import { CarreraService } from './carrera.service';
 @Injectable({
   providedIn: 'root'
 })
 export class WsService {
   socket: WebSocket;
 
-  constructor(private facultaService:FacultadSerivice,
-              private recintoService:RecintoService,
-              private componenteService:ComponenteService,
-              private area$:AreaService,
-              private docente$:DocenteService,
-              private pde$:PlanEstudioService,
-              private _pnf:PlanificacionService,
-              private grupoS:GrupoService,
+  constructor(private facultaService: FacultadSerivice,
+              private recintoService: RecintoService,
+              private componenteService: ComponenteService,
+              private area$: AreaService,
+              private docente$: DocenteService,
+              private pde$: PlanEstudioService,
+              private _pnf: PlanificacionService,
+              private grupoS: GrupoService,
               private jwt: JwtService,
-              private departamento$: DepartamentoService
+              private departamento$: DepartamentoService,
+              private carrera$: CarreraService
     ) { }
 
 
@@ -37,9 +38,9 @@ export class WsService {
       };
 
       this.socket.onmessage = (event) => {
-        let action = JSON.parse(event.data);
-        console.log(action)
-        switch(action.model){
+        const action = JSON.parse(event.data);
+        console.log(action);
+        switch (action.model) {
           case 'area':
             this.area$.updateList(action);
             break;
@@ -64,7 +65,9 @@ export class WsService {
           case 'planificacion':
             this._pnf.updateList(action);
             break;
-
+          case 'carrera':
+            this.carrera$.updateList(action);
+            break;
           case 'grupo':
             this.grupoS.updateList(action);
             break;

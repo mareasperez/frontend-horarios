@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { Observable, Subscription, from } from 'rxjs';
@@ -12,7 +12,7 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
   templateUrl: './verdepartamento.component.html',
   styleUrls: ['./verdepartamento.component.scss']
 })
-export class VerdepartamentoComponent implements OnInit {
+export class VerdepartamentoComponent implements OnInit, OnDestroy {
 
   public departamentos: DepartamentoModel[] = [];
   public facultades: FacultadModel [] = [];
