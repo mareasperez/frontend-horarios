@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Inject } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { Subscription, Observable } from 'rxjs';
@@ -17,7 +17,7 @@ interface DialogData {
   templateUrl: './adddepartamento.component.html',
   styleUrls: ['./adddepartamento.component.scss']
 })
-export class AdddepartamentoComponent implements OnInit {
+export class AdddepartamentoComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
 
   public departamento = new DepartamentoModel();

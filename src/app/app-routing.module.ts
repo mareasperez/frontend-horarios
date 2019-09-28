@@ -23,6 +23,8 @@ import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { PlanificacionComponent } from './components/planificacion/planificacion.component';
+import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
+import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 
 
 const routes: Routes = [
@@ -170,7 +172,12 @@ const routes: Routes = [
   {
     path: 'planificacion',
     component: PlanificacionComponent,
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'carrera/list',
+    component: VercarreraComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

@@ -18,10 +18,10 @@
                             {{carrera.carrera_nombre}}
                         </div>
                         <div class="col">
-                            {{carrera.carrera_facultad}}
+                            {{carrera.carrera_departamento}}
                         </div>
                         <span style="flex: 1 1 auto"></span>
-                        <button mat-icon-button (click)="delArea(carrera.carrera_id)">
+                        <button mat-icon-button (click)="delCarrera(carrera.carrera_id)">
                 <mat-icon style="color:red">delete</mat-icon>
               </button>
                         <button mat-icon-button (click)="openDialog('u', carrera.carrera_id)">
