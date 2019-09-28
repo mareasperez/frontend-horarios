@@ -24,10 +24,10 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-selection-list #permisos style="height: 200px; overflow: auto"  appearance="outline">
+              <mat-selection-list #horas style="height: 200px; overflow: auto"  appearance="outline">
                 <mat-label>Areas</mat-label>
                 <mat-list-option *ngFor="let area of areas"  [value]="area.area_id"
-                [selected]="area.selected" (click)="add_area(permisos)"
+                [selected]="area.selected" (click)="add_area(horas)"
                 >
                   {{area.area_nombre}}
                 </mat-list-option>

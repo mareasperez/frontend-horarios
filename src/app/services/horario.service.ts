@@ -56,13 +56,15 @@ export class HorarioService extends MainService {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe((data: any) => {
         let horarios = [];
-        console.log(data);
-        data.horario.forEach(el => {
-          let horario = new HorarioModel();
-          horario = Object.assign(horario, el); // Tipar Objeto
-          horarios.push(horario);
-        });
-        observer.next(horarios);
+        // console.log(data);
+        if (data.Detail !== 'not found') {
+          data.horario.forEach(el => {
+            let horario = new HorarioModel();
+            horario = Object.assign(horario, el); // Tipar Objeto
+            horarios.push(horario);
+          });
+          observer.next(horarios);
+         }
       });
     });
   }

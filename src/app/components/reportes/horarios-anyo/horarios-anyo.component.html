@@ -1,0 +1,77 @@
+<!-- Traer facultades y mostrarlas, y en dependencia de lo que se tenga en el queryString se llamara a mostrar elementos -->
+<div class="row">
+  <div class="col">
+    <h4>Seleccione Facultad</h4>
+    <mat-form-field>
+      <mat-label>Facultad</mat-label>
+      <mat-select [(ngModel)]="selectedF" name="facultad" (selectionChange)="getDep($event.value.facultad_id)">
+        <mat-option *ngFor="let facultad of facultades" [value]="facultad">
+          {{facultad.facultad_nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="col">
+  <div *ngIf="departamentos.length>0 && selectedF">
+    <h4>Seleccione Departamento</h4>
+    <mat-form-field>
+      <mat-label>Departamento</mat-label>
+      <mat-select [(ngModel)]="selectedD" name="departamento"
+        (selectionChange)="getCarreras($event.value.departamento_id)">
+        <mat-option *ngFor="let departamento of departamentos" [value]="departamento">
+          {{departamento.departamento_nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedD">
+      <p> Selected Departamento: {{selectedD.departamento_id}} </p>
+    </div>
+  </div>
+</div>
+
+<div class="col">
+  <div *ngIf="carreras.length>0">
+    <h4>Seleccione Carrera</h4>
+    <mat-form-field>
+      <mat-label>Carrera</mat-label>
+      <mat-select [(ngModel)]="selectedCarrera" name="carrera">
+        <mat-option *ngFor="let carrera of carreras" [value]="carrera">
+          {{carrera.carrera_nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedCarrera">
+      <p> Selected Carrera: {{selectedCarrera.carrera_id}} </p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedCarrera" class="col">
+  <h4>Seleccione Anyo</h4>
+  <mat-form-field>
+    <mat-label>Anyo</mat-label>
+    <mat-select name="anyo" (selectionChange)="getGrupos($event.value)">
+      <mat-option *ngFor="let anyo of anyos" [value]="anyo">
+        Anyo: {{anyo}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div *ngIf="array.length===6">
+  <mat-grid-list cols="5" rowHeight="3:1" *ngFor="let dias of array">
+    <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas[0].horario_vacio ? 'true' : 'false'">
+      <div *ngIf="horas !== undefined">
+        <div *ngFor="let hora of horas">
+                {{hora.docente}}
+                {{hora.componente}}
+                {{hora.aula}}
+        <br>
+        </div>
+
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>

@@ -58,6 +58,7 @@ import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
 import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
+import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { AddPlanificacionComponent } from './components/planificacion/add-planif
     AddcarreraComponent,
     VercarreraComponent,
     AddPlanificacionComponent,
+    HorariosAnyoComponent,
   ], entryComponents: [AddPlanificacionComponent,
   ],
   imports: [

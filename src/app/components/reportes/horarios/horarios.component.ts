@@ -23,7 +23,7 @@ import { ComponenteService } from 'src/app/services/componente.service';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { HorarioViewModel } from 'src/app/models/horarioView.model';
+import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
 
 @Component({
   selector: 'app-horarios',
@@ -50,6 +50,7 @@ export class HorariosComponent implements OnInit {
   carreras: CarreraModel[] = [];
   grupos: GrupoModel[] = [];
   reporte: string;
+  anyos = [1, 2, 3, 4, 5];
   constructor(
     // tslint:disable: variable-name
     private _doho: DocenteHorasService,
@@ -96,7 +97,10 @@ export class HorariosComponent implements OnInit {
         this.getDepartamentos(id);
         break;
       }
-
+      case 'anyo': {
+        this.getDepartamentos(id);
+        break;
+      }
       default: {
         console.log('no hay filtro para eso');
       }
@@ -148,34 +152,58 @@ export class HorariosComponent implements OnInit {
       }
     }
   }
+  async getHorarioByAnyo(anyo) {
+    this.grupos = [];
+    const a = [];
+    a[0] = (anyo - 1) + anyo;
+    a[1] = anyo + anyo;
+    console.log(a);
+    for (const grupo of this._grupo.list) {
+      const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
+      const pd = await this.pdes.find(p => p.pde_id === comp.componente_pde);
+      if (pd.pde_carrera === this.selectedCarrera.carrera_id && (comp.componente_ciclo === a[0] || comp.componente_ciclo === a[1])) {
+        this.grupos.push(grupo);
+        console.log('se agrego: ', grupo);
+      }
+    }
+
+  }
 
   async getHorarioByFilter(query: string, id: number) {
     this.horarios = [];
     if (query === 'docente') {
-      console.log('el id docente es: ', id);
-      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_docente) === id);
+      const p = new Promise<any>((resolve, reject) => {
+        console.log('el id docente es: ', id);
+        this._horario.getHorarioByFilter('horario_docente', id).subscribe(res => resolve(res));
+      });
+      p.then((gr) => {
+        this.horarios = gr;
+      });
+      p.finally(() => {
+        console.log(this.horarios);
+        this.fun();
+      });
     }
     if (query === 'grupo') {
       console.log('el id grupo es: ', id);
       this.horarios = await this._horario.list.filter(horario => Number(horario.horario_grupo) === id);
+      console.log(this.horarios);
+      this.fun();
     }
     if (query === 'aula') {
       console.log('el id de aula es: ', id);
       this.horarios = await this._horario.list.filter(horario => Number(horario.horario_aula) === id);
+      console.log(this.horarios);
+      this.fun();
     }
-    console.log(this.horarios);
-    this.fun();
+
   }
 
-  fun() {
+
+  async fun() {
     let i = 0;
     let j = 0;
-    const vacio = new HorarioModel();
-    vacio.horario_aula = '-';
-    vacio.horario_dia = '-';
-    vacio.horario_hora = 0;
-    vacio.horario_grupo = '-';
-    vacio.horario_id = '-';
+    const vacio = new HorarioViewModel();
     vacio.horario_vacio = true;
     for (let aux = 0; aux < 6; aux++) {
       this.array[aux] = [];
@@ -185,7 +213,7 @@ export class HorariosComponent implements OnInit {
         this.array[aux2][aux] = vacio;
       }
     }
-    this.horarios.forEach(dia => {
+    for (const dia of this.horarios) {
       switch (dia.horario_dia) {
         case 'Lunes': {
           i = 0;
@@ -193,17 +221,14 @@ export class HorariosComponent implements OnInit {
         }
         case 'Martes': {
           i = 1;
-
           break;
         }
         case 'Miercoles': {
           i = 2;
-
           break;
         }
         case 'jueves': {
           i = 3;
-
           break;
         }
         case 'Viernes': {
@@ -248,12 +273,54 @@ export class HorariosComponent implements OnInit {
             break;
           }
       }
-      console.log(dia);
-      this.array[j][i] = dia;
-      i = 0;
-      j = 0;
-
-    });
+      // console.log(dia);
+      const diaView = new HorarioViewModel();
+      if (this.reporte === 'aula') {
+        // console.log(dia);
+        if (!dia.horario_vacio) {
+          diaView.horario_dia = dia.horario_dia;
+          diaView.horario_hora = dia.horario_hora;
+          const gp = await this._grupo.list.find(g => g.grupo_id === dia.horario_grupo);
+          const cp = await this.componentes.find(c => c.componente_id === gp.grupo_componente);
+          diaView.componente = cp.componente_nombre;
+          if (gp.grupo_tipo === 'teorico') {
+            diaView.grupo = `gt${gp.grupo_numero}`;
+          }
+          if (gp.grupo_tipo === 'practico') {
+            diaView.grupo = `gp${gp.grupo_numero}`;
+          }
+          diaView.aula = `${this.selectedA.aula_nombre}: ${this.selectedR.recinto_nombre}`;
+          const dc = this._docente.list.find(d => d.docente_id === gp.grupo_docente);
+          diaView.docente = dc.docente_nombre;
+          console.log(diaView);
+          this.array[j][i] = diaView;
+          i = 0;
+          j = 0;
+        }
+      }
+      if (this.reporte === 'docente') {
+        if (!dia.horario_vacio) {
+          diaView.horario_dia = dia.horario_dia;
+          diaView.horario_hora = dia.horario_hora;
+          const gp = await this._grupo.list.find(g => g.grupo_id === dia.horario_grupo);
+          const cp = await this.componentes.find(c => c.componente_id === gp.grupo_componente);
+          diaView.componente = cp.componente_nombre;
+          if (gp.grupo_tipo === 'teorico') {
+            diaView.grupo = `gt${gp.grupo_numero}`;
+          }
+          if (gp.grupo_tipo === 'practico') {
+            diaView.grupo = `gp${gp.grupo_numero}`;
+          }
+          diaView.anyo = cp.componente_ciclo;
+          const al = this._aula.list.find(a => a.aula_id === dia.horario_aula)
+          diaView.aula = al.aula_nombre;
+          console.log(diaView);
+          this.array[j][i] = diaView;
+          i = 0;
+          j = 0;
+        }
+      }
+    }
     console.log(this.array);
   }
 
