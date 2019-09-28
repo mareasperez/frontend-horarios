@@ -9,6 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
+import { DocenteAreaModel } from 'src/app/models/docente.area.model';
 
 interface DialogData {
   type: string;
@@ -27,9 +28,9 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   public areas:AreaModel[]=[]
   public areasSelecteds:string[]=[]
 
+  private doc_areas:DocenteAreaModel[]=[]
   edit = false;
   subs: Subscription[] = [];
-  public selected = '0';
   public form: FormGroup;
   public refDepartamento: Observable<any>;
   public refArea: Observable<any>;
@@ -44,7 +45,8 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
    ) {
      this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
      this._area.getAreas().subscribe(res => this.areas.push(res))
-     this.refArea = this._area.getList()
+     this._doc_ar.getDcArea().subscribe(res => this.doc_areas.push(res))
+     this.refArea = this._area.getList();
      this.refDepartamento = this.departamento$.getList();
    }
 
@@ -61,7 +63,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._area.list = []
     this.departamento$.list = []
-    console.log(window.location.href)
+    this._doc_ar.list = []
     //this.docenteService.list = []
     this.subs.map(sub => sub.unsubscribe());
   }
@@ -95,7 +97,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       this.docenteService.crearDocente(doc)
         .subscribe(res => {
           console.log(res)
-          this.post_areas()
+          this.post_areas(res.id)
         })
     );
     console.log(this.areasSelecteds)
@@ -108,20 +110,39 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(res =>{
           console.log(res)
-           this.post_areas()
+           this.post_areas(doc.docente_id)
           })
         );
     
   }
 
-  post_areas(){
-    this._doc_ar.crearDcArea(this.docenteService.list[this.docenteService.list.length -1].docente_id, this.areasSelecteds)
+  post_areas(docenteID){
+    this._doc_ar.crearDcArea(docenteID, this.areasSelecteds)
     .subscribe(res=>this.dialogRef.close())
 
   }
 
-  add_area(permisos){
-    this.areasSelecteds = permisos._value
+  add_area(areas){
+    this.areasSelecteds = areas._value
+  }
+
+  onDocente(id){
+    if(this.data.doc.docente_id){
+      let area = this.doc_areas.find(do_ar => do_ar.da_area == id)
+      console.log("llamado por area: ",id, "\n",area.da_docente, this.data.doc.docente_id)
+      if(area.da_docente === this.data.doc.docente_id){
+        console.log("true")
+        return true
+      }else{
+        console.log("false")
+
+        return false
+      }
+    }else{
+      return false
+      
+    }
+
   }
 
 }

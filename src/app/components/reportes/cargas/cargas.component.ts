@@ -111,7 +111,7 @@ export class CargasComponent implements OnInit {
       this.selectPlani.planificacion_semestre);
       throw new Error('verifique que el docente exista en la tabla docente horas en la bd!');
     }
-    const gr = await grupos.filter(grupo => ((grupo.grupo_docente === docente.docente_id)
+    const gr = await grupos.filter(grupo => ((grupo.grupo_docente === Number(docente.docente_id))
       && (grupo.grupo_planificacion) === planificacion.planificacion_id));
     console.log(reporte.docente, ' ', gr);
     for (const grupo of gr) {
