@@ -3,6 +3,6 @@ export class DocenteHorasModel {
     dh_horas_planta: number;
     dh_horas_hor: number;
     dh_horas_total: number;
-    dh_docente: number;
-    dh_planificacion: number;
+    dh_docente: string;
+    dh_planificacion: string;
 }

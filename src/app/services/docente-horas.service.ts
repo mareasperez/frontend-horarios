@@ -17,7 +17,7 @@ export class DocenteHorasService extends MainService {
         data.docenteHoras.forEach(el => {
           // console.log(el)
           let docH = new DocenteHorasModel();
-          docH = Object.assign(el);
+          docH = Object.assign(docH,el);
           this.list.push(docH);
           observer.next(docH);
 

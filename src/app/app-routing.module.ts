@@ -22,9 +22,9 @@ import { ComponentesComponent } from './components/componentes/componentes.compo
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
-import { PlanificacionComponent } from './components/planificacion/planificacion.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
+import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 
 
 const routes: Routes = [
@@ -175,8 +175,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'planificacion',
-    component: PlanificacionComponent,
+    path: 'doc-horas',
+    component: DocHorasComponent,
     canActivate: [AuthGuard]
   },
   {

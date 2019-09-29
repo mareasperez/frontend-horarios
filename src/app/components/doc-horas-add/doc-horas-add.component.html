@@ -1,0 +1,37 @@
+<form [formGroup]="form">
+        <div class="d-flex flex-column">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Docente</mat-label>
+                <mat-select formControlName="dh_docente"  ([value])="selected">
+                    <mat-option *ngFor="let doc of docentes" [value]="doc.docente_id">
+                        {{doc.docente_nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Planificacion</mat-label>
+                <mat-select formControlName="dh_planificacion" ([value])="selected">
+                    <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
+                        Semestre {{plan.planificacion_semestre}} | {{plan.planificacion_anyo_lectivo}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+            <div class="row">
+           <h5 class="col-12"><strong>Horas asignadas</strong></h5>
+           <mat-form-field class="col-6" appearance="outline">
+               <mat-label>de planta</mat-label>
+               <input #hp type="numer" formControlName="dh_horas_planta" matInput>
+            </mat-form-field>
+            <mat-form-field class="col-6" appearance="outline">
+                <mat-label>Parciales</mat-label>
+                <input #hh type="numer" formControlName="dh_horas_hor" matInput>
+            </mat-form-field> 
+        </div>
+            <p><strong>Horas totales: {{+hp.value + +hh.value}}</strong></p>
+            <button mat-raised-button color="warn" (click)="dialogRef.close()"><mat-icon>cancel</mat-icon>Cancelar</button>
+            <button mat-raised-button color="success"
+            (click)="data.type === 'c' ? saveDH():updateDH()"
+            ><mat-icon>save</mat-icon>Guardar</button>
+    </form>

@@ -100,7 +100,7 @@ export class CargasComponent implements OnInit {
     const rr: RComponent[] = [];
     reporte.componente = rr;
     reporte.suma = 0;
-    const dh = await this.doho.find(doho => doho.dh_docente === Number(docente.docente_id));
+    const dh = await this.doho.find(doho => doho.dh_docente === docente.docente_id);
     reporte.docente = docente.docente_nombre;
     if (dh === undefined) {
       alert('el docente:' +
