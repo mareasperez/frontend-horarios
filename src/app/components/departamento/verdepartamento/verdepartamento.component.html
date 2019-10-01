@@ -1,35 +1,35 @@
 <div class="container-fluid">
-  <mat-card>
-    <br>
-    <div class="row">
-      <h1 style="margin-left: 5%">Departamento</h1>
-      <span style="flex: 1 1 auto"></span>
-      <div style="margin-right: 5%">
-        <button mat-raised-button (click)="openDialog('c')" style="width: 100px">
+    <mat-card>
+        <br>
+        <div class="row">
+            <h1 style="margin-left: 5%">Departamento</h1>
+            <span style="flex: 1 1 auto"></span>
+            <div style="margin-right: 5%">
+                <button mat-raised-button (click)="openDialog('c')" style="width: 100px">
           <mat-icon>add</mat-icon>
         </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <mat-list>
-          <mat-list-item *ngFor="let departamento of departamentos" class="row">
-            <div class="col">
-              {{departamento.departamento_nombre}}
             </div>
-            <div class="col">
-              {{departamento.departamento_facultad}}
-            </div>
-            <span style="flex: 1 1 auto"></span>
-            <button mat-icon-button (click)="delDepartamento(departamento.departamento_id)">
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <mat-list>
+                    <mat-list-item *ngFor="let departamento of departamentos" class="row">
+                        <div class="col">
+                            {{departamento.departamento_nombre}}
+                        </div>
+                        <div class="col">
+                            {{departamento.departamento_facultad | getNombreFacultad}}
+                        </div>
+                        <span style="flex: 1 1 auto"></span>
+                        <button mat-icon-button (click)="delDepartamento(departamento.departamento_id)">
               <mat-icon style="color:red">delete</mat-icon>
             </button>
-            <button mat-icon-button (click)="openDialog('u', departamento.departamento_id)">
+                        <button mat-icon-button (click)="openDialog('u', departamento.departamento_id)">
               <mat-icon style="color:green">edit</mat-icon>
             </button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-    </div>
-  </mat-card>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+    </mat-card>
 </div>

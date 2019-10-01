@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { Observable, Subscription, from } from 'rxjs';
@@ -12,20 +12,21 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
   templateUrl: './verdepartamento.component.html',
   styleUrls: ['./verdepartamento.component.scss']
 })
-export class VerdepartamentoComponent implements OnInit, OnDestroy {
 
+export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
   public facultades: FacultadModel [] = [];
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
+  public resultado = new FacultadModel();
   sub: Subscription;
   constructor(
     private _departamento: DepartamentoService,
-    private _facultad: FacultadSerivice,
+    private facultad$: FacultadSerivice,
     private dialog: MatDialog
     ) {
     this._departamento.getDepartamento().subscribe(res => this.departamentos.push(res));
-    this._facultad.getFacultad().subscribe(res2 => this.facultades.push(res2));
+    this.facultad$.getFacultad().subscribe(res2 => this.facultades.push(res2));
     this.refDepartamento = this._departamento.getList();
   }
 
@@ -43,8 +44,13 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   }
 
   delDepartamento(id: any) {
-    this.sub = this._departamento.deleteDepartamento(id).subscribe()
+    this.sub = this._departamento.deleteDepartamento(id).subscribe();
   }
+
+  getNombreFacultad(point: string): string {
+    this.resultado = this.facultad$.list.find(facultad => facultad.facultad_id === point);
+    return this.resultado.facultad_nombre;
+}
 
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
