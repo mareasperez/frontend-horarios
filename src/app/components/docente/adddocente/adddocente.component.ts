@@ -13,7 +13,7 @@ import { DocenteAreaModel } from 'src/app/models/docente.area.model';
 
 interface DialogData {
   type: string;
-  doc?: DocenteModel;
+  doc: DocenteModel;
 }
 @Component({
   selector: 'app-adddocente',
@@ -43,8 +43,8 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private fb: FormBuilder
    ) {
-     this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
      this._area.getAreas().subscribe(res => this.areas.push(res))
+     this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
      this._doc_ar.getDcArea().subscribe(res => this.doc_areas.push(res))
      this.refArea = this._area.getList();
      this.refDepartamento = this.departamento$.getList();
@@ -126,10 +126,11 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     this.areasSelecteds = areas._value
   }
 
-  onDocente(id){
-    if(this.data.doc.docente_id){
-      let area = this.doc_areas.find(do_ar => do_ar.da_area == id)
-      console.log("llamado por area: ",id, "\n",area.da_docente, this.data.doc.docente_id)
+ onDocente(id){
+  console.log(this.areas, this.doc_areas)
+    if(this.data.doc != null){
+      let area = this.doc_areas.find(do_ar => do_ar.da_area === id)
+      console.log("llamado por area: ",id, "\n",area,"\n",area.da_docente, this.data.doc.docente_id)
       if(area.da_docente === this.data.doc.docente_id){
         console.log("true")
         return true
@@ -139,10 +140,11 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         return false
       }
     }else{
+      console.log("inicio false")
+
       return false
       
     }
-
   }
 
 }

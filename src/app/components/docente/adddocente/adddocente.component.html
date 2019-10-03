@@ -24,7 +24,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-selection-list *ngIf="areas.length > 0" #horas style="height: 200px; overflow: auto"  appearance="outline">
+              <mat-selection-list #horas *ngIf="areas?.length > 0" style="height: 200px; overflow: auto" >
                 <mat-label>Areas</mat-label>
                 <mat-list-option *ngFor="let area of areas"  [value]="area.area_id"
                  [selected]="onDocente(area.area_id)" (click)="add_area(horas)"
