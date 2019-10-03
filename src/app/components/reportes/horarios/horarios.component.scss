@@ -5,16 +5,13 @@
 //   vertical-align: top;
 //   border:solid;
 // }
-
 // .drag-list {
 //   border: solid 1px #ccc;
 //   min-height: 60px;
 //   background: white;
 //   border-radius: 4px;
 //   overflow: hidden;
-
 // }
-
 // .drag-item {
 //   border: solid 1p black;
 //   height: 80px;
@@ -26,13 +23,20 @@
 //   background: green
 // }
 mat-grid-tile {
-  background: lightblue;
-  border: solid 1px black;
-}
-.false{
-  background-color:lightgreen;
+    background: lightblue;
+    border: solid 1px black;
 }
 
-.true{
-  background-color: gray;
+.false {
+    background-color: lightgreen;
+}
+
+.true {
+    background-color: gray;
+}
+
+td {
+    height: 100px;
+    vertical-align: middle;
+    text-align: center;
 }
