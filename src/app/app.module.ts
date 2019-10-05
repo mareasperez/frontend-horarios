@@ -60,6 +60,8 @@ import { PlanificacionComponent } from 'src/app/components/planificacion/planifi
 import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 import { getNombreFacultadPipe } from './components/departamento/verdepartamento/get-nombre-facultad.pipe';
+import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
+import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +96,9 @@ import { getNombreFacultadPipe } from './components/departamento/verdepartamento
     AddPlanificacionComponent,
     HorariosAnyoComponent,
     getNombreFacultadPipe,
-  ], entryComponents: [AddPlanificacionComponent,
+    DocHorasComponent,
+    DocHorasAddComponent,
+  ], entryComponents: [AddPlanificacionComponent,DocHorasAddComponent
   ],
   imports: [
     BrowserModule,

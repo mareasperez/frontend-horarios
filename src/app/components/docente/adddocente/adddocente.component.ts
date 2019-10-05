@@ -117,9 +117,9 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   }
 
   post_areas(docenteID){
-    this._doc_ar.crearDcArea(docenteID, this.areasSelecteds)
+    let body = { docenteArea: this.areasSelecteds };
+    this._doc_ar.client.put(`${this._doc_ar.getUrl()}docente_id=${docenteID}`, this.areasSelecteds)
     .subscribe(res=>this.dialogRef.close())
-
   }
 
   add_area(areas){
