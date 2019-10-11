@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { matErrorsMessage } from 'src/app/utils/errors';
 interface DialogData {
   type: string;
   rec?: RecintoModel;
@@ -25,7 +26,7 @@ export class AddrecintoComponent implements OnInit {
   public selected = '0';
   public form: FormGroup;
   public refFacultad: Observable<any>;
-
+  public Errors:matErrorsMessage = new matErrorsMessage()
   constructor(private recintoService: RecintoService,
               private facultad$: FacultadSerivice,
               public dialogRef: MatDialogRef<AddrecintoComponent>,
@@ -51,15 +52,15 @@ export class AddrecintoComponent implements OnInit {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         recinto_id: null,
-        recinto_nombre: new FormControl('', [Validators.required]),
-        recinto_ubicacion: new FormControl('', [Validators.required]),
+        recinto_nombre: new FormControl('', [Validators.required, Validators.maxLength(250)]),
+        recinto_ubicacion: new FormControl('', [Validators.required, Validators.maxLength(250)]),
         recinto_facultad: new FormControl('', [Validators.required])
       });
     } else {
       this.form = this.fb.group({
         recinto_id: this.data.rec.recinto_id,
-        recinto_nombre: new FormControl(this.data.rec.recinto_nombre, [Validators.required]),
-        recinto_ubicacion: new FormControl(this.data.rec.recinto_ubicacion, [Validators.required]),
+        recinto_nombre: new FormControl(this.data.rec.recinto_nombre, [Validators.required, Validators.maxLength(250)]),
+        recinto_ubicacion: new FormControl(this.data.rec.recinto_ubicacion, [Validators.required, Validators.maxLength(250)]),
         recinto_facultad: new FormControl(this.data.rec.recinto_facultad, [Validators.required])
       });
     }
@@ -83,5 +84,7 @@ export class AddrecintoComponent implements OnInit {
       .subscribe(res => this.dialogRef.close())
     );
   }
-
+  get Form(){
+    return this.form.controls
+  }
 }

@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
+import { matErrorsMessage } from 'src/app/utils/errors';
 
 interface DialogData {
   type: string;
@@ -27,6 +28,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   public selected = '0';
   public form: FormGroup;
   public refFacultad: Observable<any>;
+  public Errors:matErrorsMessage = new matErrorsMessage()
 
   constructor(private departamentoService: DepartamentoService,
               private facultad$: FacultadSerivice,
@@ -48,19 +50,21 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.map(sub => sub.unsubscribe());
   }
-
+  get Form(){
+    return this.form.controls
+  }
   createForm( id?: string) {
     if (this.data.type === 'c') {
     this.form = this.fb.group({
       departamento_id: null,
-      departamento_nombre: new FormControl('', [Validators.required]),
-      departamento_facultad: new FormControl('', [Validators.required])
+      departamento_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      departamento_facultad: new FormControl('0', [Validators.required])
 
      });
     } else {
       this.form = this.fb.group({
         departamento_id: this.data.dep.departamento_id,
-        departamento_nombre: new FormControl(this.data.dep.departamento_nombre, [Validators.required]),
+        departamento_nombre: new FormControl(this.data.dep.departamento_nombre, [Validators.required, Validators.maxLength(100)]),
         departamento_facultad: new FormControl(this.data.dep.departamento_facultad, [Validators.required])
        });
     }

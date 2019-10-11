@@ -53,7 +53,6 @@ import { ComponentesComponent } from './components/componentes/componentes.compo
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
-import { DocAreaComponent } from './components/doc-area/doc-area.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
@@ -90,7 +89,6 @@ import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.c
     GrupoComponent,
     CargaComponent,
     CargasComponent,
-    DocAreaComponent,
     AddcarreraComponent,
     VercarreraComponent,
     AddPlanificacionComponent,
@@ -98,7 +96,10 @@ import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.c
     getNombreFacultadPipe,
     DocHorasComponent,
     DocHorasAddComponent,
-  ], entryComponents: [AddPlanificacionComponent,DocHorasAddComponent
+  ], entryComponents: [
+    AddPlanificacionComponent,
+    DocHorasAddComponent,
+    AddcarreraComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,8 @@
             <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input formControlName="carrera_nombre" matInput>
+                <mat-error *ngIf="Form.carrera_nombre.invalid">{{Errors.getError(Form.carrera_nombre)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Departamento</mat-label>
@@ -13,6 +15,8 @@
                         {{departamento.departamento_nombre}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="Form.carrera_departamento.invalid">{{Errors.getError(Form.carrera_departamento)}}</mat-error>
+
             </mat-form-field>
             <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveCarrera():updateCarrera()">
           Guardar

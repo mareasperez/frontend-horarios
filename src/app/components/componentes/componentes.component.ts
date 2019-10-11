@@ -7,6 +7,7 @@ import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { matErrorsMessage } from 'src/app/utils/errors';
 
 @Component({
   selector: 'app-componentes',
@@ -25,7 +26,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public selected2:string = "0";
   public add:boolean = false;
   public editing:boolean = false;
-  subs:Subscription[]=[]
+  subs:Subscription[]=[];
+  public Errors:matErrorsMessage = new matErrorsMessage()
   constructor(private comService:ComponenteService,
               private _area:AreaService,
               private _pde:PlanEstudioService,
@@ -63,7 +65,6 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   createForm(flag:number, id?:string){
-    console.log(flag)
     if(flag === 0){
       this.form = this.fb.group({
         componente_id:null,
@@ -71,8 +72,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
         componente_chp: new FormControl('',[Validators.required, Validators.min(1)]),
         componente_cht: new FormControl('',[Validators.required, Validators.min(1)]),
         componente_ciclo: new FormControl('',[Validators.required, Validators.min(1)]),
-        componente_area: new FormControl('',[Validators.required]),
-        componente_pde:new FormControl('',[Validators.required])
+        componente_area: new FormControl('0',[Validators.required]),
+        componente_pde:new FormControl('0',[Validators.required])
 
       })
     }else{
@@ -125,5 +126,9 @@ export class ComponentesComponent implements OnInit, OnDestroy {
       this.editing = false;
       this.add = false
     })
+  }
+
+  get Form(){
+    return this.form.controls
   }
 }

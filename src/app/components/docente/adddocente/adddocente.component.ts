@@ -10,6 +10,7 @@ import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
 import { DocenteAreaModel } from 'src/app/models/docente.area.model';
+import {matErrorsMessage} from 'src/app/utils/errors'
 
 interface DialogData {
   type: string;
@@ -34,7 +35,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public refDepartamento: Observable<any>;
   public refArea: Observable<any>;
-
+  public Errors:matErrorsMessage = new matErrorsMessage();
   constructor(private docenteService: DocenteService,
               private departamento$: DepartamentoService,
               private _area:AreaService,
@@ -48,6 +49,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
      this._doc_ar.getDcArea().subscribe(res => this.doc_areas.push(res))
      this.refArea = this._area.getList();
      this.refDepartamento = this.departamento$.getList();
+
    }
 
   ngOnInit() {
@@ -72,18 +74,18 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     if (this.data.type === 'c') {
     this.form = this.fb.group({
       docente_id: null,
-      docente_nombre: new FormControl('', [Validators.required]),
-      docente_inss: new FormControl('', [Validators.required]),
-      docente_tipo_contrato: new FormControl('', [Validators.required]),
-      docente_departamento: new FormControl('', [Validators.required])
+      docente_nombre: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+      docente_inss: new FormControl('', [Validators.required, Validators.min(10000)]),
+      docente_tipo_contrato: new FormControl('', [Validators.required, Validators.maxLength(15)]),
+      docente_departamento: new FormControl('0', [Validators.required])
 
      });
     } else {
       this.form = this.fb.group({
         docente_id: this.data.doc.docente_id,
-        docente_nombre: new FormControl(this.data.doc.docente_nombre, [Validators.required]),
-        docente_inss: new FormControl(this.data.doc.docente_inss, [Validators.required]),
-        docente_tipo_contrato: new FormControl(this.data.doc.docente_tipo_contrato, [Validators.required]),
+        docente_nombre: new FormControl(this.data.doc.docente_nombre, [Validators.required, Validators.maxLength(10)]),
+        docente_inss: new FormControl(this.data.doc.docente_inss, [Validators.required, Validators.min(10000)]),
+        docente_tipo_contrato: new FormControl(this.data.doc.docente_tipo_contrato, [Validators.required, Validators.maxLength(15)]),
         docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
 
        });
@@ -96,11 +98,9 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.docenteService.crearDocente(doc)
         .subscribe(res => {
-          console.log(res)
           this.post_areas(res.id)
         })
     );
-    console.log(this.areasSelecteds)
 
   }
   updateDocente() {
@@ -109,7 +109,6 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(res =>{
-          console.log(res)
            this.post_areas(doc.docente_id)
           })
         );
@@ -117,8 +116,8 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   }
 
   post_areas(docenteID){
-    let body = { docenteArea: this.areasSelecteds };
-    this._doc_ar.client.put(`${this._doc_ar.getUrl()}docente_id=${docenteID}`, this.areasSelecteds)
+    let body = { docenteArea: [{'da_area':this.areasSelecteds}] };
+    this._doc_ar.client.put(`${this._doc_ar.getUrl()}docente_id=${docenteID}`, body)
     .subscribe(res=>this.dialogRef.close())
   }
 
@@ -126,25 +125,29 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     this.areasSelecteds = areas._value
   }
 
- onDocente(id){
-  console.log(this.areas, this.doc_areas)
-    if(this.data.doc != null){
-      let area = this.doc_areas.find(do_ar => do_ar.da_area === id)
-      console.log("llamado por area: ",id, "\n",area,"\n",area.da_docente, this.data.doc.docente_id)
+ onDocente(id:string){
+  if(this.data.doc != null){
+    let area = new DocenteAreaModel()
+      area = this.doc_areas.find(do_ar => do_ar.da_area === id)
+    // console.log("llamado por area: ",id, "\n",area,"\n",area.da_docente, this.data.doc.docente_id)
+    if(area){
+    
       if(area.da_docente === this.data.doc.docente_id){
-        console.log("true")
-        return true
-      }else{
-        console.log("false")
-
-        return false
+          return true
+        }else{
+          return false
+        }
       }
     }else{
-      console.log("inicio false")
-
-      return false
-      
+        return false    
     }
   }
+
+  get Form(){
+    console.log(this.form.controls)
+    return this.form.controls
+  }
+
+  
 
 }

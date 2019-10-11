@@ -6,6 +6,7 @@ import { CarreraService } from 'src/app/services/carrera.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { Observable, Subscription } from 'rxjs';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
+import { matErrorsMessage } from 'src/app/utils/errors';
 interface DialogData {
   type: string;
   plan?: PlanEstudioModel;
@@ -21,6 +22,8 @@ export class AddplanestudioComponent implements OnInit {
   public refCarrera: Observable<any>;
   public selected = '0';
   subs: Subscription[] = [];
+  public Errors:matErrorsMessage = new matErrorsMessage()
+
   constructor(private carrera$: CarreraService,
               private plan$: PlanEstudioService,
               public dialogRef: MatDialogRef<AddplanestudioComponent>,
@@ -41,23 +44,25 @@ export class AddplanestudioComponent implements OnInit {
     this.createForm();
 
   }
-
+  get Form(){
+    return this.form.controls
+  }
 
   createForm( id?: string) {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         pde_id: null,
-        pde_nombre: new FormControl('', [Validators.required]) ,
-        pde_anyo: new FormControl('', [Validators.required]) ,
-        pde_carrera: new FormControl('', [Validators.required])
+        pde_nombre: new FormControl('', [Validators.required,Validators.maxLength(150)]) ,
+        pde_anyo: new FormControl('', [Validators.required, Validators.min(2008)]) ,
+        pde_carrera: new FormControl('0', [Validators.required])
 
       });
    } else {
      console.log(this.data.plan);
 
      this.form = this.fb.group({
-      pde_nombre: new FormControl(this.data.plan.pde_nombre, [Validators.required]) ,
-      pde_anyo: new FormControl(this.data.plan.pde_anyo, [Validators.required]) ,
+      pde_nombre: new FormControl(this.data.plan.pde_nombre, [Validators.required,Validators.maxLength(150)]) ,
+      pde_anyo: new FormControl(this.data.plan.pde_anyo, [Validators.required, Validators.min(2008)]) ,
       pde_carrera: new FormControl(this.data.plan.pde_carrera, [Validators.required]) ,
       pde_id: new FormControl(this.data.plan.pde_id)
 

@@ -4,15 +4,18 @@
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>
               <input formControlName="docente_nombre" matInput>
+              <mat-error *ngIf="Form.docente_nombre.invalid">{{Errors.getError(Form.docente_nombre)}}</mat-error>
             </mat-form-field>
             <span>
               <mat-form-field class="col-6" appearance="outline">
                 <mat-label>Tipo de contrato</mat-label>
                 <input formControlName="docente_tipo_contrato" matInput>
+                <mat-error *ngIf="Form.docente_tipo_contrato.invalid">{{Errors.getError(Form.docente_tipo_contrato)}}</mat-error>
               </mat-form-field>
               <mat-form-field class="col-6" appearance="outline">
                 <mat-label>Inss</mat-label>
                 <input formControlName="docente_inss" matInput>
+                <mat-error *ngIf="Form.docente_inss.invalid">{{Errors.getError(Form.docente_inss)}}</mat-error>
               </mat-form-field>
             </span>
             <mat-form-field  appearance="outline">
@@ -23,8 +26,9 @@
                     {{dep.departamento_nombre}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="Form.docente_departamento.invalid">{{Errors.getError(Form.docente_departamento)}}</mat-error>
               </mat-form-field>
-              <mat-selection-list #horas *ngIf="areas?.length > 0" style="height: 200px; overflow: auto" >
+              <mat-selection-list #horas *ngIf="areas.length > 0" style="height: 200px; overflow: auto" >
                 <mat-label>Areas</mat-label>
                 <mat-list-option *ngFor="let area of areas"  [value]="area.area_id"
                  [selected]="onDocente(area.area_id)" (click)="add_area(horas)"

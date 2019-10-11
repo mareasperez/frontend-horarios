@@ -29,23 +29,31 @@
             <mat-form-field appearance="outline">
               <mat-label>numero de grupo</mat-label>
               <input matInput formControlName="grupo_numero">
+              <mat-error *ngIf="Form.grupo_numero.invalid">{{Errors.getError(Form.grupo_numero)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Maxima capacidad</mat-label>
               <input matInput formControlName="grupo_max_capacidad">
+              <mat-error *ngIf="Form.grupo_max_capacidad.invalid">{{Errors.getError(Form.grupo_max_capacidad)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Tipo</mat-label>
               <input matInput formControlName="grupo_tipo">
+              <mat-error *ngIf="Form.grupo_tipo.invalid">{{Errors.getError(Form.grupo_tipo)}}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Modo</mat-label>
               <input matInput formControlName="grupo_modo">
+              <mat-error *ngIf="Form.grupo_modo.invalid">{{Errors.getError(Form.grupo_modo)}}</mat-error>
             </mat-form-field>
             <mat-checkbox formControlName="grupo_planta">Horario Planta!</mat-checkbox>
             <mat-form-field appearance="outline">
               <mat-label>Cantidad de horas </mat-label>
               <input matInput formControlName="grupo_horas_clase">
+              <mat-error *ngIf="Form.grupo_horas_clase.invalid">{{Errors.getError(Form.grupo_horas_clase)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Componente</mat-label>
@@ -54,6 +62,8 @@
                 <mat-option *ngFor="let componente of componentes" [value]="componente.componente_id">
                   {{componente.componente_nombre}}</mat-option>
               </mat-select>
+              <mat-error *ngIf="Form.grupo_componente.invalid">{{Errors.getError(Form.grupo_componente)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Docente</mat-label>
@@ -62,6 +72,8 @@
                 <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="Form.grupo_docente.invalid">{{Errors.getError(Form.grupo_docente)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Planificacion</mat-label>
@@ -71,6 +83,8 @@
                   {{planificacion.planificacion_id}}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="Form.grupo_planificacion.invalid">{{Errors.getError(Form.grupo_planificacion)}}</mat-error>
+
             </mat-form-field>
 
             <button mat-raised-button type="button" class="float-rigth" color="primary"

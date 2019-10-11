@@ -30,15 +30,15 @@ export class AddPlanificacionComponent implements OnInit {
   createForm(id?: string){
     if (this.data.type === 'c') {
       this.form = this.fb.group({
-        planificacion_anyo_lectivo: new FormControl('',[Validators.required]),
-        planificacion_semestre: new FormControl('',[Validators.required])
+        planificacion_anyo_lectivo: new FormControl('',[Validators.required, Validators.min(2008)]),
+        planificacion_semestre: new FormControl('1',[Validators.required])
     
       })
 
     }else{
       this.form = this.fb.group({
         planificacion_id: new FormControl(this.data.plan.planificacion_id),
-        planificacion_anyo_lectivo: new FormControl(this.data.plan.planificacion_anyo_lectivo,[Validators.required]),
+        planificacion_anyo_lectivo: new FormControl(this.data.plan.planificacion_anyo_lectivo,[Validators.required, Validators.min(2008)]),
         planificacion_semestre: new FormControl(this.data.plan.planificacion_semestre,[Validators.required])
       })
     }

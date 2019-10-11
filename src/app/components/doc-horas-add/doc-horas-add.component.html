@@ -4,18 +4,25 @@
             <mat-form-field appearance="outline">
                 <mat-label>Docente</mat-label>
                 <mat-select formControlName="dh_docente"  ([value])="selected">
+                        <mat-option value="0">Docente...</mat-option>
+
                     <mat-option *ngFor="let doc of docentes" [value]="doc.docente_id">
                         {{doc.docente_nombre}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="Form.dh_docente.invalid">{{Errors.getError(Form.dh_docente)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Planificacion</mat-label>
-                <mat-select formControlName="dh_planificacion" ([value])="selected">
+                <mat-select formControlName="dh_planificacion" [(value)]="selected">
+                    <mat-option value="0">planificacion...</mat-option>
                     <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
                         Semestre {{plan.planificacion_semestre}} | {{plan.planificacion_anyo_lectivo}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="Form.dh_planificacion.invalid">{{Errors.getError(Form.dh_planificacion)}}</mat-error>
+
             </mat-form-field>
         </div>
             <div class="row">
@@ -23,10 +30,13 @@
            <mat-form-field class="col-6" appearance="outline">
                <mat-label>de planta</mat-label>
                <input #hp type="numer" formControlName="dh_horas_planta" matInput>
+               <mat-error *ngIf="Form.dh_horas_planta.invalid">{{Errors.getError(Form.dh_horas_planta)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field class="col-6" appearance="outline">
                 <mat-label>Parciales</mat-label>
                 <input #hh type="numer" formControlName="dh_horas_hor" matInput>
+                <mat-error *ngIf="Form.dh_horas_hor.invalid">{{Errors.getError(Form.dh_horas_hor)}}</mat-error>
             </mat-form-field> 
         </div>
             <p><strong>Horas totales: {{+hp.value + +hh.value}}</strong></p>

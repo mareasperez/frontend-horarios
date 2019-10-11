@@ -10,6 +10,7 @@ import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
+import { matErrorsMessage } from 'src/app/utils/errors';
 
 @Component({
   selector: 'app-grupo',
@@ -34,6 +35,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public add = false;
   public editing = false;
   subs:Subscription[]=[]
+  public Errors:matErrorsMessage = new matErrorsMessage()
 
   constructor(
     private fb: FormBuilder,
@@ -85,7 +87,10 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
   }
 
-
+  get Form(){
+    return this.form.controls
+  }
+  
   createForm(flag: number, id?: number) {
     if (flag === 0) {
       this.form = this.fb.group({

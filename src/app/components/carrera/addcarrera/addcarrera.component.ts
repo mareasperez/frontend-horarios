@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { CarreraService } from 'src/app/services/carrera.service';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { matErrorsMessage } from 'src/app/utils/errors';
 
 interface DialogData {
   type: string;
@@ -25,6 +26,8 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
   public selected = '0';
   public form: FormGroup;
   public refDepartamento: Observable<any>;
+  public Errors:matErrorsMessage = new matErrorsMessage()
+
   constructor(private carreraService: CarreraService,
               private departamento$: DepartamentoService,
               public dialogRef: MatDialogRef<AddcarreraComponent>,
@@ -45,18 +48,20 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.map(sub => sub.unsubscribe());
   }
-
+  get Form(){
+    return this.form.controls
+  }
   createForm(id?: string) {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         carrera_id: null,
-        carrera_nombre: new FormControl('', [Validators.required]),
+        carrera_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
         carrera_departamento: new FormControl('', [Validators.required])
       });
     } else {
       this.form = this.fb.group({
         carrera_id: this.data.car.carrera_id,
-        carrera_nombre: new FormControl(this.data.car.carrera_nombre, [Validators.required]),
+        carrera_nombre: new FormControl(this.data.car.carrera_nombre, [Validators.required, Validators.maxLength(100)]),
         carrera_departamento: new FormControl(this.data.car.carrera_departamento, [Validators.required])
       });
     }

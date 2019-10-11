@@ -4,6 +4,8 @@
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre">
+        <mat-error *ngIf="Form.nombre.invalid">{{Errors.getError(Form.nombre)}}</mat-error>
+
       </mat-form-field>
       <button class="ml-1" mat-raised-button color="primary" 
       (click)="sendData()"

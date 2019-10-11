@@ -4,10 +4,12 @@
             <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input formControlName="recinto_nombre" matInput>
+                <mat-error *ngIf="Form.recinto_nombre.invalid">{{Errors.getError(Form.recinto_nombre)}}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Ubicaci&oacute;n</mat-label>
                 <input formControlName="recinto_ubicacion" matInput>
+                <mat-error *ngIf="Form.recinto_ubicacion.invalid">{{Errors.getError(Form.recinto_ubicacion)}}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Facultad</mat-label>
@@ -17,6 +19,7 @@
                         {{facultad.facultad_nombre}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="Form.recinto_facultad.invalid">{{Errors.getError(Form.recinto_facultad)}}</mat-error>
             </mat-form-field>
             <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveRecinto():updateRecinto()">
           Guardar

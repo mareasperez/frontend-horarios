@@ -6,19 +6,25 @@
             <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input formControlName="pde_nombre" matInput>
+                <mat-error *ngIf="Form.pde_nombre">{{Errors.getError(Form.pde_nombre)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Año</mat-label>
                 <input type="number" formControlName="pde_anyo" matInput>
+                <mat-error *ngIf="Form.pde_anyo.invalid">{{Errors.getError(Form.pde_anyo)}}</mat-error>
+
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Carrera</mat-label>
-                <mat-select ([value])="selected" formControlName="pde_carrera">
-                    <mat-option value="0">Carrera...</mat-option>
+                <mat-select [(value)]="selected" formControlName="pde_carrera">
+                    <mat-option selected="true" value='0'>Carrera...</mat-option>
                     <mat-option  *ngFor="let carrera of carreras" [value]="carrera.carrera_id">
                         {{carrera.carrera_nombre}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="Form.pde_carrera.invalid">{{Errors.getError(Form.pde_carrera)}}</mat-error>
+
             </mat-form-field>    
             <button mat-raised-button color="primary" 
             (click)="data.type === 'c' ? createPlan():updatePlan()">

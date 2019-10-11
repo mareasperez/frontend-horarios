@@ -8,6 +8,7 @@ import { DocenteModel } from 'src/app/models/docente.model';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { DocenteService } from 'src/app/services/docente.service';
+import { matErrorsMessage } from 'src/app/utils/errors';
 
 interface DialogData {
   type: string;
@@ -24,6 +25,8 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
   private subs:Subscription[]=[]
   public docentes:DocenteModel[]=[]
   public planificaciones:PlanificacionModel[]=[]
+  public Errors:matErrorsMessage = new matErrorsMessage()
+
   constructor(private fb:FormBuilder,
               private _doc_hr:DocenteHorasService,
               public dialogRef: MatDialogRef<DocHorasAddComponent>,
@@ -46,21 +49,25 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
     this.subs.map(sub=>sub.unsubscribe())
   }
 
+  get Form(){
+    return this.form.controls
+  }
+
   createForm(){
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         dh_id: null,
-        dh_horas_planta: new FormControl('',[Validators.required]),
-        dh_horas_hor: new FormControl('',[Validators.required]),
+        dh_horas_planta: new FormControl('',[Validators.required, Validators.min(0)]),
+        dh_horas_hor: new FormControl('',[Validators.required,Validators.min(0)]),
         dh_horas_total: 0,
-        dh_docente: new FormControl('',[Validators.required]),
-        dh_planificacion: new FormControl('',[Validators.required])
+        dh_docente: new FormControl('0',[Validators.required]),
+        dh_planificacion: new FormControl('0',[Validators.required])
       })
     }else{
         this.form = this.fb.group({
           dh_id: this.data.dh.dh_id,
-          dh_horas_planta: new FormControl(this.data.dh.dh_horas_planta,[Validators.required]),
-          dh_horas_hor: new FormControl(this.data.dh.dh_horas_hor,[Validators.required]),
+          dh_horas_planta: new FormControl(this.data.dh.dh_horas_planta,[Validators.required,Validators.min(0)]),
+          dh_horas_hor: new FormControl(this.data.dh.dh_horas_hor,[Validators.required,Validators.min(0)]),
           dh_horas_total: 0,
           dh_docente: new FormControl(this.data.dh.dh_docente,[Validators.required]),
           dh_planificacion: new FormControl(this.data.dh.dh_planificacion,[Validators.required])
