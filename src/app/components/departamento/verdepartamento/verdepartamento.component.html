@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <mat-card>
         <br>
-        <div class="row">
+        <div  class="row">
             <h1 style="margin-left: 5%">Departamento</h1>
             <span style="flex: 1 1 auto"></span>
             <div style="margin-right: 5%">
@@ -10,7 +10,13 @@
         </button>
             </div>
         </div>
-        <div class="row">
+        <div *ngIf="!visible" class="google-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div *ngIf="visible" class="row">
             <div class="col-lg-12">
                 <mat-list>
                     <mat-list-item *ngFor="let departamento of departamentos" class="row">
