@@ -62,6 +62,8 @@ import { getNombreFacultadPipe } from './components/departamento/verdepartamento
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
+import { FacultadesPipe } from './pipes/facultades.pipe';
+import { DepartamentoNamePipe } from './pipes/departamento-name.pipe';
 
 @NgModule({
   declarations: [
@@ -98,6 +100,8 @@ import { CargaDocenciaComponent } from './components/reportes/carga-docencia/car
     DocHorasComponent,
     DocHorasAddComponent,
     CargaDocenciaComponent,
+    FacultadesPipe,
+    DepartamentoNamePipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

@@ -13,24 +13,28 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
   styleUrls: ['./vercarrera.component.scss']
 })
 export class VercarreraComponent implements OnInit, OnDestroy {
-  public carreras: CarreraModel [] = [];
-  public departamentos: DepartamentoModel [] = [];
+  public carreras: CarreraModel[] = [];
+  public departamentos: DepartamentoModel[] = [];
   public ref: Observable<any[]>;
   public refCarrera: Observable<any[]>;
+  public visible: boolean;
   sub: Subscription;
-  constructor( private carrera$: CarreraService,
-               private departamento$: DepartamentoService,
-               private dialog: MatDialog
-    ) {
-      this.carrera$.getCarrera().subscribe(res => this.carreras.push(res));
-      this.departamento$.getDepartamento().subscribe(res2 => this.departamentos.push(res2));
-      this.refCarrera = this.carrera$.getList();
-    }
+  constructor(
+    private carrera$: CarreraService,
+    private departamento$: DepartamentoService,
+    private dialog: MatDialog
+  ) {
+    this.carrera$.getCarrera().subscribe(res => this.carreras.push(res));
+    this.departamento$.getDepartamento().subscribe(res2 => this.departamentos.push(res2));
+    this.refCarrera = this.carrera$.getList();
+  }
 
-  ngOnInit() {
-    this.refCarrera.subscribe( data => {
-      this.carreras = data;
-    });
+  async ngOnInit() {
+    this.refCarrera.subscribe(data => this.carreras = data);
+    await this.foo().then(
+      () => {
+        this.visible = true;
+      });
   }
   ngOnDestroy() {
     this.carrera$.list = [];
@@ -38,7 +42,18 @@ export class VercarreraComponent implements OnInit, OnDestroy {
       this.sub.unsubscribe();
     }
   }
+  async foo() {
+    console.log('loading');
+    await this.sleep(1000);
+    console.log('...');
+    await this.sleep(1000);
+    await this.sleep(2000);
+    console.log('load complete');
+  }
 
+  sleep(ms = 0) {
+    return new Promise(r => setTimeout(r, ms));
+  }
   delCarrera(id: any) {
     this.sub = this.carrera$.deleteCarrera(id).subscribe();
   }
@@ -47,13 +62,13 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       const dialogRef = this.dialog.open(AddcarreraComponent, {
         width: '450px',
-        data: {type: tipo}
+        data: { type: tipo }
       });
     } else {
       const carrera = this.carreras.find(d => d.carrera_id === id);
       const dialogRef = this.dialog.open(AddcarreraComponent, {
         width: '450px',
-        data: {type: tipo, car: carrera}
+        data: { type: tipo, car: carrera }
       });
     }
   }
