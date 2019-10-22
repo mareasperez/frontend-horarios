@@ -111,7 +111,7 @@ export class CargasComponent implements OnInit {
       this.selectPlani.planificacion_semestre);
       throw new Error('verifique que el docente exista en la tabla docente horas en la bd!');
     }
-    const gr = await grupos.filter(grupo => ((grupo.grupo_docente === Number(docente.docente_id))
+    const gr = await grupos.filter(grupo => ((grupo.grupo_docente === docente.docente_id)
       && (grupo.grupo_planificacion) === planificacion.planificacion_id));
     console.log(reporte.docente, ' ', gr);
     for (const grupo of gr) {
@@ -129,7 +129,7 @@ export class CargasComponent implements OnInit {
             const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
             rp.componente = comp.componente_nombre;
             rp.anyo = comp.componente_ciclo;
-            const plande = await this.pdes.find(pde => Number(pde.pde_id) === comp.componente_pde);
+            const plande = await this.pdes.find(pde => pde.pde_id === comp.componente_pde);
             const carrera = await this.carreras.find(carr => carr.carrera_id === plande.pde_carrera);
             rp.carrera = carrera.carrera_nombre;
             reporte.componente.push(rp);
@@ -152,7 +152,7 @@ export class CargasComponent implements OnInit {
             const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
             rp.componente = comp.componente_nombre;
             rp.anyo = comp.componente_ciclo;
-            const plande = await this.pdes.find(pde => Number(pde.pde_id) === comp.componente_pde);
+            const plande = await this.pdes.find(pde =>pde.pde_id === comp.componente_pde);
             const carrera = await this.carreras.find(carr => carr.carrera_id === plande.pde_carrera);
             rp.carrera = carrera.carrera_nombre;
             reporte.componente.push(rp);
@@ -175,7 +175,7 @@ export class CargasComponent implements OnInit {
           const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
           rp.componente = comp.componente_nombre;
           rp.anyo = comp.componente_ciclo;
-          const plande = await this.pdes.find(pde => Number(pde.pde_id) === comp.componente_pde);
+          const plande = await this.pdes.find(pde =>pde.pde_id === comp.componente_pde);
           const carrera = await this.carreras.find(carr => carr.carrera_id === plande.pde_carrera);
           rp.carrera = carrera.carrera_nombre;
           reporte.componente.push(rp);

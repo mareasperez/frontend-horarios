@@ -50,7 +50,7 @@ export class VeraulaComponent implements OnInit {
       res => {
         this.aulas.push(res);
         this.alerts = false;
-        console.log(this.aulas);
+       // console.log(this.aulas);
         this.dataSource = this.aulas;
         console.log(this.dataSource);
       },

@@ -25,6 +25,7 @@ import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
+import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'reporte/carga',
     component: CargaComponent,
+    canActivate: [AuthGuard]
+  }, {
+    path: 'reporte/cargas/docencia',
+    component: CargaDocenciaComponent,
     canActivate: [AuthGuard]
   },
   {

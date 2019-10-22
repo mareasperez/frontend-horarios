@@ -5,5 +5,5 @@ export class ComponenteModel {
    public componente_cht: string;
    public componente_ciclo: number;
    public componente_area: string;
-   public componente_pde: number;
+   public componente_pde: string;
 }
