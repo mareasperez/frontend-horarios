@@ -15,20 +15,20 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
 
 export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
-  public facultades: FacultadModel[] = [];
+  // public facultades: FacultadModel[] = [];
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
-  public resultado = new FacultadModel();
+  // public resultado = new FacultadModel();
   public visible: boolean;
   sub: Subscription;
   constructor(
     // tslint:disable: variable-name
     private _departamento: DepartamentoService,
-    private facultad$: FacultadSerivice,
+    // private facultad$: FacultadSerivice,
     private dialog: MatDialog
   ) {
     this._departamento.getDepartamento().subscribe(res => this.departamentos.push(res));
-    this.facultad$.getFacultad().subscribe(res2 => this.facultades.push(res2));
+    // this.facultad$.getFacultad().subscribe(res2 => this.facultades.push(res2));
     this.refDepartamento = this._departamento.getList();
   }
 
@@ -61,11 +61,6 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
 
   delDepartamento(id: any) {
     this.sub = this._departamento.deleteDepartamento(id).subscribe();
-  }
-
-  getNombreFacultad(point: string): string {
-    this.resultado = this.facultad$.list.find(facultad => facultad.facultad_id === point);
-    return this.resultado.facultad_nombre;
   }
 
   openDialog(tipo, id?): void {

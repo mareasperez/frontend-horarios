@@ -8,25 +8,25 @@ import { Subscription, Observable } from 'rxjs';
 @Component({
   selector: 'app-verrecinto',
   templateUrl: './verrecinto.component.html',
-  styleUrls: ['./verrecinto.component.css']
+  styleUrls: ['./verrecinto.component.scss']
 })
 export class VerrecintoComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   public alerts = true;
-  public subs:Subscription[] = []
+  public subs: Subscription;
+  public visible: boolean;
   public dataSource;
-  refRecinto: Observable<any[]>
+  refRecinto: Observable<any[]>;
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
   // tslint:disable-next-line: no-shadowed-variable
   constructor(private RecintoService: RecintoService,
               private dialog: MatDialog
-  ) { 
+  ) {
     this.RecintoService.getRecinto().subscribe(
       res => {
         this.recintos.push(res);
         this.alerts = false;
-        //console.log(this.recintos);
         this.dataSource = this.recintos;
         console.log(this.dataSource);
       },
@@ -36,25 +36,38 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // this.setsock();
-    this.refRecinto.subscribe(data=>{
+    this.refRecinto.subscribe(async data=>{
       console.log(data);
 
       this.dataSource = [];
-      this.recintos = data
-      data.map(recinto=> this.dataSource.push(recinto));
-    })
+      this.recintos = data;
+      data.map(recinto => this.dataSource.push(recinto));
+    });
+    await this.foo().then(
+        () => {
+          this.visible = true;
+    });
   }
 
   ngOnDestroy(){
     this.RecintoService.list = [];
 
   }
-  getRecinto() {
-    //this.recintos = [];
-    
+  async foo() {
+    console.log('loading');
+    await this.sleep(1000);
+    console.log('...');
+    await this.sleep(1000);
+    await this.sleep(2000);
+    console.log('load complete');
   }
+
+  sleep(ms = 0) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
       const dialogRef = this.dialog.open(AddrecintoComponent, {
@@ -70,12 +83,6 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
     }
   }
   deleteRecinto(id: string) {
-    this.RecintoService.deleteRecinto(id).subscribe(
-      res => {
-        console.log(res);
-        this.getRecinto();
-      },
-      err => console.log(err)
-    );
+    this.subs = this.RecintoService.deleteRecinto(id).subscribe();
   }
 }

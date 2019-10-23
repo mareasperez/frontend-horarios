@@ -44,15 +44,15 @@ export class VerareaComponent implements OnInit, OnDestroy {
   }
   
   openDialog(tipo, nombre?, id?): void {
-    if(tipo === 'c'){
+    if (tipo === 'c') {
       const dialogRef = this.dialog.open(AddareaComponent, {
         width: '450px',
-        data: {type:tipo}      
+        data: {type: tipo}
       });
-    }else{
+    } else {
       const dialogRef = this.dialog.open(AddareaComponent, {
         width: '450px',
-        data: {type:tipo, name:nombre, id:id}      
+        data: {type: tipo, name: nombre, id: id}
       });
     }
   }
