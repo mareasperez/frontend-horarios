@@ -24,7 +24,6 @@ export class VerdocenteComponent implements OnInit {
 
     ) { 
       this.DocenteService.getDocente().subscribe(res=>{
-        console.log(res)
         this.docentes.push(res);
         this.dataSource = this.docentes;
 
@@ -33,6 +32,7 @@ export class VerdocenteComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.docentes.forEach(res=>console.log(res))
     this.subs.push( 
       this.refDocentes.subscribe(data=>{
         console.log(data)
