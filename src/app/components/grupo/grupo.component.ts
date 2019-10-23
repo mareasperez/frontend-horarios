@@ -91,7 +91,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
     return this.form.controls
   }
   
-  createForm(flag: number, id?: number) {
+  createForm(flag: number, id?: string) {
     if (flag === 0) {
       this.form = this.fb.group({
         grupo_id: null,

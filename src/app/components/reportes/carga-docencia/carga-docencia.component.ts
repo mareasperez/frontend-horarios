@@ -14,11 +14,12 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
 
-interface cargaDocencia{
-  docente:DocenteModel;
+class cargaDocencia {
+  grupo:GrupoModel;
   componente: ComponenteModel;
-  pde:PlanEstudioModel;
+  docente:DocenteModel;
   carrera:CarreraModel;
+  departamento:DepartamentoModel
 }
 
 @Component({
@@ -36,8 +37,7 @@ export class CargaDocenciaComponent implements OnInit {
   private docentes:DocenteModel[]=[];
   private promesas:Promise<any>[]=[];
   subs:Subscription[]=[]
-  carga:cargaDocencia;
-  counter:any;
+  cargas:cargaDocencia[]=[];
   displayedColumns: string[] = ['departamento', 'carga', 'carrera', 'tgrupo', 'thoras'];
   constructor(private _dep:DepartamentoService,
               private _comp:ComponenteService,
@@ -108,32 +108,47 @@ export class CargaDocenciaComponent implements OnInit {
   ngOnInit() {
     Promise.all(this.promesas)
       .then(res=>{
-        console.log(res)
-        let compontes=[];
-        let planes=[];
+       // console.log(res)
+       let compontes=[];
+       let planes=[];
         let carreras=[];
+        let grupos=[]
         this.docentes.forEach(dc=>{
-          this.counter = this.grupos.filter(gp=>dc.docente_id === gp.grupo_docente)
-          console.log(this.counter)
-        
+          let gps = this.grupos.filter(gp=>dc.docente_id === gp.grupo_docente)
+          if(gps.length>0){
+            grupos.push(gps)
+          }
         })
-        if(this.counter!== undefined){
-          this.counter.forEach((gp:GrupoModel)=>{
-           compontes.push(this.comp.filter(cp=>gp.grupo_id === cp.componente_id)[0])
+    //  console.log(grupos)
+
+        grupos.forEach((pgp:any[],i)=>{
+          let arr=[]
+          pgp.forEach((gp:GrupoModel,i)=>{
+            let carga:cargaDocencia= new cargaDocencia();
+            arr.push(this.comp.filter(cp=>cp.componente_id === gp.grupo_componente)[0])
+            carga.grupo = pgp[i]
+            carga.componente = arr[i]
+            this.cargas.push(carga)
           })
-          console.log(compontes)
-        }
-        compontes.forEach((cp:ComponenteModel)=>{
-          planes.push((this.pde.filter(plan=>plan.pde_id === cp.componente_pde)[0]))
         })
-
-        planes.forEach((plan:PlanEstudioModel)=>{
-          carreras.push((this.carreras.filter(cr=>cr.carrera_id === plan.pde_carrera)[0]))
+      // console.log(this.cargas)
+       // console.log(compontes)
+        this.cargas.forEach((cg:cargaDocencia)=>{
+          planes.push((this.pde.filter(plan=>plan.pde_id === cg.componente.componente_pde)[0]))
         })
-
-        carreras.forEach((carrera:CarreraModel)=>{
-          console.log(this.dep.filter(dp=>dp.departamento_id === carrera.carrera_departamento))
+        
+       //console.log(planes)
+        planes.forEach((plan:PlanEstudioModel,i)=>{
+          //console.log(this.carreras.filter(cr=>cr.carrera_id === plan.pde_carrera)[0])
+          this.cargas[i].carrera = this.carreras.filter(cr=>cr.carrera_id === plan.pde_carrera)[0]
+         // this.cargas[i].carrera = carreras[i];
         })
+        
+        this.cargas.forEach((carga:cargaDocencia,i)=>{
+          this.cargas[i].departamento = this.dep.filter(dp=>dp.departamento_id === carga.carrera.carrera_departamento)[0]
+          // 
+        })
+        console.log(this.cargas)
 
         
       })//end then
