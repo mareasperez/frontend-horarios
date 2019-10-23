@@ -1,84 +1,96 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { matErrorsMessage } from 'src/app/utils/errors';
+import { log } from 'util';
+interface DialogData {
+  type: string;
+  idr?: string;
+  aul?: AulaModel;
+}
 @Component({
   selector: 'app-addaula',
   templateUrl: './addaula.component.html',
   styleUrls: ['./addaula.component.scss']
 })
-export class AddaulaComponent implements OnInit {
+export class AddaulaComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public Recintos: RecintoModel[] = [];
-  @HostBinding('class') classes = 'row';
-
+  public form: FormGroup;
+  subs: Subscription [] = [];
   aula = new AulaModel();
+  public Errors: matErrorsMessage = new matErrorsMessage();
   edit = false;
 
   constructor(private aulaService: AulaService,
               private route: Router,
               private activatedRoute: ActivatedRoute,
               private recintoS: RecintoService,
+              public dialogRef: MatDialogRef<AddaulaComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private fb: FormBuilder
   ) {
     this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
     this.ref = this.recintoS.getList();
   }
 
   ngOnInit() {
-    this.ref.subscribe(data => {
-      this.Recintos = data;
-      console.log('la data es: ', data);
-    });
-    this.ref.subscribe(data => this.Recintos = data);
-    const params = this.activatedRoute.snapshot.params;
-    console.log(this.activatedRoute.snapshot.url[1].path);
-    this.aula.aula_id = null;
-    if (this.activatedRoute.snapshot.url[1].path === 'edit') {
-      if (params.id) {
-        this.edit = true;
-        this.aulaService.getAulaByID(params.id)
-          .subscribe(
-            res => {
-              console.log('lo que tiene res es', res);
-              this.aula.aula_id = this.activatedRoute.snapshot.params.id;
-              this.aula.aula_nombre = res.aula.aula_nombre;
-              this.aula.aula_capacidad = res.aula.aula_capacidad;
-              this.aula.aula_tipo = res.aula.aula_tipo;
-              this.aula.aula_recinto = res.aula.aula_recinto;
-            },
-            err => console.error(err)
-          );
-      }
+    this.subs.push(
+      this.ref.subscribe(recs => this.Recintos = recs)
+    );
+    this.createForm();
+  }
+  ngOnDestroy() {
+    this.subs.map(sub => sub.unsubscribe());
+  }
+
+  get Form() {
+    return this.form.controls;
+  }
+  createForm( id?: string) {
+    if (this.data.type === 'c') {
+    this.form = this.fb.group({
+      aula_id: null,
+      aula_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      aula_capacidad: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      aula_tipo: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+      aula_recinto: new FormControl(this.data.idr, [Validators.required])
+
+     });
+    } else {
+      this.form = this.fb.group({
+        aula_id: this.data.aul.aula_id,
+        aula_nombre: new FormControl(this.data.aul.aula_nombre, [Validators.required, Validators.maxLength(100)]),
+        aula_capacidad: new FormControl(this.data.aul.aula_capacidad, [Validators.required, Validators.maxLength(100)]),
+        aula_tipo: new FormControl(this.data.aul.aula_tipo, [Validators.required, Validators.maxLength(100)]),
+        aula_recinto: new FormControl(this.data.aul.aula_recinto, [Validators.required])
+       });
     }
   }
 
   saveAula() {
-    // console.log(this.facultad);
-   // this.aula.aula_recinto = this.activatedRoute.snapshot.params.id;
-    this.aulaService.crearAula(this.aula)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/aula/ver']);
-        },
-        err => console.error(err)
-      );
+    let aul = new AulaModel();
+    aul = Object.assign(aul, this.form.value);
+    console.log(aul);
+    this.subs.push(
+      this.aulaService.crearAula(aul)
+      .subscribe(res => this.dialogRef.close())
+    );
   }
   updateAula() {
-    console.log('si entro al update');
-    console.log('se edita el id: ', this.aula.aula_id);
-    this.aulaService.updateAula(this.aula, this.aula.aula_id)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.route.navigate(['/aula/ver']);
-        },
-        err => console.error(err)
-      );
+    console.log('update');
+    let aul = new AulaModel();
+    aul = Object.assign(aul, this.form.value);
+    console.log(aul);
+    this.subs.push(
+      this.aulaService.updateAula(aul, aul.aula_id)
+      .subscribe(res => this.dialogRef.close())
+    );
   }
-
 }
