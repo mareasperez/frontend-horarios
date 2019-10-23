@@ -36,8 +36,12 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.refAula.subscribe(data => {
       console.log(data);
-      this.aulas = [];
+      this.dataSource = [];
       this.aulas = data;
+      data.map(doc=>{
+        this.dataSource.push(doc);
+      });
+    
     });
   }
   ngOnDestroy() {
