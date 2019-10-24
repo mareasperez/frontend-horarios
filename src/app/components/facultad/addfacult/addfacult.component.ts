@@ -12,8 +12,8 @@ import { matErrorsMessage } from 'src/app/utils/errors';
 export class AddfacultComponent implements OnInit {
 
   @Output() hideAdd = new EventEmitter<boolean>();
-  @Output() dataFacultad = new EventEmitter<{}>();
-  @Input() id: number;
+  @Output() dataFacultad = new EventEmitter<FacultadModel>();
+  @Input() facultad:FacultadModel ;
   public form:FormGroup;
   public Errors:matErrorsMessage = new matErrorsMessage()
 
@@ -21,16 +21,28 @@ export class AddfacultComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.facultad)
    this.form = new FormGroup({
-     nombre: new FormControl('', [Validators.required, Validators.maxLength(100)])
+     nombre: new FormControl(this.facultad !== null ? this.facultad.facultad_nombre:'' , [Validators.required, Validators.maxLength(100)])
    })
   }
   get Form(){
     return this.form.controls
   }
   sendData(){
-    console.log(this.id)
-    this.dataFacultad.emit({id:this.id,data:this.form.value})
+    if(this.facultad === null){
+      this.facultad = new FacultadModel()
+      this.facultad.facultad_id = null
+      this.facultad.facultad_nombre = this.form.value.nombre
+    }else{
+      this.facultad.facultad_nombre = this.form.value.nombre
+    }
+    this.dataFacultad.emit(this.facultad)
+    this.hideAdd.emit(true)
+
+  }
+
+  cancel(){
     this.hideAdd.emit(true)
 
   }

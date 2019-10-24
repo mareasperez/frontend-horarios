@@ -20,7 +20,6 @@ export class CarreraService extends MainService {
         data.carrera.forEach(el => {
           //console.log(el)
           let carrera = new CarreraModel();
-          carrera = Object.assign(el);
           carrera = Object.assign(carrera, el);
           this.list.push(carrera);
           observer.next(carrera);
@@ -39,7 +38,6 @@ export class CarreraService extends MainService {
     let body = { carrera: carrera };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
         observer.next(response);
       });
     });
@@ -69,7 +67,7 @@ export class CarreraService extends MainService {
     });
   }
   updateList(data: wsModel) {
-    // console.log(data)
+     console.log(data)
     let carrera = new CarreraModel();
     carrera = Object.assign(carrera, data.data);
     switch (data.event) {

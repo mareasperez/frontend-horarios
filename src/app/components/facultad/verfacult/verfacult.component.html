@@ -1,45 +1,27 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-8">
-      <div class="card-body" style="align-content: center; text-align: center;">
-          <div class="dropdown grupo" *ngFor="let facultad of facultades" style="margin: 2px "
-          (contextmenu)="open($event, facultad); $event. preventDefault();">
-          <button class="btn btn-primary  grupo" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <span class="float-left">{{facultad.facultad_nombre}}</span> <span class="dropdown-toggle float-right  "></span>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" (click)="showAdd(facultad.facultad_id)"
-          routerLinkActive="router-link-active">Editar Facultad</a>
-      <a class="dropdown-item" [routerLink]="['/recinto/add', facultad.facultad_id]"
-      routerLinkActive="router-link-active">Agregar Recinto</a>
-      <a class="dropdown-item" style="cursor:pointer;" (click)="deleteFaculta(facultad.facultad_id)"
-      routerLinkActive="router-link-active">Eliminar Facultad</a>
-
+    <div  class="col-8">
+      <mat-list>
+        <mat-list-item *ngFor="let facultad of facultades">
+          {{facultad.facultad_nombre}}
+          <span style="flex: 1 1 auto"></span>
+          <button mat-icon-button color="warn" (click)="deleteFaculta(facultad.facultad_id)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button color="success" (click)="showAdd(facultad)"><mat-icon>edit</mat-icon></button>
+          
+        </mat-list-item>
+      </mat-list>
     </div>
-  </div>
- 
-  <!--<mat-list>
-    <mat-list-item *ngFor="let i of a">
-      item {{i}}
-    </mat-list-item>
-  </mat-list>-->
-  </div>
-
-
-      <ng-template #userMenu let-facultad>
-        <section class="user-menu">
-            <div (click)="deleteFaculta(facultad.facultad_id)">Delete {{facultad.facultad_nombre}}</div>
-            <div>Send to</div>
-          </section>
-        </ng-template>
-    </div>
-    <div class="col-lg-4">
+    <div class="col-4">
       <div class="container">
-        <button mat-raised-button (click)="showAdd(0)"><mat-icon>add</mat-icon>Agregar</button>
+        <button mat-raised-button (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
       </div>
-          <app-addfacult [hidden]="hide" [id]="facultad_id" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
+      <span *ngIf="!hide">
 
+        <app-addfacult [hidden]="hide" [facultad]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
+      </span>
     </div>
   </div>
-</div>
+ </div>
+
+ 
+   
