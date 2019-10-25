@@ -17,8 +17,6 @@ export class VerdocenteComponent implements OnInit {
   public dataSource;
   subs:Subscription[]=[]
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
-  socket: WebSocket;
-// tslint:disable-next-line: no-shadowed-variable
   constructor(private DocenteService: DocenteService,
               private dialog: MatDialog 
 
