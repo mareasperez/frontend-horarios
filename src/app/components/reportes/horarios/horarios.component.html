@@ -1,218 +1,236 @@
 <!-- Traer facultades y mostrarlas, y en dependencia de lo que se tenga en el queryString se llamara a mostrar elementos -->
 <div class="row">
-    <div class="col">
-        <h4>Seleccione Facultad</h4>
-        <mat-form-field>
-            <mat-label>Facultad</mat-label>
-            <mat-select [(ngModel)]="selectedF" name="facultad" (selectionChange)="filtros(reporte,$event.value.facultad_id)">
-                <mat-option *ngFor="let facultad of facultades" [value]="facultad">
-                    {{facultad.facultad_nombre}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div *ngIf="selectedF">
-            <p> Selected Facultad: {{selectedF.facultad_id}} </p>
-        </div>
+  <div class="col">
+    <h4>Seleccione Facultad</h4>
+    <mat-form-field>
+      <mat-label>Facultad</mat-label>
+      <mat-select [(ngModel)]="selectedF" name="facultad" (selectionChange)="filtros(reporte,$event.value.facultad_id)">
+        <mat-option *ngFor="let facultad of facultades" [value]="facultad">
+          {{facultad.facultad_nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedF">
+      <p> Selected Facultad: {{selectedF.facultad_id}} </p>
     </div>
+  </div>
 
 
-    <!-- se piden recintos y se muestran recintos y al escoger recinto se mandara a traer aulas  -->
-    <div *ngIf="reporte==='aula'" class="col">
-        <div *ngIf="recintos.length>0">
-            <h4>Seleccione Recinto</h4>
-            <mat-form-field>
-                <mat-label>Recinto</mat-label>
-                <mat-select [(ngModel)]="selectedR" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
-                    <mat-option *ngFor="let recinto of recintos" [value]="recinto">
-                        {{recinto.recinto_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedR">
-                <p> Selected Recinto: {{selectedR.recinto_id}} </p>
-            </div>
-        </div>
+  <!-- se piden recintos y se muestran recintos y al escoger recinto se mandara a traer aulas  -->
+  <div *ngIf="reporte==='aula'" class="col">
+    <div *ngIf="recintos.length>0">
+      <h4>Seleccione Recinto</h4>
+      <mat-form-field>
+        <mat-label>Recinto</mat-label>
+        <mat-select [(ngModel)]="selectedR" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
+          <mat-option *ngFor="let recinto of recintos" [value]="recinto">
+            {{recinto.recinto_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedR">
+        <p> Selected Recinto: {{selectedR.recinto_id}} </p>
+      </div>
     </div>
+  </div>
 
 
-    <!-- se pediran aulas del recinto previamente escogido y se mostraran para escoger de cual de ellas mostrar el horario -->
-    <div *ngIf="reporte==='aula'" class="col">
-        <div *ngIf="aulas.length>0">
-            <h4>Seleccione Aula</h4>
-            <mat-form-field>
-                <mat-label>Recinto</mat-label>
-                <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="getHorarioByFilter('aula', $event.value.aula_id)">
-                    <mat-option *ngFor="let aula of aulas" [value]="aula">
-                        {{aula.aula_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedA">
-                <p> Selected Aula: {{selectedA.aula_id}} </p>
-            </div>
-        </div>
+  <!-- se pediran aulas del recinto previamente escogido y se mostraran para escoger de cual de ellas mostrar el horario -->
+  <div *ngIf="reporte==='aula'" class="col">
+    <div *ngIf="aulas.length>0">
+      <h4>Seleccione Aula</h4>
+      <mat-form-field>
+        <mat-label>Recinto</mat-label>
+        <mat-select [(ngModel)]="selectedA" name="aula"
+          (selectionChange)="getHorarioByFilter('aula', $event.value.aula_id)">
+          <mat-option *ngFor="let aula of aulas" [value]="aula">
+            {{aula.aula_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedA">
+        <p> Selected Aula: {{selectedA.aula_id}} </p>
+      </div>
     </div>
+  </div>
 
 
-    <!-- se pediran los departamentos de la facultad escogida y mostraran para que se escoja el departamento -->
+  <!-- se pediran los departamentos de la facultad escogida y mostraran para que se escoja el departamento -->
 
-    <div *ngIf="reporte!=='aula'" class="col">
-        <div *ngIf="departamentos.length>0">
-            <h4>Seleccione Departamento</h4>
-            <mat-form-field>
-                <mat-label>Departamento</mat-label>
-                <mat-select [(ngModel)]="selectedD" name="departamento" (selectionChange)="getDocentesOrCarreras($event.value.departamento_id)">
-                    <mat-option *ngFor="let departamento of departamentos" [value]="departamento">
-                        {{departamento.departamento_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedD">
-                <p> Selected Departamento: {{selectedD.departamento_id}} </p>
-            </div>
-        </div>
+  <div *ngIf="reporte!=='aula'" class="col">
+    <div *ngIf="departamentos.length>0">
+      <h4>Seleccione Departamento</h4>
+      <mat-form-field>
+        <mat-label>Departamento</mat-label>
+        <mat-select [(ngModel)]="selectedD" name="departamento"
+          (selectionChange)="getDocentesOrCarreras($event.value.departamento_id)">
+          <mat-option *ngFor="let departamento of departamentos" [value]="departamento">
+            {{departamento.departamento_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedD">
+        <p> Selected Departamento: {{selectedD.departamento_id}} </p>
+      </div>
     </div>
+  </div>
 
 
-    <!-- se muestran los docentes del departamento para que se seleccione de cual mostrar los horarios -->
-    <div *ngIf="reporte==='docente'" class="col">
-        <div *ngIf="docentes.length>0">
-            <h4>Seleccione Docente</h4>
-            <mat-form-field>
-                <mat-label>Docentes</mat-label>
-                <mat-select [(ngModel)]="selectedDocente" name="docente" (selectionChange)="getHorarioByFilter('docente', $event.value.docente_id)">
-                    <mat-option *ngFor="let docente of docentes" [value]="docente">
-                        {{docente.docente_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedDocente">
-                <p> Selected Docente: {{selectedDocente.docente_id}} </p>
-            </div>
-        </div>
+  <!-- se muestran los docentes del departamento para que se seleccione de cual mostrar los horarios -->
+  <div *ngIf="reporte==='docente'" class="col">
+    <div *ngIf="docentes.length>0">
+      <h4>Seleccione Docente</h4>
+      <mat-form-field>
+        <mat-label>Docentes</mat-label>
+        <mat-select [(ngModel)]="selectedDocente" name="docente"
+          (selectionChange)="getHorarioByFilter('docente', $event.value.docente_id)">
+          <mat-option *ngFor="let docente of docentes" [value]="docente">
+            {{docente.docente_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedDocente">
+        <p> Selected Docente: {{selectedDocente.docente_id}} </p>
+      </div>
     </div>
+  </div>
 
-    <!-- se piden carreras y se muestran  para su seleccion  -->
-    <div *ngIf="(reporte==='grupo')" class="col">
-        <div *ngIf="carreras.length>0">
-            <h4>Seleccione Carrera</h4>
-            <mat-form-field>
-                <mat-label>Carrera</mat-label>
-                <mat-select [(ngModel)]="selectedCarrera" name="carrera" (selectionChange)="getGrupos($event.value.carrera_id)">
-                    <mat-option *ngFor="let carrera of carreras" [value]="carrera">
-                        {{carrera.carrera_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedCarrera">
-                <p> Selected Carrera: {{selectedCarrera.carrera_id}} </p>
-            </div>
-        </div>
+  <!-- se piden carreras y se muestran  para su seleccion  -->
+  <div *ngIf="(reporte==='grupo')" class="col">
+    <div *ngIf="carreras.length>0">
+      <h4>Seleccione Carrera</h4>
+      <mat-form-field>
+        <mat-label>Carrera</mat-label>
+        <mat-select [(ngModel)]="selectedCarrera" name="carrera" (selectionChange)="getGrupos($event.value.carrera_id)">
+          <mat-option *ngFor="let carrera of carreras" [value]="carrera">
+            {{carrera.carrera_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedCarrera">
+        <p> Selected Carrera: {{selectedCarrera.carrera_id}} </p>
+      </div>
     </div>
-    <div *ngIf="(reporte==='anyo')" class="col">
-        <div *ngIf="carreras.length>0">
-            <h4>Seleccione Carrera</h4>
-            <mat-form-field>
-                <mat-label>Carrera</mat-label>
-                <mat-select [(ngModel)]="selectedCarrera" name="carrera">
-                    <mat-option *ngFor="let carrera of carreras" [value]="carrera">
-                        {{carrera.carrera_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedCarrera">
-                <p> Selected Carrera: {{selectedCarrera.carrera_id}} </p>
-            </div>
-        </div>
+  </div>
+  <div *ngIf="(reporte==='anyo')" class="col">
+    <div *ngIf="carreras.length>0">
+      <h4>Seleccione Carrera</h4>
+      <mat-form-field>
+        <mat-label>Carrera</mat-label>
+        <mat-select [(ngModel)]="selectedCarrera" name="carrera">
+          <mat-option *ngFor="let carrera of carreras" [value]="carrera">
+            {{carrera.carrera_nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedCarrera">
+        <p> Selected Carrera: {{selectedCarrera.carrera_id}} </p>
+      </div>
     </div>
+  </div>
 
-    <div *ngIf="(reporte==='anyo') && selectedCarrera" class="col">
-        <h4>Seleccione Anyo</h4>
-        <mat-form-field>
-            <mat-label>Anyo</mat-label>
-            <mat-select name="anyo" (selectionChange)="getHorarioByAnyo($event.value)">
-                <mat-option *ngFor="let anyo of anyos" [value]="anyo">
-                    Anyo: {{anyo}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
+  <div *ngIf="(reporte==='anyo') && selectedCarrera" class="col">
+    <h4>Seleccione Anyo</h4>
+    <mat-form-field>
+      <mat-label>Anyo</mat-label>
+      <mat-select name="anyo" (selectionChange)="getHorarioByAnyo($event.value)">
+        <mat-option *ngFor="let anyo of anyos" [value]="anyo">
+          Anyo: {{anyo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-    <div *ngIf="reporte==='grupo'" class="col">
-        <div *ngIf="grupos.length>0">
-            <h4>Seleccione Grupo</h4>
-            <mat-form-field>
-                <mat-label>Grupo</mat-label>
-                <mat-select [(ngModel)]="selectedGrupo" name="grupo" (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id)">
-                    <mat-option *ngFor="let grupo of grupos" [value]="grupo">
-                        Grupo: {{grupo.grupo_numero}} de {{grupo.grupo_componente}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="selectedGrupo">
-                <p> Selected Grupo: {{selectedGrupo.grupo_id}} </p>
-            </div>
-        </div>
+  <div *ngIf="reporte==='grupo'" class="col">
+    <div *ngIf="grupos.length>0">
+      <h4>Seleccione Grupo</h4>
+      <mat-form-field>
+        <mat-label>Grupo</mat-label>
+        <mat-select [(ngModel)]="selectedGrupo" name="grupo"
+          (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id)">
+          <mat-option *ngFor="let grupo of grupos" [value]="grupo">
+            Grupo: {{grupo.grupo_numero}} de {{grupo.grupo_componente}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedGrupo">
+        <p> Selected Grupo: {{selectedGrupo.grupo_id}} </p>
+      </div>
     </div>
+  </div>
 </div>
 <!-- horarios -->
 <div *ngIf="array.length===6">
-    <table class="table">
-        <thead>
-            <tr class="row">
-                <th class="col-1">Hora</th>
-                <th class="col">Lunes</th>
-                <th class="col">Martes</th>
-                <th class="col">Mi&eacute;rcoles</th>
-                <th class="col">Jueves</th>
-                <th class="col">Viernes</th>
-            </tr>
-        </thead>
-        <tbody class="row">
-            <div class="col-1 mat-figure">
-                <tr class="row">
-                    <td class="col">
-                        7:00 - 9:00
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="col">
-                        9:00 - 11:00
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="col">
-                        11:00 - 13:00
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="col">
-                        13:00 - 15:00
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="col">
-                        15:00 - 17:00
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="col">
-                        17:00 - 19:00
-                    </td>
-                </tr>
+  <table class="table">
+    <thead>
+      <tr class="row">
+        <th class="col-1">Hora</th>
+        <th class="col">Lunes</th>
+        <th class="col">Martes</th>
+        <th class="col">Mi&eacute;rcoles</th>
+        <th class="col">Jueves</th>
+        <th class="col">Viernes</th>
+      </tr>
+    </thead>
+    <tbody class="row">
+      <div class="col-1 mat-figure">
+        <tr class="row">
+          <td class="col">
+            7:00 - 9:00
+          </td>
+        </tr>
+        <tr class="row">
+          <td class="col">
+            9:00 - 11:00
+          </td>
+        </tr>
+        <tr class="row">
+          <td class="col">
+            11:00 - 13:00
+          </td>
+        </tr>
+        <tr class="row">
+          <td class="col">
+            13:00 - 15:00
+          </td>
+        </tr>
+        <tr class="row">
+          <td class="col">
+            15:00 - 17:00
+          </td>
+        </tr>
+        <tr class="row">
+          <td class="col">
+            17:00 - 19:00
+          </td>
+        </tr>
+      </div>
+      <div class="col">
+        <mat-grid-list cols="5" rowHeight="2:1" *ngFor="let dias of array">
+          <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas.horario_vacio ? 'true' : 'false'">
+            <div *ngIf="horas !== undefined">
+              <div *ngIf="horas.horario_vacio; else mostrar"> Vacio </div>
+              <ng-template #mostrar>
+                <div *ngIf="reporte==='docente'">
+                  Componente: {{horas.componente}} - {{horas.grupo}}
+                  Aula: {{horas.aula}} Anyo: {{horas.anyo}}
+                </div>
+                <div *ngIf="reporte==='grupo'">
+                  Componente: {{horas.componente}} - {{horas.docente}}
+                  Aula: {{horas.aula}} Anyo: {{horas.anyo}}
+                </div>
+                <div *ngIf="reporte==='aula'">
+                  Componente: {{horas.componente}} - {{horas.grupo}}
+                  Anyo: {{horas.anyo}}
+                  Docente: {{horas.docente}}
+                </div>
+              </ng-template>
             </div>
-            <div class="col">
-                <mat-grid-list cols="5" rowHeight="2:1" *ngFor="let dias of array">
-                    <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas.horario_vacio ? 'true' : 'false'">
-                        <div *ngIf="horas !== undefined">
-                            <div *ngIf="horas.horario_vacio; else mostrar"> </div>
-                            <ng-template></ng-template>
-                        </div>
-                    </mat-grid-tile>
+          </mat-grid-tile>
 
-                </mat-grid-list>
-            </div>
-        </tbody>
-    </table>
+        </mat-grid-list>
+      </div>
+    </tbody>
+  </table>
 
 </div>
