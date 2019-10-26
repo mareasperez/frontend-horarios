@@ -1,26 +1,27 @@
-<div class="container-fluid">
-  <div class="row">
-    <div  class="col-8">
-      <mat-list>
-        <mat-list-item *ngFor="let facultad of facultades">
-          {{facultad.facultad_nombre}}
-          <span style="flex: 1 1 auto"></span>
-          <button mat-icon-button color="warn" (click)="deleteFaculta(facultad.facultad_id)"><mat-icon>delete</mat-icon></button>
-          <button mat-icon-button color="success" (click)="showAdd(facultad)"><mat-icon>edit</mat-icon></button>
-          
-        </mat-list-item>
-      </mat-list>
-    </div>
-    <div class="col-4">
-      <div class="container">
-        <button mat-raised-button (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
+<div class="container-fluid mt-3">
+    <mat-card class="mat-elevation-z8">    
+      <div class="row">
+        <div  class="col-8">
+          <mat-list>
+            <mat-list-item *ngFor="let facultad of facultades">
+              {{facultad.facultad_nombre}}
+              <span style="flex: 1 1 auto"></span>
+              <button mat-icon-button color="warn" (click)="deleteFaculta(facultad.facultad_id)"><mat-icon>delete</mat-icon></button>
+              <button mat-icon-button style="color: rgb(7, 117, 31);" (click)="showAdd(facultad)"><mat-icon>edit</mat-icon></button>
+              
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div class="col-4">
+          <div class="container">
+            <button mat-raised-button (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
+          </div>
+          <span *ngIf="!hide">
+            <app-addfacult [hidden]="hide" [(facultad)]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
+          </span>
+        </div>
       </div>
-      <span *ngIf="!hide">
-
-        <app-addfacult [hidden]="hide" [facultad]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
-      </span>
-    </div>
-  </div>
+  </mat-card>
  </div>
 
  

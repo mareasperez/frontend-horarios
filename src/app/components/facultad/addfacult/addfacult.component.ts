@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { FacultadModel } from 'src/app/models/facultad.model';
-import { FacultadSerivice } from '../../../services/facultad.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
 @Component({

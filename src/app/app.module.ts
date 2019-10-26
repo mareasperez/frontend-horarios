@@ -52,7 +52,6 @@ import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
-import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
@@ -65,6 +64,7 @@ import { CargaDocenciaComponent } from './components/reportes/carga-docencia/car
 import { FacultadesPipe } from './pipes/facultades.pipe';
 import { DepartamentoNamePipe } from './pipes/departamento-name.pipe';
 import { DocenteNamePipe } from './pipes/docente-name.pipe';
+import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +92,6 @@ import { DocenteNamePipe } from './pipes/docente-name.pipe';
     ComponentesComponent,
     GrupoComponent,
     CargaComponent,
-    CargasComponent,
     AddcarreraComponent,
     VercarreraComponent,
     AddPlanificacionComponent,
@@ -104,6 +103,7 @@ import { DocenteNamePipe } from './pipes/docente-name.pipe';
     FacultadesPipe,
     DepartamentoNamePipe,
     DocenteNamePipe,
+    CargaComponentesComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

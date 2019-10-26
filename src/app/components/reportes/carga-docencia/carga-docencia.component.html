@@ -1,17 +1,18 @@
 <div class="container-fluid">
     <div class="row">
   
-    <h1>Universidad Nacional Autonoma de Nicaragua</h1>
-    <h1>UNAN-Le&oacute;n</h1><br>
-    <h4>Departamento de cumputaci&oacute;n</h4><br>
-    <h4>Reporte de Carga Gen&eacute;rica de Gocencia Directa planificacion x</h4>
+    <div class="col-12 text-center"><h1>Universidad Nacional Autonoma de Nicaragua</h1></div>
+    <div class="col-12 text-center"><h1>UNAN-Le&oacute;n</h1></div>
+    <div class="col-12 text-center"><h4>Departamento de cumputaci&oacute;n</h4></div>
+    <div class="col-12 text-center"><h4>Reporte de Carga Gen&eacute;rica de Gocencia Directa planificacion x</h4></div>
     </div>
 </div>
-
-<mat-label>Seleccionar planificaci&oacute;n</mat-label>
-<mat-select *ngIf="show" (selectionChange)="groupByPlan($event.value)">
-    <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}</mat-option>
-</mat-select>
+<mat-form-field *ngIf="show" appearance="outline">
+    <mat-label>Seleccionar planificaci&oacute;n</mat-label>
+    <mat-select (selectionChange)="groupByPlan($event.value)">
+        <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}</mat-option>
+    </mat-select>
+</mat-form-field>
 
 <table mat-table *ngIf="dataSource !== undefined && dataSource.length>0"  [dataSource]="dataSource" class="w-100 mat-elevation-z8">
    

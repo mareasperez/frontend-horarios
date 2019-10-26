@@ -1,6 +1,6 @@
 <mat-list>
     <mat-list-item>
-        <mat-icon >view_module</mat-icon><button  onfocus="this.blur()" mat-button [matMenuTriggerFor]="Reportes">Reportes</button>
+        <mat-icon >view_module</mat-icon><button mat-button [matMenuTriggerFor]="Reportes">Reportes</button>
 
         <mat-menu #Reportes="matMenu">
             <button mat-menu-item [matMenuTriggerFor]="horarios">Horarios</button>
@@ -19,6 +19,8 @@
             <button mat-menu-item (click)="go('cargas','cargaplanta');close()">Carga Planta</button>
             <button mat-menu-item (click)="go('cargas','cargaacademica');close()">Carga Total metodo redirect</button>
             <button mat-menu-item (click)="close()" routerLink="/reporte/cargas/docencia">Carga generica de docencia</button>
+            <button mat-menu-item (click)="close()" routerLink="/reporte/cargas/componentes">Carga directa por componente</button>
+
         </mat-menu>
     </mat-list-item>
     <mat-list-item (click)="close()" routerLink="/area/ver"><i class="fas fa-layer-group"></i>Areas</mat-list-item>

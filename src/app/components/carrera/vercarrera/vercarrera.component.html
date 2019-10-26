@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <mat-card>
+  <mat-card class="mat-elevation-z8">
     <br>
     <div class="row">
       <h1 style="margin-left: 5%">Carreras</h1>
@@ -28,10 +28,10 @@
               {{carrera.carrera_departamento | departamentoName}}
             </div>
             <span style="flex: 1 1 auto"></span>
-            <button mat-icon-button (click)="delCarrera(carrera.carrera_id)">
+            <button mat-icon-button  (click)="delCarrera(carrera.carrera_id)">
               <mat-icon style="color:red">delete</mat-icon>
             </button>
-            <button mat-icon-button (click)="openDialog('u', carrera.carrera_id)">
+            <button mat-icon-button onfocus="this.blur()" (click)="openDialog('u', carrera.carrera_id)">
               <mat-icon style="color:green">edit</mat-icon>
             </button>
           </mat-list-item>
