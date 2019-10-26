@@ -18,7 +18,7 @@ export class AulaService extends MainService{
         data.aula.forEach(el => {
           //console.log(el)
           let aula = new AulaModel();
-          aula = Object.assign(el);
+          aula = Object.assign(aula,el);
           this.list.push(aula);
           observer.next(aula);
 

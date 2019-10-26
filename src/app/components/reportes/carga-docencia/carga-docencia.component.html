@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row">
+  
+    <h1>Universidad Nacional Autonoma de Nicaragua</h1>
+    <h1>UNAN-Le&oacute;n</h1><br>
+    <h4>Departamento de cumputaci&oacute;n</h4><br>
+    <h4>Reporte de Carga Gen&eacute;rica de Gocencia Directa planificacion x</h4>
+    </div>
+</div>
+
+<mat-label>Seleccionar planificaci&oacute;n</mat-label>
+<mat-select *ngIf="show" (selectionChange)="groupByPlan($event.value)">
+    <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}</mat-option>
+</mat-select>
+
+<table mat-table *ngIf="dataSource !== undefined && dataSource.length>0"  [dataSource]="dataSource" class="w-100 mat-elevation-z8">
+   
+    <ng-container matColumnDef="departamento">
+      <th mat-header-cell *matHeaderCellDef> Departamento </th>
+      <td mat-cell *matCellDef="let carga"> {{carga.departamento.departamento_nombre }} </td>
+    </ng-container>
+    <ng-container matColumnDef="docente">
+        <th mat-header-cell *matHeaderCellDef> Docente </th>
+        <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_docente | docenteName:docentes}} </td>
+        </ng-container>
+    <ng-container matColumnDef="carrera">
+       <th mat-header-cell *matHeaderCellDef> Carrera </th>
+       <td mat-cell *matCellDef="let carga"> {{carga.carrera.carrera_nombre}} </td>
+    </ng-container>
+    <ng-container matColumnDef="tgrupo">
+        <th mat-header-cell *matHeaderCellDef> Tgrupo </th>
+        <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_tipo}} </td>
+    </ng-container>
+    <ng-container matColumnDef="thoras">
+        <th mat-header-cell *matHeaderCellDef> Thoras </th>
+        <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_horas_clase}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -28,7 +28,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   public selected = '0';
   public form: FormGroup;
   public refFacultad: Observable<any>;
-  public Errors:matErrorsMessage = new matErrorsMessage()
+  public Errors: matErrorsMessage = new matErrorsMessage();
 
   constructor(private departamentoService: DepartamentoService,
               private facultad$: FacultadSerivice,
@@ -50,8 +50,8 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.map(sub => sub.unsubscribe());
   }
-  get Form(){
-    return this.form.controls
+  get Form() {
+    return this.form.controls;
   }
   createForm( id?: string) {
     if (this.data.type === 'c') {

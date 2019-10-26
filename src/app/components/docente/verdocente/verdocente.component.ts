@@ -17,14 +17,11 @@ export class VerdocenteComponent implements OnInit {
   public dataSource;
   subs:Subscription[]=[]
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
-  socket: WebSocket;
-// tslint:disable-next-line: no-shadowed-variable
   constructor(private DocenteService: DocenteService,
               private dialog: MatDialog 
 
     ) { 
       this.DocenteService.getDocente().subscribe(res=>{
-        console.log(res)
         this.docentes.push(res);
         this.dataSource = this.docentes;
 
@@ -33,6 +30,7 @@ export class VerdocenteComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.docentes.forEach(res=>console.log(res))
     this.subs.push( 
       this.refDocentes.subscribe(data=>{
         console.log(data)

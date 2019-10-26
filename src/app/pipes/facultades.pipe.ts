@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 @Pipe({
-  name: 'facultades'
+  name: 'facultades',
+  pure: true
 })
 export class FacultadesPipe implements PipeTransform {
 

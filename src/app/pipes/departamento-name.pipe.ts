@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DepartamentoModel } from '../models/departamento.model';
 import { DepartamentoService } from '../services/departamento.service';
 @Pipe({
-  name: 'departamentoName'
+  name: 'departamentoName',
+  pure: true
 })
 export class DepartamentoNamePipe implements PipeTransform {
   public departamentos: DepartamentoModel[] = [];

@@ -16,7 +16,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   public carreras: CarreraModel[] = [];
   public departamentos: DepartamentoModel[] = [];
   public ref: Observable<any[]>;
-  public refCarrera: Observable<any[]>;
+  public refCarrera: Observable<any>;
   public visible: boolean;
   sub: Subscription;
   constructor(
@@ -30,7 +30,10 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.refCarrera.subscribe(data => this.carreras = data);
+    this.refCarrera.subscribe(data =>{
+      console.log(data)
+      this.carreras = data}
+      );
     await this.foo().then(
       () => {
         this.visible = true;

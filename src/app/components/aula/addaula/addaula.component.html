@@ -1,26 +1,33 @@
-<div class="col-md-4 offset-md-4">
-    <div class="card">
-        <div class="card-body">
-            <form>
-                <div class="form-group">
-                    <input type="text" name="nombre" placeholder="Nombre del Aula" [(ngModel)]="aula.aula_nombre" class="form-control" autofocus>
-                </div>
-                <div class="form-group">
-                    <input type="number" name="capacidad" placeholder="Capacidad" [(ngModel)]="aula.aula_capacidad" class="form-control">
-                </div>
-                <div class="form-group">
-                    <input type="number" name="tipo" placeholder="Tipo" [(ngModel)]="aula.aula_tipo" class="form-control">
-                </div>
-                <mat-form-field>
-                    <mat-select placeholder="Select recinto of Recintos" name="recinto" [(ngModel)]="aula.aula_recinto">
-                        <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+<div class="container-fluid">
+    <mat-card>
+        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="aula_nombre" matInput>
+                <mat-error *ngIf="Form.aula_nombre.invalid">{{Errors.getError(Form.aula_nombre)}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Capacidad</mat-label>
+                <input formControlName="aula_capacidad" matInput>
+                <mat-error *ngIf="Form.aula_capacidad.invalid">{{Errors.getError(Form.aula_capacidad)}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <input formControlName="aula_tipo" matInput>
+                <mat-error *ngIf="Form.aula_tipo.invalid">{{Errors.getError(Form.aula_tipo)}}</mat-error>
+            </mat-form-field>
 
-                <button class="btn btn-success btn-block" (click)="edit ? updateAula() : saveAula()">
-                  Guardar
-                </button>
-            </form>
-        </div>
-    </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Recinto</mat-label>
+                <mat-select formControlName="aula_recinto" [(value)]="selected">
+                    <mat-option value="0">Recinto...</mat-option>
+                    <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveAula() : updateAula()">
+                          Guardar
+                        </button>
+        </form>
+    </mat-card>
 </div>

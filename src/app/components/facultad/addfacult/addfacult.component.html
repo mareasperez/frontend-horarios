@@ -7,10 +7,11 @@
         <mat-error *ngIf="Form.nombre.invalid">{{Errors.getError(Form.nombre)}}</mat-error>
 
       </mat-form-field>
-      <button class="ml-1" mat-raised-button color="primary" 
+      <button  mat-raised-button color="primary" 
       (click)="sendData()"
       [disabled]="form.invalid"
-      ><mat-icon>save</mat-icon> Guardar</button>
+      ><mat-icon>save</mat-icon></button>
+      <button mat-raised-button (click)="cancel()"><mat-icon>cancel</mat-icon></button>
     </form>
 
   </div>

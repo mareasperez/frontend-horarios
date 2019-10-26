@@ -22,53 +22,76 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   private refDoc:Observable<any>
   private refDH:Observable<any>
   private subs:Subscription[]=[]
-  dataSource:DocenteHorasModel[]
+  dataSource
   displayedColumns: string[] = ['docente', 'horas_planta', 'horas_extras', 'total', 'planificacion', 'opciones'];
-
+  private promesas:Promise<any>[]=[]
   constructor(private _doc_hr:DocenteHorasService,
               private _docente:DocenteService,
               private _planificacion:PlanificacionService,
               private dialog: MatDialog 
 
     ) {
-        this.subs.push( this._doc_hr.getDcHoras().subscribe(res=>{
-          console.log(res)
-        this.dhs.push(res)
-        this.dataSource = this.dhs
-        }));
-        this.subs.push( this._docente.getDocente().subscribe(res=>this.docentes.push(res)));
-        this.subs.push( this._planificacion.getPlanificaciones().subscribe(res=>this.planificaciones.push(res)));
-        this.refDoc = this._docente.getList()
+       let p1 = new Promise( (resolve,reject)=> {
+        let sub = this._doc_hr.getDcHoras()
+        .subscribe(
+          res=>this.dhs.push(res),
+          error=>reject(error),
+          ()=> resolve()
+        );
+        this.subs.push(sub)
+      
+      });
+
+      let p2 = new Promise( (resolve,reject)=>{
+        let sub = this._docente.getDocente()
+        .subscribe(
+          res=>this.docentes.push(res),
+          error=>reject(error),
+          ()=>resolve()
+        );
+        this.subs.push(sub)
+      });
+
+      let p3 = new Promise( (resolve,reject)=> {
+        let sub = this._planificacion.getPlanificaciones()
+        .subscribe(
+          res=>this.planificaciones.push(res),
+          error=>reject(error),
+          ()=>resolve()
+        );
+        this.subs.push(sub)
+      });
+
+      this.promesas.push(p1,p2,p3)
+       this.refDoc = this._docente.getList()
         this.refPlan = this._planificacion.getList()
         this.refDH = this._doc_hr.getList()
    }
 
   ngOnInit() {
 
-   this.subs.push( this.refDoc.subscribe(data=>{
-      this.dataSource = [];
-        this.docentes = data
-        data.map(doc=>{
-          this.dataSource.push(doc);
-        });
-    }))
+    Promise.all(this.promesas).then(res=>{
+      this.dataSource = this.dhs
 
-    this.subs.push(this.refPlan.subscribe(data=>{
-      this.dataSource = [];
-        this.planificaciones = data
-        data.map(plan=>{
-          this.dataSource.push(plan);
-        });
-    }))
+      this.subs.push( this.refDoc.subscribe(data=>{
+      this.docentes = [];
+      this.docentes = data;
+      }))
 
-    this.subs.push(this.refDH.subscribe(data=>{
-      this.dataSource = [];
-        this.dhs = data
-        data.map(dh=>{
-          this.dataSource.push(dh);
-        });
-    }))
+      this.subs.push(this.refPlan.subscribe(data=>{
+        this.planificaciones = [];
+          this.planificaciones = data;
+      }))
 
+      this.subs.push(this.refDH.subscribe(data=>{
+        this.dataSource = [];
+          this.dhs = data;
+          data.map(dh=>{
+            this.dataSource.push(dh);
+          });
+      }))
+
+    })
   }
 ngOnDestroy(){
   this._doc_hr.list=[]

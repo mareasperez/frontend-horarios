@@ -11,6 +11,7 @@ import { GrupoService } from './grupo.service';
 import { PlanificacionService } from './planificacion.service';
 import { CarreraService } from './carrera.service';
 import { DocenteHorasService } from './docente-horas.service';
+import { AulaService } from './aula.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +29,8 @@ export class WsService {
               private jwt: JwtService,
               private departamento$: DepartamentoService,
               private carrera$: CarreraService,
-              private _doho:DocenteHorasService
+              private _doho: DocenteHorasService,
+              private AulaService: AulaService
     ) { }
 
 
@@ -76,7 +78,9 @@ export class WsService {
           case 'docente_hora':
             this._doho.updateList(action);
             break;
-
+          case 'aula':
+            this.AulaService.updateList(action);
+            break;
         }
       };
 

@@ -23,6 +23,7 @@ export class DocenteService extends MainService {
           observer.next(docente);
 
         });
+        observer.complete()
       });
     });
   }

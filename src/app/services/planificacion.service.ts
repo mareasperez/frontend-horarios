@@ -22,6 +22,7 @@ export class PlanificacionService extends MainService{
           this.list.push(planificacion)
           observer.next(planificacion);
         });
+        observer.complete()
       });
     });
   }
