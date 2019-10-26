@@ -15,29 +15,50 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
 export class VercarreraComponent implements OnInit, OnDestroy {
   public carreras: CarreraModel[] = [];
   public departamentos: DepartamentoModel[] = [];
-  public ref: Observable<any[]>;
+  public refDep: Observable<any[]>;
   public refCarrera: Observable<any>;
   public visible: boolean;
+  private subs: Subscription[] = [];
+  private promesas: Promise<any>[] = [];
   sub: Subscription;
   constructor(
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
     private dialog: MatDialog
   ) {
-    this.carrera$.getCarrera().subscribe(res => this.carreras.push(res));
-    this.departamento$.getDepartamento().subscribe(res2 => this.departamentos.push(res2));
+    const p1 = new Promise((resolve, reject) => {
+      const sub = this.carrera$.getCarrera()
+        .subscribe(
+          res => this.carreras.push(res),
+          error => reject(error),
+          () => resolve()
+        );
+      this.subs.push(sub);
+
+    });
+    const p2 = new Promise((resolve, reject) => {
+      const sub = this.departamento$.getDepartamento()
+        .subscribe(
+          res => this.departamentos.push(res),
+          error => reject(error),
+          () => resolve()
+        );
+      this.subs.push(sub);
+
+    });
+    this.promesas.push(p1, p2);
     this.refCarrera = this.carrera$.getList();
+    this.refDep = this.departamento$.getList();
   }
 
   async ngOnInit() {
-    this.refCarrera.subscribe(data =>{
-      console.log(data)
-      this.carreras = data}
-      );
-    await this.foo().then(
-      () => {
-        this.visible = true;
-      });
+    Promise.all(this.promesas).then(res => {
+      this.visible = true;
+    });
+    this.refCarrera.subscribe(data => {
+      console.log(data);
+      this.carreras = data;
+    });
   }
   ngOnDestroy() {
     this.carrera$.list = [];
@@ -45,18 +66,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
       this.sub.unsubscribe();
     }
   }
-  async foo() {
-    console.log('loading');
-    await this.sleep(1000);
-    console.log('...');
-    await this.sleep(1000);
-    await this.sleep(2000);
-    console.log('load complete');
-  }
 
-  sleep(ms = 0) {
-    return new Promise(r => setTimeout(r, ms));
-  }
   delCarrera(id: any) {
     this.sub = this.carrera$.deleteCarrera(id).subscribe();
   }

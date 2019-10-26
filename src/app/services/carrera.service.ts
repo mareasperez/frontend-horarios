@@ -8,7 +8,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class CarreraService extends MainService {
-  public resource = "carrera"
+  public resource = 'carrera';
   constructor(carreraHttp: HttpClient) {
     super(carreraHttp);
   }
@@ -18,12 +18,13 @@ export class CarreraService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.carrera.forEach(el => {
-          //console.log(el)
+          // console.log(el)
           let carrera = new CarreraModel();
           carrera = Object.assign(carrera, el);
           this.list.push(carrera);
           observer.next(carrera);
         });
+        observer.complete();
       });
     });
   }
@@ -35,7 +36,7 @@ export class CarreraService extends MainService {
   }
 
   crearCarrera(carrera: CarreraModel): Observable<any> {
-    let body = { carrera: carrera };
+    const body = { carrera: carrera };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         observer.next(response);
@@ -45,7 +46,7 @@ export class CarreraService extends MainService {
 
   updateCarrera(carrera: CarreraModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { carrera: carrera };
+    const body = { carrera: carrera };
     return this.update(body, id);
   }
 
@@ -67,7 +68,7 @@ export class CarreraService extends MainService {
     });
   }
   updateList(data: wsModel) {
-     console.log(data)
+    console.log(data)
     let carrera = new CarreraModel();
     carrera = Object.assign(carrera, data.data);
     switch (data.event) {

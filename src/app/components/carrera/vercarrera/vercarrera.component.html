@@ -25,7 +25,8 @@
               {{carrera.carrera_nombre}}
             </div>
             <div class="col">
-              {{carrera.carrera_departamento | departamentoName}}
+              {{carrera.carrera_departamento | departamentoName:departamentos}}
+              <!-- {{carrera.carrera_departamento | departamentoName}} -->
             </div>
             <span style="flex: 1 1 auto"></span>
             <button mat-icon-button (click)="delCarrera(carrera.carrera_id)">
