@@ -15,31 +15,33 @@ import { matErrorsMessage } from 'src/app/utils/errors';
   styleUrls: ['./componentes.component.scss']
 })
 export class ComponentesComponent implements OnInit, OnDestroy {
-  public ref:Observable<any[]>;
-  public refArea:Observable<any[]>;
-  public refPde:Observable<any[]>;
-  public componentes:ComponenteModel[]=[];
-  public areas:AreaModel[]=[];
-  public pdes:PlanEstudioModel[]=[];
-  public form:FormGroup;
-  public selected:string = "0";
-  public selected2:string = "0";
-  public add:boolean = false;
-  public editing:boolean = false;
-  subs:Subscription[]=[];
-  public Errors:matErrorsMessage = new matErrorsMessage()
-  constructor(private comService:ComponenteService,
-              private _area:AreaService,
-              private _pde:PlanEstudioService,
-              private fb:FormBuilder
+  // tslint:disable: variable-name
+  public ref: Observable<any[]>;
+  public refArea: Observable<any[]>;
+  public refPde: Observable<any[]>;
+  public componentes: ComponenteModel[] = [];
+  public areas: AreaModel[] = [];
+  public pdes: PlanEstudioModel[] = [];
+  public form: FormGroup;
+  public selected = '0';
+  public selected2 = '0';
+  public add = false;
+  public editing = false;
+  subs: Subscription[] = [];
+  public Errors: matErrorsMessage = new matErrorsMessage();
+  constructor(
+    private comService: ComponenteService,
+    private _area: AreaService,
+    private _pde: PlanEstudioService,
+    private fb: FormBuilder
 
-  ) { 
+  ) {
     this.subs.push(
-      this.comService.getComponentes().subscribe(res=>this.componentes.push(res)))
+      this.comService.getComponentes().subscribe(res => this.componentes.push(res)));
     this.subs.push(
-      this._area.getAreas().subscribe(res=>this.areas.push(res)))
+      this._area.getAreas().subscribe(res => this.areas.push(res)));
     this.subs.push(
-      this._pde.getPlanEstudio().subscribe(res=>this.pdes.push(res)))
+      this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res)));
     this.ref = this.comService.getList();
     this.refArea = this._area.getList();
     this.refPde = this._pde.getList();
@@ -48,87 +50,89 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.push(
-      this.ref.subscribe(data=>this.componentes = data));
+      this.ref.subscribe(data => this.componentes = data));
     this.subs.push(
-      this.refArea.subscribe(data=>this.areas = data));
+      this.refArea.subscribe(data => this.areas = data));
     this.subs.push(
-      this.refPde.subscribe(data=>this.pdes = data));
-   // this.createForm(0);
+      this.refPde.subscribe(data => this.pdes = data));
+    // this.createForm(0);
   }
 
-  ngOnDestroy(){
-    this._area.list = []
-    this._pde.list = []
-    this.comService.list = []
-    this.subs.map(sub=>sub.unsubscribe())
+  ngOnDestroy() {
+    this._area.list = [];
+    this._pde.list = [];
+    this.comService.list = [];
+    this.subs.map(sub => sub.unsubscribe());
 
   }
 
-  createForm(flag:number, id?:string){
-    if(flag === 0){
+  createForm(flag: number, id?: string) {
+    if (flag === 0) {
       this.form = this.fb.group({
-        componente_id:null,
-        componente_nombre: new FormControl('',[Validators.required, Validators.minLength(5)]),
-        componente_chp: new FormControl('',[Validators.required, Validators.min(1)]),
-        componente_cht: new FormControl('',[Validators.required, Validators.min(1)]),
-        componente_ciclo: new FormControl('',[Validators.required, Validators.min(1)]),
-        componente_area: new FormControl('0',[Validators.required]),
-        componente_pde:new FormControl('0',[Validators.required])
+        componente_id: null,
+        componente_nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
+        componente_chp: new FormControl('', [Validators.required, Validators.min(1)]),
+        componente_cht: new FormControl('', [Validators.required, Validators.min(1)]),
+        componente_ciclo: new FormControl('', [Validators.required, Validators.min(1)]),
+        componente_credito: new FormControl('', [Validators.required, Validators.min(1), Validators.max(4)]),
+        componente_area: new FormControl('0', [Validators.required]),
+        componente_pde: new FormControl('0', [Validators.required])
 
-      })
-    }else{
-      let comp = this.componentes.find(el => el.componente_id === id)
-      console.log(comp)
+      });
+    } else {
+      const comp = this.componentes.find(el => el.componente_id === id);
+      console.log(comp);
       this.form = this.fb.group({
         componente_id: new FormControl(comp.componente_id),
-        componente_nombre: new FormControl(comp.componente_nombre,[Validators.required, Validators.minLength(5)]),
-        componente_chp: new FormControl(comp.componente_chp,[Validators.required, Validators.min(1)]),
-        componente_cht: new FormControl(comp.componente_cht,[Validators.required, Validators.min(1)]),
-        componente_ciclo: new FormControl(comp.componente_ciclo,[Validators.required, Validators.min(1)]),
-        componente_area: new FormControl(comp.componente_area,[Validators.required]),
-        componente_pde:new FormControl(comp.componente_pde,[Validators.required])
+        componente_nombre: new FormControl(comp.componente_nombre, [Validators.required, Validators.minLength(5)]),
+        componente_chp: new FormControl(comp.componente_chp, [Validators.required, Validators.min(1)]),
+        componente_cht: new FormControl(comp.componente_cht, [Validators.required, Validators.min(1)]),
+        componente_ciclo: new FormControl(comp.componente_ciclo, [Validators.required, Validators.min(1)]),
+        componente_credito: new FormControl(comp.componente_credito, [Validators.required, Validators.min(1), Validators.max(4)]),
+        componente_area: new FormControl(comp.componente_area, [Validators.required]),
+        componente_pde: new FormControl(comp.componente_pde, [Validators.required])
 
-      })
+      });
     }
     this.add = true;
   }
 
-  saveComponente(flag:number){
-    if(flag===0){
+  saveComponente(flag: number) {
+    if (flag === 0) {
       this.createComponente();
-    }else{
-      this.editComponente(this.form.value.componente_id)
+    } else {
+      this.editComponente(this.form.value.componente_id);
     }
 
   }
 
-  createComponente(){
+  createComponente() {
     this.editing = true;
     let comp = new ComponenteModel();
-    comp = Object.assign(comp, this.form.value)
+    comp = Object.assign(comp, this.form.value);
     console.log(comp);
-    this.comService.crearComponente(comp).subscribe(res=>{
-      this.form.reset()
+    this.comService.crearComponente(comp).subscribe(res => {
+      this.form.reset();
       this.editing = false;
       this.add = false;
-      
-    })
+
+    });
   }
 
-  delComponente(e){
+  delComponente(e) {
     this.comService.deleteComponente(e).subscribe();
   }
 
-  editComponente(id:string){
+  editComponente(id: string) {
     this.editing = true;
-    this.comService.updateComponente(this.form.value,id).subscribe(res=>{
-      this.form.reset()
+    this.comService.updateComponente(this.form.value, id).subscribe(res => {
+      this.form.reset();
       this.editing = false;
-      this.add = false
-    })
+      this.add = false;
+    });
   }
 
-  get Form(){
-    return this.form.controls
+  get Form() {
+    return this.form.controls;
   }
 }
