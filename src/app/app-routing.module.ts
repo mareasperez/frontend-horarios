@@ -21,11 +21,11 @@ import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
-import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
+import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 
 
 const routes: Routes = [
@@ -40,8 +40,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'reporte/cargas',
-    component: CargasComponent,
+    path: 'reporte/cargas/componentes',
+    component: CargaComponentesComponent,
     canActivate: [AuthGuard]
   },
   {

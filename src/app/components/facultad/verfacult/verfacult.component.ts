@@ -1,11 +1,9 @@
-import { Component, OnInit, HostBinding, ViewChild, ViewContainerRef, TemplateRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
-import { Router } from '@angular/router';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { fromEvent, Subscription, Observable } from 'rxjs';
-import { take, filter } from 'rxjs/operators';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { Subscription, Observable } from 'rxjs';
+
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -97,9 +95,16 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   }
 
   showAdd(facd: FacultadModel | null) {
-    console.log('show add');
-    this.facultad = facd;
-    this.hide = false;
+    if(!this.hide){
+      this.hide = true;
+      this.facultad = facd;
+      setTimeout(() => {
+        this.hide = false;
+      }, 150); 
+    }else{
+      this.facultad = facd;
+      this.hide = false;
+    }
   }
 
   hideform(e) {
