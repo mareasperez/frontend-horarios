@@ -13,7 +13,6 @@ import { AddaulaComponent } from '../addaula/addaula.component';
   styleUrls: ['./veraula.component.scss']
 })
 export class VeraulaComponent implements OnInit, OnDestroy {
-
   public aulas: AulaModel[] = [];
   recintos: RecintoModel[] = [];
   public activartabla = false;
@@ -24,11 +23,14 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'capacidad', 'tipo', 'opciones'];
   socket: WebSocket;
-// tslint:disable-next-line: no-shadowed-variable
-  constructor(private AulaService: AulaService,
-              private _recinto: RecintoService,
-              private dialog: MatDialog) {
-    this.AulaService.getAula().subscribe(res => this.aulas.push(res));
+
+  constructor(
+    // tslint:disable: no-shadowed-variable
+    // tslint:disable: variable-name
+    private AulaService: AulaService,
+    private _recinto: RecintoService,
+    private dialog: MatDialog) {
+    this.AulaService.getAula().subscribe();
     this.refAula = this.AulaService.getList();
     this._recinto.getRecinto().subscribe(res => this.recintos.push(res));
   }
@@ -38,10 +40,9 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       console.log(data);
       this.dataSource = [];
       this.aulas = data;
-      data.map(doc=>{
-        this.dataSource.push(doc);
+      data.map(aula => {
+        this.dataSource.push(aula);
       });
-    
     });
   }
   ngOnDestroy() {
@@ -54,18 +55,10 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   async getAulas(id: number) {
     console.log(id);
     this.aulas = [];
-    this.AulaService.getAula().subscribe(
-      res => {
-        this.aulas.push(res);
-        this.alerts = false;
-       // console.log(this.aulas);
-        this.dataSource = this.aulas;
-        console.log(this.dataSource);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+    this.aulas = this.AulaService.list.filter(aula => aula.aula_recinto === id );
+    this.alerts = false;
+    this.dataSource = this.aulas;
+    this.activartabla = true;
   }
 
   deleteAula(id: string) {
@@ -76,12 +69,12 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       const dialogRef = this.dialog.open(AddaulaComponent, {
         width: '450px',
-        data: {type: tipo, idr: id, aul: ''}
+        data: { type: tipo, idr: id, aul: '' }
       });
     } else {
       const dialogRef = this.dialog.open(AddaulaComponent, {
         width: '450px',
-        data: {type: tipo, idf: '', aul: aula}
+        data: { type: tipo, idf: '', aul: aula }
       });
     }
   }

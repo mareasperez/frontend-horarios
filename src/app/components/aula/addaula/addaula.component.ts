@@ -1,14 +1,12 @@
 import { Component, OnInit, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
-import { log } from 'util';
 interface DialogData {
   type: string;
   idr?: string;
@@ -23,18 +21,17 @@ export class AddaulaComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public Recintos: RecintoModel[] = [];
   public form: FormGroup;
-  subs: Subscription [] = [];
+  subs: Subscription[] = [];
   aula = new AulaModel();
   public Errors: matErrorsMessage = new matErrorsMessage();
   edit = false;
 
-  constructor(private aulaService: AulaService,
-              private route: Router,
-              private activatedRoute: ActivatedRoute,
-              private recintoS: RecintoService,
-              public dialogRef: MatDialogRef<AddaulaComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder
+  constructor(
+    private aulaService: AulaService,
+    private recintoS: RecintoService,
+    public dialogRef: MatDialogRef<AddaulaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder
   ) {
     this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
     this.ref = this.recintoS.getList();
@@ -53,16 +50,16 @@ export class AddaulaComponent implements OnInit, OnDestroy {
   get Form() {
     return this.form.controls;
   }
-  createForm( id?: string) {
+  createForm(id?: string) {
     if (this.data.type === 'c') {
-    this.form = this.fb.group({
-      aula_id: null,
-      aula_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      aula_capacidad: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      aula_tipo: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-      aula_recinto: new FormControl(this.data.idr, [Validators.required])
+      this.form = this.fb.group({
+        aula_id: null,
+        aula_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        aula_capacidad: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        aula_tipo: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+        aula_recinto: new FormControl(this.data.idr, [Validators.required])
 
-     });
+      });
     } else {
       this.form = this.fb.group({
         aula_id: this.data.aul.aula_id,
@@ -70,7 +67,7 @@ export class AddaulaComponent implements OnInit, OnDestroy {
         aula_capacidad: new FormControl(this.data.aul.aula_capacidad, [Validators.required, Validators.maxLength(100)]),
         aula_tipo: new FormControl(this.data.aul.aula_tipo, [Validators.required, Validators.maxLength(100)]),
         aula_recinto: new FormControl(this.data.aul.aula_recinto, [Validators.required])
-       });
+      });
     }
   }
 
@@ -78,10 +75,7 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     let aul = new AulaModel();
     aul = Object.assign(aul, this.form.value);
     console.log(aul);
-    this.subs.push(
-      this.aulaService.crearAula(aul)
-      .subscribe(res => this.dialogRef.close())
-    );
+    this.subs.push(this.aulaService.crearAula(aul).subscribe(res => this.dialogRef.close()));
   }
   updateAula() {
     console.log('update');
@@ -90,7 +84,7 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     console.log(aul);
     this.subs.push(
       this.aulaService.updateAula(aul, aul.aula_id)
-      .subscribe(res => this.dialogRef.close())
+        .subscribe(res => this.dialogRef.close())
     );
   }
 }
