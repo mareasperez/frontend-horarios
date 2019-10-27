@@ -24,6 +24,7 @@ export class CarreraService extends MainService {
           this.list.push(carrera);
           observer.next(carrera);
         });
+        observer.complete()
       });
     });
   }

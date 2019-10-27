@@ -23,6 +23,7 @@ export class RecintoService extends MainService {
           this.list.push(recinto)
           observer.next(recinto);
         });
+        observer.complete()
       });
     });
   }

@@ -137,8 +137,7 @@ export class CargaDocenciaComponent implements OnInit {
      this.docentes.forEach(dc=>{
        let gps = gruposByPlan.filter(gp=>dc.docente_id === gp.grupo_docente)
        if(gps.length>0){
-         let carga:cargaDocencia= new cargaDocencia();
-         carga.docente = dc
+     
          grupos.push(gps)
        }
      })
