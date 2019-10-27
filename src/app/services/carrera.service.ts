@@ -8,7 +8,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class CarreraService extends MainService {
-  public resource = "carrera"
+  public resource = 'carrera';
   constructor(carreraHttp: HttpClient) {
     super(carreraHttp);
   }
@@ -18,13 +18,13 @@ export class CarreraService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.carrera.forEach(el => {
-          //console.log(el)
+          // console.log(el)
           let carrera = new CarreraModel();
           carrera = Object.assign(carrera, el);
           this.list.push(carrera);
           observer.next(carrera);
         });
-        observer.complete()
+        observer.complete();
       });
     });
   }
@@ -36,7 +36,7 @@ export class CarreraService extends MainService {
   }
 
   crearCarrera(carrera: CarreraModel): Observable<any> {
-    let body = { carrera: carrera };
+    const body = { carrera };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         observer.next(response);
@@ -46,7 +46,7 @@ export class CarreraService extends MainService {
 
   updateCarrera(carrera: CarreraModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { carrera: carrera };
+    const body = { carrera };
     return this.update(body, id);
   }
 
@@ -61,34 +61,34 @@ export class CarreraService extends MainService {
           // console.log(el)
           let carrera = new CarreraModel();
           carrera = Object.assign(carrera, el);
-          this.list.push(carrera)
+          this.list.push(carrera);
           observer.next(carrera);
         });
       });
     });
   }
   updateList(data: wsModel) {
-     console.log(data)
+    console.log(data);
     let carrera = new CarreraModel();
     carrera = Object.assign(carrera, data.data);
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        console.log(carrera)
+        console.log(carrera);
         data.data = carrera;
         this.list.push(carrera);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.carrera_id).indexOf(carrera.carrera_id);
         this.list.splice(index, 1, carrera);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
         this.list = this.list.filter(el => el.carrera_id !== carrera.carrera_id);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
 
     }

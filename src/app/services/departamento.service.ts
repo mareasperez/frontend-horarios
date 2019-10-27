@@ -8,7 +8,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class DepartamentoService extends MainService {
-    public resource = "departamento"
+    public resource = 'departamento';
     constructor(DepartamentoHttp: HttpClient) {
         super(DepartamentoHttp);
     }
@@ -21,9 +21,10 @@ export class DepartamentoService extends MainService {
                     // console.log(el)
                     let Departamento = new DepartamentoModel();
                     Departamento = Object.assign(Departamento, el);
-                    this.list.push(Departamento)
+                    this.list.push(Departamento);
                     observer.next(Departamento);
                 });
+                observer.complete();
             });
         });
     }
@@ -33,7 +34,7 @@ export class DepartamentoService extends MainService {
     }
 
     crearDepartamento(departamento: DepartamentoModel): Observable<any> {
-        let body = { departamento: departamento };
+        const body = { departamento };
         return new Observable(observer => {
             this.create(body).subscribe(response => {
                 console.log(response);
@@ -44,7 +45,7 @@ export class DepartamentoService extends MainService {
 
     updateDepartamento(departamento: DepartamentoModel, id: string | number) {
         // Ejemplo del parametro body
-        let body = { departamento: departamento };
+        const body = { departamento };
         return this.update(body, id);
     }
 
@@ -53,7 +54,7 @@ export class DepartamentoService extends MainService {
     }
     getDepartamentoByFilter(filtro: string, id: string | number): Observable<DepartamentoModel> {
         return new Observable(observer => {
-            console.log('se va a mandar a pedir al api:', filtro,' ',id);
+            console.log('se va a mandar a pedir al api:', filtro, ' ', id);
             this.getByFiltro(filtro, id).subscribe(data => {
                 data.departamento.forEach(el => {
                     let departamento = new DepartamentoModel();
@@ -71,21 +72,21 @@ export class DepartamentoService extends MainService {
         switch (data.event) {
             case 'c':
                 // console.log("Crear")
-                console.log(departamento)
+                console.log(departamento);
                 data.data = departamento;
                 this.list.push(departamento);
-                this.list$.next(this.list)
+                this.list$.next(this.list);
                 break;
             case 'u':
                 //  console.log("update")
                 const index = this.list.map(el => el.departamento_id).indexOf(departamento.departamento_id);
                 this.list.splice(index, 1, departamento);
-                this.list$.next(this.list)
+                this.list$.next(this.list);
                 break;
             case 'd':
                 // console.log("delete")
                 this.list = this.list.filter(el => el.departamento_id !== departamento.departamento_id);
-                this.list$.next(this.list)
+                this.list$.next(this.list);
                 break;
 
         }

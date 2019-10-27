@@ -6,9 +6,8 @@ import { DocenteModel } from '../models/docente.model';
   name: 'docenteName'
 })
 export class DocenteNamePipe implements PipeTransform {
-  transform(id:string, docentes:DocenteModel[]): string {
-   const doc = docentes.find(doc=>id === doc.docente_id )
-   return doc.docente_nombre
-
+  transform(id: string, docentes: DocenteModel[]): string {
+   const doc = docentes.find(doce => id === doce.docente_id);
+   return doc.docente_nombre;
   }
 }
