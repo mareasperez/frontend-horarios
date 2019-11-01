@@ -21,8 +21,8 @@ export class AulaService extends MainService{
           aula = Object.assign(aula,el);
           this.list.push(aula);
           observer.next(aula);
-
         });
+        observer.complete()
       });
     });
   }

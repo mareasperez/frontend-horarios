@@ -19,13 +19,13 @@ import { AddplanestudioComponent } from './components/planestudio/addplanestudio
 import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
-import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
+import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
 
 
 const routes: Routes = [
@@ -75,17 +75,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'facultad/edit/:id',
-    component: AddfacultComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'recinto/add',
-    component: AddrecintoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'recinto/edit/:id',
     component: AddrecintoComponent,
     canActivate: [AuthGuard]
   },
@@ -105,17 +95,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'aula/edit/:id',
-    component: AddaulaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'departamento/add',
-    component: AdddepartamentoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'departamento/edit/:id',
     component: AdddepartamentoComponent,
     canActivate: [AuthGuard]
   },
@@ -176,7 +156,7 @@ const routes: Routes = [
   },
   {
     path: 'grupos',
-    component: GrupoComponent,
+    component: CrearGrupoComponent,
     canActivate: [AuthGuard]
   },
   {

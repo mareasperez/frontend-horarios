@@ -21,7 +21,6 @@ export class DocenteService extends MainService {
          // console.log(el, docente)
           this.list.push(docente);
           observer.next(docente);
-
         });
         observer.complete()
       });

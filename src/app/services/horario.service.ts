@@ -23,6 +23,7 @@ export class HorarioService extends MainService {
           this.list.push(horario);
           observer.next(horario);
         });
+        observer.complete()
       });
     });
   }

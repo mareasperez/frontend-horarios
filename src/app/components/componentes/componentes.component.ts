@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { Observable, Subscription } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
@@ -19,9 +19,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refArea: Observable<any[]>;
   public refPde: Observable<any[]>;
-  public componentes: ComponenteModel[] = [];
-  public areas: AreaModel[] = [];
-  public pdes: PlanEstudioModel[] = [];
+  @Output() public gpAdd = new EventEmitter<{}>()
+  @Input() public componentes: ComponenteModel[] = [];
+  @Input() public areas: AreaModel[] = [];
+  @Input() public pdes: PlanEstudioModel[] = [];
+  public componente:ComponenteModel = null;
   public form: FormGroup;
   public selected = '0';
   public selected2 = '0';
@@ -29,38 +31,17 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public editing = false;
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
+  public gpadd = true;
+
   constructor(
     private comService: ComponenteService,
-    private _area: AreaService,
-    private _pde: PlanEstudioService,
-    private fb: FormBuilder
-
-  ) {
-    this.subs.push(
-      this.comService.getComponentes().subscribe(res => this.componentes.push(res)));
-    this.subs.push(
-      this._area.getAreas().subscribe(res => this.areas.push(res)));
-    this.subs.push(
-      this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res)));
-    this.ref = this.comService.getList();
-    this.refArea = this._area.getList();
-    this.refPde = this._pde.getList();
-
-  }
+    private fb: FormBuilder) {  }
 
   ngOnInit() {
-    this.subs.push(
-      this.ref.subscribe(data => this.componentes = data));
-    this.subs.push(
-      this.refArea.subscribe(data => this.areas = data));
-    this.subs.push(
-      this.refPde.subscribe(data => this.pdes = data));
-    // this.createForm(0);
+    
   }
 
   ngOnDestroy() {
-    this._area.list = [];
-    this._pde.list = [];
     this.comService.list = [];
     this.subs.map(sub => sub.unsubscribe());
 
@@ -98,6 +79,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   saveComponente(flag: number) {
+    console.log(flag)
+
     if (flag === 0) {
       this.createComponente();
     } else {
@@ -107,6 +90,7 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   createComponente() {
+    console.log("create")
     this.editing = true;
     let comp = new ComponenteModel();
     comp = Object.assign(comp, this.form.value);
@@ -124,6 +108,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   editComponente(id: string) {
+    console.log("edit")
+
     this.editing = true;
     this.comService.updateComponente(this.form.value, id).subscribe(res => {
       this.form.reset();
@@ -134,5 +120,24 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   get Form() {
     return this.form.controls;
+  }
+
+  addG(comp:ComponenteModel){
+    this.gpadd = false
+    this.componente = comp;
+  }
+
+  addGT(cp:ComponenteModel){
+    this.gpAdd.emit({id:cp.componente_id, tipo:"GT"})
+    this.gpadd = true
+    this.componente = null;
+
+  }
+  addGP(cp:ComponenteModel){
+    this.gpAdd.emit({id:cp.componente_id, tipo:"GP"})
+    this.gpadd = true
+    this.componente = null;
+
+
   }
 }

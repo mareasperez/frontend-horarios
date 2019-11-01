@@ -7,54 +7,69 @@
         </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-8 col-md-8">
+    <div class="row groups">
+      <div class="col-lg-7 col-md-8 list-groups ">
         <mat-list>
-          <mat-list-item *ngFor="let grupo of grupos"> grupo: {{grupo.grupo_id}} componente: {{grupo.grupo_componente}}
+          <mat-list-item  *ngFor="let grupo of grupos; let i = index" class="border-radius-50 font-size-15 h-auto" [class.bg-color-ligth]="i % 2 === 1">
+            {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
             <span style="flex: 1 1 auto"></span>
-            <button mat-icon-button  [value]="grupo.grupo_id"
-                     (click)="delGrupo(grupo.grupo_id)">
-                         <mat-icon  style="color:red" >delete</mat-icon>  
-                    </button>
-                    <button mat-icon-button  [value]="grupo.grupo_id"
-                     (click)="createForm(1, grupo.grupo_id)">
-                         <mat-icon style="color:green">edit</mat-icon>
-                    </button>
+              <button mat-icon-button  [value]="grupo.grupo_id"
+              (click)="delGrupo(grupo.grupo_id)">
+                  <mat-icon  style="color:red" >delete</mat-icon>  
+              </button>
+              <button mat-icon-button [value]="grupo.grupo_id"
+              (click)="createForm(1, grupo.grupo_id)">
+                  <mat-icon style="color:green">edit</mat-icon>
+              </button>
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="col-lg-4 col-md-4">
+      <div class="col-lg-5 col-md-4 ">
         <span *ngIf="add">
           <form [formGroup]="form" class="d-flex flex-column">
-            <mat-form-field appearance="outline">
-              <mat-label>numero de grupo</mat-label>
-              <input matInput formControlName="grupo_numero">
-              <mat-error *ngIf="Form.grupo_numero.invalid">{{Errors.getError(Form.grupo_numero)}}</mat-error>
-
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Maxima capacidad</mat-label>
-              <input matInput formControlName="grupo_max_capacidad">
-              <mat-error *ngIf="Form.grupo_max_capacidad.invalid">{{Errors.getError(Form.grupo_max_capacidad)}}</mat-error>
-
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Tipo</mat-label>
-              <input matInput formControlName="grupo_tipo">
-              <mat-error *ngIf="Form.grupo_tipo.invalid">{{Errors.getError(Form.grupo_tipo)}}</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Modo</mat-label>
-              <input matInput formControlName="grupo_modo">
-              <mat-error *ngIf="Form.grupo_modo.invalid">{{Errors.getError(Form.grupo_modo)}}</mat-error>
-            </mat-form-field>
-            <mat-checkbox formControlName="grupo_planta">Horario Planta!</mat-checkbox>
-            <mat-form-field appearance="outline">
-              <mat-label>Cantidad de horas </mat-label>
-              <input matInput formControlName="grupo_horas_clase">
-              <mat-error *ngIf="Form.grupo_horas_clase.invalid">{{Errors.getError(Form.grupo_horas_clase)}}</mat-error>
-
-            </mat-form-field>
+             <div class="join">
+            <button mat-raised-button  class="w-50 float-rigth" color="primary"
+              (click)="form.value.grupo_id === null ? saveGrupo(0):saveGrupo(1)"
+              [disabled]="form.invalid || editing">
+              <mat-icon>save</mat-icon>Guardar
+            </button>
+            <button mat-raised-button class="w-50 float-rigth ml-1" color="warn"
+            (click)="add = false">
+            <mat-icon>cancel</mat-icon>Cancelar
+        </button>
+        </div>
+            <div class="join">
+              <mat-form-field class="w-50" appearance="outline">
+                <mat-label>numero</mat-label>
+                <input matInput formControlName="grupo_numero">
+                <mat-error *ngIf="Form.grupo_numero.invalid">{{Errors.getError(Form.grupo_numero)}}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="w-50 ml-1" appearance="outline">
+                <mat-label>Capacidad</mat-label>
+                <input matInput formControlName="grupo_max_capacidad">
+                <mat-error *ngIf="Form.grupo_max_capacidad.invalid">{{Errors.getError(Form.grupo_max_capacidad)}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="join">
+              <mat-form-field class="w-50" appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <input matInput formControlName="grupo_tipo">
+                <mat-error *ngIf="Form.grupo_tipo.invalid">{{Errors.getError(Form.grupo_tipo)}}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="w-50 ml-1" appearance="outline">
+                <mat-label>Modo</mat-label>
+                <input matInput formControlName="grupo_modo">
+                <mat-error *ngIf="Form.grupo_modo.invalid">{{Errors.getError(Form.grupo_modo)}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="join">          
+                <mat-checkbox   formControlName="grupo_planta">de planta</mat-checkbox>
+              <mat-form-field class="w-50 ml-1" appearance="outline">
+                <mat-label>Horas </mat-label>
+                <input matInput formControlName="grupo_horas_clase">
+                <mat-error *ngIf="Form.grupo_horas_clase.invalid">{{Errors.getError(Form.grupo_horas_clase)}}</mat-error>
+              </mat-form-field>
+            </div>
             <mat-form-field appearance="outline">
               <mat-label>Componente</mat-label>
               <mat-select [value]="selected" formControlName="grupo_componente">
@@ -84,18 +99,7 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="Form.grupo_planificacion.invalid">{{Errors.getError(Form.grupo_planificacion)}}</mat-error>
-
             </mat-form-field>
-
-            <button mat-raised-button type="button" class="float-rigth" color="primary"
-              (click)="form.value.grupo_id === null ? saveGrupo(0):saveGrupo(1)"
-              [disabled]="form.invalid || editing">
-              <mat-icon>save</mat-icon>Guardar
-            </button>
-            <button mat-raised-button type="button" class="float-rigth" color="warn"
-            (click)="add = false">
-            <mat-icon>cancel</mat-icon>Cancelar
-        </button>
           </form>
         </span>
       </div>
