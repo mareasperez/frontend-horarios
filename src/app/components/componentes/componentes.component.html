@@ -7,10 +7,22 @@
         </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-8 col-md-8">
+    <div class="row components">
+      <div class="horas mt-2 col-12 mb-3">
+        <button mat-raised-button (click)="addGT(componente)" [disabled]="gpadd" class="w-25" style="background-color:  rgb(231, 115, 7);">
+            GT
+        </button>
+        <button mat-raised-button (click)="addGP(componente)" [disabled]="gpadd" class="w-25 ml-1 mr-1" color="accent">
+          GP
+        </button>
+        <mat-label class="w-50" *ngIf="componente !== null">agregar grupo de {{componente.componente_nombre}}</mat-label>
+      </div>
+      <div class="col-lg-7 col-md-8 list-components">
+           
         <mat-list *ngIf="componentes.length>0">
-          <mat-list-item *ngFor="let comp of componentes">{{comp.componente_nombre}}
+          <mat-list-item (dblclick)="addG(comp)"  class="border-radius-50 font-size-15 h-auto"
+          *ngFor="let comp of componentes; let i = index" [class.bg-color-ligth]="i % 2 === 1">
+            {{comp.componente_nombre}}
             <span style="flex: 1 1 auto"></span>
             <button mat-icon-button [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
               <mat-icon style="color:red">delete</mat-icon>
@@ -21,40 +33,51 @@
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="col-lg-4 col-md-4">
+      <div class="col-lg-5 col-md-4">
         <span *ngIf="add">
           <form [formGroup]="form" class="d-flex flex-column">
+              <div class="horas">
+              <button mat-raised-button class="w-50" color="primary"
+              (click)="form.value.componente_id === null ? saveComponente(0):saveComponente(1)"
+              [disabled]="form.invalid || editing">
+              <mat-icon>save</mat-icon>Guardar
+            </button>
+            <button mat-raised-button class="w-50 ml-1" color="warn" (click)="add = false">
+              <mat-icon>cancel</mat-icon>Cancelar
+            </button>
+           </div>
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>
               <input matInput formControlName="componente_nombre">
               <mat-error *ngIf="Form.componente_nombre.invalid">{{Errors.getError(Form.componente_nombre)}}</mat-error>
             </mat-form-field>
+            <mat-label>Horas</mat-label>
+            <div class="horas">
+              <mat-form-field class="w-50 d-inline" appearance="outline">
+                <mat-label>teoricas</mat-label>
+                <input matInput formControlName="componente_cht">
+                <mat-error *ngIf="Form.componente_cht.invalid">{{Errors.getError(Form.componente_cht)}}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="w-50 d-inline" appearance="outline">
+                <mat-label> practicas</mat-label>
+                <input matInput formControlName="componente_chp">
+                <mat-error *ngIf="Form.componente_chp.invalid">{{Errors.getError(Form.componente_chp)}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="horas">
+              <mat-form-field class="w-50" appearance="outline">
+                <mat-label>Ciclo</mat-label>
+                <input matInput formControlName="componente_ciclo">
+                <mat-error *ngIf="Form.componente_ciclo.invalid">{{Errors.getError(Form.componente_ciclo)}}</mat-error>
+              </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>horas teoricas</mat-label>
-              <input matInput formControlName="componente_cht">
-              <mat-error *ngIf="Form.componente_cht.invalid">{{Errors.getError(Form.componente_cht)}}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>horas practicas</mat-label>
-              <input matInput formControlName="componente_chp">
-              <mat-error *ngIf="Form.componente_chp.invalid">{{Errors.getError(Form.componente_chp)}}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Ciclo</mat-label>
-              <input matInput formControlName="componente_ciclo">
-              <mat-error *ngIf="Form.componente_ciclo.invalid">{{Errors.getError(Form.componente_ciclo)}}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Creditos</mat-label>
-              <input matInput formControlName="componente_credito">
-              <mat-error *ngIf="Form.componente_credito.invalid">{{Errors.getError(Form.componente_credito)}}
-              </mat-error>
-            </mat-form-field>
-
+              <mat-form-field class="w-50" appearance="outline">
+                <mat-label>Creditos</mat-label>
+                <input matInput formControlName="componente_credito">
+                <mat-error *ngIf="Form.componente_credito.invalid">{{Errors.getError(Form.componente_credito)}}
+                </mat-error>
+              </mat-form-field>
+            </div>
             <mat-form-field appearance="outline">
               <mat-label>Area</mat-label>
               <mat-select [(value)]="selected" formControlName="componente_area">
@@ -63,7 +86,6 @@
               </mat-select>
               <mat-error *ngIf="Form.componente_area.invalid">{{Errors.getError(Form.componente_area)}}</mat-error>
             </mat-form-field>
-
             <mat-form-field appearance="outline">
               <mat-label>Plan de estudios</mat-label>
               <mat-select [(value)]="selected2" formControlName="componente_pde">
@@ -72,15 +94,6 @@
               </mat-select>
               <mat-error *ngIf="Form.componente_pde.invalid">{{Errors.getError(Form.componente_pde)}}</mat-error>
             </mat-form-field>
-
-            <button mat-raised-button type="button" class="float-rigth" color="primary"
-              (click)="form.value.componente_id === null ? saveComponente(0):saveComponente(1)"
-              [disabled]="form.invalid || editing">
-              <mat-icon>save</mat-icon>Guardar
-            </button>
-            <button mat-raised-button type="button" class="float-rigth mt-1" color="warn" (click)="add = false">
-              <mat-icon>cancel</mat-icon>Cancelar
-            </button>
           </form>
         </span>
       </div>

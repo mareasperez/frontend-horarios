@@ -23,8 +23,8 @@ export class AreaService extends MainService {
           area = Object.assign(area,el);
           this.list.push(area);
           observer.next(area);
-
         });
+        observer.complete()
       });
     });
   }

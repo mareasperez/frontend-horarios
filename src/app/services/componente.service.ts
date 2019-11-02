@@ -20,8 +20,8 @@ export class ComponenteService  extends MainService {
           componente = Object.assign(componente,el);
           this.list.push(componente);
           observer.next(componente);
-
         });
+        observer.complete()
       });
     });
   }

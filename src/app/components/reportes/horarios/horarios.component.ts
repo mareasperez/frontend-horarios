@@ -140,7 +140,7 @@ export class HorariosComponent implements OnInit {
     this.aulas = await this._aula.list.filter(aula => aula.aula_recinto === id);
   }
 
-  async getGrupos(id: number) {
+  async getGrupos(id: string) {
     this.grupos = [];
     console.log(this._grupo.list);
     for (const grupo of this._grupo.list) {

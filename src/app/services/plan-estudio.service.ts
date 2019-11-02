@@ -23,6 +23,7 @@ export class PlanEstudioService extends MainService {
           this.list.push(pde)
           observer.next(pde);
         });
+        observer.complete()
       });
     });
   }

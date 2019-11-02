@@ -5,7 +5,7 @@ import { CarreraModel } from '../models/carrera.model';
   pure: true
 })
 export class CarreraNamePipe implements PipeTransform {
-  transform(id: number, carreras: CarreraModel[]): string {
+  transform(id: string, carreras: CarreraModel[]): string {
     const car = carreras.find(carr => id === carr.carrera_id);
     return car.carrera_nombre;
    }
