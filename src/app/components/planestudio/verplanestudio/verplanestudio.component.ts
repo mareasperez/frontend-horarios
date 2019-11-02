@@ -30,7 +30,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
 
   ) {
-    const p = new Promise<any>((resolve, reject) => {
+    const p = new Promise<void>(() => {
       this._Carrera.getCarrera().subscribe(
         res => this.carreras.push(res)
       );
