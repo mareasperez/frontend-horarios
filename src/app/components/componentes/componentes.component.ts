@@ -77,8 +77,6 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   saveComponente(flag: number) {
-    console.log(flag)
-
     if (flag === 0) {
       this.createComponente();
     } else {
@@ -88,7 +86,6 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   createComponente() {
-    console.log("create")
     this.editing = true;
     let comp = new ComponenteModel();
     comp = Object.assign(comp, this.form.value);
@@ -97,12 +94,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
       this.form.reset();
       this.editing = false;
       this.add = false;
-
     });
   }
 
   delComponente(e) {
-    this.comService.deleteComponente(e).subscribe();
+    this.subs.push(this.comService.deleteComponente(e).subscribe());
   }
 
   editComponente(id: string) {
