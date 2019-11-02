@@ -68,6 +68,7 @@ import { CargaComponentesComponent } from './components/reportes/carga-component
 import { CarreraNamePipe } from './pipes/carrera-name.pipe';
 import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
 import { ComponenteNombrePipe } from './pipes/componente-nombre.pipe';
+import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { ComponenteNombrePipe } from './pipes/componente-nombre.pipe';
     CarreraNamePipe,
     CrearGrupoComponent,
     ComponenteNombrePipe,
+    ComponentesListComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

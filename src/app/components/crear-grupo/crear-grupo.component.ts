@@ -24,11 +24,13 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   /*Variables de payloas */
 public componentes:ComponenteModel[]=[]
 public compsByPde:ComponenteModel[]=[]
+public compsByCiclo:ComponenteModel[]=[]
 public pdes:PlanEstudioModel[]=[]
 public carreras:CarreraModel[]=[]
 public grupos: GrupoModel[] = [];
 public gruposByPlan: GrupoModel[] = [];
 public gruposByComp: GrupoModel[] = [];
+public gruposFiltrados: GrupoModel[]=[];
 public docentes:DocenteModel[]=[];
 public areas:AreaModel[]=[];
 public planificaciones: PlanificacionModel[]=[];
@@ -47,6 +49,7 @@ private promesas: Promise<any>[]=[];
 public show = false;
 public pdeSelected = "0"
 public planSelected = "0"
+public cicloSelected = "0"
 
 
   constructor(private _componente:ComponenteService,
@@ -92,6 +95,13 @@ public planSelected = "0"
   }
 
   ngOnDestroy(){
+    this._grupo.list = []
+    this._componente.list = []
+    this._carrera.list = []
+    this._area.list = []
+    this._pde.list = []
+    this._planificacion.list = []
+    this._docente.list = []
     this.subs.forEach(sub=>sub.unsubscribe())
   }
 
@@ -112,9 +122,15 @@ public planSelected = "0"
     console.log(e)
   }
 
+  componentesByCiclo(ciclo:number){
+    this.compsByCiclo = []
+    this.compsByCiclo = this.componentes.filter(comp=>comp.componente_ciclo === ciclo);
+    if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected)
+
+   }
+
   componentesByPde(id:string){
-    let comps = this.componentes.filter(comp=>id === comp.componente_pde)
-    this.compsByPde = comps;
+    this.compsByPde = this.compsByCiclo.filter(comp=>comp.componente_pde === id);
     this.gruposByComp = []
     this.compsByPde.forEach(comp=>{
       let res =  this.grupos.filter(gp=>gp.grupo_componente === comp.componente_id)
@@ -123,12 +139,15 @@ public planSelected = "0"
     if(id !== "0") this.groupsByPlan(this.planSelected)
   }
 
+ 
+  
   groupsByPlan(id:string){
     this.planID = id
     let grupos = this.gruposByComp.filter(gp=> id === gp.grupo_planificacion) 
     console.log(grupos)  
-    this.gruposByPlan = grupos;
+    this.gruposFiltrados = grupos;
   }
+
 
   servicios(){
     const p1 = new Promise((resolve,reject)=>{

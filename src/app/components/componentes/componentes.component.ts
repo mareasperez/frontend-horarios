@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { ComponenteService } from 'src/app/services/componente.service';
 import { Observable, Subscription } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
-import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
-import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';

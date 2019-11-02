@@ -18,7 +18,6 @@ import { VerplanestudioComponent } from './components/planestudio/verplanestudio
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
-import { ComponentesComponent } from './components/componentes/componentes.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
@@ -26,6 +25,7 @@ import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
+import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 
 
 const routes: Routes = [
@@ -61,7 +61,7 @@ const routes: Routes = [
   },
   {
     path: 'componente',
-    component: ComponentesComponent,
+    component: ComponentesListComponent,
     canActivate: [AuthGuard]
   },
   {
