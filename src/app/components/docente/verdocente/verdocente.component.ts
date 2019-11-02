@@ -4,6 +4,8 @@ import { DocenteService } from 'src/app/services/docente.service';
 import { AdddocenteComponent } from '../adddocente/adddocente.component';
 import { MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
+import { DepartamentoModel } from 'src/app/models/departamento.model';
+import { DepartamentoService } from 'src/app/services/departamento.service';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -12,38 +14,47 @@ import { Observable, Subscription } from 'rxjs';
 export class VerdocenteComponent implements OnInit {
 
   public docentes: DocenteModel[] = [];
-  public refDocentes:Observable<any[]>;
+  public refDocentes: Observable<any[]>;
   public alerts = true;
   public dataSource;
-  subs:Subscription[]=[]
+  public departamentos: DepartamentoModel[] = [];
+  subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
-  constructor(private DocenteService: DocenteService,
-              private dialog: MatDialog 
+  constructor(
+    // tslint:disable: no-shadowed-variable
+    // tslint:disable variable-name
+    private DocenteService: DocenteService,
+    private _Departamento: DepartamentoService,
+    private dialog: MatDialog
+  ) {
+    const p = new Promise<void>(() => {
+      this._Departamento.getDepartamento().subscribe(
+        res => this.departamentos.push(res)
+      );
+    });
+    this.DocenteService.getDocente().subscribe(res => {
+      this.docentes.push(res);
+      this.dataSource = this.docentes;
 
-    ) { 
-      this.DocenteService.getDocente().subscribe(res=>{
-        this.docentes.push(res);
-        this.dataSource = this.docentes;
-
-      });
-      this.refDocentes = this.DocenteService.getList();
-    }
+    });
+    this.refDocentes = this.DocenteService.getList();
+  }
 
   ngOnInit() {
-    this.docentes.forEach(res=>console.log(res))
-    this.subs.push( 
-      this.refDocentes.subscribe(data=>{
-        console.log(data)
+    this.docentes.forEach(res => console.log(res));
+    this.subs.push(
+      this.refDocentes.subscribe(data => {
+        console.log(data);
         this.dataSource = [];
-        this.docentes = data
-        data.map(doc=>{
+        this.docentes = data;
+        data.map(doc => {
           this.dataSource.push(doc);
         });
       })
-  )
-}
-  
-  
+    );
+  }
+
+
   deleteDocente(id: string) {
     this.DocenteService.deleteDocente(id).subscribe(
       res => {
@@ -53,17 +64,17 @@ export class VerdocenteComponent implements OnInit {
     );
   }
 
-  openDialog(tipo, id?:string): void {
-    if(tipo === 'c'){
+  openDialog(tipo, id?: string): void {
+    if (tipo === 'c') {
       const dialogRef = this.dialog.open(AdddocenteComponent, {
         width: '450px',
-        data: {type:tipo, doc:null}      
+        data: { type: tipo, doc: null }
       });
-    }else{
-      let docente = this.docentes.find(d=>d.docente_id ===id)
+    } else {
+      const docente = this.docentes.find(d => d.docente_id === id);
       const dialogRef = this.dialog.open(AdddocenteComponent, {
         width: '450px',
-        data: {type:tipo, doc:docente }
+        data: { type: tipo, doc: docente }
       });
     }
   }
