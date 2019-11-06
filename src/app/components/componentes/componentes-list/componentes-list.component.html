@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <mat-card *ngIf="show" class="w-10 " >
+  <mat-card *ngIf="show" class="w-10 " style="height: 80vh; overflow: auto;" >
        <div class="row">
           <h1>Componentes</h1>
       </div>
@@ -14,7 +14,7 @@
             <mat-icon>add</mat-icon> Agregar
           </button>
           <div class="table-scroll">
-                <table mat-table *ngIf="dataSource.length>0"  [dataSource]="dataSource" class="w-100 h-max-300 mat-elevation-z8">
+                <table mat-table *ngIf="dataSource.length>0"  [dataSource]="dataSource" class="w-100  mat-elevation-z7">
                     <!-- Position Column -->
                     <ng-container matColumnDef="nombre">
                       <th mat-header-cell *matHeaderCellDef> Componente </th>

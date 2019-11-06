@@ -1,11 +1,11 @@
 <div class="container-fluid mt-3">
-    <mat-card class="mat-elevation-z8">    
+    <mat-card class="mat-elevation-z8"  style="height: 80vh; overflow: auto;">    
       <div class="row">
         <div class="col-12">
           <h5>Facultades</h5>
         </div>
         <div  class="col-8">
-          <mat-list  style="height: 400px; overflow: auto;">
+          <mat-list  style="height: 60vh; overflow: auto;" >
             <mat-list-item *ngFor="let facultad of facultades">
               {{facultad.facultad_nombre}}
               <span style="flex: 1 1 auto"></span>
