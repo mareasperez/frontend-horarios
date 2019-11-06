@@ -31,18 +31,23 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     private _recinto: RecintoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
-    ) {
-    this.AulaService.getAula()
-     .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+  ) {
+    const p = new Promise<void>(() => {
+      this.AulaService.getAula()
+        .subscribe(
+          res => { },
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
+    const p1 = new Promise<void>(() => {
+      this._recinto.getRecinto()
+        .subscribe(
+          res => this.recintos.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
     this.refAula = this.AulaService.getList();
-    this._recinto.getRecinto()
-      .subscribe(
-        res => this.recintos.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      );
+
   }
 
   ngOnInit() {
@@ -65,7 +70,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   async getAulas(id: number) {
     console.log(id);
     this.aulas = [];
-    this.aulas = this.AulaService.list.filter(aula => aula.aula_recinto === id );
+    this.aulas = this.AulaService.list.filter(aula => aula.aula_recinto === id);
     this.alerts = false;
     this.dataSource = this.aulas;
     this.activartabla = true;
@@ -73,10 +78,10 @@ export class VeraulaComponent implements OnInit, OnDestroy {
 
   deleteAula(id: string) {
     this.sub = this.AulaService.deleteAula(id)
-    .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 
   openDialog(tipo, id?, aula?): void {

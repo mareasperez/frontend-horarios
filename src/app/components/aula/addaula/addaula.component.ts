@@ -33,7 +33,9 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder
   ) {
-    this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
+    const p = new Promise<void>(() => {
+      this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
+    });
     this.ref = this.recintoS.getList();
   }
 

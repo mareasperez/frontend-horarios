@@ -6,9 +6,6 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
-import { resolve } from 'path';
-import { reject } from 'q';
-import { promise } from 'protractor';
 
 @Component({
   selector: 'app-verdepartamento',
@@ -33,20 +30,21 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     private facultad$: FacultadSerivice,
     private _snack: MatSnackBar
   ) {
-    let p1 = new Promise((resolve) => {
-      let sub = this._departamento.getDepartamento()
+    // tslint:disable: no-shadowed-variable
+    const p1 = new Promise((resolve) => {
+      const sub = this._departamento.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
-          error =>this._snack.open(error, 'OK',{duration: 3000}),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
     });
-    let p2 = new Promise((resolve) => {
-      let sub = this.facultad$.getFacultad()
+    const p2 = new Promise((resolve) => {
+      const sub = this.facultad$.getFacultad()
         .subscribe(
           res => this.facults.push(res),
-          error =>this._snack.open(error, 'OK',{duration: 3000}),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -75,15 +73,15 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
 
   delDepartamento(id: any) {
     this.sub = this._departamento.deleteDepartamento(id)
-    .subscribe(
-      res => {},
-      error => this._snack.open(error.message, 'OK',{duration: 3000}),
-    );
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
-       this.dialog.open(AdddepartamentoComponent, {
+      this.dialog.open(AdddepartamentoComponent, {
         width: '450px',
         data: { type: tipo }
       });

@@ -22,29 +22,28 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
   public refPde: Observable<any>;
   displayedColumns: string[] = ['id', 'nombre', 'anyo', 'carrera', 'opciones'];
   socket: WebSocket;
-  constructor(
     // tslint:disable: no-shadowed-variable
     // tslint:disable: variable-name
+  constructor(
     private _pde: PlanEstudioService,
     private _Carrera: CarreraService,
     private dialog: MatDialog,
-    private _snack:MatSnackBar
-
+    private _snack: MatSnackBar
   ) {
-    let p = new Promise<void>(() => {
+    const p = new Promise<void>(() => {
       this._Carrera.getCarrera().subscribe(
         res => this.carreras.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
       );
     });
 
     this.subs.push(this._pde.getPlanEstudio()
       .subscribe(
         plan => {
-        this.pde.push(plan);
-        this.dataSource = this.pde;
+          this.pde.push(plan);
+          this.dataSource = this.pde;
         },
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
       )
     );
     this.refPde = this._pde.getList();
@@ -72,19 +71,19 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
       this._pde.deletePde(id)
         .subscribe(
           res => this.dataSource = this.dataSource.filter(p => p.pde_id !== id),
-          error=>this._snack.open(error.message,"OK",{duration: 3000}),
-          )
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        )
     );
   }
 
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
-     this.dialog.open(AddplanestudioComponent, {
+      this.dialog.open(AddplanestudioComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
-      let pde = this.pde.find(p => p.pde_id === id);
+      const pde = this.pde.find(p => p.pde_id === id);
       this.dialog.open(AddplanestudioComponent, {
         width: '450px',
         data: { type: tipo, plan: pde }
