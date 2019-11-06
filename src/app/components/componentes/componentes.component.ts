@@ -6,6 +6,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-componentes',
@@ -33,7 +34,9 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   constructor(
     private comService: ComponenteService,
-    private fb: FormBuilder) {  }
+    private fb: FormBuilder,
+    private _snack:MatSnackBar
+    ) {  }
 
   ngOnInit() {
     
@@ -90,26 +93,37 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     let comp = new ComponenteModel();
     comp = Object.assign(comp, this.form.value);
     console.log(comp);
-    this.comService.crearComponente(comp).subscribe(res => {
+    this.comService.crearComponente(comp)
+    .subscribe(
+      res => {
       this.form.reset();
       this.editing = false;
       this.add = false;
-    });
+      },
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
 
   delComponente(e) {
-    this.subs.push(this.comService.deleteComponente(e).subscribe());
+    this.subs.push(this.comService.deleteComponente(e).subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000})
+    ));
   }
 
   editComponente(id: string) {
     console.log("edit")
 
     this.editing = true;
-    this.comService.updateComponente(this.form.value, id).subscribe(res => {
+    this.comService.updateComponente(this.form.value, id)
+    .subscribe(
+      res => {
       this.form.reset();
       this.editing = false;
       this.add = false;
-    });
+     },
+     error=>this._snack.open(error.message,"OK",{duration: 3000})
+     );
   }
 
   get Form() {

@@ -1,23 +1,24 @@
 <div class="container-fluid">
   <mat-card>
-    <div class="row">
-      <div class="col-12 float-right">
+    <div class="row mb-2">
+      <div class="col-3 float-right">
         <button mat-raised-button color="primary" (click)="createForm(0)">
           <mat-icon>add</mat-icon>Agregar
         </button>
       </div>
+      <div class="horas col-9">
+          <button mat-raised-button (click)="addGT(componente)" [disabled]="gpadd" class="w-50" style="background-color:  rgb(231, 115, 7);">
+              GT
+          </button>
+          <button mat-raised-button (click)="addGP(componente)" [disabled]="gpadd" class="w-50 ml-1 mr-1" color="accent">
+            GP
+          </button>
+          <mat-label class="w-50" *ngIf="componente !== null">agregar grupo de {{componente.componente_nombre}}</mat-label>
+        </div>
     </div>
+    
     <div class="row components">
-      <div class="horas mt-2 col-12 mb-3">
-        <button mat-raised-button (click)="addGT(componente)" [disabled]="gpadd" class="w-25" style="background-color:  rgb(231, 115, 7);">
-            GT
-        </button>
-        <button mat-raised-button (click)="addGP(componente)" [disabled]="gpadd" class="w-25 ml-1 mr-1" color="accent">
-          GP
-        </button>
-        <mat-label class="w-50" *ngIf="componente !== null">agregar grupo de {{componente.componente_nombre}}</mat-label>
-      </div>
-      <div class="col-lg-7 col-md-8 list-components">
+      <div class="col-lg-6 col-md-8 list-components">
            
         <mat-list *ngIf="componentes.length>0">
           <mat-list-item (dblclick)="addG(comp)"  class="border-radius-50 font-size-15 h-auto"
@@ -33,10 +34,10 @@
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="col-lg-5 col-md-4">
+      <div class="col-lg-6 col-md-4">
         <span *ngIf="add">
-          <form [formGroup]="form" class="d-flex flex-column">
-              <div class="horas">
+          <form [formGroup]="form" class="d-flex font-size-12 flex-column">
+              <div class="horas mb-2">
               <button mat-raised-button class="w-50" color="primary"
               (click)="form.value.componente_id === null ? saveComponente(0):saveComponente(1)"
               [disabled]="form.invalid || editing">

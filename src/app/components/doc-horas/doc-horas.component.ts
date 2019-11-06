@@ -6,7 +6,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { Observable, Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { DocHorasAddComponent } from '../doc-horas-add/doc-horas-add.component';
 
 @Component({
@@ -28,14 +28,15 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   constructor(private _doc_hr:DocenteHorasService,
               private _docente:DocenteService,
               private _planificacion:PlanificacionService,
-              private dialog: MatDialog 
+              private dialog: MatDialog,
+              private _snack:MatSnackBar
 
     ) {
        let p1 = new Promise( (resolve,reject)=> {
         let sub = this._doc_hr.getDcHoras()
         .subscribe(
           res=>this.dhs.push(res),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=> resolve()
         );
         this.subs.push(sub)
@@ -46,7 +47,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
         let sub = this._docente.getDocente()
         .subscribe(
           res=>this.docentes.push(res),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=>resolve()
         );
         this.subs.push(sub)
@@ -56,7 +57,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
         let sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res=>this.planificaciones.push(res),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=>resolve()
         );
         this.subs.push(sub)
@@ -106,13 +107,13 @@ delDH(id){
 
 openDialog(tipo, id?:string): void {
   if(tipo === 'c'){
-    const dialogRef = this.dialog.open(DocHorasAddComponent, {
+    this.dialog.open(DocHorasAddComponent, {
       width: '450px',
       data: {type:tipo}      
     });
   }else{
     let dh = this.dhs.find(dh=>dh.dh_id === Number(id))
-    const dialogRef = this.dialog.open(DocHorasAddComponent, {
+    this.dialog.open(DocHorasAddComponent, {
       width: '450px',
       data: {type:tipo, dh:dh }
     });
@@ -128,7 +129,5 @@ getPlanificacion(id){
   let plan = this.planificaciones.find(plan=>plan.planificacion_id === id)
   return `semetre ${plan.planificacion_semestre} | ${plan.planificacion_anyo_lectivo}`
 }
-
-
 
 }

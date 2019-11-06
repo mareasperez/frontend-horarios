@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { Subscription, Observable } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddaulaComponent } from '../addaula/addaula.component';
@@ -29,10 +29,20 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     // tslint:disable: variable-name
     private AulaService: AulaService,
     private _recinto: RecintoService,
-    private dialog: MatDialog) {
-    this.AulaService.getAula().subscribe();
+    private dialog: MatDialog,
+    private _snack: MatSnackBar
+    ) {
+    this.AulaService.getAula()
+     .subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
     this.refAula = this.AulaService.getList();
-    this._recinto.getRecinto().subscribe(res => this.recintos.push(res));
+    this._recinto.getRecinto()
+      .subscribe(
+        res => this.recintos.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
   }
 
   ngOnInit() {
@@ -62,17 +72,21 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   }
 
   deleteAula(id: string) {
-    this.sub = this.AulaService.deleteAula(id).subscribe();
+    this.sub = this.AulaService.deleteAula(id)
+    .subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
 
   openDialog(tipo, id?, aula?): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AddaulaComponent, {
+      this.dialog.open(AddaulaComponent, {
         width: '450px',
         data: { type: tipo, idr: id, aul: '' }
       });
     } else {
-      const dialogRef = this.dialog.open(AddaulaComponent, {
+      this.dialog.open(AddaulaComponent, {
         width: '450px',
         data: { type: tipo, idf: '', aul: aula }
       });

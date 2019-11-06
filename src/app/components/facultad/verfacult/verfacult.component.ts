@@ -3,6 +3,7 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-verfacult',
@@ -23,6 +24,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   editing = false;
   // tslint:disable-next-line: max-line-length
   constructor(private facultadService: FacultadSerivice,
+              private _snack:MatSnackBar
              ) {
     this.subs.push(this.facultadService.getFacultad()
       .subscribe(res=>{
@@ -33,10 +35,11 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subs.push(this.a.subscribe(res=>{
-      console.log(res)
-      this.facultades = res;
-    })
+    this.subs.push(this.a
+      .subscribe(
+        res=>this.facultades = res,
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      )
     );
 
   }
@@ -50,22 +53,14 @@ export class VerfacultComponent implements OnInit, OnDestroy {
 
   deleteFaculta(id: string) {
     this.facultadService.deleteFacultad(id).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => console.log(err)
+      res => {console.log(res);},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
     );
   }
   
 
   filterAction(e:FacultadModel) {
-    console.log(e);
-    if (e.facultad_id === null) {
-      this.saveFacultad(e);
-    } else {
-      this.updateFacultad(e);
-    }
-
+    e.facultad_id === null ? this.saveFacultad(e):this.updateFacultad(e);
   }
 
   saveFacultad(data:FacultadModel) {
@@ -86,11 +81,8 @@ export class VerfacultComponent implements OnInit, OnDestroy {
     facultad.facultad_nombre = data.facultad_nombre;
     this.facultadService.updateFacultad(facultad, data.facultad_id)
       .subscribe(
-        res => {
-          console.log("updated",res)
-
-        },
-        err => console.error(err)
+        res => {console.log("updated",res)},
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
       );
   }
 

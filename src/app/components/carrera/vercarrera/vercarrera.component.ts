@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { Observable, Subscription } from 'rxjs';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddcarreraComponent } from '../addcarrera/addcarrera.component';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
@@ -24,23 +24,24 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   constructor(
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snack: MatSnackBar
   ) {
-    const p1 = new Promise((resolve, reject) => {
-      const sub = this.carrera$.getCarrera()
+    let p1 = new Promise((resolve) => {
+      let sub = this.carrera$.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
-          error => reject(error),
+          error =>this._snack.open(error,"OK",{duration: 3000}),
           () => resolve()
         );
       this.subs.push(sub);
 
     });
-    const p2 = new Promise((resolve, reject) => {
-      const sub = this.departamento$.getDepartamento()
+    let p2 = new Promise((resolve) => {
+      let sub = this.departamento$.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
-          error => reject(error),
+          error =>this._snack.open(error,"OK",{duration: 3000}),
           () => resolve()
         );
       this.subs.push(sub);
@@ -68,18 +69,22 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   }
 
   delCarrera(id: any) {
-    this.sub = this.carrera$.deleteCarrera(id).subscribe();
+    this.sub = this.carrera$.deleteCarrera(id)
+    .subscribe(
+      res=>{},
+      error =>this._snack.open(error.message,"OK",{duration: 5000}),
+    );
   }
 
   openDialog(tipo: string, id?: any): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AddcarreraComponent, {
+      this.dialog.open(AddcarreraComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
-      const carrera = this.carreras.find(d => d.carrera_id === id);
-      const dialogRef = this.dialog.open(AddcarreraComponent, {
+      let carrera = this.carreras.find(d => d.carrera_id === id);
+       this.dialog.open(AddcarreraComponent, {
         width: '450px',
         data: { type: tipo, car: carrera }
       });

@@ -5,7 +5,7 @@ import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { AddComponenteComponent } from '../add-componente/add-componente.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 
@@ -32,34 +32,35 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   constructor(private _comp:ComponenteService,
               private _pde:PlanEstudioService,
               private _area:AreaService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private _snack:MatSnackBar
 
     
   ) {
-    const p1 = new Promise((resolve,reject)=>{
-      const sub =  this._pde.getPlanEstudio()
+    let p1 = new Promise((resolve)=>{
+      let sub =  this._pde.getPlanEstudio()
       .subscribe(
         res => this.pdes.push(res),
-        error => reject(error),
+        error =>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
       );
       this.subs.push(sub)
     });
-    const p2 = new Promise((resolve,reject)=>{
-      const sub =  this._comp.getComponentes()
+    let p2 = new Promise((resolve)=>{
+      let sub =  this._comp.getComponentes()
       .subscribe(
         res => this.componentes.push(res),
-        error => reject(error),
+        error =>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
       );
       this.subs.push(sub)
     });
 
-    const p3 = new Promise((resolve,reject)=>{
-      const sub =  this._area.getAreas()
+    let p3 = new Promise((resolve)=>{
+      let sub =  this._area.getAreas()
       .subscribe(
         res => this.areas.push(res),
-        error => reject(error),
+        error =>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
       );
       this.subs.push(sub)
@@ -101,13 +102,13 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   openDialog(tipo: string, id?: any): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AddComponenteComponent, {
+      let dialogRef = this.dialog.open(AddComponenteComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
-      const comp = this.componentes.find(d => d.componente_id === id);
-      const dialogRef = this.dialog.open(AddComponenteComponent, {
+      let comp = this.componentes.find(d => d.componente_id === id);
+      let dialogRef = this.dialog.open(AddComponenteComponent, {
         width: '450px',
         data: { type: tipo, componente: comp }
       });

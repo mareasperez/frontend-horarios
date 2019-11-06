@@ -4,12 +4,10 @@ import { GrupoModel } from 'src/app/models/grupo.model';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ComponenteModel } from 'src/app/models/componente.model';
-import { ComponenteService } from 'src/app/services/componente.service';
-import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
-import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { matErrorsMessage } from 'src/app/utils/errors';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-grupo',
@@ -26,11 +24,13 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public grupos: GrupoModel[] = [];
   @Input() public componentes: ComponenteModel[] = [];
   @Input() public planificaciones: PlanificacionModel[] = [];
+  @Input() public planificacion: string;
   @Input() public docentes: DocenteModel[] = [];
   // creacion del formGroup
   public form: FormGroup;
   public selected = '0';
-  public selected2 = '0';
+  public selected2 = '0'
+  public selectedComp = '0'
   // validacion de edicion o creacion
   public add = false;
   public editing = false;
@@ -38,7 +38,10 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public Errors:matErrorsMessage = new matErrorsMessage()
 
   constructor(private fb: FormBuilder,
-    private _grupo: GrupoService) {}
+    private _grupo: GrupoService,
+    private _snack:MatSnackBar
+    ) {
+    }
     
     
     get Grupos():GrupoModel[]{
@@ -69,13 +72,13 @@ export class GrupoComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         grupo_id: null,
         grupo_numero: new FormControl('', [Validators.required, Validators.min(1)]),
-        grupo_max_capacidad: new FormControl('', [Validators.required, Validators.min(20)]),
-        grupo_tipo: new FormControl('', [Validators.required, Validators.min(1)]),
-        grupo_horas_clase: new FormControl('', [Validators.required, Validators.min(1)]),
-        grupo_modo: new FormControl('', [Validators.required]),
+        grupo_max_capacidad: new FormControl('40', [Validators.required, Validators.min(20)]),
+        grupo_tipo: new FormControl('GT', [Validators.required, Validators.min(1)]),
+        grupo_horas_clase: new FormControl('4', [Validators.required, Validators.min(1)]),
+        grupo_modo: new FormControl('S', [Validators.required]),
         grupo_componente: new FormControl('', [Validators.required]),
         grupo_docente: new FormControl('', [Validators.required]),
-        grupo_planificacion: new FormControl('', [Validators.required]),
+        grupo_planificacion: new FormControl(this.planificacion, [Validators.required]),
         grupo_planta: new FormControl(false, [Validators.required])
 
       });
@@ -100,32 +103,38 @@ export class GrupoComponent implements OnInit, OnDestroy {
     this.add = true;
   }
   saveGrupo(flag: number) {
-    if (flag === 0) {
-      this.createGrupo();
-    } else {
-      this.editGrupo(this.form.value.grupo_id);
-    }
-
+    flag === 0 ? this.createGrupo() :this.editGrupo(this.form.value.grupo_id)
   }
   createGrupo() {
     this.editing = true;
     let grupo = new GrupoModel();
     grupo = Object.assign(grupo, this.form.value);
-    console.log(grupo);
-    this._grupo.crearGrupo(grupo).subscribe(res => {
-      this.editing = false;
-      this.add = false;
-    });
+    this._grupo.crearGrupo(grupo)
+      .subscribe(
+        res => {
+        this.editing = false;
+        this.add = false;
+        },
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
   }
   delGrupo(e: number) {
-    this._grupo.deleteGrupo(e).subscribe();
+    this._grupo.deleteGrupo(e)
+    .subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
   editGrupo(id: number) {
     this.editing = true;
-    this._grupo.updategrupo(this.form.value, id).subscribe(res => {
-      this.form.reset();
-      this.editing = false;
-      this.add = false;
-    });
+    this._grupo.updategrupo(this.form.value, id)
+    .subscribe(
+      res => {
+        this.form.reset();
+        this.editing = false;
+        this.add = false;
+      },
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
 }

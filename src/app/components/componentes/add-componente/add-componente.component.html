@@ -1,5 +1,5 @@
 
-        <form *ngIf="form !== undefined" [formGroup]="form" class="d-flex flex-column">
+        <form *ngIf="form !== undefined" [formGroup]="form" class="font-size-12 d-flex flex-column">
                 <div class="horas">
                 <button mat-raised-button class="w-50" color="primary"
                 (click)="form.value.componente_id === null ? saveComponente(0):saveComponente(1)"
@@ -31,7 +31,9 @@
               <div class="horas">
                 <mat-form-field class="w-50" appearance="outline">
                   <mat-label>Ciclo</mat-label>
-                  <input matInput formControlName="componente_ciclo">
+                  <mat-select formControlName="componente_ciclo">
+                    <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+                  </mat-select>
                   <mat-error *ngIf="Form.componente_ciclo.invalid">{{Errors.getError(Form.componente_ciclo)}}</mat-error>
                 </mat-form-field>
   

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddrecintoComponent } from '../addrecinto/addrecinto.component';
 import { Subscription, Observable } from 'rxjs';
 
@@ -21,16 +21,17 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
   socket: WebSocket;
   // tslint:disable-next-line: no-shadowed-variable
   constructor(private RecintoService: RecintoService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private _snack:MatSnackBar
   ) {
-    this.RecintoService.getRecinto().subscribe(
+    this.RecintoService.getRecinto()
+    .subscribe(
       res => {
         this.recintos.push(res);
         this.alerts = false;
         this.dataSource = this.recintos;
-        console.log(this.dataSource);
       },
-      err => console.error(err)
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
     );
     this.refRecinto = RecintoService.getList();
 
@@ -39,8 +40,6 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // this.setsock();
     this.refRecinto.subscribe(async data=>{
-      console.log(data);
-
       this.dataSource = [];
       this.recintos = data;
       data.map(recinto => this.dataSource.push(recinto));
@@ -70,19 +69,23 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
 
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AddrecintoComponent, {
+      this.dialog.open(AddrecintoComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
       const recinto = this.recintos.find(d => d.recinto_id === id);
-      const dialogRef = this.dialog.open(AddrecintoComponent, {
+      this.dialog.open(AddrecintoComponent, {
         width: '450px',
         data: { type: tipo, rec: recinto }
       });
     }
   }
   deleteRecinto(id: string) {
-    this.subs = this.RecintoService.deleteRecinto(id).subscribe();
+    this.subs = this.RecintoService.deleteRecinto(id)
+    .subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
 }

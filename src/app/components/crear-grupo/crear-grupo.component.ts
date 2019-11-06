@@ -14,6 +14,7 @@ import { AreaService } from 'src/app/services/area.service';
 import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { AreaModel } from 'src/app/models/area.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-crear-grupo',
@@ -58,7 +59,8 @@ public cicloSelected = "0"
               private _pde:PlanEstudioService,
               private _carrera:CarreraService,
               private _area: AreaService,
-              private _docente:DocenteService
+              private _docente:DocenteService,
+              private _snack:MatSnackBar
 
     ) {
     this.servicios()
@@ -75,16 +77,22 @@ public cicloSelected = "0"
     Promise.all(this.promesas).then(()=>{
       this.show = true
       this.subs.push(this.refComp
-        .subscribe(data=>{
+        .subscribe(
+          data=>{
           this.componentes = data;
           this.componentesByPde(this.pdeSelected)
-       })
+        },
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+       )
       )
       this.subs.push(this.refGP
-        .subscribe(data=>{
+        .subscribe(
+          data=>{
          this.grupos = data;
          this.componentesByPde(this.pdeSelected)
-        })
+        },
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
       );
        this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
        this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
@@ -150,83 +158,83 @@ public cicloSelected = "0"
 
 
   servicios(){
-    const p1 = new Promise((resolve,reject)=>{
-      const sub =  this._grupo.getGrupos()
+    let p1 = new Promise((resolve,reject)=>{
+      let sub =  this._grupo.getGrupos()
       .subscribe(
         res => this.grupos.push(res),
-        error => reject(error),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
       this.subs.push(sub)
     })
 
-    const p2 = new Promise((resolve,reject)=>{
-      const sub =  this._componente.getComponentes()
+    let p2 = new Promise((resolve,reject)=>{
+      let sub =  this._componente.getComponentes()
       .subscribe(
         res => this.componentes.push(res),
-        error => reject(error),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
       this.subs.push(sub)
 
    });
    
-   const p3 = new Promise((resolve,reject)=>{
-    const sub =  this._planificacion.getPlanificaciones()
+   let p3 = new Promise((resolve,reject)=>{
+    let sub =  this._planificacion.getPlanificaciones()
     .subscribe(
       res => this.planificaciones.push(res),
-      error => reject(error),
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
       ()=>resolve()
       );
     this.subs.push(sub)
  });
 
 
- const p4 = new Promise((resolve,reject)=>{
-  const sub =  this._pde.getPlanEstudio()
+ let p4 = new Promise((resolve,reject)=>{
+  let sub =  this._pde.getPlanEstudio()
   .subscribe(
     res => this.pdes.push(res),
-    error => reject(error),
+    error=>this._snack.open(error.message,"OK",{duration: 3000}),
     ()=>resolve()
     );
   this.subs.push(sub)
 });
 
-const p5 = new Promise((resolve,reject)=>{
-const sub =  this._carrera.getCarrera()
+let p5 = new Promise((resolve,reject)=>{
+let sub =  this._carrera.getCarrera()
 .subscribe(
   res => this.carreras.push(res),
-  error => reject(error),
+  error=>this._snack.open(error.message,"OK",{duration: 3000}),
   ()=>resolve()
   );
 this.subs.push(sub)
 })
 
-const p6 = new Promise((resolve,reject)=>{
-const sub =  this._planificacion.getPlanificaciones()
+let p6 = new Promise((resolve,reject)=>{
+let sub =  this._planificacion.getPlanificaciones()
 .subscribe(
   res => this.planificaciones.push(res),
-  error => reject(error),
+  error=>this._snack.open(error.message,"OK",{duration: 3000}),
   ()=>resolve()
   )
 this.subs.push(sub)
 })
 
-const p7 = new Promise((resolve,reject)=>{
-const sub =  this._docente.getDocente()
+let p7 = new Promise((resolve,reject)=>{
+let sub =  this._docente.getDocente()
 .subscribe(
   res => this.docentes.push(res),
-  error => reject(error),
+  error=>this._snack.open(error.message,"OK",{duration: 3000}),
   ()=>resolve()
   )
 this.subs.push(sub)
 })
 
-const p8 = new Promise((resolve,reject)=>{
-const sub =  this._area.getAreas()
+let p8 = new Promise((resolve,reject)=>{
+let sub =  this._area.getAreas()
 .subscribe(
   res => this.areas.push(res),
-  error => reject(error),
+  error=>this._snack.open(error.message,"OK",{duration: 3000}),
   ()=>resolve()
   )
 this.subs.push(sub)

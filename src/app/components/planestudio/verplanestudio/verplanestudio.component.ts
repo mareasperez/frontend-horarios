@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddplanestudioComponent } from '../addplanestudio/addplanestudio.component';
 import { Observable, Subscription } from 'rxjs';
 import { CarreraModel } from 'src/app/models/carrera.model';
@@ -27,20 +27,25 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     // tslint:disable: variable-name
     private _pde: PlanEstudioService,
     private _Carrera: CarreraService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snack:MatSnackBar
 
   ) {
-    const p = new Promise<void>(() => {
+    let p = new Promise<void>(() => {
       this._Carrera.getCarrera().subscribe(
-        res => this.carreras.push(res)
+        res => this.carreras.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
       );
     });
 
     this.subs.push(this._pde.getPlanEstudio()
-      .subscribe(plan => {
+      .subscribe(
+        plan => {
         this.pde.push(plan);
         this.dataSource = this.pde;
-      })
+        },
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      )
     );
     this.refPde = this._pde.getList();
   }
@@ -66,24 +71,21 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     this.subs.push(
       this._pde.deletePde(id)
         .subscribe(
-          res => {
-            this.dataSource = this.dataSource.filter(p => p.pde_id !== id);
-          },
-          err => console.log(err)
-        )
+          res => this.dataSource = this.dataSource.filter(p => p.pde_id !== id),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+          )
     );
   }
 
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AddplanestudioComponent, {
+     this.dialog.open(AddplanestudioComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
-
-      const pde = this.pde.find(p => p.pde_id === id);
-      const dialogRef = this.dialog.open(AddplanestudioComponent, {
+      let pde = this.pde.find(p => p.pde_id === id);
+      this.dialog.open(AddplanestudioComponent, {
         width: '450px',
         data: { type: tipo, plan: pde }
       });

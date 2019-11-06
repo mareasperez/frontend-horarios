@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { AdddocenteComponent } from '../adddocente/adddocente.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
@@ -25,18 +25,24 @@ export class VerdocenteComponent implements OnInit {
     // tslint:disable variable-name
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snack:MatSnackBar
   ) {
-    const p = new Promise<void>(() => {
-      this._Departamento.getDepartamento().subscribe(
-        res => this.departamentos.push(res)
+    let p = new Promise<void>(() => {
+      this._Departamento.getDepartamento()
+      .subscribe(
+        res => this.departamentos.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
       );
     });
-    this.DocenteService.getDocente().subscribe(res => {
+    this.DocenteService.getDocente()
+    .subscribe(
+      res => {
       this.docentes.push(res);
       this.dataSource = this.docentes;
-
-    });
+      },
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
     this.refDocentes = this.DocenteService.getList();
   }
 
@@ -44,7 +50,6 @@ export class VerdocenteComponent implements OnInit {
     this.docentes.forEach(res => console.log(res));
     this.subs.push(
       this.refDocentes.subscribe(data => {
-        console.log(data);
         this.dataSource = [];
         this.docentes = data;
         data.map(doc => {
@@ -56,23 +61,22 @@ export class VerdocenteComponent implements OnInit {
 
 
   deleteDocente(id: string) {
-    this.DocenteService.deleteDocente(id).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => console.log(err)
+    this.DocenteService.deleteDocente(id)
+    .subscribe(
+      res => {},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
     );
   }
 
   openDialog(tipo, id?: string): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AdddocenteComponent, {
+     this.dialog.open(AdddocenteComponent, {
         width: '450px',
         data: { type: tipo, doc: null }
       });
     } else {
-      const docente = this.docentes.find(d => d.docente_id === id);
-      const dialogRef = this.dialog.open(AdddocenteComponent, {
+      let docente = this.docentes.find(d => d.docente_id === id);
+      this.dialog.open(AdddocenteComponent, {
         width: '450px',
         data: { type: tipo, doc: docente }
       });

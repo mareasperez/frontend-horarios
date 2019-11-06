@@ -12,7 +12,7 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSnackBar } from '@angular/material';
 class cargaComponente{
   componente:ComponenteModel
   grupo:GrupoModel
@@ -45,14 +45,15 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
               private _docente:DocenteService,
               private _planificacion:PlanificacionService,
               private _plan:PlanEstudioService,
-              private _carrera:CarreraService
+              private _carrera:CarreraService,
+              private _snack:MatSnackBar
     ) { 
 
     let p1 =  new Promise((resolve, reject)=>{
         let sub =  this._grupo.getGrupos()
         .subscribe(
           grupo=>this.grupos.push(grupo),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=>resolve()
           )
           this.subs.push(sub)
@@ -63,7 +64,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
         .subscribe(
           docente=>
           this.docentes.push(docente),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=>resolve()
         )
           this.subs.push(sub)
@@ -73,7 +74,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
         let sub =  this._comp.getComponentes()
         .subscribe(comp=>
           this.comps.push(comp),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=>resolve()
         )
           this.subs.push(sub)
@@ -83,7 +84,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
           let sub = this._planificacion.getPlanificaciones()
           .subscribe(
             pl=>this.planificaciones.push(pl),
-            error=>reject(error),
+            error=>this._snack.open(error.message,"OK",{duration: 3000}),
             ()=>resolve()
           )
           this.subs.push(sub)
@@ -103,7 +104,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
         let sub =  this._carrera.getCarrera()
         .subscribe(
           carrera=>this.carreras.push(carrera),
-          error=>reject(error),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
           ()=>resolve()
           )
           this.subs.push(sub)
@@ -136,9 +137,6 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
      this.comps.forEach((cp,i)=>{
        let gps = gruposByPlan.filter(gp=>cp.componente_id === gp.grupo_componente)
        if(gps.length>0){
-       /*  let carga:cargaComponente= new cargaComponente();
-         carga.componente = cp
-         this.cargas.push(carga)*/
          grupos.push(gps)
        }
      })
@@ -158,24 +156,11 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
      this.cargas.forEach((cgs:cargaComponente[],i)=>{
        cgs.forEach((cg:cargaComponente,j)=>{
          let plan = this.planes.filter(plan=>plan.pde_id === cg.componente.componente_pde)[0]
-        // console.log(plan)
         planes.push(plan)
         let c = this.carreras.filter(cr=>cr.carrera_id === plan.pde_carrera)[0]
         this.cargas[i][j].carrera = c
        })
       })
-    //  console.log(planes)
-      
-     /* planes.forEach((plan:PlanEstudioModel,i)=>{
-        this.cargas[i].carrera = this.carreras.filter(cr=>cr.carrera_id === plan.pde_carrera)[0]
-      })*/
-     // console.log(this.cargas)
-    /* this.dataSource = this.cargas.map((carga:cargaComponente[])=>{
-       let item = {}
-       item["data"] = new MatTableDataSource<cargaComponente>(carga)
-       console.log(item)
-       return item
-     })*/
      this.dataSource = this.cargas
      console.log(this.dataSource)
      this.cargas =[]

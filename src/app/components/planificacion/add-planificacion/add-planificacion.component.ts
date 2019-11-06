@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
@@ -19,7 +19,8 @@ export class AddPlanificacionComponent implements OnInit {
   constructor(private _planificacion: PlanificacionService,
               public dialogRef: MatDialogRef<AddPlanificacionComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb:FormBuilder
+              private fb:FormBuilder,
+              private _snack:MatSnackBar
   ) { }
             
 
@@ -49,7 +50,10 @@ export class AddPlanificacionComponent implements OnInit {
     plan = Object.assign(plan, this.form.value)
     this.subs.push(
       this._planificacion.crearPlanificacion(plan)
-        .subscribe(res=>this.dialogRef.close())
+        .subscribe(
+          res=>this.dialogRef.close(),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
 
@@ -58,7 +62,10 @@ export class AddPlanificacionComponent implements OnInit {
     plan = Object.assign(plan, this.form.value)
     this.subs.push(
       this._planificacion.updatePlanificacion(plan,plan.planificacion_id)
-        .subscribe(res=>this.dialogRef.close())
+        .subscribe(
+          res=>this.dialogRef.close(),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
 

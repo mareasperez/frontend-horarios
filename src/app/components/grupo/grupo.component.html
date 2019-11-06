@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="row groups">
-      <div class="col-lg-7 col-md-8 list-groups ">
+      <div class="col-lg-6 col-md-8 list-groups ">
         <mat-list>
           <mat-list-item  *ngFor="let grupo of grupos; let i = index" class="border-radius-50 font-size-15 h-auto" [class.bg-color-ligth]="i % 2 === 1">
             {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
@@ -24,10 +24,10 @@
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="col-lg-5 col-md-4 ">
+      <div class="col-lg-6 col-md-4 ">
         <span *ngIf="add">
-          <form [formGroup]="form" class="d-flex flex-column">
-             <div class="join">
+          <form [formGroup]="form" class="d-flex font-size-12 flex-column">
+             <div class="join mb-2">
             <button mat-raised-button  class="w-50 float-rigth" color="primary"
               (click)="form.value.grupo_id === null ? saveGrupo(0):saveGrupo(1)"
               [disabled]="form.invalid || editing">
@@ -53,12 +53,18 @@
             <div class="join">
               <mat-form-field class="w-50" appearance="outline">
                 <mat-label>Tipo</mat-label>
-                <input matInput formControlName="grupo_tipo">
+                <mat-select formControlName="grupo_tipo">
+                  <mat-option value="GT">Teorico</mat-option>
+                  <mat-option selected value="GP">Practico</mat-option>
+                </mat-select>
                 <mat-error *ngIf="Form.grupo_tipo.invalid">{{Errors.getError(Form.grupo_tipo)}}</mat-error>
               </mat-form-field>
               <mat-form-field class="w-50 ml-1" appearance="outline">
                 <mat-label>Modo</mat-label>
-                <input matInput formControlName="grupo_modo">
+                <mat-select formControlName="grupo_modo">
+                  <mat-option value="S">Servicio</mat-option>
+                  <mat-option value="F">Facultad</mat-option>
+                </mat-select>
                 <mat-error *ngIf="Form.grupo_modo.invalid">{{Errors.getError(Form.grupo_modo)}}</mat-error>
               </mat-form-field>
             </div>
@@ -72,8 +78,7 @@
             </div>
             <mat-form-field appearance="outline">
               <mat-label>Componente</mat-label>
-              <mat-select [value]="selected" formControlName="grupo_componente">
-                <mat-option value="0">Componentes...</mat-option>
+              <mat-select [value]="selectedComp" formControlName="grupo_componente">
                 <mat-option *ngFor="let componente of componentes" [value]="componente.componente_id">
                   {{componente.componente_nombre}}</mat-option>
               </mat-select>
@@ -83,7 +88,6 @@
             <mat-form-field appearance="outline">
               <mat-label>Docente</mat-label>
               <mat-select [(value)]="selected" formControlName="grupo_docente">
-                <mat-option value="0">Docente...</mat-option>
                 <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}
                 </mat-option>
               </mat-select>
@@ -93,7 +97,6 @@
             <mat-form-field appearance="outline">
               <mat-label>Planificacion</mat-label>
               <mat-select [(value)]="selected2" formControlName="grupo_planificacion">
-                <mat-option value="0">Planificacion...</mat-option>
                 <mat-option *ngFor="let planificacion of planificaciones" [value]="planificacion.planificacion_id">
                   {{planificacion.planificacion_id}}
                 </mat-option>
