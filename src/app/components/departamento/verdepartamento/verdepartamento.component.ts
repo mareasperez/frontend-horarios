@@ -18,7 +18,7 @@ import { promise } from 'protractor';
 
 export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
-  public facultades: FacultadModel[] = [];
+  public facults: FacultadModel[] = [];
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
   // public resultado = new FacultadModel();
@@ -30,27 +30,40 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     // tslint:disable: variable-name
     private _departamento: DepartamentoService,
     private dialog: MatDialog,
-    private _snack:MatSnackBar
+    private facultad$: FacultadSerivice,
+    private _snack: MatSnackBar
   ) {
-    this._departamento.getDepartamento()
-    .subscribe(
-      res => this.departamentos.push(res),
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      );
+    let p1 = new Promise((resolve) => {
+      let sub = this._departamento.getDepartamento()
+        .subscribe(
+          res => this.departamentos.push(res),
+          error =>this._snack.open(error, 'OK',{duration: 3000}),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    });
+    let p2 = new Promise((resolve) => {
+      let sub = this.facultad$.getFacultad()
+        .subscribe(
+          res => this.facults.push(res),
+          error =>this._snack.open(error, 'OK',{duration: 3000}),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    });
+    this.promesas.push(p1, p2);
     this.refDepartamento = this._departamento.getList();
     this.ref = this.facultad$.getList();
   }
 
   async ngOnInit() {
-    await this.refDepartamento
-    .subscribe(
-      data => this.departamentos = data,
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
-    await this.foo().then(
-      () => {
-        this.visible = true;
-      });
+    Promise.all(this.promesas).then(res => {
+      this.visible = true;
+    });
+    this.refDepartamento.subscribe(data => {
+      console.log(data);
+      this.departamentos = data;
+    });
   }
 
   ngOnDestroy() {
@@ -59,24 +72,12 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
       this.sub.unsubscribe();
     }
   }
-  async foo() {
-    console.log('loading');
-    await this.sleep(1000);
-    console.log('...');
-    await this.sleep(1000);
-    await this.sleep(2000);
-    console.log('load complete');
-  }
-
-  sleep(ms = 0) {
-    return new Promise(r => setTimeout(r, ms));
-  }
 
   delDepartamento(id: any) {
     this.sub = this._departamento.deleteDepartamento(id)
     .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      res => {},
+      error => this._snack.open(error.message, 'OK',{duration: 3000}),
     );
   }
 

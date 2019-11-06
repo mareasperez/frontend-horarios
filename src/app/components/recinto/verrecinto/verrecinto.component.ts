@@ -4,6 +4,10 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddrecintoComponent } from '../addrecinto/addrecinto.component';
 import { Subscription, Observable } from 'rxjs';
+import { FacultadModel } from 'src/app/models/facultad.model';
+import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { resolve } from 'url';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-verrecinto',
@@ -12,59 +16,62 @@ import { Subscription, Observable } from 'rxjs';
 })
 export class VerrecintoComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
+  public facults: FacultadModel[] = [];
   public alerts = true;
-  public subs: Subscription;
+  public subs: Subscription[] = [];
+  private promesas: Promise<any>[] = [];
   public visible: boolean;
-  public dataSource;
+  sub: Subscription;
   refRecinto: Observable<any[]>;
+  refFacultades: Observable<any[]>;
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
   // tslint:disable-next-line: no-shadowed-variable
-  constructor(private RecintoService: RecintoService,
-              private dialog: MatDialog,
-              private _snack:MatSnackBar
+  constructor(
+    private RecintoService: RecintoService,
+    private facultad$: FacultadSerivice,
+    private dialog: MatDialog,
+    private _snack: MatSnackBar
   ) {
-    this.RecintoService.getRecinto()
-    .subscribe(
-      res => {
-        this.recintos.push(res);
-        this.alerts = false;
-        this.dataSource = this.recintos;
-      },
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+    const p1 = new Promise((resolve) => {
+      const sub = this.RecintoService.getRecinto()
+        .subscribe(
+          res => this.recintos.push(res),
+          error => this._snack.open(error, 'OK', {duration: 3000}),
+          () => resolve()
+        );
+    });
+
+    let p2 = new Promise((resolve) => {
+      let sub = this.facultad$.getFacultad()
+        .subscribe(
+          res => this.facults.push(res),
+          error => this._snack.open(error, 'OK', {duration: 3000}),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    });
+    this.promesas.push(p1, p2);
     this.refRecinto = RecintoService.getList();
+    this.refFacultades = facultad$.getList();
 
   }
 
   async ngOnInit() {
-    // this.setsock();
-    this.refRecinto.subscribe(async data=>{
-      this.dataSource = [];
+    Promise.all(this.promesas).then(res => {
+      this.visible = true;
+    });
+    this.refRecinto.subscribe( data => {
+      console.log(data);
       this.recintos = data;
-      data.map(recinto => this.dataSource.push(recinto));
-    });
-    await this.foo().then(
-        () => {
-          this.visible = true;
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.RecintoService.list = [];
-
-  }
-  async foo() {
-    console.log('loading');
-    await this.sleep(1000);
-    console.log('...');
-    await this.sleep(1000);
-    await this.sleep(2000);
-    console.log('load complete');
-  }
-
-  sleep(ms = 0) {
-    return new Promise(r => setTimeout(r, ms));
+    if (this.sub !== undefined) {
+      this.sub.unsubscribe();
+    }
   }
 
   openDialog(tipo, id?): void {
@@ -82,10 +89,10 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
     }
   }
   deleteRecinto(id: string) {
-    this.subs = this.RecintoService.deleteRecinto(id)
+    this.sub = this.RecintoService.deleteRecinto(id)
     .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      res => {},
+      error => this._snack.open(error.message,'OK', {duration: 3000}),
     );
   }
 }

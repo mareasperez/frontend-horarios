@@ -8,16 +8,8 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
 })
 
 export class getNombreFacultadPipe implements PipeTransform {
-    public facultades: FacultadModel [] = [];
-    public resultado = new FacultadModel();
-    constructor(private facultad$: FacultadSerivice) {
-        this.facultad$.getFacultad().subscribe(res2 => this.facultades.push(res2));
-    }
-    transform(value: string, args?: any): any {
-        return this.getNombreFacultad(value);
-    }
-    getNombreFacultad(point: string): string {
-        this.resultado = this.facultad$.list.find(facultad => facultad.facultad_id === point);
-        return this.resultado.facultad_nombre;
+  transform(id: string, facultades: FacultadModel[]): string {
+    const fac = facultades.find(facultad => facultad.facultad_id === id);
+    return fac.facultad_nombre;
   }
 }
