@@ -6,6 +6,9 @@ import { MatDialog } from '@angular/material';
 import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { resolve } from 'path';
+import { reject } from 'q';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-verdepartamento',
@@ -15,21 +18,42 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
 
 export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
-  // public facultades: FacultadModel[] = [];
+  public facultades: FacultadModel[] = [];
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
   // public resultado = new FacultadModel();
   public visible: boolean;
+  private subs: Subscription[] = [];
+  private promesas: Promise<any>[] = [];
   sub: Subscription;
   constructor(
     // tslint:disable: variable-name
     private _departamento: DepartamentoService,
-    // private facultad$: FacultadSerivice,
+    private facultad$: FacultadSerivice,
     private dialog: MatDialog
   ) {
-    this._departamento.getDepartamento().subscribe(res => this.departamentos.push(res));
-    // this.facultad$.getFacultad().subscribe(res2 => this.facultades.push(res2));
+    const p1 = new Promise((resolve, reject) => {
+      const sub = this._departamento.getDepartamento()
+      .subscribe(
+        res => this.departamentos.push(res),
+        error => reject(error),
+        () => resolve()
+      );
+      this.subs.push(sub);
+    });
+
+    const p2 = new Promise((resolve, reject) => {
+      const sub = this.facultad$.getFacultad()
+      .subscribe(
+        res => this.facultades.push(res),
+        error => reject(error),
+        () => resolve()
+      );
+      this.subs.push(sub);
+    });
+    this.promesas.push(p1, p2);
     this.refDepartamento = this._departamento.getList();
+    this.ref = this.facultad$.getList();
   }
 
   async ngOnInit() {

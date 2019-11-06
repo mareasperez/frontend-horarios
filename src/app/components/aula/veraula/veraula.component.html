@@ -1,29 +1,28 @@
-<div class="row">
-    <div class="col-2"></div>
-    <h2 class="col-4">
-        Seleccionar un recinto:
-    </h2>
-    <mat-form-field class="col-3">
-        <mat-label>Recinto</mat-label>
-        <mat-select [(ngModel)]="selectedR" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
-            <mat-option *ngFor="let recinto of recintos" [value]="recinto">
-                {{recinto.recinto_nombre}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-</div>
-
-<div class="row" *ngIf="activartabla">
-    <div class="col-12 float-right">
-        <button mat-raised-button color="primary" (click)="openDialog('c', selectedR.recinto_id)">
-        <mat-icon>add</mat-icon>Agregar
-      </button>
+<mat-card class="center">
+    <div class="row">
+        <mat-form-field class="col" appearance="outline">
+            <mat-label>Recinto</mat-label>
+            <mat-select [(ngModel)]="selectedR" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
+                <mat-option *ngFor="let recinto of recintos" [value]="recinto">
+                    {{recinto.recinto_nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
-
+    <div class="row" *ngIf="activartabla">
+        <div class="col-12">
+            <button mat-raised-button color="primary" (click)="openDialog('c', selectedR.recinto_id)">
+                <mat-icon>add</mat-icon>Agregar
+            </button>
+        </div>
+    </div>
+</mat-card>
+<br>
+<div class="scro">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="activartabla">
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
-            <td mat-cell *matCellDef="let aula"> {{aula.aula_id}} </td>
+            <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
+            <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nombre">
@@ -52,15 +51,16 @@
             <td mat-cell *matCellDef="let aula">
                 <div class="opciones">
                     <button class="btn btn-danger btnlogin" (click)="deleteAula(aula.aula_id)">
-                  <i class="fas fa-trash-alt"></i>
-              </button>
+                                    <mat-icon style="color:white">delete</mat-icon>
+                          </button>
                     <button class="btn btn-success btnlogin" (click)="openDialog('u', '', aula)">
-                  <i class="fas fa-edit"></i>
-              </button>
+                                    <mat-icon style="color:white">edit</mat-icon>
+                          </button>
                 </div>
             </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+</div>

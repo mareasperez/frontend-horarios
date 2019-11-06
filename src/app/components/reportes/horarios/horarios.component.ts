@@ -315,7 +315,7 @@ export class HorariosComponent implements OnInit {
           const al = this._aula.list.find(a => a.aula_id === dia.horario_aula)
           diaView.aula = al.aula_nombre;
           console.log(diaView);
-          this.array[j][i] = diaView;
+          this.array[i][j] = diaView;
           i = 0;
           j = 0;
         }

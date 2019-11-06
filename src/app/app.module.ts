@@ -66,6 +66,7 @@ import { DepartamentoNamePipe } from './pipes/departamento-name.pipe';
 import { DocenteNamePipe } from './pipes/docente-name.pipe';
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 import { CarreraNamePipe } from './pipes/carrera-name.pipe';
+import { IncrementarPipe } from './pipes/incrementar.pipe';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { CarreraNamePipe } from './pipes/carrera-name.pipe';
     DocenteNamePipe,
     CargaComponentesComponent,
     CarreraNamePipe,
+    IncrementarPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
