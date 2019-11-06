@@ -23,8 +23,8 @@ export class FacultadSerivice extends MainService {
           facultad = Object.assign(facultad,el); //Tipar Objeto
           this.list.push(facultad);
           observer.next(facultad);
-
         });
+        observer.complete()
       });
     });
   }

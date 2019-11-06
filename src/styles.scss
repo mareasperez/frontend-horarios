@@ -7,5 +7,25 @@ button:focus{
 *:focus{
     outline: none;
 }
+
+.color-light{
+    color: #d3f5ee;
+}
+
+.bg-color-ligth{
+background-color:  #d3f5ee !important;
+}
+
+.border-radius-50{
+    border-radius: 50px;
+}
+
+.font-size-15{
+    font-size: 15px !important;
+}
+
+.font-size-12{
+    font-size: 12px !important;
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { Observable, Subscription } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
-import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
-import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-componentes',
@@ -19,9 +18,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refArea: Observable<any[]>;
   public refPde: Observable<any[]>;
-  public componentes: ComponenteModel[] = [];
-  public areas: AreaModel[] = [];
-  public pdes: PlanEstudioModel[] = [];
+  @Output() public gpAdd = new EventEmitter<{}>()
+  @Input() public componentes: ComponenteModel[] = [];
+  @Input() public areas: AreaModel[] = [];
+  @Input() public pdes: PlanEstudioModel[] = [];
+  public componente:ComponenteModel = null;
   public form: FormGroup;
   public selected = '0';
   public selected2 = '0';
@@ -29,38 +30,19 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public editing = false;
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
+  public gpadd = true;
+
   constructor(
     private comService: ComponenteService,
-    private _area: AreaService,
-    private _pde: PlanEstudioService,
-    private fb: FormBuilder
-
-  ) {
-    this.subs.push(
-      this.comService.getComponentes().subscribe(res => this.componentes.push(res)));
-    this.subs.push(
-      this._area.getAreas().subscribe(res => this.areas.push(res)));
-    this.subs.push(
-      this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res)));
-    this.ref = this.comService.getList();
-    this.refArea = this._area.getList();
-    this.refPde = this._pde.getList();
-
-  }
+    private fb: FormBuilder,
+    private _snack:MatSnackBar
+    ) {  }
 
   ngOnInit() {
-    this.subs.push(
-      this.ref.subscribe(data => this.componentes = data));
-    this.subs.push(
-      this.refArea.subscribe(data => this.areas = data));
-    this.subs.push(
-      this.refPde.subscribe(data => this.pdes = data));
-    // this.createForm(0);
+    
   }
 
   ngOnDestroy() {
-    this._area.list = [];
-    this._pde.list = [];
     this.comService.list = [];
     this.subs.map(sub => sub.unsubscribe());
 
@@ -111,28 +93,59 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     let comp = new ComponenteModel();
     comp = Object.assign(comp, this.form.value);
     console.log(comp);
-    this.comService.crearComponente(comp).subscribe(res => {
+    this.comService.crearComponente(comp)
+    .subscribe(
+      res => {
       this.form.reset();
       this.editing = false;
       this.add = false;
-
-    });
+      },
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
 
   delComponente(e) {
-    this.comService.deleteComponente(e).subscribe();
+    this.subs.push(this.comService.deleteComponente(e).subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000})
+    ));
   }
 
   editComponente(id: string) {
+    console.log("edit")
+
     this.editing = true;
-    this.comService.updateComponente(this.form.value, id).subscribe(res => {
+    this.comService.updateComponente(this.form.value, id)
+    .subscribe(
+      res => {
       this.form.reset();
       this.editing = false;
       this.add = false;
-    });
+     },
+     error=>this._snack.open(error.message,"OK",{duration: 3000})
+     );
   }
 
   get Form() {
     return this.form.controls;
+  }
+
+  addG(comp:ComponenteModel){
+    this.gpadd = false
+    this.componente = comp;
+  }
+
+  addGT(cp:ComponenteModel){
+    this.gpAdd.emit({id:cp.componente_id, tipo:"GT"})
+    this.gpadd = true
+    this.componente = null;
+
+  }
+  addGP(cp:ComponenteModel){
+    this.gpAdd.emit({id:cp.componente_id, tipo:"GP"})
+    this.gpadd = true
+    this.componente = null;
+
+
   }
 }

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { AdddocenteComponent } from '../adddocente/adddocente.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
+import { DepartamentoModel } from 'src/app/models/departamento.model';
+import { DepartamentoService } from 'src/app/services/departamento.service';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -12,58 +14,71 @@ import { Observable, Subscription } from 'rxjs';
 export class VerdocenteComponent implements OnInit {
 
   public docentes: DocenteModel[] = [];
-  public refDocentes:Observable<any[]>;
+  public refDocentes: Observable<any[]>;
   public alerts = true;
   public dataSource;
-  subs:Subscription[]=[]
+  public departamentos: DepartamentoModel[] = [];
+  subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
-  constructor(private DocenteService: DocenteService,
-              private dialog: MatDialog 
-
-    ) { 
-      this.DocenteService.getDocente().subscribe(res=>{
-        this.docentes.push(res);
-        this.dataSource = this.docentes;
-
-      });
-      this.refDocentes = this.DocenteService.getList();
-    }
+  constructor(
+    // tslint:disable: no-shadowed-variable
+    // tslint:disable variable-name
+    private DocenteService: DocenteService,
+    private _Departamento: DepartamentoService,
+    private dialog: MatDialog,
+    private _snack:MatSnackBar
+  ) {
+    let p = new Promise<void>(() => {
+      this._Departamento.getDepartamento()
+      .subscribe(
+        res => this.departamentos.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
+    });
+    this.DocenteService.getDocente()
+    .subscribe(
+      res => {
+      this.docentes.push(res);
+      this.dataSource = this.docentes;
+      },
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
+    this.refDocentes = this.DocenteService.getList();
+  }
 
   ngOnInit() {
-    this.docentes.forEach(res=>console.log(res))
-    this.subs.push( 
-      this.refDocentes.subscribe(data=>{
-        console.log(data)
+    this.docentes.forEach(res => console.log(res));
+    this.subs.push(
+      this.refDocentes.subscribe(data => {
         this.dataSource = [];
-        this.docentes = data
-        data.map(doc=>{
+        this.docentes = data;
+        data.map(doc => {
           this.dataSource.push(doc);
         });
       })
-  )
-}
-  
-  
-  deleteDocente(id: string) {
-    this.DocenteService.deleteDocente(id).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => console.log(err)
     );
   }
 
-  openDialog(tipo, id?:string): void {
-    if(tipo === 'c'){
-      const dialogRef = this.dialog.open(AdddocenteComponent, {
+
+  deleteDocente(id: string) {
+    this.DocenteService.deleteDocente(id)
+    .subscribe(
+      res => {},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
+  }
+
+  openDialog(tipo, id?: string): void {
+    if (tipo === 'c') {
+     this.dialog.open(AdddocenteComponent, {
         width: '450px',
-        data: {type:tipo, doc:null}      
+        data: { type: tipo, doc: null }
       });
-    }else{
-      let docente = this.docentes.find(d=>d.docente_id ===id)
-      const dialogRef = this.dialog.open(AdddocenteComponent, {
+    } else {
+      let docente = this.docentes.find(d => d.docente_id === id);
+      this.dialog.open(AdddocenteComponent, {
         width: '450px',
-        data: {type:tipo, doc:docente }
+        data: { type: tipo, doc: docente }
       });
     }
   }

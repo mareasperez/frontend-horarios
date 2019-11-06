@@ -2,7 +2,7 @@ import { Component, OnInit, HostBinding, Inject, OnDestroy } from '@angular/core
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { Subscription, Observable } from 'rxjs';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
@@ -34,9 +34,14 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
               private facultad$: FacultadSerivice,
               public dialogRef: MatDialogRef<AdddepartamentoComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private _snack:MatSnackBar
     ) {
-      this.facultad$.getFacultad().subscribe(res => this.facultades.push(res));
+      this.facultad$.getFacultad()
+      .subscribe(
+        res => this.facultades.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        );
       this.refFacultad = this.facultad$.getList();
     }
 
@@ -76,7 +81,10 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
     console.log(dep);
     this.subs.push(
       this.departamentoService.crearDepartamento(dep)
-      .subscribe(res => this.dialogRef.close())
+      .subscribe(
+        res => this.dialogRef.close(),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
 
@@ -86,7 +94,10 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
     console.log(dep);
     this.subs.push(
       this.departamentoService.updateDepartamento(dep, dep.departamento_id)
-        .subscribe(res => this.dialogRef.close())
+        .subscribe(
+          res => this.dialogRef.close(),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
 

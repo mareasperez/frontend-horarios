@@ -3,7 +3,11 @@
     <div class="col-12 text-center"><h1>Universidad Nacional Autonoma de Nicaragua</h1></div>
     <div class="col-12 text-center"><h4>UNAN-Le&oacute;n</h4></div>
     <div class="col-12 text-center"><h4>Departamento de cumputaci&oacute;n</h4></div>
-    <div class="col-12 text-center"><h4>Reporte de Carga Gen&eacute;rica de Docencia Directa por componente planificacion {{selected !== '0' ? getPlanName(selected):null}}</h4></div>
+    <div class="col-12 text-center">
+      <h4>Reporte de Carga Gen&eacute;rica de Docencia Directa por componente planificacion 
+       {{selected !== '0' ? getPlanName(selected):null}}
+      </h4>
+    </div>
     </div>
 </div>
 <mat-card>
@@ -11,7 +15,9 @@
     <mat-form-field *ngIf="show" appearance="outline">
         <mat-label>Seleccionar planificaci&oacute;n</mat-label>
         <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
-            <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}</mat-option>
+            <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
+              planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+            </mat-option>
         </mat-select>
     </mat-form-field>
     <span *ngFor="let item of dataSource; let i = index">
@@ -20,7 +26,9 @@
         <table mat-table   [dataSource]="item" class="w-100 mat-elevation-z8">
             <ng-container matColumnDef="docente">
                 <th mat-header-cell *matHeaderCellDef> Docente </th>
-                <td mat-cell *matCellDef="let carga"> {{carga.docente.docente_nombre }} </td>
+                <td mat-cell *matCellDef="let carga"> 
+                  {{carga.docente !== undefined ? carga.docente.docente_nombre : "No asignado" }} 
+                </td>
               </ng-container>
             <ng-container matColumnDef="carrera">carga
                 <th mat-header-cell *matHeaderCellDef> Carrera </th>

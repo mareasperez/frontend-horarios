@@ -67,6 +67,10 @@ import { DocenteNamePipe } from './pipes/docente-name.pipe';
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 import { CarreraNamePipe } from './pipes/carrera-name.pipe';
 import { IncrementarPipe } from './pipes/incrementar.pipe';
+import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
+import { ComponenteNombrePipe } from './pipes/componente-nombre.pipe';
+import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
+import { AddComponenteComponent } from './components/componentes/add-componente/add-componente.component';
 
 @NgModule({
   declarations: [
@@ -108,10 +112,15 @@ import { IncrementarPipe } from './pipes/incrementar.pipe';
     CargaComponentesComponent,
     CarreraNamePipe,
     IncrementarPipe,
+    CrearGrupoComponent,
+    ComponenteNombrePipe,
+    ComponentesListComponent,
+    AddComponenteComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
     AddcarreraComponent,
+    AddComponenteComponent,
   ],
   imports: [
     BrowserModule,

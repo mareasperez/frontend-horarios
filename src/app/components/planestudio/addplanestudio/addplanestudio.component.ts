@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CarreraService } from 'src/app/services/carrera.service';
@@ -28,11 +28,14 @@ export class AddplanestudioComponent implements OnInit {
               private plan$: PlanEstudioService,
               public dialogRef: MatDialogRef<AddplanestudioComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private _snack:MatSnackBar
     ) {
-      this.carrera$.getCarrera().subscribe(res => {
-        this.carreras.push(res);
-      });
+      this.carrera$.getCarrera()
+      .subscribe(
+        res => this.carreras.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
       this.refCarrera = this.carrera$.getList();
     }
 
@@ -75,17 +78,22 @@ export class AddplanestudioComponent implements OnInit {
     plan = Object.assign(plan, this.form.value);
     this.subs.push(
       this.plan$.crearPlanEstudio(plan)
-     .subscribe(res => this.dialogRef.close())
+       .subscribe(
+         res => this.dialogRef.close(),
+         error=>this._snack.open(error.message,"OK",{duration: 3000}),
+         )
     );
   }
 
   updatePlan() {
     let plan = new PlanEstudioModel();
     plan = Object.assign(plan, this.form.value);
-    console.log(plan);
     this.subs.push(
       this.plan$.updatePlanEstudio(plan, plan.pde_id)
-     .subscribe(res => this.dialogRef.close())
+       .subscribe(
+         res => this.dialogRef.close(),
+         error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
 }

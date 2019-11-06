@@ -3,7 +3,7 @@ import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from '../../../services/recinto.service';
 import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { matErrorsMessage } from 'src/app/utils/errors';
@@ -31,9 +31,14 @@ export class AddrecintoComponent implements OnInit {
               private facultad$: FacultadSerivice,
               public dialogRef: MatDialogRef<AddrecintoComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private _snack:MatSnackBar
     ) {
-      this.facultad$.getFacultad().subscribe(res => this.facultades.push(res));
+      this.facultad$.getFacultad()
+      .subscribe(
+        res => this.facultades.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
       this.refFacultad = this.facultad$.getList();
     }
 
@@ -69,19 +74,23 @@ export class AddrecintoComponent implements OnInit {
   saveRecinto() {
     let rec = new RecintoModel();
     rec = Object.assign(rec, this.form.value);
-    console.log(rec);
     this.subs.push(
       this.recintoService.crearRecinto(rec)
-      .subscribe(res => this.dialogRef.close())
+      .subscribe(
+        res => this.dialogRef.close(),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
   updateRecinto() {
     let rec = new RecintoModel();
     rec = Object.assign(rec, this.form.value);
-    console.log(rec);
     this.subs.push(
       this.recintoService.updateRecinto(rec, rec.recinto_id)
-      .subscribe(res => this.dialogRef.close())
+      .subscribe(
+        res => this.dialogRef.close(),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      )
     );
   }
   get Form(){

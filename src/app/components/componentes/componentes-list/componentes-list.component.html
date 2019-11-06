@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <mat-card *ngIf="show" class="w-10">
+       <div class="row">
+          <h1>Componentes</h1>
+      </div>
+        <mat-form-field class="font-size-12 h-max-500" appearance="outline">
+            <mat-label>Plan de estudios</mat-label>
+            <mat-select [(value)]="pdeSelected" (selectionChange)="componentesByPde($event.value)" >
+                <mat-option *ngFor="let pde of pdes" [value]="pde.pde_id">{{pde.pde_nombre}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span style="flex: 1 1 auto"></span>
+          <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')" >
+            <mat-icon>add</mat-icon> Agregar
+          </button>
+      <table mat-table *ngIf="dataSource.length>0"  [dataSource]="dataSource" class="w-100 mat-elevation-z8">
+          <!-- Position Column -->
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Componente </th>
+            <td mat-cell *matCellDef="let Componente"> {{Componente.componente_nombre}} </td>
+          </ng-container>
+          <ng-container matColumnDef="area">
+              <th mat-header-cell *matHeaderCellDef> Area </th>
+              <td mat-cell *matCellDef="let Componente"> {{Componente.componente_area}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ciclo">
+                <th mat-header-cell *matHeaderCellDef> Ciclo </th>
+                <td mat-cell *matCellDef="let Componente"> {{Componente.componente_ciclo}} </td>
+             </ng-container>
+            <ng-container matColumnDef="creditos">
+                <th mat-header-cell *matHeaderCellDef> Creditos </th>
+                <td mat-cell *matCellDef="let Componente"> {{Componente.componente_credito}} </td>
+            </ng-container> 
+            <ng-container matColumnDef="thoras">
+                <th mat-header-cell *matHeaderCellDef> THoras </th>
+                <td mat-cell *matCellDef="let Componente"> {{Componente.componente_cht}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phoras">
+              <th mat-header-cell *matHeaderCellDef> PHoras </th>
+              <td mat-cell *matCellDef="let Componente"> {{Componente.componente_chp}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="opciones">
+            <th mat-header-cell *matHeaderCellDef> opciones </th>
+            <td mat-cell *matCellDef="let Componente"> 
+            <div class="opciones">
+                <button mat-raised-button color="warn" (click)="delComponente(Componente.componente_id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-raised-button class="ml-1" style="background-color: green;" (click)="openDialog('u',Componente.componente_id )">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+            </td>
+            </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</mat-card>
+</div>

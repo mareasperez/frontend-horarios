@@ -15,6 +15,7 @@ import { ComponenteModel } from 'src/app/models/componente.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { promise } from 'protractor';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-carga',
@@ -43,12 +44,33 @@ export class CargaComponent implements OnInit {
     private _planificacion: PlanificacionService,
     private _pde: PlanEstudioService,
     private _componente: ComponenteService,
+    private _snack:MatSnackBar
   ) {
-    this._grupos.getGrupos().subscribe(res => this.grupos.push(res));
-    this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
-    this._componente.getComponentes().subscribe(res => this.componentes.push(res));
-    this._carrera.getCarrera().subscribe(res => this.carreras.push(res));
-    this._docente.getDocente().subscribe(res => this.docentes.push(res));
+    this._grupos.getGrupos()
+      .subscribe(
+        res => this.grupos.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
+    this._pde.getPlanEstudio()
+      .subscribe(
+        res => this.pdes.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
+    this._componente.getComponentes()
+      .subscribe(
+        res => this.componentes.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
+    this._carrera.getCarrera()
+      .subscribe(
+        res => this.carreras.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
+    this._docente.getDocente()
+      .subscribe(
+        res => this.docentes.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      );
     this.refDoc = this._docente.getList();
     this.refGr = this._grupos.getList();
   }

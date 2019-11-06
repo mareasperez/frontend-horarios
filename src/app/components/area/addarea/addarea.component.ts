@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { AreaModel } from 'src/app/models/area.model';
 import { AreaService } from 'src/app/services/area.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 
 interface DialogData {
@@ -24,7 +24,8 @@ export class AddareaComponent implements OnInit, OnDestroy {
 
   constructor(private areaService: AreaService,
               public dialogRef: MatDialogRef<AddareaComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private _snack:MatSnackBar
     ) { }
 
   ngOnInit() {
@@ -39,12 +40,21 @@ export class AddareaComponent implements OnInit, OnDestroy {
 
   updateArea(){
     this.area.area_id = this.data.id
-    this.sub = this.areaService.updateArea(this.area, this.area.area_id).subscribe(res => this.dialogRef.close());
+    this.sub = this.areaService.updateArea(this.area, this.area.area_id)
+    .subscribe(
+      res => this.dialogRef.close(),
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    );
   }
 
   saveArea(){
     this.area.area_id = null;
-    this.sub = this.areaService.crearArea(this.area).subscribe(res => this.dialogRef.close());
+    this.sub = this.areaService.crearArea(this.area)
+    .subscribe(
+      res => this.dialogRef.close(),
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+
+    );
 
   }
 }

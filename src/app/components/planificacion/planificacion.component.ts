@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { Observable, Subscription } from 'rxjs';
@@ -16,13 +16,15 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   refPla:Observable<any>;
   subs:Subscription[]=[]
   constructor(private _planificacion:PlanificacionService,
-              private dialog: MatDialog           
+              private dialog: MatDialog,
+              private _snack:MatSnackBar    
     ) { 
   this.subs.push(
-    this._planificacion.getPlanificaciones().subscribe(res=>{
-      this.planificaciones.push(res)
-    })
-    
+    this._planificacion.getPlanificaciones()
+      .subscribe(
+        res=>this.planificaciones.push(res),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      )  
     );
     this.refPla = this._planificacion.getList()
   }
@@ -43,7 +45,11 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   }
 
   delPlan(id){
-    this._planificacion.deletePlanificacion(id).subscribe()
+    this._planificacion.deletePlanificacion(id)
+    .subscribe(
+      res=>{},
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    )
   }
 
   openDialog(tipo, id?): void {

@@ -21,8 +21,8 @@ export class DocenteAreaService extends MainService {
           docenteArea = Object.assign(docenteArea,el);
           this.list.push(docenteArea);
           observer.next(docenteArea);
-
         });
+        observer.complete()
       });
     });
   }

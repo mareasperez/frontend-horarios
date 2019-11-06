@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { Observable, Subscription } from 'rxjs';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
@@ -42,11 +42,23 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
               private _doc_ar:DocenteAreaService,
               public dialogRef: MatDialogRef<AdddocenteComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private _snack:MatSnackBar
    ) {
-     this._area.getAreas().subscribe(res => this.areas.push(res))
-     this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
-     this._doc_ar.getDcArea().subscribe(res => this.doc_areas.push(res))
+     this._area.getAreas().subscribe(
+       res => this.areas.push(res),
+       error=>this._snack.open(error.message,"OK",{duration: 3000}),
+       )
+     this.departamento$.getDepartamento()
+     .subscribe(
+       res => this.departamentos.push(res),
+       error=>this._snack.open(error.message,"OK",{duration: 3000}),
+       );
+     this._doc_ar.getDcArea()
+     .subscribe(
+       res => this.doc_areas.push(res),
+       error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      )
      this.refArea = this._area.getList();
      this.refDepartamento = this.departamento$.getList();
 
@@ -54,7 +66,8 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
    this.subs.push(
-      this.refDepartamento.subscribe(deps => this.departamentos = deps)
+      this.refDepartamento
+      .subscribe( deps => this.departamentos = deps )
     );
     this.subs.push(
       this.refArea.subscribe(areas=> this.areas = areas)
@@ -97,9 +110,10 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     doc = Object.assign(doc, this.form.value);
     this.subs.push(
       this.docenteService.crearDocente(doc)
-        .subscribe(res => {
-          this.post_areas(res.id)
-        })
+        .subscribe(
+          res => this.post_areas(res.id),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
 
   }
@@ -108,9 +122,10 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     doc = Object.assign(doc, this.form.value);
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
-        .subscribe(res =>{
-           this.post_areas(doc.docente_id)
-          })
+        .subscribe(
+          res => this.post_areas(doc.docente_id),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+          )
         );
     
   }
@@ -118,7 +133,10 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   post_areas(docenteID){
     let body = { docenteArea: [{'da_area':this.areasSelecteds}] };
     this._doc_ar.client.put(`${this._doc_ar.getUrl()}docente_id=${docenteID}`, body)
-    .subscribe(res=>this.dialogRef.close())
+    .subscribe(
+      res=>this.dialogRef.close(),
+      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      )
   }
 
   add_area(areas){

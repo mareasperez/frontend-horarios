@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
@@ -33,6 +33,7 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
               private _planificacion:PlanificacionService,
               private _docente:DocenteService,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private _snack:MatSnackBar
     ) { 
       this.subs.push( this._docente.getDocente().subscribe(res=>this.docentes.push(res)));
       this.subs.push( this._planificacion.getPlanificaciones().subscribe(res=>this.planificaciones.push(res)));
@@ -82,11 +83,10 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
     dh.dh_horas_total = +dh.dh_horas_planta + +dh.dh_horas_hor
     this.subs.push(
       this._doc_hr.crearDcHora(dh)
-        .subscribe(res => {
-          console.log(res)
-          this.dialogRef.close()
-          
-        })
+        .subscribe(
+          res => this.dialogRef.close(),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
    
 
@@ -97,12 +97,11 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
     dh.dh_horas_total = +dh.dh_horas_planta + +dh.dh_horas_hor
     this.subs.push(
       this._doc_hr.updateDcHora(dh, dh.dh_id)
-        .subscribe(res =>{
-          console.log(res)
-          this.dialogRef.close()
-           
-          })
-        );
+        .subscribe(
+          res => this.dialogRef.close(),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),           
+        )
+    );
     
   }
 

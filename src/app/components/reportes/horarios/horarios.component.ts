@@ -7,7 +7,6 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
@@ -140,7 +139,7 @@ export class HorariosComponent implements OnInit {
     this.aulas = await this._aula.list.filter(aula => aula.aula_recinto === id);
   }
 
-  async getGrupos(id: number) {
+  async getGrupos(id: string) {
     this.grupos = [];
     console.log(this._grupo.list);
     for (const grupo of this._grupo.list) {

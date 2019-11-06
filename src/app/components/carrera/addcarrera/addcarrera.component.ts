@@ -5,7 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { matErrorsMessage } from 'src/app/utils/errors';
 
 interface DialogData {
@@ -32,7 +32,8 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
               private departamento$: DepartamentoService,
               public dialogRef: MatDialogRef<AddcarreraComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private _snack:MatSnackBar
     ) {
       this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
       this.refDepartamento = this.departamento$.getList();
@@ -40,7 +41,11 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.push(
-      this.refDepartamento.subscribe(deps => this.departamentos = deps)
+      this.refDepartamento
+      .subscribe(
+        deps => this.departamentos = deps,
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
     this.createForm();
   }
@@ -71,7 +76,10 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
     car = Object.assign(car, this.form.value);
     this.subs.push(
       this.carreraService.crearCarrera(car)
-      .subscribe(res => this.dialogRef.close())
+      .subscribe(
+        res => this.dialogRef.close(),
+        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+       )
     );
   }
 
@@ -81,7 +89,10 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
     console.log(car);
     this.subs.push(
       this.carreraService.updateCarrera(car, car.carrera_id)
-        .subscribe(res => this.dialogRef.close())
+        .subscribe(
+          res => this.dialogRef.close(),
+          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        )
     );
   }
 }

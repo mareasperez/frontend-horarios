@@ -22,6 +22,7 @@ export class PensumService extends MainService {
           planDeEstudio = Object.assign(el);
           observer.next(planDeEstudio);
         });
+        observer.complete()
       });
     });
   }
