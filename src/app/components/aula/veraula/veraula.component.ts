@@ -16,7 +16,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   public aulas: AulaModel[] = [];
   recintos: RecintoModel[] = [];
   public activartabla = false;
-  public selectedR;
+  public selectedR:RecintoModel;
   public dataSource;
   public refAula: Observable<any[]>;
   public alerts = true;
@@ -51,24 +51,22 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.refAula.subscribe(data => {
-      console.log(data);
-      this.dataSource = [];
+    this.refAula.subscribe((data:AulaModel[]) => {
+      this.aulas = data.filter(aula=>this.selectedR.recinto_id ===  aula.aula_recinto);
+      this.dataSource = this.aulas;
       this.aulas = data;
-      data.map(aula => {
-        this.dataSource.push(aula);
-      });
+     
     });
   }
   ngOnDestroy() {
     this.AulaService.list = [];
+    this._recinto.list = []
     if (this.sub !== undefined) {
       this.sub.unsubscribe();
     }
   }
 
-  async getAulas(id: number) {
-    console.log(id);
+   getAulas(id: number) {
     this.aulas = [];
     this.aulas = this.AulaService.list.filter(aula => aula.aula_recinto === id);
     this.alerts = false;

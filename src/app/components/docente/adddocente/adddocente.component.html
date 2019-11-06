@@ -1,6 +1,6 @@
 <div class="container-fluid">
    <mat-card>
-        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column font-size-12">
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>
               <input formControlName="docente_nombre" matInput>
@@ -9,7 +9,10 @@
             <span>
               <mat-form-field class="col-6" appearance="outline">
                 <mat-label>Tipo de contrato</mat-label>
-                <input formControlName="docente_tipo_contrato" matInput>
+                <mat-select  formControlName="docente_tipo_contrato">
+                   <mat-option value="H">Horario</mat-option>
+                   <mat-option value="P">Planta</mat-option>
+                </mat-select>
                 <mat-error *ngIf="Form.docente_tipo_contrato.invalid">{{Errors.getError(Form.docente_tipo_contrato)}}</mat-error>
               </mat-form-field>
               <mat-form-field class="col-6" appearance="outline">
@@ -21,24 +24,24 @@
             <mat-form-field  appearance="outline">
               <mat-label>Departamento</mat-label>
                 <mat-select formControlName="docente_departamento" ([value])="selected">
-                  <mat-option value="0">Departamento...</mat-option>
                   <mat-option *ngFor="let dep of departamentos" [value]="dep.departamento_id">
                     {{dep.departamento_nombre}}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="Form.docente_departamento.invalid">{{Errors.getError(Form.docente_departamento)}}</mat-error>
               </mat-form-field>
+              <mat-label>Areas</mat-label>
               <mat-selection-list #horas *ngIf="areas.length > 0" style="height: 200px; overflow: auto" >
-                <mat-label>Areas</mat-label>
                 <mat-list-option *ngFor="let area of areas"  [value]="area.area_id"
                  [selected]="onDocente(area.area_id)" (click)="add_area(horas)"
                 >
                   {{area.area_nombre}}
                 </mat-list-option>
               </mat-selection-list>
-          <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveDocente():updateDocente()">
-            Guardar
+          <button mat-raised-button [disabled]="form.invalid" class="bg-color-green" (click)="data.type === 'c' ? saveDocente():updateDocente()">
+           <mat-icon>save</mat-icon> Guardar
           </button>
+          <button mat-raised-button color="warn" (click)="dialogRef.close()"><mat-icon>cancel</mat-icon>Cancelar</button>
         </form>
     </mat-card>
   </div>

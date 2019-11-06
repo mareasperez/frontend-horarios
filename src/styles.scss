@@ -12,6 +12,14 @@ button:focus{
     color: #d3f5ee;
 }
 
+.color-green{
+    color: #28a745
+}
+
+.bg-color-green{
+    background:#28a745
+}
+
 .bg-color-ligth{
 background-color:  #d3f5ee !important;
 }
@@ -26,6 +34,16 @@ background-color:  #d3f5ee !important;
 
 .font-size-12{
     font-size: 12px !important;
+}
+
+.join{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .table-scroll {
+    overflow: auto;
+    height: 340px;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

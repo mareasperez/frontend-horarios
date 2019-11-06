@@ -54,7 +54,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     this.refDep = this.departamento$.getList();
   }
 
-  async ngOnInit() {
+   ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
     });
