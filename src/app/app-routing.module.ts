@@ -26,6 +26,7 @@ import { CargaDocenciaComponent } from './components/reportes/carga-docencia/car
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
+import { CargasComponent } from './components/reportes/cargas/cargas.component';
 
 
 const routes: Routes = [
@@ -34,7 +35,13 @@ const routes: Routes = [
     path: 'reporte/carga',
     component: CargaComponent,
     canActivate: [AuthGuard]
-  }, {
+  },
+  {
+    path: 'reporte/cargas',
+    component: CargasComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'reporte/cargas/docencia',
     component: CargaDocenciaComponent,
     canActivate: [AuthGuard]
