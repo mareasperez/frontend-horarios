@@ -18,55 +18,55 @@ interface DialogData {
   templateUrl: './add-componente.component.html',
   styleUrls: ['./add-componente.component.scss']
 })
-export class AddComponenteComponent implements OnInit,OnDestroy {
+export class AddComponenteComponent implements OnInit, OnDestroy {
   public add = false;
   public editing = false;
   public form: FormGroup;
   public componentes: ComponenteModel[] = [];
-  public pdes:PlanEstudioModel[]=[]
-  public areas:AreaModel[]=[]
-  public Errors:matErrorsMessage = new matErrorsMessage()
-  private subs:Subscription[]=[]
-  private promesas: Promise<any>[]=[];
-
+  public pdes: PlanEstudioModel[] = [];
+  public areas: AreaModel[] = [];
+  public Errors: matErrorsMessage = new matErrorsMessage();
+  private subs: Subscription[] = [];
+  private promesas: Promise<any>[] = [];
+  // tslint:disable: variable-name
   constructor(
-              private comService: ComponenteService,
-              private fb: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              public dialogRef: MatDialogRef<AddComponenteComponent>,
-              private _pde:PlanEstudioService,
-              private _area:AreaService,
-              private _snack:MatSnackBar
+    private comService: ComponenteService,
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    public dialogRef: MatDialogRef<AddComponenteComponent>,
+    private _pde: PlanEstudioService,
+    private _area: AreaService,
+    private _snack: MatSnackBar
   ) {
-      let p1 = new Promise((resolve,reject)=>{
-        let sub =  this._pde.getPlanEstudio()
+    const p1 = new Promise((resolve, reject) => {
+      const sub = this._pde.getPlanEstudio()
         .subscribe(
           res => this.pdes.push(res),
-          error=>this._snack.open(error,"OK",{duration: 3000}),
-          ()=>resolve()
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
         );
-        this.subs.push(sub)
-      });
-      let p3 = new Promise((resolve,reject)=>{
-        let sub =  this._area.getAreas()
+      this.subs.push(sub);
+    });
+    const p3 = new Promise((resolve, reject) => {
+      const sub = this._area.getAreas()
         .subscribe(
           res => this.areas.push(res),
-          error=>this._snack.open(error,"OK",{duration: 3000}),
-          ()=>resolve()
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
         );
-        this.subs.push(sub)
-      });
-      this.promesas.push(p3,p1)
-    }
-
-  ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
-      this.createForm()
-    })
+      this.subs.push(sub);
+    });
+    this.promesas.push(p3, p1);
   }
 
-  ngOnDestroy(){
-    this.subs.forEach(sub=>sub.unsubscribe())
+  ngOnInit() {
+    Promise.all(this.promesas).then(() => {
+      this.createForm();
+    });
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   createForm(id?: string) {
@@ -90,7 +90,8 @@ export class AddComponenteComponent implements OnInit,OnDestroy {
         componente_chp: new FormControl(this.data.componente.componente_chp, [Validators.required, Validators.min(1)]),
         componente_cht: new FormControl(this.data.componente.componente_cht, [Validators.required, Validators.min(1)]),
         componente_ciclo: new FormControl(this.data.componente.componente_ciclo, [Validators.required, Validators.min(1)]),
-        componente_credito: new FormControl(this.data.componente.componente_credito, [Validators.required, Validators.min(1), Validators.max(4)]),
+        componente_credito: new FormControl(
+          this.data.componente.componente_credito,[Validators.required, Validators.min(1), Validators.max(4)]),
         componente_area: new FormControl(this.data.componente.componente_area, [Validators.required]),
         componente_pde: new FormControl(this.data.componente.componente_pde, [Validators.required])
 
@@ -108,33 +109,33 @@ export class AddComponenteComponent implements OnInit,OnDestroy {
     this.editing = true;
     let comp = new ComponenteModel();
     comp = Object.assign(comp, this.form.value);
-   let sub = this.comService.crearComponente(comp)
-   .subscribe(
-     res => {
-      this.editing = false;
-      this.add = false;
-      this.dialogRef.close()
-     },
-     error=>this._snack.open(error,"OK",{duration: 3000})
+    const sub = this.comService.crearComponente(comp)
+      .subscribe(
+        res => {
+          this.editing = false;
+          this.add = false;
+          this.dialogRef.close();
+        },
+        error => this._snack.open(error, 'OK', { duration: 3000 })
 
-    );
-    this.subs.push(sub)
+      );
+    this.subs.push(sub);
 
   }
 
   editComponente(id: string) {
     this.editing = true;
-    let sub = this.comService.updateComponente(this.form.value, id)
-    .subscribe(
-      res => {
-      this.form.reset();
-      this.editing = false;
-      this.add = false;
-      this.dialogRef.close()
-     },
-     error=>this._snack.open(error,"OK",{duration: 3000})
-    );
-    this.subs.push(sub)
+    const sub = this.comService.updateComponente(this.form.value, id)
+      .subscribe(
+        res => {
+          this.form.reset();
+          this.editing = false;
+          this.add = false;
+          this.dialogRef.close();
+        },
+        error => this._snack.open(error, 'OK', { duration: 3000 })
+      );
+    this.subs.push(sub);
 
   }
 

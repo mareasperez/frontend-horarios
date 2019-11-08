@@ -22,28 +22,31 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
 
   public departamento = new DepartamentoModel();
-  public facultades: FacultadModel [] = [];
+  public facultades: FacultadModel[] = [];
   edit = false;
-  subs: Subscription [] = [];
+  subs: Subscription[] = [];
   public selected = '0';
   public form: FormGroup;
   public refFacultad: Observable<any>;
   public Errors: matErrorsMessage = new matErrorsMessage();
-
-  constructor(private departamentoService: DepartamentoService,
-              private facultad$: FacultadSerivice,
-              public dialogRef: MatDialogRef<AdddepartamentoComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder,
-              private _snack:MatSnackBar
-    ) {
+  // tslint:disable: variable-name
+  constructor(
+    private departamentoService: DepartamentoService,
+    private facultad$: FacultadSerivice,
+    public dialogRef: MatDialogRef<AdddepartamentoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder,
+    private _snack: MatSnackBar
+  ) {
+    const p = new Promise<void>(() => {
       this.facultad$.getFacultad()
-      .subscribe(
-        res => this.facultades.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        .subscribe(
+          res => this.facultades.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         );
-      this.refFacultad = this.facultad$.getList();
-    }
+    });
+    this.refFacultad = this.facultad$.getList();
+  }
 
   ngOnInit() {
     this.subs.push(
@@ -58,20 +61,20 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   get Form() {
     return this.form.controls;
   }
-  createForm( id?: string) {
+  createForm(id?: string) {
     if (this.data.type === 'c') {
-    this.form = this.fb.group({
-      departamento_id: null,
-      departamento_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      departamento_facultad: new FormControl('0', [Validators.required])
+      this.form = this.fb.group({
+        departamento_id: null,
+        departamento_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        departamento_facultad: new FormControl('0', [Validators.required])
 
-     });
+      });
     } else {
       this.form = this.fb.group({
         departamento_id: this.data.dep.departamento_id,
         departamento_nombre: new FormControl(this.data.dep.departamento_nombre, [Validators.required, Validators.maxLength(100)]),
         departamento_facultad: new FormControl(this.data.dep.departamento_facultad, [Validators.required])
-       });
+      });
     }
   }
 
@@ -81,9 +84,9 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
     console.log(dep);
     this.subs.push(
       this.departamentoService.crearDepartamento(dep)
-      .subscribe(
-        res => this.dialogRef.close(),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        .subscribe(
+          res => this.dialogRef.close(),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -96,7 +99,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
       this.departamentoService.updateDepartamento(dep, dep.departamento_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
   }

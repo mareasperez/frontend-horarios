@@ -18,7 +18,7 @@
                 <mat-error *ngIf="Form.carrera_departamento.invalid">{{Errors.getError(Form.carrera_departamento)}}</mat-error>
 
             </mat-form-field>
-            <button mat-raised-button style="background-color: rgb(8, 219, 8)" (click)="data.type === 'c' ? saveCarrera():updateCarrera()">
+            <button mat-raised-button  [disabled]="form.invalid" style="background-color: rgb(8, 219, 8)" (click)="data.type === 'c' ? saveCarrera():updateCarrera()">
                 <mat-icon>save</mat-icon>
           Guardar
         </button>

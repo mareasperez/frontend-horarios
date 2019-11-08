@@ -20,27 +20,32 @@ export class AddrecintoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
 
   public recinto = new RecintoModel();
-  public facultades: FacultadModel [] = [];
+  public facultades: FacultadModel[] = [];
   edit = false;
-  subs: Subscription [] = [];
+  subs: Subscription[] = [];
   public selected = '0';
   public form: FormGroup;
   public refFacultad: Observable<any>;
-  public Errors:matErrorsMessage = new matErrorsMessage()
-  constructor(private recintoService: RecintoService,
-              private facultad$: FacultadSerivice,
-              public dialogRef: MatDialogRef<AddrecintoComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder,
-              private _snack:MatSnackBar
-    ) {
+  public Errors: matErrorsMessage = new matErrorsMessage();
+  // tslint:disable: variable-name
+  constructor(
+    private recintoService: RecintoService,
+    private facultad$: FacultadSerivice,
+    public dialogRef: MatDialogRef<AddrecintoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder,
+    private _snack: MatSnackBar
+  ) {
+    const p1 = new Promise((resolve, reject) => {
       this.facultad$.getFacultad()
-      .subscribe(
-        res => this.facultades.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      );
-      this.refFacultad = this.facultad$.getList();
-    }
+        .subscribe(
+          res => this.facultades.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
+
+    this.refFacultad = this.facultad$.getList();
+  }
 
   ngOnInit() {
     this.subs.push(
@@ -50,10 +55,10 @@ export class AddrecintoComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.facultad$.list = []
+    this.facultad$.list = [];
     this.subs.map(sub => sub.unsubscribe());
   }
-  createForm( id?: string ) {
+  createForm(id?: string) {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         recinto_id: null,
@@ -76,9 +81,9 @@ export class AddrecintoComponent implements OnInit {
     rec = Object.assign(rec, this.form.value);
     this.subs.push(
       this.recintoService.crearRecinto(rec)
-      .subscribe(
-        res => this.dialogRef.close(),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        .subscribe(
+          res => this.dialogRef.close(),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -87,13 +92,13 @@ export class AddrecintoComponent implements OnInit {
     rec = Object.assign(rec, this.form.value);
     this.subs.push(
       this.recintoService.updateRecinto(rec, rec.recinto_id)
-      .subscribe(
-        res => this.dialogRef.close(),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      )
+        .subscribe(
+          res => this.dialogRef.close(),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        )
     );
   }
-  get Form(){
-    return this.form.controls
+  get Form() {
+    return this.form.controls;
   }
 }

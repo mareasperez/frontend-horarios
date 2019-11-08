@@ -1,21 +1,18 @@
-<mat-card>
+<mat-card style="height: 80vh; overflow: auto;">
     <br>
     <div class="row">
         <h1 style="margin-left: 5%">Recintos</h1>
         <span style="flex: 1 1 auto"></span>
         <div style="margin-right: 5%">
-            <button mat-raised-button (click)="openDialog('c')" style="width: 100px">
-        <mat-icon>add</mat-icon>
+            <button mat-raised-button color="primary" (click)="openDialog('c')" style="width: 100px">
+        <mat-icon>add</mat-icon>Agregar
       </button>
         </div>
     </div>
     <div *ngIf="!visible" class="google-loader">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
     </div>
-</mat-card>
+<div class="table-scroll">
+    
 <table mat-table [dataSource]="recintos" class="mat-elevation-z8" *ngIf="visible">
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
@@ -54,6 +51,8 @@
         </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+</div>
+</mat-card>

@@ -22,44 +22,53 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
   public refPde: Observable<any>;
   displayedColumns: string[] = ['id', 'nombre', 'anyo', 'carrera', 'opciones'];
   socket: WebSocket;
-  constructor(
+  promesas:Promise<any>[]=[];
+  public show = false;
     // tslint:disable: no-shadowed-variable
     // tslint:disable: variable-name
+  constructor(
     private _pde: PlanEstudioService,
     private _Carrera: CarreraService,
     private dialog: MatDialog,
-    private _snack:MatSnackBar
-
+    private _snack: MatSnackBar
   ) {
-    let p = new Promise<void>(() => {
-      this._Carrera.getCarrera().subscribe(
+    let p = new Promise<void>((resolve) => {
+      let sub = this._Carrera.getCarrera().subscribe(
         res => this.carreras.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        ()=>resolve()
       );
+      this.subs.push(sub)
     });
-
-    this.subs.push(this._pde.getPlanEstudio()
+    let p2 = new Promise<void>((resolve) => {
+      let sub =this._pde.getPlanEstudio()
       .subscribe(
         plan => {
-        this.pde.push(plan);
-        this.dataSource = this.pde;
+          this.pde.push(plan);
+          this.dataSource = this.pde;
         },
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        ()=>resolve()
       )
-    );
+      this.subs.push(sub)
+    });
     this.refPde = this._pde.getList();
+    this.promesas.push(p,p2)
   }
 
   ngOnInit() {
-    this.subs.push(
-      this.refPde.subscribe(data => {
+    Promise.all(this.promesas).then(()=>{
+      this.show = true;
+      this.subs.push(
+        this.refPde.subscribe(data => {
         this.dataSource = [];
         this.pde = data;
         data.map(p => {
           this.dataSource.push(p);
         });
       })
-    );
+      );
+    })
   }
 
   ngOnDestroy() {
@@ -72,19 +81,19 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
       this._pde.deletePde(id)
         .subscribe(
           res => this.dataSource = this.dataSource.filter(p => p.pde_id !== id),
-          error=>this._snack.open(error.message,"OK",{duration: 3000}),
-          )
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        )
     );
   }
 
   openDialog(tipo, id?): void {
     if (tipo === 'c') {
-     this.dialog.open(AddplanestudioComponent, {
+      this.dialog.open(AddplanestudioComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
-      let pde = this.pde.find(p => p.pde_id === id);
+      const pde = this.pde.find(p => p.pde_id === id);
       this.dialog.open(AddplanestudioComponent, {
         width: '450px',
         data: { type: tipo, plan: pde }

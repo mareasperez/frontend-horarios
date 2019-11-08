@@ -18,11 +18,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refArea: Observable<any[]>;
   public refPde: Observable<any[]>;
-  @Output() public gpAdd = new EventEmitter<{}>()
+  @Output() public gpAdd = new EventEmitter<{}>();
   @Input() public componentes: ComponenteModel[] = [];
   @Input() public areas: AreaModel[] = [];
   @Input() public pdes: PlanEstudioModel[] = [];
-  public componente:ComponenteModel = null;
+  public componente: ComponenteModel = null;
   public form: FormGroup;
   public selected = '0';
   public selected2 = '0';
@@ -35,11 +35,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   constructor(
     private comService: ComponenteService,
     private fb: FormBuilder,
-    private _snack:MatSnackBar
+    private _snack: MatSnackBar
     ) {  }
 
   ngOnInit() {
-    
+
   }
 
   ngOnDestroy() {
@@ -100,19 +100,19 @@ export class ComponentesComponent implements OnInit, OnDestroy {
       this.editing = false;
       this.add = false;
       },
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      error => this._snack.open(error.message, 'OK', {duration: 3000}),
     );
   }
 
   delComponente(e) {
     this.subs.push(this.comService.deleteComponente(e).subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000})
+      res => {},
+      error => this._snack.open(error.message, 'OK', {duration: 3000})
     ));
   }
 
   editComponente(id: string) {
-    console.log("edit")
+    console.log('edit');
 
     this.editing = true;
     this.comService.updateComponente(this.form.value, id)
@@ -122,7 +122,7 @@ export class ComponentesComponent implements OnInit, OnDestroy {
       this.editing = false;
       this.add = false;
      },
-     error=>this._snack.open(error.message,"OK",{duration: 3000})
+     error => this._snack.open(error.message, 'OK', {duration: 3000})
      );
   }
 
@@ -130,20 +130,20 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
-  addG(comp:ComponenteModel){
-    this.gpadd = false
+  addG(comp: ComponenteModel) {
+    this.gpadd = false;
     this.componente = comp;
   }
 
-  addGT(cp:ComponenteModel){
-    this.gpAdd.emit({id:cp.componente_id, tipo:"GT"})
-    this.gpadd = true
+  addGT(cp: ComponenteModel) {
+    this.gpAdd.emit({id: cp.componente_id, tipo: 'GT'});
+    this.gpadd = true;
     this.componente = null;
 
   }
-  addGP(cp:ComponenteModel){
-    this.gpAdd.emit({id:cp.componente_id, tipo:"GP"})
-    this.gpadd = true
+  addGP(cp: ComponenteModel) {
+    this.gpAdd.emit({id: cp.componente_id, tipo: 'GP'});
+    this.gpadd = true;
     this.componente = null;
 
 

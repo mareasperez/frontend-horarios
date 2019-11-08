@@ -21,27 +21,29 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
   sub: Subscription;
+  // tslint:disable: variable-name
   constructor(
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
     private dialog: MatDialog,
+
     private _snack: MatSnackBar
   ) {
-    let p1 = new Promise((resolve) => {
-      let sub = this.carrera$.getCarrera()
+    const p1 = new Promise((resolve) => {
+      const sub = this.carrera$.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
-          error =>this._snack.open(error,"OK",{duration: 3000}),
+          error => this._snack.open(error, 'OK', {duration: 3000}),
           () => resolve()
         );
       this.subs.push(sub);
 
     });
-    let p2 = new Promise((resolve) => {
-      let sub = this.departamento$.getDepartamento()
+    const p2 = new Promise((resolve) => {
+      const sub = this.departamento$.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
-          error =>this._snack.open(error,"OK",{duration: 3000}),
+          error => this._snack.open(error, 'OK', {duration: 3000}),
           () => resolve()
         );
       this.subs.push(sub);
@@ -52,7 +54,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     this.refDep = this.departamento$.getList();
   }
 
-  async ngOnInit() {
+   ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
     });
@@ -71,8 +73,8 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   delCarrera(id: any) {
     this.sub = this.carrera$.deleteCarrera(id)
     .subscribe(
-      res=>{},
-      error =>this._snack.open(error.message,"OK",{duration: 5000}),
+      res => {},
+      error => this._snack.open(error.message, 'OK', {duration: 5000}),
     );
   }
 
@@ -83,8 +85,8 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         data: { type: tipo }
       });
     } else {
-      let carrera = this.carreras.find(d => d.carrera_id === id);
-       this.dialog.open(AddcarreraComponent, {
+      const carrera = this.carreras.find(d => d.carrera_id === id);
+      this.dialog.open(AddcarreraComponent, {
         width: '450px',
         data: { type: tipo, car: carrera }
       });

@@ -16,7 +16,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   public aulas: AulaModel[] = [];
   recintos: RecintoModel[] = [];
   public activartabla = false;
-  public selectedR;
+  public selectedR:RecintoModel;
   public dataSource;
   public refAula: Observable<any[]>;
   public alerts = true;
@@ -31,41 +31,44 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     private _recinto: RecintoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
-    ) {
-    this.AulaService.getAula()
-     .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+  ) {
+    const p = new Promise<void>(() => {
+      this.AulaService.getAula()
+        .subscribe(
+          res => { },
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
+    const p1 = new Promise<void>(() => {
+      this._recinto.getRecinto()
+        .subscribe(
+          res => this.recintos.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
     this.refAula = this.AulaService.getList();
-    this._recinto.getRecinto()
-      .subscribe(
-        res => this.recintos.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      );
+
   }
 
   ngOnInit() {
-    this.refAula.subscribe(data => {
-      console.log(data);
-      this.dataSource = [];
+    this.refAula.subscribe((data:AulaModel[]) => {
+      this.aulas = data.filter(aula=>this.selectedR.recinto_id ===  aula.aula_recinto);
+      this.dataSource = this.aulas;
       this.aulas = data;
-      data.map(aula => {
-        this.dataSource.push(aula);
-      });
+     
     });
   }
   ngOnDestroy() {
     this.AulaService.list = [];
+    this._recinto.list = []
     if (this.sub !== undefined) {
       this.sub.unsubscribe();
     }
   }
 
-  async getAulas(id: number) {
-    console.log(id);
+   getAulas(id: number) {
     this.aulas = [];
-    this.aulas = this.AulaService.list.filter(aula => aula.aula_recinto === id );
+    this.aulas = this.AulaService.list.filter(aula => aula.aula_recinto === id);
     this.alerts = false;
     this.dataSource = this.aulas;
     this.activartabla = true;
@@ -73,10 +76,10 @@ export class VeraulaComponent implements OnInit, OnDestroy {
 
   deleteAula(id: string) {
     this.sub = this.AulaService.deleteAula(id)
-    .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 
   openDialog(tipo, id?, aula?): void {

@@ -1,8 +1,11 @@
 <div class="container-fluid mt-3">
-    <mat-card class="mat-elevation-z8">    
+    <mat-card class="mat-elevation-z8"  style="height: 80vh; overflow: auto;">    
       <div class="row">
+        <div class="col-12">
+          <h5>Facultades</h5>
+        </div>
         <div  class="col-8">
-          <mat-list>
+          <mat-list  style="height: 60vh; overflow: auto;" >
             <mat-list-item *ngFor="let facultad of facultades">
               {{facultad.facultad_nombre}}
               <span style="flex: 1 1 auto"></span>
@@ -14,7 +17,7 @@
         </div>
         <div class="col-4">
           <div class="container">
-            <button mat-raised-button (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
+            <button mat-raised-button color="primary" (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
           </div>
           <span *ngIf="!hide">
             <app-addfacult [hidden]="hide" [(facultad)]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>

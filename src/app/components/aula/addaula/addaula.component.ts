@@ -33,7 +33,9 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder
   ) {
-    this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
+    const p = new Promise<void>(() => {
+      this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
+    });
     this.ref = this.recintoS.getList();
   }
 
@@ -54,9 +56,9 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         aula_id: null,
-        aula_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-        aula_capacidad: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-        aula_tipo: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+        aula_nombre: new FormControl('', [Validators.required,Validators.minLength(2), Validators.maxLength(100)]),
+        aula_capacidad: new FormControl('40', [Validators.required, Validators.maxLength(100)]),
+        aula_tipo: new FormControl('false', [Validators.required]),
         aula_recinto: new FormControl(this.data.idr, [Validators.required])
 
       });
@@ -64,8 +66,8 @@ export class AddaulaComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         aula_id: this.data.aul.aula_id,
         aula_nombre: new FormControl(this.data.aul.aula_nombre, [Validators.required, Validators.maxLength(100)]),
-        aula_capacidad: new FormControl(this.data.aul.aula_capacidad, [Validators.required, Validators.maxLength(100)]),
-        aula_tipo: new FormControl(this.data.aul.aula_tipo, [Validators.required, Validators.maxLength(100)]),
+        aula_capacidad: new FormControl(this.data.aul.aula_capacidad, [Validators.required,Validators.minLength(2), Validators.maxLength(100)]),
+        aula_tipo: new FormControl(this.data.aul.aula_tipo, [Validators.required]),
         aula_recinto: new FormControl(this.data.aul.aula_recinto, [Validators.required])
       });
     }

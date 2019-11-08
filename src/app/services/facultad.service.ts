@@ -9,7 +9,7 @@ import { wsModel } from 'src/app/models/ws.model';
   providedIn: 'root'
 })
 export class FacultadSerivice extends MainService {
-  public resource = "facultad"
+  public resource = 'facultad';
   constructor(facultadHttp: HttpClient) {
     super(facultadHttp);
   }
@@ -18,22 +18,22 @@ export class FacultadSerivice extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.facultad.forEach(el => {
-          //console.log(el)
+          // console.log(el)
           let facultad = new FacultadModel();
-          facultad = Object.assign(facultad,el); //Tipar Objeto
+          facultad = Object.assign(facultad, el); // Tipar Objeto
           this.list.push(facultad);
           observer.next(facultad);
         });
-        observer.complete()
+        observer.complete();
       });
     });
   }
-  getFacultadByID(id: number|string) {
+  getFacultadByID(id: number | string) {
     return this.getByID(id);
   }
 
   crearFacultad(facultad: FacultadModel): Observable<any> {
-    let body = { facultad: facultad };
+    const body = { facultad };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -42,39 +42,39 @@ export class FacultadSerivice extends MainService {
     });
   }
 
-  updateFacultad(facultad: FacultadModel, id: string|number) {
+  updateFacultad(facultad: FacultadModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { facultad: facultad };
+    const body = { facultad };
     return this.update(body, id);
- 
+
   }
 
-  deleteFacultad(idFacultad: number|string)  {
+  deleteFacultad(idFacultad: number | string) {
 
-    return this.delete(idFacultad)
+    return this.delete(idFacultad);
   }
 
   updateList(data: wsModel) {
-   // console.log(data)
-   let facultad = new FacultadModel();
-   facultad = Object.assign(facultad,data.data);
+    // console.log(data)
+    let facultad = new FacultadModel();
+    facultad = Object.assign(facultad, data.data);
     switch (data.event) {
       case 'c':
-       // console.log("Crear")
-        console.log(facultad)
+        // console.log("Crear")
+        console.log(facultad);
         this.list.push(facultad);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
-      //  console.log("update")
+        //  console.log("update")
         const index = this.list.map(el => el.facultad_id).indexOf(facultad.facultad_id);
         this.list.splice(index, 1, facultad);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
-       // console.log("delete")
-        this.list = this.list.filter(el=>el.facultad_id !== facultad.facultad_id);
-        this.list$.next(this.list)
+        // console.log("delete")
+        this.list = this.list.filter(el => el.facultad_id !== facultad.facultad_id);
+        this.list$.next(this.list);
         break;
 
     }

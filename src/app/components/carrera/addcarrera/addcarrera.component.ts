@@ -20,31 +20,35 @@ interface DialogData {
 export class AddcarreraComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
   public carrera = new CarreraModel();
-  public departamentos: DepartamentoModel [] = [];
+  public departamentos: DepartamentoModel[] = [];
   edit = false;
-  subs: Subscription [] = [];
+  subs: Subscription[] = [];
   public selected = '0';
   public form: FormGroup;
   public refDepartamento: Observable<any>;
-  public Errors:matErrorsMessage = new matErrorsMessage()
-
-  constructor(private carreraService: CarreraService,
-              private departamento$: DepartamentoService,
-              public dialogRef: MatDialogRef<AddcarreraComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb: FormBuilder,
-              private _snack:MatSnackBar
-    ) {
+  public Errors: matErrorsMessage = new matErrorsMessage();
+  // tslint:disable: variable-name
+  constructor(
+    private carreraService: CarreraService,
+    private departamento$: DepartamentoService,
+    public dialogRef: MatDialogRef<AddcarreraComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder,
+    private _snack: MatSnackBar
+  ) {
+    const p = new Promise<void>(() => {
       this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
-      this.refDepartamento = this.departamento$.getList();
-    }
+    });
+
+    this.refDepartamento = this.departamento$.getList();
+  }
 
   ngOnInit() {
     this.subs.push(
       this.refDepartamento
-      .subscribe(
-        deps => this.departamentos = deps,
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        .subscribe(
+          deps => this.departamentos = deps,
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
     this.createForm();
@@ -53,8 +57,8 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.map(sub => sub.unsubscribe());
   }
-  get Form(){
-    return this.form.controls
+  get Form() {
+    return this.form.controls;
   }
   createForm(id?: string) {
     if (this.data.type === 'c') {
@@ -76,10 +80,10 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
     car = Object.assign(car, this.form.value);
     this.subs.push(
       this.carreraService.crearCarrera(car)
-      .subscribe(
-        res => this.dialogRef.close(),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-       )
+        .subscribe(
+          res => this.dialogRef.close(),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        )
     );
   }
 
@@ -91,7 +95,7 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
       this.carreraService.updateCarrera(car, car.carrera_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
   }

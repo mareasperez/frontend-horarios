@@ -71,6 +71,8 @@ import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.compon
 import { ComponenteNombrePipe } from './pipes/componente-nombre.pipe';
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 import { AddComponenteComponent } from './components/componentes/add-componente/add-componente.component';
+import { AreaNamePipe } from './pipes/area-name.pipe';
+import { AulaTipoPipe } from './pipes/aula-tipo.pipe';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,8 @@ import { AddComponenteComponent } from './components/componentes/add-componente/
     ComponenteNombrePipe,
     ComponentesListComponent,
     AddComponenteComponent,
+    AreaNamePipe,
+    AulaTipoPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

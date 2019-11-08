@@ -1,22 +1,11 @@
 <div class="container-fluid">
     <mat-card>
-        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column font-size-12">
             <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input formControlName="aula_nombre" matInput>
                 <mat-error *ngIf="Form.aula_nombre.invalid">{{Errors.getError(Form.aula_nombre)}}</mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Capacidad</mat-label>
-                <input formControlName="aula_capacidad" matInput>
-                <mat-error *ngIf="Form.aula_capacidad.invalid">{{Errors.getError(Form.aula_capacidad)}}</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Tipo</mat-label>
-                <input formControlName="aula_tipo" matInput>
-                <mat-error *ngIf="Form.aula_tipo.invalid">{{Errors.getError(Form.aula_tipo)}}</mat-error>
-            </mat-form-field>
-
             <mat-form-field appearance="outline">
                 <mat-label>Recinto</mat-label>
                 <mat-select formControlName="aula_recinto" [(value)]="selected">
@@ -24,10 +13,28 @@
                     <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
                 </mat-select>
             </mat-form-field>
+            <div class="join">
 
-            <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveAula() : updateAula()">
-                          Guardar
-                        </button>
+                <mat-form-field class="w-50" appearance="outline">
+                    <mat-label>Capacidad</mat-label>
+                    <input formControlName="aula_capacidad" matInput>
+                    <mat-error *ngIf="Form.aula_capacidad.invalid">{{Errors.getError(Form.aula_capacidad)}}</mat-error>
+                </mat-form-field>
+                <span class="w-50 ml-1">
+                    <mat-label class="d-block mx-1">Tipo</mat-label>
+                    <mat-radio-group  formControlName="aula_tipo" appearance="outline">                    
+                        <mat-radio-button  value="true">Laboratorio</mat-radio-button>
+                        <mat-radio-button class="ml-1"  value="false">Aula</mat-radio-button>                        
+                        <mat-error *ngIf="Form.aula_tipo.invalid">{{Errors.getError(Form.aula_tipo)}}</mat-error>
+                    </mat-radio-group>
+                </span>
+            </div>
+
+            <button mat-raised-button class="bg-color-green mb-1" [disabled]="form.invalid"
+             (click)="data.type === 'c' ? saveAula() : updateAula()">
+             Guardar
+            </button>
+            <button mat-raised-button color="warn"><mat-icon>cancel</mat-icon> Cancelar</button>
         </form>
     </mat-card>
 </div>

@@ -26,13 +26,13 @@ export class VerdocenteComponent implements OnInit {
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
     private dialog: MatDialog,
-    private _snack:MatSnackBar
+    private _snack: MatSnackBar
   ) {
-    let p = new Promise<void>(() => {
+    const p = new Promise<void>(() => {
       this._Departamento.getDepartamento()
       .subscribe(
         res => this.departamentos.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'OK', {duration: 3000}),
       );
     });
     this.DocenteService.getDocente()
@@ -41,7 +41,7 @@ export class VerdocenteComponent implements OnInit {
       this.docentes.push(res);
       this.dataSource = this.docentes;
       },
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      error => this._snack.open(error.message, 'OK', {duration: 3000}),
     );
     this.refDocentes = this.DocenteService.getList();
   }
@@ -64,7 +64,7 @@ export class VerdocenteComponent implements OnInit {
     this.DocenteService.deleteDocente(id)
     .subscribe(
       res => {},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      error => this._snack.open(error.message, 'OK', {duration: 3000}),
     );
   }
 
@@ -75,7 +75,7 @@ export class VerdocenteComponent implements OnInit {
         data: { type: tipo, doc: null }
       });
     } else {
-      let docente = this.docentes.find(d => d.docente_id === id);
+      const docente = this.docentes.find(d => d.docente_id === id);
       this.dialog.open(AdddocenteComponent, {
         width: '450px',
         data: { type: tipo, doc: docente }
