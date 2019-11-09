@@ -8,12 +8,19 @@ button:focus{
     outline: none;
 }
 
+.color-blue{
+    color:rgb(4, 0, 255)
+}
 .color-light{
     color: #d3f5ee;
 }
 
 .color-green{
     color: #28a745
+}
+
+.bg-color-blue{
+    background-color: rgb(4, 0, 255);
 }
 
 .bg-color-green{

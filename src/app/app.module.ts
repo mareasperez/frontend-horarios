@@ -73,6 +73,7 @@ import { ComponentesListComponent } from './components/componentes/componentes-l
 import { AddComponenteComponent } from './components/componentes/add-componente/add-componente.component';
 import { AreaNamePipe } from './pipes/area-name.pipe';
 import { AulaTipoPipe } from './pipes/aula-tipo.pipe';
+import { AddGrupoComponent } from './components/grupo/add-grupo/add-grupo.component';
 
 @NgModule({
   declarations: [
@@ -120,11 +121,13 @@ import { AulaTipoPipe } from './pipes/aula-tipo.pipe';
     AddComponenteComponent,
     AreaNamePipe,
     AulaTipoPipe,
+    AddGrupoComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
     AddcarreraComponent,
     AddComponenteComponent,
+    AddGrupoComponent
   ],
   imports: [
     BrowserModule,

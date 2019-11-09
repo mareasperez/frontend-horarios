@@ -1,110 +1,40 @@
-
   <mat-card>
     <div class="row">
-      <div class="col-12 float-right">
-        <button mat-raised-button color="primary" (click)="createForm(0)">
-          <mat-icon>add</mat-icon>Agregar
-        </button>
-      </div>
+      <div class="horas col-12">
+          <button mat-raised-button [disabled]= "componente.ht === '0' ?  true : false" (click)="addGroup(componente.id, 'GT')" class="w-25" style="background-color:  rgb(231, 115, 7);">
+              GT
+          </button>
+          <button mat-raised-button [disabled]= "componente.hp === '0' ?  true : false" (click)="addGroup(componente.id, 'GP')" class="w-25 ml-1 mr-1" color="accent">
+            GP
+          </button>
+        </div>
     </div>
     <div class="row groups">
-      <div class="col-lg-6 col-md-8 list-groups ">
+      <div class="col-12 list-groups ">
         <mat-list>
           <mat-list-item  *ngFor="let grupo of grupos; let i = index" class="border-radius-50 font-size-15 h-auto" [class.bg-color-ligth]="i % 2 === 1">
             {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
             <span style="flex: 1 1 auto"></span>
-              <button mat-icon-button  [value]="grupo.grupo_id"
+            <mat-form-field class="font-size-12 ml-1" appearance="outline">
+                <mat-label>Docente</mat-label>    
+                <mat-select [value]="grupo.grupo_docente" (selectionChange)="setDocente($event.value, grupo.grupo_id)">
+                  <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-icon-button >
+                <mat-icon class="color-blue">save</mat-icon>
+              </button>
+              <button mat-icon-button  color="warn" [value]="grupo.grupo_id"
               (click)="delGrupo(grupo.grupo_id)">
-                  <mat-icon  style="color:red" >delete</mat-icon>  
+                  <mat-icon >delete</mat-icon>  
               </button>
               <button mat-icon-button [value]="grupo.grupo_id"
-              (click)="createForm(1, grupo.grupo_id)">
-                  <mat-icon style="color:green">edit</mat-icon>
+              (click)="openDialog('u', grupo.grupo_id)">
+                  <mat-icon class="color-green">edit</mat-icon>
               </button>
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="col-lg-6 col-md-4 ">
-        <span *ngIf="add">
-          <form [formGroup]="form" class="d-flex font-size-12 flex-column">
-             <div class="join mb-2">
-            <button mat-raised-button  class="w-50 float-rigth" color="primary"
-              (click)="form.value.grupo_id === null ? saveGrupo(0):saveGrupo(1)"
-              [disabled]="form.invalid || editing">
-              <mat-icon>save</mat-icon>Guardar
-            </button>
-            <button mat-raised-button class="w-50 float-rigth ml-1" color="warn"
-            (click)="add = false">
-            <mat-icon>cancel</mat-icon>Cancelar
-        </button>
-        </div>
-            <div class="join">
-              <mat-form-field class="w-50" appearance="outline">
-                <mat-label>numero</mat-label>
-                <input matInput formControlName="grupo_numero">
-                <mat-error *ngIf="Form.grupo_numero.invalid">{{Errors.getError(Form.grupo_numero)}}</mat-error>
-              </mat-form-field>
-              <mat-form-field class="w-50 ml-1" appearance="outline">
-                <mat-label>Capacidad</mat-label>
-                <input matInput formControlName="grupo_max_capacidad">
-                <mat-error *ngIf="Form.grupo_max_capacidad.invalid">{{Errors.getError(Form.grupo_max_capacidad)}}</mat-error>
-              </mat-form-field>
-            </div>
-            <div class="join">
-              <mat-form-field class="w-50" appearance="outline">
-                <mat-label>Tipo</mat-label>
-                <mat-select formControlName="grupo_tipo">
-                  <mat-option value="GT">Teorico</mat-option>
-                  <mat-option selected value="GP">Practico</mat-option>
-                </mat-select>
-                <mat-error *ngIf="Form.grupo_tipo.invalid">{{Errors.getError(Form.grupo_tipo)}}</mat-error>
-              </mat-form-field>
-              <mat-form-field class="w-50 ml-1" appearance="outline">
-                <mat-label>Modo</mat-label>
-                <mat-select formControlName="grupo_modo">
-                  <mat-option value="S">Servicio</mat-option>
-                  <mat-option value="F">Facultad</mat-option>
-                </mat-select>
-                <mat-error *ngIf="Form.grupo_modo.invalid">{{Errors.getError(Form.grupo_modo)}}</mat-error>
-              </mat-form-field>
-            </div>
-            <div class="join">          
-                <mat-checkbox   formControlName="grupo_planta">de planta</mat-checkbox>
-              <mat-form-field class="w-50 ml-1" appearance="outline">
-                <mat-label>Horas </mat-label>
-                <input matInput formControlName="grupo_horas_clase">
-                <mat-error *ngIf="Form.grupo_horas_clase.invalid">{{Errors.getError(Form.grupo_horas_clase)}}</mat-error>
-              </mat-form-field>
-            </div>
-            <mat-form-field appearance="outline">
-              <mat-label>Componente</mat-label>
-              <mat-select [value]="selectedComp" formControlName="grupo_componente">
-                <mat-option *ngFor="let componente of componentes" [value]="componente.componente_id">
-                  {{componente.componente_nombre}}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="Form.grupo_componente.invalid">{{Errors.getError(Form.grupo_componente)}}</mat-error>
-
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Docente</mat-label>
-              <mat-select [(value)]="selected" formControlName="grupo_docente">
-                <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="Form.grupo_docente.invalid">{{Errors.getError(Form.grupo_docente)}}</mat-error>
-
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Planificacion</mat-label>
-              <mat-select [(value)]="selected2" formControlName="grupo_planificacion">
-                <mat-option *ngFor="let planificacion of planificaciones" [value]="planificacion.planificacion_id">
-                  {{planificacion.planificacion_id}}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="Form.grupo_planificacion.invalid">{{Errors.getError(Form.grupo_planificacion)}}</mat-error>
-            </mat-form-field>
-          </form>
-        </span>
       </div>
-    </div>
+
   </mat-card>

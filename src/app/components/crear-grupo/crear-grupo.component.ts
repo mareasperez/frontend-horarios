@@ -23,141 +23,147 @@ import { MatSnackBar } from '@angular/material';
 })
 export class CrearGrupoComponent implements OnInit, OnDestroy {
   /*Variables de payloas */
-public componentes:ComponenteModel[]=[]
-public compsByPde:ComponenteModel[]=[]
-public compsByCiclo:ComponenteModel[]=[]
-public pdes:PlanEstudioModel[]=[]
-public carreras:CarreraModel[]=[]
+public componentes: ComponenteModel[]=[]
+public compsByPde: ComponenteModel[]=[]
+public compsByCiclo: ComponenteModel[]=[]
+public pdes: PlanEstudioModel[]=[];
+public pdeByCarrera: PlanEstudioModel[]=[]
+public carreras: CarreraModel[]=[]
 public grupos: GrupoModel[] = [];
 public gruposByPlan: GrupoModel[] = [];
 public gruposByComp: GrupoModel[] = [];
 public gruposFiltrados: GrupoModel[]=[];
-public docentes:DocenteModel[]=[];
-public areas:AreaModel[]=[];
+public docentes: DocenteModel[]=[];
+public areas: AreaModel[]=[];
 public planificaciones: PlanificacionModel[]=[];
+public componente = {id: '0', ht: '0', hp: '0'};
 /*Actualizacion por ws */
-public refComp:Observable<any>
-public refGP:Observable<any>
-public refPla:Observable<any>
-public refPde:Observable<any>
-public refCarrera:Observable<any>
-public refArea:Observable<any>
-public refDocente:Observable<any>
+public refComp: Observable<any>;
+public refGP: Observable<any>;
+public refPla: Observable<any>;
+public refPde: Observable<any>;
+public refCarrera: Observable<any>;
+public refArea: Observable<any>;
+public refDocente: Observable<any>;
 /*Flags y subscripciones */
-private subs:Subscription[]=[]
-private planID = "0"
-private promesas: Promise<any>[]=[];
+private subs: Subscription[] = [];
+public planID = '0';
+private promesas: Promise<any>[] = [];
 public show = false;
-public pdeSelected = "0"
-public planSelected = "0"
-public cicloSelected = "0"
+public pdeSelected = '0';
+public planSelected = '0';
+public cicloSelected = '0';
+public carreraSelected = '0';
 
-
-  constructor(private _componente:ComponenteService,
-              private _grupo:GrupoService,
-              private _planificacion:PlanificacionService,
-              private _pde:PlanEstudioService,
-              private _carrera:CarreraService,
-              private _area: AreaService,
-              private _docente:DocenteService,
-              private _snack:MatSnackBar
+  constructor(private _componente: ComponenteService,
+              private _grupo: GrupoService,
+              private _planificacion: PlanificacionService,
+              private _pde: PlanEstudioService,
+              private _carrera: CarreraService,
+              private _area:  AreaService,
+              private _docente: DocenteService,
+              private _snack: MatSnackBar
 
     ) {
     this.servicios()
-    this.refComp = this._componente.getList()
-    this.refGP = this._grupo.getList()
-    this.refPde = this._pde.getList()
-    this.refCarrera = this._carrera.getList()
-    this.refArea = this._area.getList()
-    this.refDocente = this._docente.getList()
+    this.refComp = this._componente.getList();
+    this.refGP = this._grupo.getList();
+    this.refPde = this._pde.getList();
+    this.refCarrera = this._carrera.getList();
+    this.refArea = this._area.getList();
+    this.refDocente = this._docente.getList();
 
 }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
-      this.show = true
+    Promise.all(this.promesas).then(() => {
+      this.show = true;
       this.subs.push(this.refComp
         .subscribe(
-          data=>{
+          data => {
           this.componentes = data;
-          this.componentesByPde(this.pdeSelected)
+          this.componentesByPde(this.pdeSelected);
         },
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'ok', {duration: 3000}),
        )
-      )
+      );
       this.subs.push(this.refGP
         .subscribe(
-          data=>{
+          data => {
          this.grupos = data;
          this.componentesByPde(this.pdeSelected)
         },
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
+        error => this._snack.open(error.message, 'ok', {duration: 3000}),
         )
       );
        this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
-       this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
        this.subs.push(this.refArea.subscribe(data=>this.areas = data))
+       this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
        this.subs.push(this.refDocente.subscribe(data=>this.docentes = data))
+       this.subs.push(this.refComp.subscribe(data=>{this.componentes = data;
+        this.componentesByCiclo(Number(this.cicloSelected));
+         }));
+       this.subs.push( this.refGP.subscribe(data =>
+         {this.grupos = data;
+          this.pdesByCarrera(this.carreraSelected);
+        })
+        );
 
-    })
+    });
   }
 
-  ngOnDestroy(){
-    this._grupo.list = []
-    this._componente.list = []
-    this._carrera.list = []
-    this._area.list = []
-    this._pde.list = []
-    this._planificacion.list = []
-    this._docente.list = []
-    this.subs.forEach(sub=>sub.unsubscribe())
+  ngOnDestroy() {
+    this._grupo.list = [];
+    this._componente.list = [];
+    this._carrera.list = [];
+    this._area.list = [];
+    this._pde.list = [];
+    this._planificacion.list = [];
+    this._docente.list = [];
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  addGroup(e){
-    let grupo = new GrupoModel()
-    grupo.grupo_componente = e.id;
-    grupo.grupo_horas_clase = 4;
-    grupo.grupo_max_capacidad = "40";
-    grupo.grupo_modo = "servicio";
-    grupo.grupo_planta = false;
-    grupo.grupo_docente = null;
-    grupo.grupo_id = null;
-    grupo.grupo_tipo = e.tipo
-    grupo.grupo_planificacion = this.planID
-    this._grupo.crearGrupo(grupo).subscribe(res=>{
-      console.log(res)
-    })
-    console.log(e)
+
+
+  pdesByCarrera(id: string) {
+    this.pdeByCarrera = this.pdes.filter(pde => pde.pde_carrera === id);
+   this.componentesByCiclo(Number(this.cicloSelected));
+
   }
 
-  componentesByCiclo(ciclo:number){
-    this.compsByCiclo = []
-    this.compsByCiclo = this.componentes.filter(comp=>comp.componente_ciclo === ciclo);
-    if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected)
+  componentesByCiclo(ciclo: number) {
+    if(String(this.carreraSelected) !== "0"){
+      this.compsByCiclo = [];
+      this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
+      if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
+    }
 
    }
 
-  componentesByPde(id:string){
-    this.compsByPde = this.compsByCiclo.filter(comp=>comp.componente_pde === id);
-    this.gruposByComp = []
-    this.compsByPde.forEach(comp=>{
-      let res =  this.grupos.filter(gp=>gp.grupo_componente === comp.componente_id)
-      res.forEach(gp=>this.gruposByComp.push(gp))     
-    })
-    if(id !== "0") this.groupsByPlan(this.planSelected)
+  componentesByPde(id: string) {
+    this.compsByPde = this.compsByCiclo.filter(comp => comp.componente_pde === id);
+    this.gruposByComp = [];
+    this.compsByPde.forEach(comp => {
+      let res =  this.grupos.filter(gp => gp.grupo_componente === comp.componente_id);
+      res.forEach(gp => this.gruposByComp.push(gp));
+    });
+    if(id !== "0") this.groupsByPlan(this.planSelected);
   }
 
- 
-  
-  groupsByPlan(id:string){
-    this.planID = id
-    let grupos = this.gruposByComp.filter(gp=> id === gp.grupo_planificacion) 
-    console.log(grupos)  
-    this.gruposFiltrados = grupos;
+  groupsByPlan(id: string) {
+    this.planID = id;
+    let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
+    this.gruposByPlan = grupos;
+    this.groupsByComp(this.componente.id);
+  }
+
+  groupsByComp(id: string) {
+    this.componente.id = id;
+    this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
   }
 
 
-  servicios(){
+  servicios() {
     let p1 = new Promise((resolve,reject)=>{
       let sub =  this._grupo.getGrupos()
       .subscribe(
