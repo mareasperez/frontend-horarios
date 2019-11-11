@@ -14,6 +14,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   public areas: AreaModel[] = [];
   promesas: Promise<any>[] = [];
+  public activartabla = false;
   // tslint:disable-next-line: no-shadowed-variable
   public refArea: Observable<any[]>;
   sub: Subscription;
@@ -34,6 +35,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
         () => resolve()
       );
       this.dataSource = this.areas;
+      this.activartabla = true;
       this.subs.push(sub);
     });
     this.refArea = this._area.getList();
@@ -44,6 +46,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
       this.refArea.subscribe((data: AreaModel[]) => {
         this.areas = data;
         this.dataSource = this.areas;
+        this.activartabla = true;
       });
     });
 
