@@ -20,7 +20,9 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   public visible: boolean;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
+  public dataSource;
   sub: Subscription;
+  displayedColumns: string[] = ['id', 'nombre', 'departamento', 'opciones'];
   // tslint:disable: variable-name
   constructor(
     private carrera$: CarreraService,
@@ -37,7 +39,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-
+      this.dataSource = this.carreras;
     });
     const p2 = new Promise((resolve) => {
       const sub = this.departamento$.getDepartamento()
@@ -61,6 +63,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     this.refCarrera.subscribe(data => {
       console.log(data);
       this.carreras = data;
+      this.dataSource = this.carreras;
     });
   }
   ngOnDestroy() {

@@ -18,13 +18,14 @@ export class AreaService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.area.forEach(el => {
-          //console.log(el)
+          // console.log(el)
           let area = new AreaModel();
           area = Object.assign(area,el);
           this.list.push(area);
           observer.next(area);
+
         });
-        observer.complete()
+        //observer.complete()
       });
     });
   }

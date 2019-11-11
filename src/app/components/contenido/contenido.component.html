@@ -15,8 +15,8 @@
         </mat-menu>
         <mat-menu #cargaAc="matMenu">
             <button mat-menu-item routerLink="/reporte/carga">Carga Total metodo routerLink</button>
-            <button mat-menu-item (click)="go('cargas','cargahoraria');close()">Carga Horaria</button>
-            <button mat-menu-item (click)="go('cargas','cargaplanta');close()">Carga Planta</button>
+            <button mat-menu-item (click)="go('cargas/horaria','cargahoraria');close()">Carga Horaria</button>
+            <button mat-menu-item (click)="go('cargas/planta','cargaplanta');close()">Carga Planta</button>
             <button mat-menu-item (click)="go('cargas','cargaacademica');close()">Carga Total metodo redirect</button>
             <button mat-menu-item (click)="close()" routerLink="/reporte/cargas/docencia">Carga generica de docencia</button>
             <button mat-menu-item (click)="close()" routerLink="/reporte/cargas/componentes">Carga directa por componente</button>

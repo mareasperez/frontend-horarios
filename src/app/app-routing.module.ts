@@ -42,6 +42,16 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'reporte/cargas/planta',
+    component: CargasComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'reporte/cargas/horaria',
+    component: CargasComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'reporte/cargas/docencia',
     component: CargaDocenciaComponent,
     canActivate: [AuthGuard]

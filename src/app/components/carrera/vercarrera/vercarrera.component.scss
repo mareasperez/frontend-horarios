@@ -1,10 +1,15 @@
 table {
-    width: 100%;
+    width: 90%;
+}
+
+button {
+    width: 30%;
+    margin: 1px;
 }
 
 // google loader
 $black: rgb(8, 8, 8);
-$red : #DB4437;
+$red: #DB4437;
 $yellow: #F4B400;
 $green: rgb(15, 25, 157);
 $colors-list: $green $yellow $red;

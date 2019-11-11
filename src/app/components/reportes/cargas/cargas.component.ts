@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReporteCargaModel } from 'src/app/models/rep.carga';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
@@ -23,7 +23,7 @@ import { DocenteHorasService } from 'src/app/services/docente-horas.service';
   templateUrl: './cargas.component.html',
   styleUrls: ['./cargas.component.scss']
 })
-export class CargasComponent implements OnInit {
+export class CargasComponent implements OnInit, OnDestroy {
   // view bools
   public visible: boolean;
   public loader: boolean;
@@ -67,6 +67,22 @@ export class CargasComponent implements OnInit {
     this.query = (this.route.snapshot.queryParamMap.get('reporte'));
     console.log('init');
   }
+  ngOnDestroy() {
+  this.visible = false;
+  this.loader = false;
+  this.query = '';
+  this.hdocente = 0;
+  this.reportes = [];
+  this.carreras = [];
+  this.pdes = [];
+  this.planificaciones = [];
+  this.docentes = [];
+  this.grupos = [];
+  this.componentes = [];
+  this.doho = [];
+  this.selectPlani = undefined;
+  }
+
   async foo() {
     console.log('loading');
     await this.sleep(1000);
