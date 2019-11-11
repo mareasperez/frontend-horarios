@@ -22,7 +22,9 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public visible: boolean;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
+  public dataSource;
   sub: Subscription;
+  displayedColumns: string[] = ['id', 'nombre', 'facultad', 'opciones'];
   constructor(
     // tslint:disable: variable-name
     private _departamento: DepartamentoService,
@@ -39,6 +41,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
+      this.dataSource = this.departamentos;
     });
     const p2 = new Promise((resolve) => {
       const sub = this.facultad$.getFacultad()
@@ -61,6 +64,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     this.refDepartamento.subscribe(data => {
       console.log(data);
       this.departamentos = data;
+      this.dataSource = this.departamentos;
     });
   }
 

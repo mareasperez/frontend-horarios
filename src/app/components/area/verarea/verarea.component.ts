@@ -13,7 +13,7 @@ import { AddareaComponent } from '../addarea/addarea.component'
 export class VerareaComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   public areas: AreaModel[] = [];
-  promesas:Promise<any>[]=[];
+  promesas: Promise<any>[] = [];
   // tslint:disable-next-line: no-shadowed-variable
   public refArea: Observable<any[]>;
   sub: Subscription;
@@ -29,23 +29,23 @@ export class VerareaComponent implements OnInit, OnDestroy {
       let sub = this._area.getAreas()
       .subscribe(
         res => {this.areas.push(res);
-        this.dataSource = this.areas;
       },
         error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-        ()=>resolve()
+        () => resolve()
       );
-      this.subs.push(sub)
+      this.dataSource = this.areas;
+      this.subs.push(sub);
     });
     this.refArea = this._area.getList();
-    this.promesas.push(p)
+    this.promesas.push(p);
   }
   ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
+    Promise.all(this.promesas).then(() => {
       this.refArea.subscribe((data: AreaModel[]) => {
         this.areas = data;
         this.dataSource = this.areas;
       });
-    })
+    });
 
     }
 

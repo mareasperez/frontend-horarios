@@ -1,31 +1,45 @@
 <div class="container-fluid mt-3">
-    <mat-card class="mat-elevation-z8"  style="height: 80vh; overflow: auto;">    
-      <div class="row">
-        <div class="col-12">
-          <h5>Facultades</h5>
-        </div>
-        <div  class="col-8">
-          <mat-list  style="height: 60vh; overflow: auto;" >
-            <mat-list-item *ngFor="let facultad of facultades">
-              {{facultad.facultad_nombre}}
-              <span style="flex: 1 1 auto"></span>
-              <button mat-icon-button color="warn" (click)="deleteFaculta(facultad.facultad_id)"><mat-icon>delete</mat-icon></button>
-              <button mat-icon-button style="color: rgb(7, 117, 31);" (click)="showAdd(facultad)"><mat-icon>edit</mat-icon></button>
-              
-            </mat-list-item>
-          </mat-list>
-        </div>
-        <div class="col-4">
-          <div class="container">
-            <button mat-raised-button color="primary" (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
-          </div>
-          <span *ngIf="!hide">
+    <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
+        <div class="row">
+            <div class="col-12">
+                <h5>Facultades</h5>
+            </div>
+            <div class="col-8">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
+                        <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombre">
+                        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                        <td mat-cell *matCellDef="let facultad"> {{facultad.facultad_nombre}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="opciones">
+                        <th mat-header-cell *matHeaderCellDef> opciones </th>
+                        <td mat-cell *matCellDef="let facultad">
+                            <div class="opciones">
+                                <button class="btn btn-danger btnlogin" (click)="deleteFaculta(facultad.facultad_id)">
+                                <mat-icon  style="color:white">delete</mat-icon>
+                              </button>
+                                <button class="btn btn-success btnlogin" (click)="showAdd(facultad)">
+                                <mat-icon style="color:white">edit</mat-icon>
+                              </button>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <div class="col-4">
+                <div class="container">
+                    <button mat-raised-button color="primary" (click)="showAdd(null)"><mat-icon>add</mat-icon>Agregar</button>
+                </div>
+                <span *ngIf="!hide">
             <app-addfacult [hidden]="hide" [(facultad)]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
           </span>
+            </div>
         </div>
-      </div>
-  </mat-card>
- </div>
-
- 
-   
+    </mat-card>
+</div>

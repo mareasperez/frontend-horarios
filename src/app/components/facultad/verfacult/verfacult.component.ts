@@ -20,6 +20,8 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   overlayRef: OverlayRef | null;
   sub: Subscription;
   subs: Subscription[] = [];
+  displayedColumns: string[] = ['id', 'nombre', 'opciones'];
+  public dataSource;
   public hide = true;
   editing = false;
   // tslint:disable: variable-name
@@ -31,6 +33,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
       this.facultadService.getFacultad()
       .subscribe(res => {
         this.facultades.push(res);
+        this.dataSource = this.facultades;
       })
     );
     this.a = this.facultadService.getList();
