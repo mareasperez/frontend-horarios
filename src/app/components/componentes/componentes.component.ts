@@ -4,9 +4,9 @@ import { Observable, Subscription } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { AreaModel } from 'src/app/models/area.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { AddComponenteComponent } from './add-componente/add-componente.component';
 
 @Component({
   selector: 'app-componentes',
@@ -18,12 +18,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refArea: Observable<any[]>;
   public refPde: Observable<any[]>;
-  @Output() public gpAdd = new EventEmitter<{}>();
+  @Output() public gpComp = new EventEmitter<string>();
   @Input() public componentes: ComponenteModel[] = [];
   @Input() public areas: AreaModel[] = [];
   @Input() public pdes: PlanEstudioModel[] = [];
   public componente: ComponenteModel = null;
-  public form: FormGroup;
   public selected = '0';
   public selected2 = '0';
   public add = false;
@@ -34,8 +33,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   constructor(
     private comService: ComponenteService,
-    private fb: FormBuilder,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private dialog: MatDialog,
     ) {  }
 
   ngOnInit() {
@@ -48,60 +47,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   }
 
-  createForm(flag: number, id?: string) {
-    if (flag === 0) {
-      this.form = this.fb.group({
-        componente_id: null,
-        componente_nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
-        componente_chp: new FormControl('', [Validators.required, Validators.min(1)]),
-        componente_cht: new FormControl('', [Validators.required, Validators.min(1)]),
-        componente_ciclo: new FormControl('', [Validators.required, Validators.min(1)]),
-        componente_credito: new FormControl('', [Validators.required, Validators.min(1), Validators.max(4)]),
-        componente_area: new FormControl('0', [Validators.required]),
-        componente_pde: new FormControl('0', [Validators.required])
-
-      });
-    } else {
-      const comp = this.componentes.find(el => el.componente_id === id);
-      console.log(comp);
-      this.form = this.fb.group({
-        componente_id: new FormControl(comp.componente_id),
-        componente_nombre: new FormControl(comp.componente_nombre, [Validators.required, Validators.minLength(5)]),
-        componente_chp: new FormControl(comp.componente_chp, [Validators.required, Validators.min(1)]),
-        componente_cht: new FormControl(comp.componente_cht, [Validators.required, Validators.min(1)]),
-        componente_ciclo: new FormControl(comp.componente_ciclo, [Validators.required, Validators.min(1)]),
-        componente_credito: new FormControl(comp.componente_credito, [Validators.required, Validators.min(1), Validators.max(4)]),
-        componente_area: new FormControl(comp.componente_area, [Validators.required]),
-        componente_pde: new FormControl(comp.componente_pde, [Validators.required])
-
-      });
-    }
-    this.add = true;
-  }
-
-  saveComponente(flag: number) {
-    if (flag === 0) {
-      this.createComponente();
-    } else {
-      this.editComponente(this.form.value.componente_id);
-    }
-
-  }
-
-  createComponente() {
-    this.editing = true;
+  editHoras(id, ht, hp) {
     let comp = new ComponenteModel();
-    comp = Object.assign(comp, this.form.value);
-    console.log(comp);
-    this.comService.crearComponente(comp)
-    .subscribe(
-      res => {
-      this.form.reset();
-      this.editing = false;
-      this.add = false;
-      },
-      error => this._snack.open(error.message, 'OK', {duration: 3000}),
-    );
+    comp.componente_cht = ht;
+    comp.componente_chp = hp;
+    this.comService.updateComponente(comp, id).subscribe();
   }
 
   delComponente(e) {
@@ -111,41 +61,25 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     ));
   }
 
-  editComponente(id: string) {
-    console.log('edit');
 
-    this.editing = true;
-    this.comService.updateComponente(this.form.value, id)
-    .subscribe(
-      res => {
-      this.form.reset();
-      this.editing = false;
-      this.add = false;
-     },
-     error => this._snack.open(error.message, 'OK', {duration: 3000})
-     );
+
+  openDialog(tipo: string, id?: any): void {
+    if (tipo === 'c') {
+       this.dialog.open(AddComponenteComponent, {
+        width: '450px',
+        data: { type: tipo }
+      });
+    } else {
+      const comp = this.componentes.find(d => d.componente_id === id);
+      this.dialog.open(AddComponenteComponent, {
+        width: '450px',
+        data: { type: tipo, componente: comp }
+      });
+    }
   }
 
-  get Form() {
-    return this.form.controls;
-  }
 
-  addG(comp: ComponenteModel) {
-    this.gpadd = false;
-    this.componente = comp;
-  }
-
-  addGT(cp: ComponenteModel) {
-    this.gpAdd.emit({id: cp.componente_id, tipo: 'GT'});
-    this.gpadd = true;
-    this.componente = null;
-
-  }
-  addGP(cp: ComponenteModel) {
-    this.gpAdd.emit({id: cp.componente_id, tipo: 'GP'});
-    this.gpadd = true;
-    this.componente = null;
-
-
+  addG(comp: string) {
+    this.gpComp.emit(comp);
   }
 }

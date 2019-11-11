@@ -1,102 +1,42 @@
   <mat-card>
     <div class="row mb-2">
-      <div class="col-3 float-right">
-        <button mat-raised-button color="primary" (click)="createForm(0)">
+      <div class="col-12 float-right">
+        <button mat-raised-button color="primary" (click)="openDialog('c')">
           <mat-icon>add</mat-icon>Agregar
         </button>
       </div>
-      <div class="horas col-9">
-          <button mat-raised-button (click)="addGT(componente)" [disabled]="gpadd" class="w-50" style="background-color:  rgb(231, 115, 7);">
-              GT
-          </button>
-          <button mat-raised-button (click)="addGP(componente)" [disabled]="gpadd" class="w-50 ml-1 mr-1" color="accent">
-            GP
-          </button>
-          <mat-label class="w-50" *ngIf="componente !== null">agregar grupo de {{componente.componente_nombre}}</mat-label>
-        </div>
     </div>
     
     <div class="row components">
-      <div class="col-lg-6 col-md-8 list-components">
-           
+      <div class="col-12 list-components">
         <mat-list *ngIf="componentes.length>0">
-          <mat-list-item (dblclick)="addG(comp)"  class="border-radius-50 font-size-15 h-auto"
-          *ngFor="let comp of componentes; let i = index" [class.bg-color-ligth]="i % 2 === 1">
-            {{comp.componente_nombre}}
+          <mat-list-item *ngFor="let comp of componentes; let i = index" class="border-radius-50 font-size-15 h-auto"
+          [class.bg-color-ligth]="i % 2 === 1">
+            <mat-label  (click)="addG(comp.componente_id)">
+                {{comp.componente_nombre}}
+            </mat-label> 
             <span style="flex: 1 1 auto"></span>
-            <button mat-icon-button [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
-              <mat-icon style="color:red">delete</mat-icon>
+            <mat-form-field class="font-size-12 horas-width" appearance="outline">
+                <mat-label>HorasT</mat-label>
+                <input matInput #horast [value]="comp.componente_cht" >
+            </mat-form-field>
+              <mat-form-field class="font-size-12 horas-width" appearance="outline">
+                  <mat-label>HorasP</mat-label>
+                  <input matInput #horasp [value]="comp.componente_chp"  >
+              </mat-form-field>
+            <button mat-icon-button [value]="comp.componente_id" (click)="editHoras(comp.componente_id, horast.value, horasp.value)" >
+                <mat-icon class="color-blue">save</mat-icon>
+              </button>
+            <button mat-icon-button color="warn" [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
+              <mat-icon>delete</mat-icon>
             </button>
-            <button mat-icon-button [value]="comp.componente_id" (click)="createForm(1, comp.componente_id)">
-              <mat-icon style="color:green">edit</mat-icon>
+            <button mat-icon-button [value]="comp.componente_id" (click)="openDialog('u', comp.componente_id)">
+              <mat-icon class="color-green">edit</mat-icon>
             </button>
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="col-lg-6 col-md-4">
-        <span *ngIf="add">
-          <form [formGroup]="form" class="d-flex font-size-12 flex-column">
-              <div class="horas mb-2">
-              <button mat-raised-button class="w-50" color="primary"
-              (click)="form.value.componente_id === null ? saveComponente(0):saveComponente(1)"
-              [disabled]="form.invalid || editing">
-              <mat-icon>save</mat-icon>Guardar
-            </button>
-            <button mat-raised-button class="w-50 ml-1" color="warn" (click)="add = false">
-              <mat-icon>cancel</mat-icon>Cancelar
-            </button>
-           </div>
-            <mat-form-field appearance="outline">
-              <mat-label>Nombre</mat-label>
-              <input matInput formControlName="componente_nombre">
-              <mat-error *ngIf="Form.componente_nombre.invalid">{{Errors.getError(Form.componente_nombre)}}</mat-error>
-            </mat-form-field>
-            <mat-label>Horas</mat-label>
-            <div class="horas">
-              <mat-form-field class="w-50 d-inline" appearance="outline">
-                <mat-label>teoricas</mat-label>
-                <input matInput formControlName="componente_cht">
-                <mat-error *ngIf="Form.componente_cht.invalid">{{Errors.getError(Form.componente_cht)}}</mat-error>
-              </mat-form-field>
-              <mat-form-field class="w-50 d-inline" appearance="outline">
-                <mat-label> practicas</mat-label>
-                <input matInput formControlName="componente_chp">
-                <mat-error *ngIf="Form.componente_chp.invalid">{{Errors.getError(Form.componente_chp)}}</mat-error>
-              </mat-form-field>
-            </div>
-            <div class="horas">
-              <mat-form-field class="w-50" appearance="outline">
-                <mat-label>Ciclo</mat-label>
-                <input matInput formControlName="componente_ciclo">
-                <mat-error *ngIf="Form.componente_ciclo.invalid">{{Errors.getError(Form.componente_ciclo)}}</mat-error>
-              </mat-form-field>
-
-              <mat-form-field class="w-50" appearance="outline">
-                <mat-label>Creditos</mat-label>
-                <input matInput formControlName="componente_credito">
-                <mat-error *ngIf="Form.componente_credito.invalid">{{Errors.getError(Form.componente_credito)}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <mat-form-field appearance="outline">
-              <mat-label>Area</mat-label>
-              <mat-select [(value)]="selected" formControlName="componente_area">
-                <mat-option value="0">area...</mat-option>
-                <mat-option *ngFor="let area of areas" [value]="area.area_id">{{area.area_nombre}}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="Form.componente_area.invalid">{{Errors.getError(Form.componente_area)}}</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Plan de estudios</mat-label>
-              <mat-select [(value)]="selected2" formControlName="componente_pde">
-                <mat-option value="0">plan de estudios...</mat-option>
-                <mat-option *ngFor="let pde of pdes" [value]="pde.pde_id">{{pde.pde_nombre}}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="Form.componente_pde.invalid">{{Errors.getError(Form.componente_pde)}}</mat-error>
-            </mat-form-field>
-          </form>
-        </span>
-      </div>
+      
     </div>
   </mat-card>
 

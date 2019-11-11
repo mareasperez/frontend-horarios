@@ -107,7 +107,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
       });
     } else {
       const comp = this.componentes.find(d => d.componente_id === id);
-      const dialogRef = this.dialog.open(AddComponenteComponent, {
+      this.dialog.open(AddComponenteComponent, {
         width: '450px',
         data: { type: tipo, componente: comp }
       });

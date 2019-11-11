@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { Observable, Subscription } from 'rxjs';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { matErrorsMessage } from 'src/app/utils/errors';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { AddGrupoComponent } from './add-grupo/add-grupo.component';
 
 @Component({
   selector: 'app-grupo',
@@ -15,126 +15,100 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./grupo.component.scss']
 })
 export class GrupoComponent implements OnInit, OnDestroy {
-  
   public ref: Observable<any[]>;
   public refComp: Observable<any[]>;
   public refPlan: Observable<any[]>;
   public refDoc: Observable<any[]>;
   // arrays de datos
-  public grupos: GrupoModel[] = [];
+  @Input() public grupos: GrupoModel[] = [];
   @Input() public componentes: ComponenteModel[] = [];
+  @Input() public componente = {id: '0', ht: '0', hp: '0'};
   @Input() public planificaciones: PlanificacionModel[] = [];
   @Input() public planificacion: string;
   @Input() public docentes: DocenteModel[] = [];
   // creacion del formGroup
-  public form: FormGroup;
   public selected = '0';
-  public selected2 = '0'
-  public selectedComp = '0'
+  public selected2 = '0';
+  public selectedComp = '0';
   // validacion de edicion o creacion
   public add = false;
   public editing = false;
-  subs:Subscription[]=[];
-  public Errors:matErrorsMessage = new matErrorsMessage()
+  public gpadd = true;
 
-  constructor(private fb: FormBuilder,
+  subs: Subscription[] = [];
+  public Errors: matErrorsMessage = new matErrorsMessage();
+
+  constructor(
     private _grupo: GrupoService,
-    private _snack:MatSnackBar
+    private _snack: MatSnackBar,
+    private dialog: MatDialog,
     ) {
     }
     
-    
-    get Grupos():GrupoModel[]{
+    get Grupos(): GrupoModel[] {
       return this.grupos;
     }
-    @Input() 
-    set _grupos(grupos:GrupoModel[]){
-      console.log(grupos)
+    @Input() set _grupos(grupos: GrupoModel[]) {
+      console.log(grupos);
       this.grupos = grupos;
     }
 
   ngOnInit() {
   }
 
-  ngOnDestroy(){
-
-    this._grupo.list = []
-    this.subs.map(sub=>sub.unsubscribe())
-
+  ngOnDestroy() {
+    this._grupo.list = [];
+    this.subs.map(sub => sub.unsubscribe());
   }
 
-  get Form(){
-    return this.form.controls
-  }
-  
-  createForm(flag: number, id?: string) {
-    if (flag === 0) {
-      this.form = this.fb.group({
-        grupo_id: null,
-        grupo_numero: new FormControl('', [Validators.required, Validators.min(1)]),
-        grupo_max_capacidad: new FormControl('40', [Validators.required, Validators.min(20)]),
-        grupo_tipo: new FormControl('GT', [Validators.required, Validators.min(1)]),
-        grupo_horas_clase: new FormControl('4', [Validators.required, Validators.min(1)]),
-        grupo_modo: new FormControl('S', [Validators.required]),
-        grupo_componente: new FormControl('', [Validators.required]),
-        grupo_docente: new FormControl('', [Validators.required]),
-        grupo_planificacion: new FormControl(this.planificacion, [Validators.required]),
-        grupo_planta: new FormControl(false, [Validators.required])
-
-      });
-    } else {
-      const grupo = this.grupos.find(el => el.grupo_id === id);
-      console.log(grupo);
-      this.form = this.fb.group({
-        grupo_id: new FormControl(grupo.grupo_id),
-        grupo_numero: new FormControl(grupo.grupo_numero, [Validators.required, Validators.min(1)]),
-        grupo_max_capacidad: new FormControl(grupo.grupo_max_capacidad, [Validators.required, Validators.min(20)]),
-        grupo_tipo: new FormControl(grupo.grupo_tipo, [Validators.required, Validators.min(1)]),
-        grupo_horas_clase: new FormControl(grupo.grupo_horas_clase, [Validators.required, Validators.min(1)]),
-        grupo_modo: new FormControl(grupo.grupo_modo, [Validators.required]),
-        grupo_componente: new FormControl(grupo.grupo_componente, [Validators.required]),
-        grupo_docente: new FormControl(grupo.grupo_docente, [Validators.required]),
-        grupo_planificacion: new FormControl(grupo.grupo_planificacion, [Validators.required]),
-        grupo_planta: new FormControl(grupo.grupo_planta, [Validators.required])
-
-      });
-
-    }
-    this.add = true;
-  }
-  saveGrupo(flag: number) {
-    flag === 0 ? this.createGrupo() :this.editGrupo(this.form.value.grupo_id)
-  }
-  createGrupo() {
-    this.editing = true;
+  addGroup(e, tipo: string) {
     let grupo = new GrupoModel();
-    grupo = Object.assign(grupo, this.form.value);
-    this._grupo.crearGrupo(grupo)
-      .subscribe(
-        res => {
-        this.editing = false;
-        this.add = false;
-        },
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      );
+    let gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);
+    let n = Math.max.apply(Math, gruposT.map(gp => {
+           return gp.grupo_numero;
+      } )) + 1;
+    grupo.grupo_numero = n > 0 ? n : 1;
+    grupo.grupo_componente = this.componente.id;
+    grupo.grupo_horas_clase = tipo === 'GT' ? Number(this.componente.ht) : Number(this.componente.hp);
+    grupo.grupo_max_capacidad = '40';
+    grupo.grupo_modo = 'S';
+    grupo.grupo_planta = false;
+    grupo.grupo_docente = null;
+    grupo.grupo_id = null;
+    grupo.grupo_tipo = tipo;
+    grupo.grupo_planificacion = this.planificacion;
+    this._grupo.crearGrupo(grupo).subscribe(res => {
+      console.log(res);
+    });
+    console.log(e);
   }
+
+  setDocente(idD, idG) {
+    let grupo = new GrupoModel();
+    grupo.grupo_docente = idD;
+    this._grupo.updategrupo(grupo, idG).subscribe();
+  }
+
   delGrupo(e: number) {
     this._grupo.deleteGrupo(e)
     .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      res => {},
+      error => this._snack.open(error.message, 'ok' , {duration: 3000}),
     );
   }
-  editGrupo(id: number) {
-    this.editing = true;
-    this._grupo.updategrupo(this.form.value, id)
-    .subscribe(
-      res => {
-        this.form.reset();
-        this.editing = false;
-        this.add = false;
-      },
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+
+  openDialog(tipo: string, id?: any): void {
+    if (tipo === 'c') {
+        this.dialog.open(AddGrupoComponent, {
+        width: '450px',
+        data: { type: tipo }
+      });
+    } else {
+      const gp = this.grupos.find(Gp => Gp.grupo_id  === id);
+      this.dialog.open(AddGrupoComponent, {
+        width: '450px',
+        data: { type: tipo, grupo: gp }
+      });
+    }
   }
 }
