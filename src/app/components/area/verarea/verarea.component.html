@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="activartabla">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
                 <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
