@@ -1,0 +1,37 @@
+<div class="container-fluid" >
+    <mat-card  style="height: 80vh; overflow: auto;">
+            <h4>Docentes</h4>
+        <div class="row">
+            <div class="col-3" style="height: 67vh;overflow: auto;">
+                <mat-list >
+                    <mat-list-item *ngFor="let docente of docentesList" (click)="verGruposDoc(docente.docente_id)">
+                        {{docente.docente_nombre}}
+                    </mat-list-item>
+                </mat-list>
+            </div>
+            <div class="col-9" style="height: 67vh;">
+                <div class="row " style="max-height: 70vh;overflow: auto;">
+                <mat-card class="card col-4 mx-1 mt-1 h-auto" *ngFor="let docente of docGrupos">
+                    <mat-card-header>
+                            <mat-card-title>{{docente.docente_nombre}}</mat-card-title>
+                            <span style="flex: 1 1 auto;"></span>
+                            <button mat-icon-button color="warn" (click)="close(docente.docente_id)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-list>
+                            <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)">
+                                    {{grupo.grupo_tipo}}{{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNombre: componentes}}
+                                    <span style="flex: 1 1 auto;"></span>
+                                <button mat-icon-button color="warn" (click)="removerDoc(docente.docente_id)"><mat-icon>delete</mat-icon></button>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                    <mat-card-footer></mat-card-footer>
+                </mat-card>
+                </div>
+            </div>
+    </div>
+    </mat-card>
+</div>

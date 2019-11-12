@@ -15,6 +15,7 @@ export class AddfacultComponent implements OnInit {
   public form: FormGroup;
   public Errors: matErrorsMessage = new matErrorsMessage();
   constructor() { }
+  
   ngOnInit() {
     console.log(this.facultad);
     this.form = new FormGroup({

@@ -4,6 +4,7 @@ import { FacultadModel } from 'src/app/models/facultad.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
+import { reject } from 'q';
 
 @Component({
   selector: 'app-verfacult',
@@ -21,31 +22,46 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   sub: Subscription;
   subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'opciones'];
-  public dataSource;
+  public dataSource = [];
   public hide = true;
   editing = false;
+  promesa: Promise<any>
   // tslint:disable: variable-name
   constructor(
     private facultadService: FacultadSerivice,
     private _snack: MatSnackBar
   ) {
-    this.subs.push(
-      this.facultadService.getFacultad()
-      .subscribe(res => {
-        this.facultades.push(res);
-        this.dataSource = this.facultades;
-      })
-    );
+
+   this.promesa = new Promise((resolve, reject) => {
+    let sub = this.facultadService.getFacultad()
+     .subscribe(res => {
+       this.facultades.push(res);
+       this.dataSource = this.facultades;
+       
+     },
+     error => this._snack.open(error, 'OK', {duration: 3000}),
+     ()=>resolve()
+     );
+     this.subs.push(sub);
+    })
     this.a = this.facultadService.getList();
   }
 
   ngOnInit() {
+  this.promesa.then(()=>{
     this.subs.push(this.a
       .subscribe(
-        res => this.facultades = res,
+        res => {
+          this.facultades = res;
+          this.dataSource = [];
+          this.facultades.forEach(ft =>{
+            this.dataSource.push(ft)
+          })
+        },
         error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-      )
+        )
     );
+  })
 
   }
 

@@ -20,7 +20,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   public visible: boolean;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
-  public dataSource;
+  public dataSource = [];
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'departamento', 'opciones'];
   // tslint:disable: variable-name
@@ -59,11 +59,14 @@ export class VercarreraComponent implements OnInit, OnDestroy {
    ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
-    });
-    this.refCarrera.subscribe(data => {
-      console.log(data);
-      this.carreras = data;
-      this.dataSource = this.carreras;
+      this.refCarrera.subscribe(data => {
+        console.log(data);
+        this.carreras = data;
+        this.dataSource = [];
+        this.carreras.forEach(car => {
+          this.dataSource.push(car)
+        })
+      });
     });
   }
   ngOnDestroy() {

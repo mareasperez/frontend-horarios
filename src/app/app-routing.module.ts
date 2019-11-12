@@ -27,6 +27,7 @@ import { CargaComponentesComponent } from './components/reportes/carga-component
 import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
+import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
 
 
 const routes: Routes = [
@@ -144,6 +145,11 @@ const routes: Routes = [
   {
     path: 'docente/ver',
     component: VerdocenteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'docente/grupos',
+    component: DocenteGruposComponent,
     canActivate: [AuthGuard]
   },
   {
