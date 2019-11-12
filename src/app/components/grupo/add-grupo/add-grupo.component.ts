@@ -112,7 +112,7 @@ export class AddGrupoComponent implements OnInit, OnDestroy {
         grupo_horas_clase: new FormControl(this.data.grupo.grupo_horas_clase, [Validators.required, Validators.min(1)]),
         grupo_modo: new FormControl(this.data.grupo.grupo_modo, [Validators.required]),
         grupo_componente: new FormControl(this.data.grupo.grupo_componente, [Validators.required]),
-        grupo_docente: new FormControl(this.data.grupo.grupo_docente, [Validators.required]),
+        grupo_docente: new FormControl(this.data.grupo.grupo_docente, ),
         grupo_planificacion: new FormControl(this.data.grupo.grupo_planificacion, [Validators.required]),
         grupo_planta: new FormControl(this.data.grupo.grupo_planta, [Validators.required])
 
@@ -129,6 +129,7 @@ export class AddGrupoComponent implements OnInit, OnDestroy {
     this.editing = true;
     let grupo = new GrupoModel();
     grupo = Object.assign(grupo, this.form.value);
+    console.log(grupo)
     this._grupo.crearGrupo(grupo)
       .subscribe(
         res => {
@@ -142,7 +143,10 @@ export class AddGrupoComponent implements OnInit, OnDestroy {
 
   editGrupo(id: number) {
     this.editing = true;
-    this._grupo.updategrupo(this.form.value, id)
+    let grupo = new GrupoModel();
+    grupo = Object.assign(grupo, this.form.value);
+    console.log(grupo)
+    this._grupo.updategrupo( grupo, id)
     .subscribe(
       res => {
         this.editing = false;

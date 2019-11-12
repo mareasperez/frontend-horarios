@@ -110,7 +110,9 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
 
   removerDoc(id:string){
     let grupo = this.grupos.find(gp => gp.grupo_id === id)
+    console.log(grupo)
     grupo.grupo_docente = null;
+
     this._grupo.updategrupo(grupo, id).subscribe(res => {
       
     })
