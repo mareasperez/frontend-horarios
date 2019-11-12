@@ -22,7 +22,6 @@ export class GrupoComponent implements OnInit, OnDestroy {
   // arrays de datos
   @Input() public grupos: GrupoModel[] = [];
   @Input() public componentes: ComponenteModel[] = [];
-  @Input() public componente = {id: '0', ht: '0', hp: '0'};
   @Input() public planificaciones: PlanificacionModel[] = [];
   @Input() public planificacion: string;
   @Input() public docentes: DocenteModel[] = [];
@@ -30,6 +29,8 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public selected = '0';
   public selected2 = '0';
   public selectedComp = '0';
+  public componente:ComponenteModel;
+  ;
   // validacion de edicion o creacion
   public add = false;
   public editing = false;
@@ -53,7 +54,15 @@ export class GrupoComponent implements OnInit, OnDestroy {
       this.grupos = grupos;
     }
 
+    get Componente(): ComponenteModel {
+      return this.componente;
+    }
+      @Input()  public set _componente(comp:ComponenteModel){
+        this.componente = comp
+        console.log(this.componente)
+    } 
   ngOnInit() {
+    console.log(this.componente)
   }
 
   ngOnDestroy() {
@@ -68,8 +77,8 @@ export class GrupoComponent implements OnInit, OnDestroy {
            return gp.grupo_numero;
       } )) + 1;
     grupo.grupo_numero = n > 0 ? n : 1;
-    grupo.grupo_componente = this.componente.id;
-    grupo.grupo_horas_clase = tipo === 'GT' ? Number(this.componente.ht) : Number(this.componente.hp);
+    grupo.grupo_componente = this.componente.componente_id;
+    grupo.grupo_horas_clase = tipo === 'GT' ? Number(this.componente.componente_cht) : Number(this.componente.componente_chp);
     grupo.grupo_max_capacidad = '40';
     grupo.grupo_modo = 'S';
     grupo.grupo_planta = false;

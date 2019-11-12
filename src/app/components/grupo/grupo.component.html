@@ -1,10 +1,10 @@
   <mat-card>
     <div class="row">
       <div class="horas col-12">
-          <button mat-raised-button [disabled]= "componente.ht === '0' ?  true : false" (click)="addGroup(componente.id, 'GT')" class="w-25" style="background-color:  rgb(231, 115, 7);">
+          <button mat-raised-button [disabled]= "Componente.componente_cht !== 0 ?  false : true" (click)="addGroup(componente.id, 'GT')" class="w-25" style="background-color:  rgb(231, 115, 7);">
               GT
           </button>
-          <button mat-raised-button [disabled]= "componente.hp === '0' ?  true : false" (click)="addGroup(componente.id, 'GP')" class="w-25 ml-1 mr-1" color="accent">
+          <button mat-raised-button [disabled]= "Componente.componente_chp !== 0 ?  false : true" (click)="addGroup(componente.id, 'GP')" class="w-25 ml-1 mr-1" color="accent">
             GP
           </button>
         </div>

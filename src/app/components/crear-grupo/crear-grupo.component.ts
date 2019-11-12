@@ -36,7 +36,7 @@ public gruposFiltrados: GrupoModel[]=[];
 public docentes: DocenteModel[]=[];
 public areas: AreaModel[]=[];
 public planificaciones: PlanificacionModel[]=[];
-public componente = {id: '0', ht: '0', hp: '0'};
+public componente : ComponenteModel = new ComponenteModel();
 /*Actualizacion por ws */
 public refComp: Observable<any>;
 public refGP: Observable<any>;
@@ -65,6 +65,7 @@ public carreraSelected = '0';
               private _snack: MatSnackBar
 
     ) {
+      this.componente.componente_id = '0';
     this.servicios()
     this.refComp = this._componente.getList();
     this.refGP = this._grupo.getList();
@@ -154,11 +155,14 @@ public carreraSelected = '0';
     this.planID = id;
     let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
     this.gruposByPlan = grupos;
-    this.groupsByComp(this.componente.id);
+    if(this.componente.componente_id !== "0") this.groupsByComp(this.componente.componente_id);
   }
 
   groupsByComp(id: string) {
-    this.componente.id = id;
+    let com = this.componentes.find(comp => comp.componente_id === id)
+    this.componente = com;
+    console.log(this.componente)
+
     this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
   }
 
