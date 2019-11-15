@@ -101,6 +101,16 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this.docentesList = this.docentesList.filter(el => el.docente_id !== id);
   }
 
+  verTodos(){
+    this.docentesList = []
+    this.docentes.forEach(doc => this.verGruposDoc(doc.docente_id))
+  }
+
+  cerrarTodos(){
+    this.docGrupos = [];
+    this.docentesList = this.docentes;
+  }
+
   close(id:string){
     let doc = this.docentes.find(doc => doc.docente_id === id);
     this.docentesList.push(doc);
@@ -116,6 +126,19 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this._grupo.updategrupo(grupo, id).subscribe(res => {
       
     })
+  }
+
+  docenteHoras(id: string){
+  let i = 0
+    let grupos = this.grupos.filter(gp => gp.grupo_docente === id);
+    console.log(grupos)
+    let horas = grupos.reduce(( horas , gp)=> {
+      return horas + gp.grupo_horas_clase; 
+      
+      },0)
+    console.log(horas)
+
+    return horas;
   }
 
 }
