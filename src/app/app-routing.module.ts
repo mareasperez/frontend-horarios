@@ -28,6 +28,7 @@ import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.compon
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
+import { PlanificacionComponent } from './components/planificacion/planificacion.component';
 
 
 const routes: Routes = [
@@ -165,6 +166,11 @@ const routes: Routes = [
   {
     path: 'planestudio/ver',
     component: VerplanestudioComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'planificacion/ver',
+    component: PlanificacionComponent,
     canActivate: [AuthGuard]
   },
   {
