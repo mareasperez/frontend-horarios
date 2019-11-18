@@ -50,7 +50,6 @@ export class GrupoComponent implements OnInit, OnDestroy {
       return this.grupos;
     }
     @Input() set _grupos(grupos: GrupoModel[]) {
-      console.log(grupos);
       this.grupos = grupos;
     }
 
@@ -59,10 +58,8 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
       @Input()  public set _componente(comp:ComponenteModel){
         this.componente = comp
-        console.log(this.componente)
     } 
   ngOnInit() {
-    console.log(this.componente)
   }
 
   ngOnDestroy() {
@@ -87,9 +84,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
     grupo.grupo_tipo = tipo;
     grupo.grupo_planificacion = this.planificacion;
     this._grupo.crearGrupo(grupo).subscribe(res => {
-      console.log(res);
     });
-    console.log(e);
   }
 
   setDocente(idD, idG) {

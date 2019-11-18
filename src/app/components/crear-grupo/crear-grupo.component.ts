@@ -15,6 +15,8 @@ import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { AreaModel } from 'src/app/models/area.model';
 import { MatSnackBar } from '@angular/material';
+import { DocenteAreaService } from 'src/app/services/docente-area.service';
+import { DocenteAreaModel } from 'src/app/models/docente.area.model';
 
 @Component({
   selector: 'app-crear-grupo',
@@ -34,7 +36,9 @@ public gruposByPlan: GrupoModel[] = [];
 public gruposByComp: GrupoModel[] = [];
 public gruposFiltrados: GrupoModel[]=[];
 public docentes: DocenteModel[]=[];
+public docFiltroArea: DocenteModel[]=[];
 public areas: AreaModel[]=[];
+public docsByArea: DocenteAreaModel[]=[];
 public planificaciones: PlanificacionModel[]=[];
 public componente : ComponenteModel = new ComponenteModel();
 /*Actualizacion por ws */
@@ -45,6 +49,7 @@ public refPde: Observable<any>;
 public refCarrera: Observable<any>;
 public refArea: Observable<any>;
 public refDocente: Observable<any>;
+public refDocArea: Observable<any>;
 /*Flags y subscripciones */
 private subs: Subscription[] = [];
 public planID = '0';
@@ -62,6 +67,7 @@ public carreraSelected = '0';
               private _carrera: CarreraService,
               private _area:  AreaService,
               private _docente: DocenteService,
+              private _docArea: DocenteAreaService,
               private _snack: MatSnackBar
 
     ) {
@@ -73,6 +79,7 @@ public carreraSelected = '0';
     this.refCarrera = this._carrera.getList();
     this.refArea = this._area.getList();
     this.refDocente = this._docente.getList();
+    this.refDocArea = this._docArea.getList();
 
 }
 
@@ -99,6 +106,7 @@ public carreraSelected = '0';
       );
        this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
        this.subs.push(this.refArea.subscribe(data=>this.areas = data))
+       this.subs.push(this.refDocArea.subscribe(data=>this.docsByArea = data))
        this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
        this.subs.push(this.refDocente.subscribe(data=>this.docentes = data))
        this.subs.push(this.refComp.subscribe(data=>{this.componentes = data;
@@ -159,13 +167,22 @@ public carreraSelected = '0';
   }
 
   groupsByComp(id: string) {
+    console.log("groupsByComp")
     let com = this.componentes.find(comp => comp.componente_id === id)
     this.componente = com;
-    console.log(this.componente)
-
+    this.docenteByArea(this.componente.componente_area)
     this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
   }
 
+  docenteByArea(area){
+    let docs = this.docsByArea.filter(doc => area === doc.da_area)
+    let res = docs.map(da => {
+      let docentes = this.docentes.filter(doc => doc.docente_id === da.da_docente)
+      return docentes[0]
+    })
+    this.docFiltroArea = res;
+
+  }
 
   servicios() {
     let p1 = new Promise((resolve,reject)=>{
@@ -249,6 +266,17 @@ let sub =  this._area.getAreas()
   )
 this.subs.push(sub)
 })
-this.promesas.push(p8,p7,p6,p5,p4,p3,p2,p1)
+
+let p9 = new Promise((resolve,reject)=>{
+  let sub =  this._docArea.getDcArea()
+  .subscribe(
+    res => this.docsByArea.push(res),
+    error=>this._snack.open(error.message,"OK",{duration: 3000}),
+    ()=>resolve()
+    )
+  this.subs.push(sub)
+  })
+
+this.promesas.push(p9,p8,p7,p6,p5,p4,p3,p2,p1)
   }
 }

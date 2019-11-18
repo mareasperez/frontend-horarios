@@ -47,14 +47,12 @@ export class DocenteAreaService extends MainService {
   }
   
   updateList(data: wsModel) {
-    // console.log(data)
+  //   console.log(data)
     let docenteA = new DocenteAreaModel();
     docenteA = Object.assign(docenteA,data.data);
      switch (data.event) {
        case 'c':
         // console.log("Crear")
-         console.log(docenteA)
-         data.data = docenteA;
          this.list.push(docenteA);
          this.list$.next(this.list)
          break;

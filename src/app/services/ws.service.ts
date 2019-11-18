@@ -12,6 +12,7 @@ import { PlanificacionService } from './planificacion.service';
 import { CarreraService } from './carrera.service';
 import { DocenteHorasService } from './docente-horas.service';
 import { AulaService } from './aula.service';
+import { DocenteAreaService } from './docente-area.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +31,7 @@ export class WsService {
               private departamento$: DepartamentoService,
               private carrera$: CarreraService,
               private _doho: DocenteHorasService,
+              private _dcAr: DocenteAreaService,
               private AulaService: AulaService
     ) { }
 
@@ -77,6 +79,9 @@ export class WsService {
             break;
           case 'docente_hora':
             this._doho.updateList(action);
+            break;
+          case 'docente_area':
+            this._dcAr.updateList(action)
             break;
           case 'aula':
             this.AulaService.updateList(action);
