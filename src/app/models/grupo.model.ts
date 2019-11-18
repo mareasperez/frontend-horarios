@@ -1,4 +1,5 @@
 export class GrupoModel {
+    // tslint:disable: variable-name
     grupo_id: string;
     grupo_numero: string;
     grupo_max_capacidad: string;

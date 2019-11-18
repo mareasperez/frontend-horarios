@@ -14,7 +14,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   public areas: AreaModel[] = [];
   promesas: Promise<any>[] = [];
-  public activartabla = false;
+  public activartabla: boolean;
   // tslint:disable-next-line: no-shadowed-variable
   public refArea: Observable<any[]>;
   sub: Subscription;
@@ -29,13 +29,13 @@ export class VerareaComponent implements OnInit, OnDestroy {
     let p = new Promise<void>((resolve) => {
       let sub = this._area.getAreas()
       .subscribe(
-        res => {this.areas.push(res);
+        res => {
+          console.log(res);
+          this.areas.push(res);
       },
         error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
-      this.dataSource = this.areas;
-      this.activartabla = true;
       this.subs.push(sub);
     });
     this.refArea = this._area.getList();
@@ -43,6 +43,8 @@ export class VerareaComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
+      this.dataSource = this.areas;
+      this.activartabla = true;
       this.refArea.subscribe((data: AreaModel[]) => {
         this.areas = data;
         this.dataSource = this.areas;

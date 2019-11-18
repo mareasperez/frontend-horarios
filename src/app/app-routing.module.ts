@@ -33,171 +33,43 @@ import { PlanificacionComponent } from './components/planificacion/planificacion
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
-  {
-    path: 'reporte/carga',
-    component: CargaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/cargas',
-    component: CargasComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/cargas/planta',
-    component: CargasComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/cargas/horaria',
-    component: CargasComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/cargas/docencia',
-    component: CargaDocenciaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/cargas/componentes',
-    component: CargaComponentesComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/horarios',
-    component: HorariosComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'reporte/horarios/anyo',
-    component: HorariosAnyoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'componente',
-    component: ComponentesListComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'facultad/list',
-    component: VerfacultComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'facultad/add',
-    component: AddfacultComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'recinto/add',
-    component: AddrecintoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'recinto/ver',
-    component: VerrecintoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'aula/ver',
-    component: VeraulaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'aula/add',
-    component: AddaulaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'departamento/add',
-    component: AdddepartamentoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'departamento/ver',
-    component: VerdepartamentoComponent,
-    canActivate: [AuthGuard]
-  },
-  // {
-  //   path: 'login',
-  //   component: LoginComponent,
-  //   pathMatch: 'full'
-  // },
-  {
-    path: 'area/ver',
-    component: VerareaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'area/add',
-    component: AddareaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'area/edit/:id',
-    component: AddareaComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'docente/ver',
-    component: VerdocenteComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'docente/grupos',
-    component: DocenteGruposComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'docente/add',
-    component: AdddocenteComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'docente/edit/:id',
-    component: AdddocenteComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'planestudio/ver',
-    component: VerplanestudioComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'planificacion/ver',
-    component: PlanificacionComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'planestudio/add',
-    component: AddplanestudioComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'planestudio/edit/:id',
-    component: AddplanestudioComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'grupos',
-    component: CrearGrupoComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'doc-horas',
-    component: DocHorasComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'carrera/list',
-    component: VercarreraComponent,
-    canActivate: [AuthGuard]
-  }
+  // reportes cargas
+  { path: 'reporte/carga', component: CargaComponent, canActivate: [AuthGuard] }, // debe quitarse solo es de prueba
+  { path: 'reporte/cargas/total', component: CargasComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/planta', component: CargasComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/horaria', component: CargasComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/docencia', component: CargaDocenciaComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/componentes', component: CargaComponentesComponent, canActivate: [AuthGuard] },
+  // reportes horarios
+  { path: 'reporte/horarios/anyo', component: HorariosAnyoComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/horarios/:reporte', component: HorariosComponent, canActivate: [AuthGuard] },
+  // { path: 'reporte/horarios/docente', component: HorariosComponent, canActivate: [AuthGuard] },
+  // { path: 'reporte/horarios/aula', component: HorariosComponent, canActivate: [AuthGuard] },
+  // demas cosas
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'componente', component: ComponentesListComponent, canActivate: [AuthGuard] },
+  { path: 'facultad/list', component: VerfacultComponent, canActivate: [AuthGuard] },
+  { path: 'facultad/add', component: AddfacultComponent, canActivate: [AuthGuard] },
+  { path: 'recinto/add', component: AddrecintoComponent, canActivate: [AuthGuard] },
+  { path: 'recinto/ver', component: VerrecintoComponent, canActivate: [AuthGuard] },
+  { path: 'aula/ver', component: VeraulaComponent, canActivate: [AuthGuard] },
+  { path: 'aula/add', component: AddaulaComponent, canActivate: [AuthGuard] },
+  { path: 'departamento/add', component: AdddepartamentoComponent, canActivate: [AuthGuard] },
+  { path: 'departamento/ver', component: VerdepartamentoComponent, canActivate: [AuthGuard] },
+  { path: 'area/ver', component: VerareaComponent, canActivate: [AuthGuard] },
+  { path: 'area/add', component: AddareaComponent, canActivate: [AuthGuard] },
+  { path: 'area/edit/:id', component: AddareaComponent, canActivate: [AuthGuard] },
+  { path: 'docente/ver', component: VerdocenteComponent, canActivate: [AuthGuard] },
+  { path: 'docente/grupos', component: DocenteGruposComponent, canActivate: [AuthGuard] },
+  { path: 'docente/add', component: AdddocenteComponent, canActivate: [AuthGuard] },
+  { path: 'docente/edit/:id', component: AdddocenteComponent, canActivate: [AuthGuard] },
+  { path: 'planestudio/ver', component: VerplanestudioComponent, canActivate: [AuthGuard] },
+  { path: 'planificacion/ver', component: PlanificacionComponent, canActivate: [AuthGuard] },
+  { path: 'planestudio/add', component: AddplanestudioComponent, canActivate: [AuthGuard] },
+  { path: 'planestudio/edit/:id', component: AddplanestudioComponent, canActivate: [AuthGuard] },
+  { path: 'grupos', component: CrearGrupoComponent, canActivate: [AuthGuard] },
+  { path: 'doc-horas', component: DocHorasComponent, canActivate: [AuthGuard] },
+  { path: 'carrera/list', component: VercarreraComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HorarioService } from '../../../services/horario.service';
 import { HorarioModel } from '../../../models/horario.model';
 import { FacultadModel } from 'src/app/models/facultad.model';
@@ -29,7 +29,7 @@ import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
   templateUrl: './horarios.component.html',
   styleUrls: ['./horarios.component.scss']
 })
-export class HorariosComponent implements OnInit {
+export class HorariosComponent implements OnInit, OnDestroy {
   public horarios: HorarioModel[] = [];
   public array: any[][] = new Array();
   selectedF: FacultadModel;
@@ -66,8 +66,6 @@ export class HorariosComponent implements OnInit {
     private _componente: ComponenteService,
     private _pde: PlanEstudioService) { }
   ngOnInit() {
-    this._componente.getComponentes().subscribe(res => this.componentes.push(res));
-    this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
     this._planificacion.getPlanificaciones().subscribe();
     this._grupo.getGrupos().subscribe();
     this._carrera.getCarrera().subscribe();
@@ -76,46 +74,33 @@ export class HorariosComponent implements OnInit {
     this._departamento.getDepartamento().subscribe();
     this._recinto.getRecinto().subscribe();
     this._aula.getAula().subscribe();
-    this.reporte = (this.route.snapshot.queryParamMap.get('reporte'));
+    this.reporte = (this.route.snapshot.params.reporte);
     this._horario.getHorarios().subscribe();
-    this.getFacultades();
+    const p = new Promise((resolve, reject) => {
+      this._facultad.getFacultad().subscribe(res => this.facultades.push(res));
+      this._componente.getComponentes().subscribe(res => this.componentes.push(res));
+      this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
+      this._grupo.getGrupos().subscribe(res => this.grupos.push(res));
+    });
 
+  }
+  ngOnDestroy() {
+    this.selectedA = undefined;
+    this.selectedCarrera = undefined;
+    this.selectedD = undefined;
+    this.selectedDocente = undefined;
+    this.selectedF = undefined;
+    this.selectedGrupo = undefined;
+    this.selectedR = undefined;
   }
   filtros(filtro: string, id: number) {
     switch (filtro) {
-      case 'docente': {
-        this.getDepartamentos(id);
-        break;
-      }
-      case 'aula': {
-        this.getRecintos(id);
-        break;
-      }
-      case 'grupo': {
-        console.log('se llama grupos');
-        this.getDepartamentos(id);
-        break;
-      }
-      case 'anyo': {
-        this.getDepartamentos(id);
-        break;
-      }
-      default: {
-        console.log('no hay filtro para eso');
-      }
+      case 'docente': this.getDepartamentos(id); break;
+      case 'aula': this.getRecintos(id); break;
+      case 'grupo': console.log('se llama grupos'); this.getDepartamentos(id); break;
+      case 'anyo': this.getDepartamentos(id); break;
+      default: alert('no hay filtro para eso');
     }
-  }
-  getFacultades() {
-    this.selectedA = null;
-    this.selectedR = null;
-    this._facultad.getFacultad().subscribe(
-      res => {
-        this.facultades.push(res);
-      },
-      err => {
-        console.error(err);
-      }
-    );
   }
   async getDepartamentos(id: number) {
     this.departamentos = [];
@@ -151,25 +136,11 @@ export class HorariosComponent implements OnInit {
       }
     }
   }
-  async getHorarioByAnyo(anyo) {
-    this.grupos = [];
-    const a = [];
-    a[0] = (anyo - 1) + anyo;
-    a[1] = anyo + anyo;
-    console.log(a);
-    for (const grupo of this._grupo.list) {
-      const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
-      const pd = await this.pdes.find(p => p.pde_id === comp.componente_pde);
-      if (pd.pde_carrera === this.selectedCarrera.carrera_id && (comp.componente_ciclo === a[0] || comp.componente_ciclo === a[1])) {
-        this.grupos.push(grupo);
-        console.log('se agrego: ', grupo);
-      }
-    }
-
-  }
 
   async getHorarioByFilter(query: string, id: number) {
     this.horarios = [];
+    // docente se obtiene asi porque el horario no tiene un elemento "docente" sino que es el grupo del horario
+    // el que contiene el docente por lo tanto se debe pedir al api para mayor rapides
     if (query === 'docente') {
       const p = new Promise<any>((resolve, reject) => {
         console.log('el id docente es: ', id);
@@ -195,13 +166,11 @@ export class HorariosComponent implements OnInit {
       console.log(this.horarios);
       this.fun();
     }
-
   }
 
 
   async fun() {
-    let i = 0;
-    let j = 0;
+    let i = 0; let j = 0;
     const vacio = new HorarioViewModel();
     vacio.horario_vacio = true;
     for (let aux = 0; aux < 6; aux++) {
@@ -214,111 +183,26 @@ export class HorariosComponent implements OnInit {
     }
     for (const dia of this.horarios) {
       switch (dia.horario_dia) {
-        case 'Lunes': {
-          i = 0;
-          break;
-        }
-        case 'Martes': {
-          i = 1;
-          break;
-        }
-        case 'Miercoles': {
-          i = 2;
-          break;
-        }
-        case 'jueves': {
-          i = 3;
-          break;
-        }
-        case 'Viernes': {
-          i = 4;
-          break;
-        }
-        default:
-          {
-            console.log('No such day exists!', dia);
-            break;
-          }
+        case 'Lunes': i = 0; break;
+        case 'Martes': i = 1; break;
+        case 'Miercoles': i = 2; break;
+        case 'jueves': i = 3; break;
+        case 'Viernes': i = 4; break;
+        default: console.log('No such day exists!', dia); break;
       }
       switch (dia.horario_hora) {
-        case 7: {
-          j = 0;
-          break;
-        }
-        case 9: {
-          j = 1;
-          break;
-        }
-        case 11: {
-          j = 2;
-          break;
-        }
-        case 13: {
-          // console.log('llego al jueves y se debe meter: ', dia);
-          j = 3;
-          break;
-        }
-        case 15: {
-          j = 4;
-          break;
-        }
-        case 17: {
-          j = 5;
-          break;
-        }
-        default:
-          {
-            console.log('No such day exists!', dia);
-            break;
-          }
+        case 7: j = 0; break;
+        case 9: j = 1; break;
+        case 11: j = 2; break;
+        case 13: j = 3; break;
+        case 15: j = 4; break;
+        case 17: j = 5; break;
+        default: console.log('No such hour exists!', dia); break;
       }
-      // console.log(dia);
-      const diaView = new HorarioViewModel();
-      if (this.reporte === 'aula') {
-        // console.log(dia);
-        if (!dia.horario_vacio) {
-          diaView.horario_dia = dia.horario_dia;
-          diaView.horario_hora = dia.horario_hora;
-          const gp = await this._grupo.list.find(g => g.grupo_id === dia.horario_grupo);
-          const cp = await this.componentes.find(c => c.componente_id === gp.grupo_componente);
-          diaView.componente = cp.componente_nombre;
-          if (gp.grupo_tipo === 'teorico') {
-            diaView.grupo = `gt${gp.grupo_numero}`;
-          }
-          if (gp.grupo_tipo === 'practico') {
-            diaView.grupo = `gp${gp.grupo_numero}`;
-          }
-          diaView.aula = `${this.selectedA.aula_nombre}: ${this.selectedR.recinto_nombre}`;
-          const dc = this._docente.list.find(d => d.docente_id === gp.grupo_docente);
-          diaView.docente = dc.docente_nombre;
-          console.log(diaView);
-          this.array[j][i] = diaView;
-          i = 0;
-          j = 0;
-        }
-      }
-      if (this.reporte === 'docente') {
-        if (!dia.horario_vacio) {
-          diaView.horario_dia = dia.horario_dia;
-          diaView.horario_hora = dia.horario_hora;
-          const gp = await this._grupo.list.find(g => g.grupo_id === dia.horario_grupo);
-          const cp = await this.componentes.find(c => c.componente_id === gp.grupo_componente);
-          diaView.componente = cp.componente_nombre;
-          if (gp.grupo_tipo === 'teorico') {
-            diaView.grupo = `gt${gp.grupo_numero}`;
-          }
-          if (gp.grupo_tipo === 'practico') {
-            diaView.grupo = `gp${gp.grupo_numero}`;
-          }
-          diaView.anyo = cp.componente_ciclo;
-          const al = this._aula.list.find(a => a.aula_id === dia.horario_aula)
-          diaView.aula = al.aula_nombre;
-          console.log(diaView);
-          this.array[i][j] = diaView;
-          i = 0;
-          j = 0;
-        }
-      }
+      console.log(dia);
+      this.array[i][j] = dia;
+      i = 0;
+      j = 0;
     }
     console.log(this.array);
   }
