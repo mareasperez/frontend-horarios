@@ -80,7 +80,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
     } else {
       const dialogRef = this.dialog.open(AddareaComponent, {
         width: '450px',
-        data: { type: tipo, name: nombre, id }
+        data: { type: tipo, name: nombre, id:id }
       });
     }
   }

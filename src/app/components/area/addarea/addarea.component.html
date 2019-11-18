@@ -1,14 +1,11 @@
 <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <input type="text" name="nombre" placeholder="Nombre del Area" [(ngModel)]="area.area_nombre" class="form-control" autofocus> 
-        </div>
-          <button class="btn btn-success btn-block" (click)="data.type !== 'c' ? updateArea() : saveArea()">
-            Guardar
-          </button>
-        </form>
-      </div>
-    </div>
+ <mat-card>
+   <mat-form-field appearance="outline" >
+     <mat-label>Nombre del Area</mat-label>
+     <input type="text" matInput  [(ngModel)]="area.area_nombre"  autofocus> 
+    </mat-form-field>
+    <button mat-raised-button class="bg-color-green d-block" (click)="data.type !== 'c' ? updateArea() : saveArea()">
+      Guardar
+    </button>
+  </mat-card> 
   </div>

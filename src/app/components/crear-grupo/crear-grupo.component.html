@@ -29,15 +29,15 @@
                     </mat-select>
                 </mat-form-field>
             </div>   
-            <div class="col-12" *ngIf="gruposByPlan.length>0">
+            <div class="col-12" >
                 <div class="row">
                     <span class="col-6">
-                        <app-componentes [componentes]="compsByPde" [areas]="areas" [pdes]="pdes"
+                        <app-componentes *ngIf="compsByPde.length>0" [componentes]="compsByPde" [areas]="areas" [pdes]="pdes"
                           (gpComp)="groupsByComp($event)"
                         ></app-componentes>
                     </span>
                     <span class="col-6"  *ngIf="componente.componente_id !== '0'">
-                        <app-grupo [componentes]="componentes" [planificacion]="planSelected" 
+                        <app-grupo *ngIf="planSelected !== '0'" [componentes]="componentes" [planificacion]="planSelected" 
                         [_grupos]="gruposFiltrados" [planificaciones]="planificaciones"
                         [docentes]="docentes" [_componente]="componente" >
                     </app-grupo>

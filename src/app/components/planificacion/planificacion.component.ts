@@ -14,28 +14,35 @@ import { AddPlanificacionComponent } from './add-planificacion/add-planificacion
 export class PlanificacionComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = []
   refPla:Observable<any>;
-  subs:Subscription[]=[]
+  subs:Subscription[]=[];
+  private p1: Promise<any>
   constructor(private _planificacion:PlanificacionService,
               private dialog: MatDialog,
               private _snack:MatSnackBar    
     ) { 
-  this.subs.push(
-    this._planificacion.getPlanificaciones()
-      .subscribe(
-        res=>this.planificaciones.push(res),
-        error=>this._snack.open(error.message,"OK",{duration: 3000}),
-      )  
-    );
+      
+      this.p1 = new Promise((resolve, reject)=>{
+        let sub = this._planificacion.getPlanificaciones()
+          .subscribe(
+            res=>this.planificaciones.push(res),
+            error=>this._snack.open(error.message,"OK",{duration: 3000}),
+            ()=>resolve()
+          )  
+          this.subs.push(sub)
+      });
+    
     this.refPla = this._planificacion.getList()
   }
 
   ngOnInit() {
-    this.subs.push(
-      this.refPla.subscribe(data=>{
-        console.log(data)
-        this.planificaciones = data
-      })
-    );
+    this.p1.then(()=>{
+      this.subs.push(
+        this.refPla.subscribe(data=>{
+          console.log(data)
+          this.planificaciones = data
+        })
+        );
+    })
 
   }
 

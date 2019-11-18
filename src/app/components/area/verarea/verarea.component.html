@@ -5,12 +5,13 @@
             <h1 style="margin-left: 5%">Areas</h1>
             <span style="flex: 1 1 auto"></span>
             <div style="margin-right: 5%">
-                <button mat-raised-button color="primary" (click)="openDialog('c','optativa')" style="width: 100px">
+                <button mat-raised-button color="primary" (click)="openDialog('c')" style="width: 100px">
           <mat-icon>add</mat-icon>Agregar
         </button>
             </div>
         </div>
-
+        <div class="table-scroll">
+            
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="activartabla">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
@@ -37,5 +38,6 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+    </div>
     </mat-card>
 </div>

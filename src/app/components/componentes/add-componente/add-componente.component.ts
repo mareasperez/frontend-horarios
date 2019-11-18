@@ -11,6 +11,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { Subscription } from 'rxjs';
 interface DialogData {
   type: string;
+  pde?: string;
   componente?: ComponenteModel;
 }
 @Component({
@@ -74,12 +75,12 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         componente_id: null,
         componente_nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
-        componente_chp: new FormControl('2', [Validators.required, Validators.min(1)]),
-        componente_cht: new FormControl('4', [Validators.required, Validators.min(1)]),
-        componente_ciclo: new FormControl('', [Validators.required, Validators.min(1)]),
+        componente_chp: new FormControl('2', [Validators.required, Validators.min(0)]),
+        componente_cht: new FormControl('4', [Validators.required, Validators.min(0)]),
+        componente_ciclo: new FormControl('0', [Validators.required, Validators.min(1)]),
         componente_credito: new FormControl('4', [Validators.required, Validators.min(1), Validators.max(4)]),
         componente_area: new FormControl('', [Validators.required]),
-        componente_pde: new FormControl('', [Validators.required])
+        componente_pde: new FormControl(this.data.pde, [Validators.required])
 
       });
     } else {
@@ -87,8 +88,8 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         componente_id: this.data.componente.componente_id,
         componente_nombre: new FormControl(this.data.componente.componente_nombre, [Validators.required, Validators.minLength(5)]),
-        componente_chp: new FormControl(this.data.componente.componente_chp, [Validators.required, Validators.min(1)]),
-        componente_cht: new FormControl(this.data.componente.componente_cht, [Validators.required, Validators.min(1)]),
+        componente_chp: new FormControl(this.data.componente.componente_chp, [Validators.required, Validators.min(0)]),
+        componente_cht: new FormControl(this.data.componente.componente_cht, [Validators.required, Validators.min(0)]),
         componente_ciclo: new FormControl(this.data.componente.componente_ciclo, [Validators.required, Validators.min(1)]),
         componente_credito: new FormControl(
           this.data.componente.componente_credito, [Validators.required, Validators.min(1), Validators.max(4)]),

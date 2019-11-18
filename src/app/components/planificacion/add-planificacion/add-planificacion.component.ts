@@ -4,6 +4,7 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { Subscription } from 'rxjs';
+import { matErrorsMessage } from 'src/app/utils/errors';
 interface DialogData {
   type: string;
   plan?: PlanificacionModel;
@@ -16,6 +17,7 @@ interface DialogData {
 export class AddPlanificacionComponent implements OnInit {
   public form:FormGroup
   private subs:Subscription[]=[]
+  public Errors:matErrorsMessage = new matErrorsMessage();
   constructor(private _planificacion: PlanificacionService,
               public dialogRef: MatDialogRef<AddPlanificacionComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -38,7 +40,7 @@ export class AddPlanificacionComponent implements OnInit {
 
     }else{
       this.form = this.fb.group({
-        planificacion_id: new FormControl(this.data.plan.planificacion_id),
+        planificacion_id: this.data.plan.planificacion_id,
         planificacion_anyo_lectivo: new FormControl(this.data.plan.planificacion_anyo_lectivo,[Validators.required, Validators.min(2008)]),
         planificacion_semestre: new FormControl(this.data.plan.planificacion_semestre,[Validators.required])
       })
@@ -67,6 +69,10 @@ export class AddPlanificacionComponent implements OnInit {
           error=>this._snack.open(error.message,"OK",{duration: 3000}),
         )
     );
+  }
+
+  get Form(){
+    return this.form.controls
   }
 
 }

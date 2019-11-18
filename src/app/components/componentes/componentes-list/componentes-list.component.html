@@ -10,7 +10,9 @@
             </mat-select>
         </mat-form-field>
         <span style="flex: 1 1 auto"></span>
-          <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')" >
+          <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')" 
+          [disabled]="pdeSelected === '0'">
+          
             <mat-icon>add</mat-icon> Agregar
           </button>
           <div class="table-scroll">
@@ -48,7 +50,7 @@
                           <button mat-raised-button color="warn" (click)="delComponente(Componente.componente_id)">
                               <mat-icon>delete</mat-icon>
                           </button>
-                          <button mat-raised-button class="ml-1" style="background-color: green;" (click)="openDialog('u',Componente.componente_id )">
+                          <button mat-raised-button class="ml-1 bg-color-green" (click)="openDialog('u',Componente.componente_id )">
                               <mat-icon>edit</mat-icon>
                           </button>
                       </div>
