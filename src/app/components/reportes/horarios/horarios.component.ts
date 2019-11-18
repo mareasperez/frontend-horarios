@@ -7,7 +7,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -66,6 +66,10 @@ export class HorariosComponent implements OnInit, OnDestroy {
     private _componente: ComponenteService,
     private _pde: PlanEstudioService) { }
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.reporte = (params.get('reporte'));
+      this.selectedF = undefined;
+    });
     this._planificacion.getPlanificaciones().subscribe();
     this._grupo.getGrupos().subscribe();
     this._carrera.getCarrera().subscribe();
@@ -74,7 +78,6 @@ export class HorariosComponent implements OnInit, OnDestroy {
     this._departamento.getDepartamento().subscribe();
     this._recinto.getRecinto().subscribe();
     this._aula.getAula().subscribe();
-    this.reporte = (this.route.snapshot.params.reporte);
     this._horario.getHorarios().subscribe();
     const p = new Promise((resolve, reject) => {
       this._facultad.getFacultad().subscribe(res => this.facultades.push(res));

@@ -37,7 +37,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
       const sub = this.RecintoService.getRecinto()
         .subscribe(
           res => this.recintos.push(res),
-          error => this._snack.open(error, 'OK', {duration: 3000}),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
     });
@@ -46,7 +46,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
       let sub = this.facultad$.getFacultad()
         .subscribe(
           res => this.facults.push(res),
-          error => this._snack.open(error, 'OK', {duration: 3000}),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -61,9 +61,12 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
     });
-    this.refRecinto.subscribe( data => {
+    this.refRecinto.subscribe(data => {
       console.log(data);
-      this.recintos = data;
+      this.recintos = [];
+      data.forEach(element => {
+        this.recintos.push(element);
+      });
     });
   }
 
@@ -90,9 +93,9 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
   }
   deleteRecinto(id: string) {
     this.sub = this.RecintoService.deleteRecinto(id)
-    .subscribe(
-      res => {},
-      error => this._snack.open(error.message,'OK', {duration: 3000}),
-    );
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 }

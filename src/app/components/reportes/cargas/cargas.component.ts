@@ -13,7 +13,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { RComponent } from 'src/app/models/rcomponentes';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
@@ -64,7 +64,9 @@ export class CargasComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.query = (this.route.snapshot.queryParamMap.get('reporte'));
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.query = (params.get('reporte'));
+    });
     console.log('init');
   }
   ngOnDestroy() {

@@ -63,9 +63,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         console.log(data);
         this.carreras = data;
         this.dataSource = [];
-        this.carreras.forEach(car => {
-          this.dataSource.push(car)
-        })
+        this.carreras.forEach(car => this.dataSource.push(car));
       });
     });
   }

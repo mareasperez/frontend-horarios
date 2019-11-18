@@ -39,12 +39,12 @@
 
     <ng-container matColumnDef="opciones">
         <th mat-header-cell *matHeaderCellDef> opciones </th>
-        <td mat-cell *matCellDef="let recinto">
+        <td mat-cell *matCellDef="let recintos">
             <div class="opciones">
-                <button class="btn btn-danger boton" (click)="deleteRecinto(recinto.recinto_id)">
+                <button class="btn btn-danger boton" (click)="deleteRecinto(recintos.recinto_id)">
                         <mat-icon style="color:white">delete</mat-icon>
         </button>
-                <button class="btn btn-success boton" (click)="openDialog('u', recinto.recinto_id)">
+                <button class="btn btn-success boton" (click)="openDialog('u', recintos.recinto_id)">
                         <mat-icon style="color:white">edit</mat-icon>
         </button>
             </div>

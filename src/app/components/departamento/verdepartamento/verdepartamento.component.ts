@@ -64,7 +64,10 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     this.refDepartamento.subscribe(data => {
       console.log(data);
       this.departamentos = data;
-      this.dataSource = this.departamentos;
+      this.dataSource = [];
+      this.departamentos.forEach(dep => {
+        this.dataSource.push(dep);
+      });
     });
   }
 
