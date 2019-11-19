@@ -13,7 +13,7 @@ import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-
+import { getItemLocalCache } from 'src/app/utils/utils';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -118,10 +118,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   createForm(){
     this.form = this.fb.group({
-      carrera: new FormControl(''),
-      departamento: new FormControl(''),
-      pde: new FormControl(''),
-      planificacion: new FormControl('')
+      carrera: new FormControl(getItemLocalCache("carrera") ),
+      departamento: new FormControl(getItemLocalCache("departamento")),
+      pde: new FormControl(getItemLocalCache("pde")),
+      planificacion: new FormControl(getItemLocalCache("planificacion"))
     })
   }
 
@@ -144,4 +144,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  
 }
