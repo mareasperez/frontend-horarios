@@ -7,7 +7,7 @@
             <button mat-raised-button color="warn" class="ml-1" [disabled]="!docGrupos.length === 0" (click)="cerrarTodos()">
                 <mat-icon>highlight_off</mat-icon>
             </button>
-            <mat-form-field class="ml-5" appearance="outline">
+            <mat-form-field class="ml-5 font-size-12" appearance="outline">
                 <mat-label>Departamento</mat-label>
                 <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
                     <mat-option value="0">Ninguno</mat-option>
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-3" style="height: 67vh;overflow: auto;">
                 <mat-list >
-                    <mat-list-item class="border-radius-50 " *ngFor="let docente of docentesList; let i = index"
+                    <mat-list-item class="border-radius-50 font-size-12" *ngFor="let docente of docentesList; let i = index"
                      [class.bg-color-ligth]="i % 2 === 1" (click)="verGruposDoc(docente.docente_id)">
                         {{docente.docente_nombre}}    
                     </mat-list-item>
@@ -48,7 +48,9 @@
                             </mat-list-item>
                         </mat-list>
                     </mat-card-content>
-                    <mat-card-footer class="bg-color-green">
+                    <mat-card-footer [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
+                                                 'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id)
+                                                }">
                         {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
                     </mat-card-footer>
                 </mat-card>
