@@ -19,11 +19,11 @@
                         <th mat-header-cell *matHeaderCellDef> opciones </th>
                         <td mat-cell *matCellDef="let facultad">
                             <div class="opciones">
-                                <button class="btn btn-danger btnlogin" (click)="deleteFaculta(facultad.facultad_id)">
-                                <mat-icon  style="color:white">delete</mat-icon>
+                                <button class="btnBorrar" mat-raised-button (click)="deleteFaculta(facultad.facultad_id)">
+                                <mat-icon>delete</mat-icon>
                               </button>
-                                <button class="btn btn-success btnlogin" (click)="showAdd(facultad)">
-                                <mat-icon style="color:white">edit</mat-icon>
+                                <button class="btnEditar" mat-raised-button (click)="showAdd(facultad)">
+                                <mat-icon>edit</mat-icon>
                               </button>
                             </div>
                         </td>

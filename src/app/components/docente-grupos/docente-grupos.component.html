@@ -1,61 +1,71 @@
-<div class="container-fluid" >
-    <mat-card  style="height: 80vh;">
-            <h4>Docentes</h4>
-            <button mat-raised-button  [disabled]="docentesList.length == 0" class="bg-color-green" (click)="verTodos()">
-                <mat-icon class="color-white">group</mat-icon>
+<div class="container-fluid">
+    <mat-card style="height: 80vh;">
+        <h4>Docentes</h4>
+        <button mat-raised-button [disabled]="docentesList.length === 0" class="btnEditar" (click)="verTodos()">
+                <mat-icon>group</mat-icon>
             </button>
-            <button mat-raised-button color="warn" class="ml-1" (click)="cerrarTodos()">
+        <button mat-raised-button class="ml-1 btnBorrar" [disabled]="!docGrupos.length === 0" (click)="cerrarTodos()">
                 <mat-icon>highlight_off</mat-icon>
             </button>
-            <mat-form-field class="ml-5 font-size-12" appearance="outline">
-                <mat-label>Departamento</mat-label>
-                <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
-                    <mat-option value="0">Ninguno</mat-option>
-                    <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos ">
-                        {{dep.departamento_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button mat-raised-button (click)="delFiltro()" class="ml-1" [disabled]="depSelected === '0'">
+        <mat-form-field class="ml-5" appearance="outline">
+            <mat-label>Departamento</mat-label>
+            <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
+                <mat-option value="0">Ninguno</mat-option>
+                <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos ">
+                    {{dep.departamento_nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button (click)="delFiltro()" class="ml-1" [disabled]="depSelected === '0'">
                 <mat-icon>highlight_off</mat-icon>
             </button>
         <div class="row">
             <div class="col-3" style="height: 67vh;overflow: auto;">
-                <mat-list >
-                    <mat-list-item class="border-radius-50 font-size-12" *ngFor="let docente of docentesList; let i = index"
-                     [class.bg-color-ligth]="i % 2 === 1" (click)="verGruposDoc(docente.docente_id)">
-                        {{docente.docente_nombre}}    
+                <mat-list>
+                    <mat-list-item class="border-radius-50 " *ngFor="let docente of docentesList; let i = index" [class.bg-color-ligth]="i % 2 === 1" (click)="verGruposDoc(docente.docente_id)">
+                        {{docente.docente_nombre}}
                     </mat-list-item>
                 </mat-list>
             </div>
             <div class="col-9" style="height: 67vh;">
                 <div class="row " style="max-height: 70vh;overflow: auto;">
-                <mat-card class="card col-4 mx-1 mt-1 h-auto" *ngFor="let docente of docGrupos">
-                    <mat-card-header>
+                    <mat-card class="card col-4 mx-1 mt-1 h-auto" *ngFor="let docente of docGrupos">
+                        <mat-card-header>
                             <mat-card-title>{{docente.docente_nombre}}</mat-card-title>
                             <span style="flex: 1 1 auto;"></span>
                             <button mat-icon-button color="warn" (click)="close(docente.docente_id)">
                                 <mat-icon>cancel</mat-icon>
                             </button>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-list>
-                            <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
-                                    {{grupo.grupo_tipo}}{{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNombre: componentes}}
-                                     Hrs: {{grupo.grupo_horas_clase}}
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-list>
+                                <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
+                                    {{grupo.grupo_tipo}}{{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNombre: componentes}} Hrs: {{grupo.grupo_horas_clase}}
                                     <span style="flex: 1 1 auto;"></span>
-                                <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)"><mat-icon>delete</mat-icon></button>
-                            </mat-list-item>
-                        </mat-list>
-                    </mat-card-content>
-                    <mat-card-footer [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
+                                    <<<<<<< HEAD <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
+                                        <mat-icon>delete</mat-icon>
+                                        </button>
+                                </mat-list-item>
+                            </mat-list>
+                        </mat-card-content>
+                        <mat-card-footer [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
                                                  'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id)
                                                 }">
+                            {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
+                        </mat-card-footer>
+                    </mat-card>
+                    =======
+                    <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)"><mat-icon>delete</mat-icon></button>
+                    </mat-list-item>
+                    </mat-list>
+                    </mat-card-content>
+                    <mat-card-footer class="bg-color-green">
                         {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
                     </mat-card-footer>
-                </mat-card>
-                </div>
-            </div>
+    </mat-card>
+    >>>>>>> botonizacion standar
+    </div>
+    </div>
     </div>
     </mat-card>
 </div>

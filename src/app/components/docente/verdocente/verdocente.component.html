@@ -1,60 +1,60 @@
 <div class="container-fluid">
-  <div class="row">
-    <h4 class="d-inline">Docentes</h4>
-    <span style="flex: 1 1 auto;"></span>
-    <button mat-raised-button style="width: 100px" color="primary" class="float-right mb-2" (click)="openDialog('c')">
+    <div class="row">
+        <h4 class="d-inline">Docentes</h4>
+        <span style="flex: 1 1 auto;"></span>
+        <button mat-raised-button style="width: 100px" color="primary" class="float-right mb-2" (click)="openDialog('c')">
       <mat-icon>add</mat-icon> Agregar
     </button>
-  </div>
+    </div>
 </div>
 <div class="table-scroll">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> N<sup>o</sup></th>
-      <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
-    </ng-container>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> N<sup>o</sup></th>
+            <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let docente"> {{docente.docente_nombre}} </td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let docente"> {{docente.docente_nombre}} </td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="contrato">
-      <th mat-header-cell *matHeaderCellDef> Tipo de contrato </th>
-      <td mat-cell *matCellDef="let docente">
-        <div *ngIf="docente.docente_tipo_contrato=='P'">Planta</div>
-        <div *ngIf="docente.docente_tipo_contrato=='H'">Horario</div>
-      </td>
-    </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="contrato">
+            <th mat-header-cell *matHeaderCellDef> Tipo de contrato </th>
+            <td mat-cell *matCellDef="let docente">
+                <div *ngIf="docente.docente_tipo_contrato=='P'">Planta</div>
+                <div *ngIf="docente.docente_tipo_contrato=='H'">Horario</div>
+            </td>
+        </ng-container>
 
-    <ng-container matColumnDef="inss">
-      <th mat-header-cell *matHeaderCellDef> No INSS </th>
-      <td mat-cell *matCellDef="let docente"> {{docente.docente_inss}} </td>
-    </ng-container>
+        <ng-container matColumnDef="inss">
+            <th mat-header-cell *matHeaderCellDef> No INSS </th>
+            <td mat-cell *matCellDef="let docente"> {{docente.docente_inss}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="departamento">
-      <th mat-header-cell *matHeaderCellDef> departamento </th>
-      <td mat-cell *matCellDef="let docente"> {{docente.docente_departamento | departamentoName:departamentos}} </td>
-    </ng-container>
+        <ng-container matColumnDef="departamento">
+            <th mat-header-cell *matHeaderCellDef> departamento </th>
+            <td mat-cell *matCellDef="let docente"> {{docente.docente_departamento | departamentoName:departamentos}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="opciones">
-      <th mat-header-cell *matHeaderCellDef> opciones </th>
-      <td mat-cell *matCellDef="let docente">
-        <div class="opciones">
-          <button mat-raised-button color="warn" (click)="deleteDocente(docente.docente_id)">
-            <mat-icon >delete</mat-icon>
+        <ng-container matColumnDef="opciones">
+            <th mat-header-cell *matHeaderCellDef> opciones </th>
+            <td mat-cell *matCellDef="let docente">
+                <div class="opciones">
+                    <button class="btnBorrar" mat-raised-button (click)="deleteDocente(docente.docente_id)">
+            <mat-icon style="color:white">delete</mat-icon>
           </button>
-          <button mat-raised-button class="bg-color-green" (click)="openDialog('u',docente.docente_id )">
-            <mat-icon style="color:white">edit</mat-icon>
+                    <button class="btnEditar" mat-raised-button (click)="openDialog('u',docente.docente_id )">
+            <mat-icon>edit</mat-icon>
           </button>
-        </div>
-      </td>
-    </ng-container>
+                </div>
+            </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </div>
