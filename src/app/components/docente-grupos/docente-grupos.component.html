@@ -28,8 +28,8 @@
                 </mat-list>
             </div>
             <div class="col-9" style="height: 67vh; overflow: auto;">
-                <div class="row " style="max-height: 60vh;overflow: auto;">
-                    <mat-card class="card col-4 mx-1 mt-1 h-auto" *ngFor="let docente of docGrupos">
+                <div class="row grupos " style="max-height: 60vh;overflow: auto;">
+                    <mat-card class="card col-4 mx-1 mt-1 " *ngFor="let docente of docGrupos">
                         <mat-card-header>
                             <mat-card-title>{{docente.docente_nombre}}</mat-card-title>
                             <span style="flex: 1 1 auto;"></span>
@@ -38,7 +38,7 @@
                             </button>
                         </mat-card-header>
                         <mat-card-content>
-                            <mat-list>
+                            <mat-list class="list-grupos">
                                 <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
                                     <strong>{{grupo.grupo_tipo}}</strong>{{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNombre: componentes}} <strong>Hrs:</strong> {{grupo.grupo_horas_clase}}
                                     <span style="flex: 1 1 auto;"></span>
