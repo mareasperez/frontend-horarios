@@ -74,6 +74,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
       this.show = true;
       this.subs.push(this.refComp
         .subscribe(data => {
+          this.componentes = [];
           this.componentes = data;
           this.componentesByPde(this.pdeSelected);
         })
