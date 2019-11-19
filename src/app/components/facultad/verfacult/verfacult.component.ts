@@ -25,43 +25,42 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   public dataSource = [];
   public hide = true;
   editing = false;
-  promesa: Promise<any>
+  promesa: Promise<any>;
   // tslint:disable: variable-name
   constructor(
     private facultadService: FacultadSerivice,
     private _snack: MatSnackBar
   ) {
 
-   this.promesa = new Promise((resolve, reject) => {
-    let sub = this.facultadService.getFacultad()
-     .subscribe(res => {
-       this.facultades.push(res);
-       this.dataSource = this.facultades;
-       
-     },
-     error => this._snack.open(error, 'OK', {duration: 3000}),
-     ()=>resolve()
-     );
-     this.subs.push(sub);
-    })
+    this.promesa = new Promise((resolve, reject) => {
+      const sub = this.facultadService.getFacultad()
+        .subscribe(res => {
+          this.facultades.push(res);
+          this.dataSource = this.facultades;
+
+        },
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    });
     this.a = this.facultadService.getList();
   }
 
   ngOnInit() {
-  this.promesa.then(()=>{
-    this.subs.push(this.a
-      .subscribe(
-        res => {
-          this.facultades = res;
-          this.dataSource = [];
-          this.facultades.forEach(ft =>{
-            this.dataSource.push(ft)
-          })
-        },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+    this.promesa.then(() => {
+      this.subs.push(this.a
+        .subscribe(
+          res => {
+            this.dataSource = [];
+            this.facultades = [];
+            this.facultades = res;
+            this.dataSource = res;
+          },
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
-    );
-  })
+      );
+    });
 
   }
 

@@ -10,17 +10,17 @@ import { AddareaComponent } from '../addarea/addarea.component';
   templateUrl: './verarea.component.html',
   styleUrls: ['./verarea.component.scss']
 })
+// tslint:disable: no-shadowed-variable
+// tslint:disable: variable-name
 export class VerareaComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   public areas: AreaModel[] = [];
   promesas: Promise<any>[] = [];
   public activartabla: boolean;
-  // tslint:disable-next-line: no-shadowed-variable
   public refArea: Observable<any[]>;
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'opciones'];
-  public dataSource;
-  // tslint:disable: variable-name
+  public dataSource = [];
   constructor(
     private _area: AreaService,
     private dialog: MatDialog,
@@ -46,11 +46,10 @@ export class VerareaComponent implements OnInit, OnDestroy {
       this.dataSource = this.areas;
       this.activartabla = true;
       this.refArea.subscribe((data: AreaModel[]) => {
-        this.areas = data;
+        this.areas = [];
         this.dataSource = [];
-        this.areas.forEach(element => {
-          this.dataSource.push(element);
-        });
+        this.areas = data;
+        this.dataSource = this.areas;
       });
     });
 
@@ -80,7 +79,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
     } else {
       const dialogRef = this.dialog.open(AddareaComponent, {
         width: '450px',
-        data: { type: tipo, name: nombre, id:id }
+        data: { type: tipo, name: nombre, id: id }
       });
     }
   }
