@@ -7,22 +7,28 @@
                 <mat-error *ngIf="Form.carrera_nombre.invalid">{{Errors.getError(Form.carrera_nombre)}}</mat-error>
 
             </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Departamento</mat-label>
-                <mat-select formControlName="carrera_departamento" ([value])="selected">
-                    <mat-option value="0">Departamento...</mat-option>
-                    <mat-option *ngFor="let departamento of departamentos" [value]="departamento.departamento_id">
-                        {{departamento.departamento_nombre}}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="Form.carrera_departamento.invalid">{{Errors.getError(Form.carrera_departamento)}}</mat-error>
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-9">
+                    <mat-label>Departamento</mat-label>
+                    <mat-select formControlName="carrera_departamento" ([value])="selected">
+                        <mat-option value="0">Departamento...</mat-option>
+                        <mat-option *ngFor="let departamento of departamentos" [value]="departamento.departamento_id">
+                            {{departamento.departamento_nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="Form.carrera_departamento.invalid">{{Errors.getError(Form.carrera_departamento)}}</mat-error>
 
-            </mat-form-field>
-            <button mat-raised-button  [disabled]="form.invalid" style="background-color: rgb(8, 219, 8)" (click)="data.type === 'c' ? saveCarrera():updateCarrera()">
+                </mat-form-field>
+                <a mat-button class="col-3" title="Agregar Departamento" href="departamento/ver" target="_blank">
+                    <mat-icon>add_circle</mat-icon>
+                </a>
+            </div>
+
+            <button mat-raised-button [disabled]="form.invalid" style="background-color: rgb(8, 219, 8)" (click)="data.type === 'c' ? saveCarrera():updateCarrera()">
                 <mat-icon>save</mat-icon>
           Guardar
         </button>
-        <button mat-raised-button  color="warn" (click)="dialogRef.close()">
+            <button mat-raised-button color="warn" (click)="dialogRef.close()">
                 <mat-icon>cancel</mat-icon>
           Cancelar
         </button>
