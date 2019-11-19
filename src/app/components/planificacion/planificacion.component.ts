@@ -15,7 +15,10 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = []
   refPla:Observable<any>;
   subs:Subscription[]=[];
-  private p1: Promise<any>
+  public visible = false;
+  private p1: Promise<any>;
+  public dataSource;
+  displayedColumns: string[] = ['id', 'nombre', 'opciones'];
   constructor(private _planificacion:PlanificacionService,
               private dialog: MatDialog,
               private _snack:MatSnackBar    
@@ -28,20 +31,26 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
             error=>this._snack.open(error.message,"OK",{duration: 3000}),
             ()=>resolve()
           )  
-          this.subs.push(sub)
+        this.subs.push(sub);
+        this.dataSource = this.planificaciones;
       });
     
-    this.refPla = this._planificacion.getList()
+      this.refPla = this._planificacion.getList()
   }
 
   ngOnInit() {
     this.p1.then(()=>{
+      this.visible = true;
       this.subs.push(
-        this.refPla.subscribe(data=>{
-          console.log(data)
-          this.planificaciones = data
-        })
         );
+    });
+    this.refPla.subscribe(data=>{
+      console.log(data)
+      this.planificaciones = data;
+      this.dataSource = [];
+      this.planificaciones.forEach(dep => {
+        this.dataSource.push(dep);
+      });
     })
 
   }
@@ -68,7 +77,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
     } else {
 
       let plan = this.planificaciones.find(p => p.planificacion_id === id);
-       this.dialog.open(AddPlanificacionComponent, {
+      this.dialog.open(AddPlanificacionComponent, {
         width: '450px',
         data: {type: tipo, plan: plan}
       });

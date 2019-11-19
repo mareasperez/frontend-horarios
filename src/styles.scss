@@ -1,56 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-button:focus{
+button:focus {
     outline: none;
 }
 
-*:focus{
+*:focus {
     outline: none;
 }
 
-.color-blue{
-    color:rgb(4, 0, 255)
+.float-right {
+    float: right !important;
+    line-height: 1.2;
 }
-.color-light{
+
+.color-blue {
+    color: rgb(4, 0, 255)
+}
+
+.color-light {
     color: #d3f5ee;
 }
 
-.color-green{
+.color-green {
     color: #28a745
 }
 
-.bg-color-blue{
+.bg-color-blue {
     background-color: rgb(4, 0, 255);
 }
 
-.bg-color-green{
-    background:#28a745
+.bg-color-green {
+    background: #28a745
 }
 
-.bg-color-ligth{
-background-color:  #d3f5ee !important;
+.bg-color-ligth {
+    background-color: #d1e4ff !important;
 }
 
-.border-radius-50{
-    border-radius: 50px;
+.border-radius-50 {
+    border-radius: 10px;
 }
 
-.font-size-15{
+.font-size-15 {
     font-size: 15px !important;
 }
 
-.font-size-12{
+.font-size-12 {
     font-size: 12px !important;
 }
 
-.join{
+.join {
     display: flex;
     flex-direction: row;
-  }
+}
 
-  .table-scroll {
+.table-scroll {
     overflow: auto;
     height: 340px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
