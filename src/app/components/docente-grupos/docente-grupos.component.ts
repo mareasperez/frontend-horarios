@@ -8,6 +8,10 @@ import { DocenteService } from 'src/app/services/docente.service';
 import { MatSnackBar } from '@angular/material';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { ComponenteModel } from 'src/app/models/componente.model';
+import { DocenteHorasService } from 'src/app/services/docente-horas.service';
+import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
+import { DepartamentoModel } from 'src/app/models/departamento.model';
+import { DepartamentoService } from 'src/app/services/departamento.service';
 
 @Component({
   selector: 'app-docente-grupos',
@@ -19,15 +23,22 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public docentesList:DocenteModel[]=[];
   public docGrupos:DocenteModel[]=[];
   public grupos:GrupoModel[]=[];
+  public departamentos: DepartamentoModel[]=[];
   public componentes:ComponenteModel[]=[];
+  public docHoras: DocenteHorasModel[]=[];
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
   private promesas: Promise<any>[] = [];
   public refDocente: Observable<any>
   public refGrupo: Observable<any>
   public refComp: Observable<any>
+  public refDcHr: Observable<any>
+  public refDep: Observable<any>
+  public depSelected = '0'
   constructor(private _grupo:GrupoService,
               private _docente:DocenteService,
+              private _dep: DepartamentoService,
+              private _dohr: DocenteHorasService,
               private _componete:ComponenteService,
               private _snack: MatSnackBar
 
@@ -51,19 +62,39 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
         );
         this.subs.push(sub);
         });
-    const p3 = new Promise((resolve) => {
-      const sub = this._componete.getComponentes()
-        .subscribe(
-          res => this.componentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    });
+        const p3 = new Promise((resolve) => {
+          const sub = this._componete.getComponentes()
+            .subscribe(
+              res => this.componentes.push(res),
+              error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+              () => resolve()
+            );
+          this.subs.push(sub);
+        }); 
+      const p4 = new Promise((resolve) => {
+        const sub = this._dohr.getDcHoras()
+          .subscribe(
+            res => this.docHoras.push(res),
+            error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      });
+      const p5 = new Promise((resolve) => {
+        const sub = this._dep.getDepartamento()
+          .subscribe(
+            res => this.departamentos.push(res),
+            error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      });
     this.refGrupo = this._grupo.getList();
     this.refDocente = this._docente.getList();
     this.refComp = this._componete.getList();
-    this.promesas.push(p1,p2,p3)
+    this.refDcHr = this._dohr.getList();
+    this.refDep = this._dep.getList();
+    this.promesas.push(p1,p2,p3,p4,p5)
 
    }
 
@@ -79,7 +110,13 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       let sub3 = this.refComp.subscribe(res => {
         this.componentes = res;
       })
-      this.subs.push(sub, sub2, sub3);
+      let sub4 = this.refDep.subscribe(res => {
+        this.departamentos = res;
+      }) 
+      let sub5 = this.refDep.subscribe(res => {
+        this.departamentos = res;
+      })
+      this.subs.push(sub, sub2, sub3, sub4, sub5);
     })
   }
 
@@ -99,7 +136,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     let doc = this.docentes.find(doc => doc.docente_id === id);
     this.docGrupos.push(doc);
     this.docentesList = this.docentesList.filter(el => el.docente_id !== id);
-    console.log(this.docGrupos.length)
   }
 
   verTodos(){
@@ -121,7 +157,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
 
   removerDoc(id:string){
     let grupo = this.grupos.find(gp => gp.grupo_id === id)
-    console.log(grupo)
     grupo.grupo_docente = null;
 
     this._grupo.updategrupo(grupo, id).subscribe(res => {
@@ -130,14 +165,31 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   }
 
   docenteHoras(id: string){
-  let i = 0
     let grupos = this.grupos.filter(gp => gp.grupo_docente === id);
     let horas = grupos.reduce(( horas , gp)=> {
-      return horas + gp.grupo_horas_clase; 
-      
+      return horas + gp.grupo_horas_clase;  
       },0)
 
     return horas;
+  }
+
+  dohrs(id){
+   let doc = this.docHoras.find(doc => doc.dh_docente === id)
+   return doc === undefined ? 0 : doc.dh_horas_total
+  }
+
+  docByDep(id:string){
+    console.log(id)
+    if(id === '0'){
+      this.delFiltro()
+    }else{
+      this.docentesList = this.docentes.filter(dc => dc.docente_departamento === id);   
+    }
+  }
+
+  delFiltro(){
+    this.docentesList = this.docentes;
+    this.depSelected = '0';
   }
 
 }

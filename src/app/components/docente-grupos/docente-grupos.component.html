@@ -7,13 +7,24 @@
             <button mat-raised-button color="warn" class="ml-1" [disabled]="!docGrupos.length === 0" (click)="cerrarTodos()">
                 <mat-icon>highlight_off</mat-icon>
             </button>
+            <mat-form-field class="ml-5" appearance="outline">
+                <mat-label>Departamento</mat-label>
+                <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
+                    <mat-option value="0">Ninguno</mat-option>
+                    <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos ">
+                        {{dep.departamento_nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button (click)="delFiltro()" class="ml-1" [disabled]="depSelected === '0'">
+                <mat-icon>highlight_off</mat-icon>
+            </button>
         <div class="row">
             <div class="col-3" style="height: 67vh;overflow: auto;">
                 <mat-list >
                     <mat-list-item class="border-radius-50 " *ngFor="let docente of docentesList; let i = index"
                      [class.bg-color-ligth]="i % 2 === 1" (click)="verGruposDoc(docente.docente_id)">
-                        {{docente.docente_nombre}}
-                       
+                        {{docente.docente_nombre}}    
                     </mat-list-item>
                 </mat-list>
             </div>
@@ -38,7 +49,7 @@
                         </mat-list>
                     </mat-card-content>
                     <mat-card-footer class="bg-color-green">
-                        {{docenteHoras(docente.docente_id)}}
+                        {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
                     </mat-card-footer>
                 </mat-card>
                 </div>
