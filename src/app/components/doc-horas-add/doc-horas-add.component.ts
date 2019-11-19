@@ -61,8 +61,8 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
         dh_horas_planta: new FormControl('',[Validators.required, Validators.min(0)]),
         dh_horas_hor: new FormControl('',[Validators.required,Validators.min(0)]),
         dh_horas_total: 0,
-        dh_docente: new FormControl('0',[Validators.required]),
-        dh_planificacion: new FormControl('0',[Validators.required])
+        dh_docente: new FormControl('',[Validators.required]),
+        dh_planificacion: new FormControl('',[Validators.required])
       })
     }else{
         this.form = this.fb.group({

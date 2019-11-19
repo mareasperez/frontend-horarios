@@ -2,7 +2,7 @@
     <mat-card  style="height: 80vh;">
             <h4>Docentes</h4>
             <button mat-raised-button  [disabled]="docentesList.length === 0" class="bg-color-green" (click)="verTodos()">
-                <mat-icon>group</mat-icon>
+                <mat-icon class="color-white">group</mat-icon>
             </button>
             <button mat-raised-button color="warn" class="ml-1" [disabled]="!docGrupos.length === 0" (click)="cerrarTodos()">
                 <mat-icon>highlight_off</mat-icon>

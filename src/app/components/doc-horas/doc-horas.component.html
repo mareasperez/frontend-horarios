@@ -39,8 +39,10 @@
                 <th mat-header-cell *matHeaderCellDef> opciones </th>
                 <td mat-cell *matCellDef="let dh">
                     <div class="opciones">
-                        <button class="btn btn-danger btnlogin" (click)="delDH(dh.dh_id)" style="color:white"><mat-icon>delete</mat-icon></button>
-                        <button class="btn btn-success btnlogin" (click)="openDialog('u',dh.dh_id)" style="color:white"><mat-icon>edit</mat-icon></button>
+                        <button mat-raised-button color="warn" (click)="delDH(dh.dh_id)" ><mat-icon>delete</mat-icon></button>
+                        <button mat-raised-button class="bg-color-green color-white" (click)="openDialog('u',dh.dh_id)" >
+                            <mat-icon>edit</mat-icon>
+                        </button>
                     </div>
                 </td>
             </ng-container>
