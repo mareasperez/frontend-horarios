@@ -66,7 +66,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         departamento_id: null,
         departamento_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-        departamento_facultad: new FormControl('0', [Validators.required])
+        departamento_facultad: new FormControl('', [Validators.required])
 
       });
     } else {

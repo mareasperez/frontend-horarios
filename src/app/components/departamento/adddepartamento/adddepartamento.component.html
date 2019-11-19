@@ -9,16 +9,17 @@
             <mat-form-field appearance="outline">
                 <mat-label>Facultad</mat-label>
                 <mat-select formControlName="departamento_facultad" ([value])="selected">
-                    <mat-option value="0">Facultad...</mat-option>
                     <mat-option *ngFor="let facultad of facultades" [value]="facultad.facultad_id">
                         {{facultad.facultad_nombre}}
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="Form.departamento_facultad.invalid">{{Errors.getError(Form.departamento_facultad)}}</mat-error>
             </mat-form-field>
-            <button class="btn btn-success btn-block" (click)="data.type === 'c' ? saveDepartamento():updateDepartamento()">
-        Guardar
-      </button>
+            <button mat-raised-button class="bg-color-green" [disabled]="form.invalid"
+             (click)="data.type === 'c' ? saveDepartamento():updateDepartamento()">
+               <mat-icon>save</mat-icon> Guardar
+            </button>
+             <button mat-raised-button color="warn" (click)="dialogRef.close()" ><mat-icon>cancel</mat-icon>Cancelar</button>
         </form>
     </mat-card>
 </div>
