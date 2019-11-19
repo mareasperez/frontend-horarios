@@ -89,12 +89,12 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       this.dialog.open(AddaulaComponent, {
         width: '450px',
-        data: { type: tipo, idr: id, aul: '', ref: this.refRecintos, aulas: this.recintos }
+        data: { type: tipo, idr: id, aul: '', recintos: this.recintos }
       });
     } else {
       this.dialog.open(AddaulaComponent, {
         width: '450px',
-        data: { type: tipo, idf: '', aul: aula, ref: this.refRecintos, aulas: this.recintos }
+        data: { type: tipo, idf: '', aul: aula, recintos: this.recintos }
       });
     }
   }
