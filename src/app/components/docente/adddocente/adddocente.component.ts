@@ -89,7 +89,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       docente_id: null,
       docente_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       docente_inss: new FormControl('', [Validators.required, Validators.min(10000)]),
-      docente_tipo_contrato: new FormControl('', [Validators.required]),
+      docente_tipo_contrato: new FormControl('H', [Validators.required]),
       docente_departamento: new FormControl('0', [Validators.required])
 
      });

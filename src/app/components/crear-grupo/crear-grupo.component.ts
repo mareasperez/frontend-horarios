@@ -118,7 +118,7 @@ public carreraSelected = getItemLocalCache("carrera");
           this.pdesByCarrera(this.carreraSelected);
         })
         );
-
+        if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected)}
     });
   }
 
