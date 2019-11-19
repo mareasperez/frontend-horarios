@@ -37,11 +37,11 @@
                     <th mat-header-cell *matHeaderCellDef> opciones </th>
                     <td mat-cell *matCellDef="let carrera">
                         <div class="opciones">
-                            <button class="btn btn-danger btnlogin" (click)="delCarrera(carrera.carrera_id)">
-                                                            <mat-icon style="color:white">delete</mat-icon>
+                            <button class="btnBorrar" mat-raised-button (click)="delCarrera(carrera.carrera_id)">
+                                                            <mat-icon>delete</mat-icon>
                                                   </button>
-                            <button class="btn btn-success btnlogin" (click)="openDialog('u', carrera.carrera_id)">
-                                                            <mat-icon style="color:white">edit</mat-icon>
+                            <button class="btnEditar" mat-raised-button (click)="openDialog('u', carrera.carrera_id)">
+                                                            <mat-icon>edit</mat-icon>
                                                   </button>
                         </div>
                     </td>

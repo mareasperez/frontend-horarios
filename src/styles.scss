@@ -25,9 +25,11 @@ button:focus {
 .color-green {
     color: #28a745
 }
+
 .color-red {
     color: red
 }
+
 .color-white {
     color: white
 }
@@ -35,6 +37,7 @@ button:focus {
 .bg-color-red {
     background-color: red;
 }
+
 .bg-color-blue {
     background-color: rgb(4, 0, 255);
 }
@@ -66,7 +69,7 @@ button:focus {
 
 .table-scroll {
     overflow: auto;
-    height: 350px;
+    height: 400px;
 }
 
 html,
@@ -77,4 +80,18 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.btnEditar {
+    background-color: #56ff38;
+    color: #ffffff;
+}
+
+.btnBorrar {
+    background-color: #ff3838;
+    color: #ffffff;
+}
+
+.opciones button {
+    margin-right: 8px;
 }
