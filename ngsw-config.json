@@ -10,8 +10,8 @@
         "files": [
           "/favicon.ico",
           "/index.html",
-          "/*.css",
-          "/*.js",
+          "/**.css",
+          "/**.js",
           "/manifest.webmanifest"
 
         ],
@@ -19,7 +19,8 @@
           "https://cdnjs.cloudflare.com/ajax/libs/popper.js/**" ,
           "https://stackpath.bootstrapcdn.com/bootstrap/**" ,
           "https://fonts.googleapis.com/**",
-          "https://use.fontawesome.com/releases/**"
+          "https://use.fontawesome.com/releases/**",
+          "https://fonts.gstatic.com/s/**"
         ]
       }
     }, {
@@ -33,23 +34,6 @@
         ]
       }
     }
-  ],
-  "dataGroups":[
-    {
-      "name": "horarios-gui",
-      "urls": [
-        "http://localhost:8000/api/**",
-        "http://localhost:4200**",
-        "https://192.168.1.**"
-       
-       ],
-      "version": "1",
-      "cacheConfig": {
-        "maxSize": "200",
-        "maxAge": "1d",
-        "timeout": "",
-        "strategy": "performance"
-      }
-    }
   ]
+  
 }

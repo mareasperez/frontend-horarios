@@ -20,7 +20,7 @@
                 </mat-select>
                 <mat-error *ngIf="Form.recinto_facultad.invalid">{{Errors.getError(Form.recinto_facultad)}}</mat-error>
             </mat-form-field>
-            <button mat-raised-button class="bg-color-green color-white" [disabled]="form.invalid"
+            <button mat-raised-button class="bg-color-green color-white mb-1" [disabled]="form.invalid"
              (click)="data.type === 'c' ? saveRecinto():updateRecinto()">
             Guardar
             </button>

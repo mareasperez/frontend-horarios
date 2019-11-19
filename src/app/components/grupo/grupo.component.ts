@@ -30,7 +30,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public selected2 = '0';
   public selectedComp = '0';
   public componente:ComponenteModel;
-  ;
+
   // validacion de edicion o creacion
   public add = false;
   public editing = false;
