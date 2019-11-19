@@ -99,6 +99,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     let doc = this.docentes.find(doc => doc.docente_id === id);
     this.docGrupos.push(doc);
     this.docentesList = this.docentesList.filter(el => el.docente_id !== id);
+    console.log(this.docGrupos.length)
   }
 
   verTodos(){
@@ -131,12 +132,10 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   docenteHoras(id: string){
   let i = 0
     let grupos = this.grupos.filter(gp => gp.grupo_docente === id);
-    console.log(grupos)
     let horas = grupos.reduce(( horas , gp)=> {
       return horas + gp.grupo_horas_clase; 
       
       },0)
-    console.log(horas)
 
     return horas;
   }

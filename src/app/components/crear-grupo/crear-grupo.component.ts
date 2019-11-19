@@ -237,15 +237,6 @@ let sub =  this._carrera.getCarrera()
 this.subs.push(sub)
 })
 
-let p6 = new Promise((resolve,reject)=>{
-let sub =  this._planificacion.getPlanificaciones()
-.subscribe(
-  res => this.planificaciones.push(res),
-  error=>this._snack.open(error.message,"OK",{duration: 3000}),
-  ()=>resolve()
-  )
-this.subs.push(sub)
-})
 
 let p7 = new Promise((resolve,reject)=>{
 let sub =  this._docente.getDocente()
@@ -277,6 +268,6 @@ let p9 = new Promise((resolve,reject)=>{
   this.subs.push(sub)
   })
 
-this.promesas.push(p9,p8,p7,p6,p5,p4,p3,p2,p1)
+this.promesas.push(p9,p8,p7,p5,p4,p3,p2,p1)
   }
 }
