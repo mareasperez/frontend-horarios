@@ -6,12 +6,17 @@
                 <input formControlName="aula_nombre" matInput>
                 <mat-error *ngIf="Form.aula_nombre.invalid">{{Errors.getError(Form.aula_nombre)}}</mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Recinto</mat-label>
-                <mat-select formControlName="aula_recinto" [(value)]="selected">
-                    <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
-                </mat-select>
-            </mat-form-field>
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-9">
+                    <mat-label>Recinto</mat-label>
+                    <mat-select formControlName="aula_recinto" [(value)]="selected">
+                        <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <a mat-button class="col-3" title="Agregar Recinto" href="recinto/ver" target="_blank">
+                    <mat-icon>add_circle</mat-icon>
+                </a>
+            </div>
             <div class="join">
 
                 <mat-form-field class="w-50" appearance="outline">
@@ -29,8 +34,7 @@
                 </span>
             </div>
 
-            <button mat-raised-button class="bg-color-green mb-1" [disabled]="form.invalid"
-             (click)="data.type === 'c' ? saveAula() : updateAula()">
+            <button mat-raised-button class="bg-color-green mb-1" [disabled]="form.invalid" (click)="data.type === 'c' ? saveAula() : updateAula()">
              Guardar
             </button>
             <button mat-raised-button color="warn" (click)="dialogRef.close()"><mat-icon>cancel</mat-icon> Cancelar</button>
