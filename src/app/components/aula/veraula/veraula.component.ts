@@ -12,21 +12,21 @@ import { AddaulaComponent } from '../addaula/addaula.component';
   templateUrl: './veraula.component.html',
   styleUrls: ['./veraula.component.scss']
 })
+// tslint:disable: no-shadowed-variable
+// tslint:disable: variable-name
 export class VeraulaComponent implements OnInit, OnDestroy {
   public aulas: AulaModel[] = [];
   recintos: RecintoModel[] = [];
   public activartabla = false;
   public selectedR: RecintoModel;
-  public dataSource;
+  public dataSource = [];
   public refAula: Observable<any[]>;
+  public refRecintos: Observable<any[]>;
   public alerts = true;
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'capacidad', 'tipo', 'opciones'];
   socket: WebSocket;
-
   constructor(
-    // tslint:disable: no-shadowed-variable
-    // tslint:disable: variable-name
     private AulaService: AulaService,
     private _recinto: RecintoService,
     private dialog: MatDialog,
@@ -46,6 +46,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         );
     });
+    this.refRecintos = this._recinto.getList();
     this.refAula = this.AulaService.getList();
 
   }
@@ -55,7 +56,9 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       this.dataSource = data.filter(aula => this.selectedR.recinto_id === aula.aula_recinto);
       // this.dataSource = this.aulas;
       this.aulas = data;
-
+    });
+    this.refRecintos.subscribe((data: RecintoModel[]) => {
+      this.recintos = data;
     });
   }
   ngOnDestroy() {
@@ -86,12 +89,12 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       this.dialog.open(AddaulaComponent, {
         width: '450px',
-        data: { type: tipo, idr: id, aul: '' }
+        data: { type: tipo, idr: id, aul: '', ref: this.refRecintos, aulas: this.recintos }
       });
     } else {
       this.dialog.open(AddaulaComponent, {
         width: '450px',
-        data: { type: tipo, idf: '', aul: aula }
+        data: { type: tipo, idf: '', aul: aula, ref: this.refRecintos, aulas: this.recintos }
       });
     }
   }
