@@ -123,7 +123,9 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this._grupo.list = [];
     this._docente.list = [];
-    this._componete.list =[]
+    this._componete.list =[];
+    this._dep.list=[];
+    this._dohr.list=[]
     this.subs.forEach(sub => sub.unsubscribe());
   }
 

@@ -57,7 +57,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     this.ref = this.facultad$.getList();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
     });
