@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AreaService } from 'src/app/services/area.service';
-import { AulaService } from 'src/app/services/aula.service';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { ComponenteService } from 'src/app/services/componente.service';
 import { Subscription, Observable } from 'rxjs';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';

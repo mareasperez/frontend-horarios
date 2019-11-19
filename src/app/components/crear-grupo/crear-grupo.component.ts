@@ -17,6 +17,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { MatSnackBar } from '@angular/material';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
 import { DocenteAreaModel } from 'src/app/models/docente.area.model';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-crear-grupo',
@@ -55,10 +56,10 @@ private subs: Subscription[] = [];
 public planID = '0';
 private promesas: Promise<any>[] = [];
 public show = false;
-public pdeSelected = '0';
-public planSelected = '0';
+public pdeSelected = getItemLocalCache("pde");
+public planSelected = getItemLocalCache("planificacion");
 public cicloSelected = '0';
-public carreraSelected = '0';
+public carreraSelected = getItemLocalCache("carrera");
 
   constructor(private _componente: ComponenteService,
               private _grupo: GrupoService,

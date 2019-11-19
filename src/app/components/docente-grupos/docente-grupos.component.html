@@ -40,9 +40,9 @@
                         <mat-card-content>
                             <mat-list>
                                 <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
-                                    {{grupo.grupo_tipo}}{{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNombre: componentes}} Hrs: {{grupo.grupo_horas_clase}}
+                                    <strong>{{grupo.grupo_tipo}}</strong>{{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNombre: componentes}} <strong>Hrs:</strong> {{grupo.grupo_horas_clase}}
                                     <span style="flex: 1 1 auto;"></span>
-                                    <<<<<<< HEAD <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
+                                    <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
                                         <mat-icon>delete</mat-icon>
                                         </button>
                                 </mat-list-item>
@@ -53,19 +53,5 @@
                                                 }">
                             {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
                         </mat-card-footer>
-                    </mat-card>
-                    =======
-                    <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)"><mat-icon>delete</mat-icon></button>
-                    </mat-list-item>
-                    </mat-list>
-                    </mat-card-content>
-                    <mat-card-footer class="bg-color-green">
-                        {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
-                    </mat-card-footer>
-    </mat-card>
-    >>>>>>> botonizacion standar
-    </div>
-    </div>
-    </div>
     </mat-card>
 </div>
