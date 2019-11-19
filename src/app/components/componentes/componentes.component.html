@@ -1,42 +1,40 @@
-  <mat-card>
+<mat-card>
     <div class="row mb-2">
-      <div class="col-12 float-right">
-        <button mat-raised-button color="primary" (click)="openDialog('c')">
+        <div class="col-12 float-right">
+            <button mat-raised-button style="background-color: #007bff; color: #ffffff" (click)="openDialog('c')">
           <mat-icon>add</mat-icon>Agregar
         </button>
-      </div>
+        </div>
     </div>
-    
+
     <div class="row components">
-      <div class="col-12 list-components">
-        <mat-list *ngIf="componentes.length>0">
-          <mat-list-item *ngFor="let comp of componentes; let i = index" class="border-radius-50 font-size-15 h-auto"
-          [class.bg-color-ligth]="i % 2 === 1">
-            <mat-label  (click)="addG(comp.componente_id)">
-                {{comp.componente_nombre}}
-            </mat-label> 
-            <span style="flex: 1 1 auto"></span>
-            <mat-form-field class="font-size-12 horas-width" appearance="outline">
-                <mat-label>HorasT</mat-label>
-                <input matInput #horast [value]="comp.componente_cht" >
-            </mat-form-field>
-              <mat-form-field class="font-size-12 horas-width" appearance="outline">
-                  <mat-label>HorasP</mat-label>
-                  <input matInput #horasp [value]="comp.componente_chp"  >
-              </mat-form-field>
-            <button mat-icon-button [value]="comp.componente_id" (click)="editHoras(comp.componente_id, horast.value, horasp.value)" >
+        <div class="col-12 list-components">
+            <mat-list *ngIf="componentes.length>0">
+                <mat-list-item *ngFor="let comp of componentes; let i = index" class="border-radius-50 font-size-15 h-auto" [class.bg-color-ligth]="i % 2 === 1">
+                    <mat-label (click)="addG(comp.componente_id)">
+                        {{comp.componente_nombre}}
+                    </mat-label>
+                    <span style="flex: 1 1 auto"></span>
+                    <mat-form-field class="font-size-12 horas-width" appearance="outline">
+                        <mat-label>HorasT</mat-label>
+                        <input matInput #horast [value]="comp.componente_cht">
+                    </mat-form-field>
+                    <mat-form-field class="font-size-12 horas-width" appearance="outline">
+                        <mat-label>HorasP</mat-label>
+                        <input matInput #horasp [value]="comp.componente_chp">
+                    </mat-form-field>
+                    <button mat-icon-button [value]="comp.componente_id" (click)="editHoras(comp.componente_id, horast.value, horasp.value)">
                 <mat-icon class="color-blue">save</mat-icon>
               </button>
-            <button mat-icon-button color="warn" [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
+                    <button mat-icon-button color="warn" [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
               <mat-icon>delete</mat-icon>
             </button>
-            <button mat-icon-button [value]="comp.componente_id" (click)="openDialog('u', comp.componente_id)">
+                    <button mat-icon-button [value]="comp.componente_id" (click)="openDialog('u', comp.componente_id)">
               <mat-icon class="color-green">edit</mat-icon>
             </button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      
-    </div>
-  </mat-card>
+                </mat-list-item>
+            </mat-list>
+        </div>
 
+    </div>
+</mat-card>

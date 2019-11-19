@@ -1,40 +1,38 @@
-  <mat-card>
+<mat-card>
     <div class="row">
-      <div class="horas col-12">
-          <button mat-raised-button [disabled]= "Componente.componente_cht !== 0 ?  false : true" (click)="addGroup(componente.id, 'GT')" class="w-25" style="background-color:  rgb(231, 115, 7);">
+        <div class="horas col-12">
+            <button mat-raised-button [disabled]="Componente.componente_cht !== 0 ?  false : true" (click)="addGroup(componente.id, 'GT')" class="w-25" style="background-color: #4d96ff;">
               GT
           </button>
-          <button mat-raised-button [disabled]= "Componente.componente_chp !== 0 ?  false : true" (click)="addGroup(componente.id, 'GP')" class="w-25 ml-1 mr-1" color="accent">
+            <button mat-raised-button [disabled]="Componente.componente_chp !== 0 ?  false : true" (click)="addGroup(componente.id, 'GP')" class="w-25 ml-1 mr-1" style="background-color: #73ff61;">
             GP
           </button>
         </div>
     </div>
     <div class="row groups">
-      <div class="col-12 list-groups ">
-        <mat-list>
-          <mat-list-item  *ngFor="let grupo of grupos; let i = index" class="border-radius-50 font-size-15 h-auto" [class.bg-color-ligth]="i % 2 === 1">
-            {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
-            <span style="flex: 1 1 auto"></span>
-            <mat-form-field class="font-size-12 ml-1" appearance="outline">
-                <mat-label>Docente</mat-label>    
-                <mat-select [value]="grupo.grupo_docente" (selectionChange)="setDocente($event.value, grupo.grupo_id)">
-                  <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button mat-icon-button >
+        <div class="col-12 list-groups ">
+            <mat-list>
+                <mat-list-item *ngFor="let grupo of grupos; let i = index" class="border-radius-50 font-size-15 h-auto" [class.bg-color-ligth]="i % 2 === 1">
+                    {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
+                    <span style="flex: 1 1 auto"></span>
+                    <mat-form-field class="font-size-12 ml-1" appearance="outline">
+                        <mat-label>Docente</mat-label>
+                        <mat-select [value]="grupo.grupo_docente" (selectionChange)="setDocente($event.value, grupo.grupo_id)">
+                            <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-icon-button>
                 <mat-icon class="color-blue">save</mat-icon>
               </button>
-              <button mat-icon-button  color="warn" [value]="grupo.grupo_id"
-              (click)="delGrupo(grupo.grupo_id)">
+                    <button mat-icon-button color="warn" [value]="grupo.grupo_id" (click)="delGrupo(grupo.grupo_id)">
                   <mat-icon >delete</mat-icon>  
               </button>
-              <button mat-icon-button [value]="grupo.grupo_id"
-              (click)="openDialog('u', grupo.grupo_id)">
+                    <button mat-icon-button [value]="grupo.grupo_id" (click)="openDialog('u', grupo.grupo_id)">
                   <mat-icon class="color-green">edit</mat-icon>
               </button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
 
-  </mat-card>
+</mat-card>
