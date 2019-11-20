@@ -29,6 +29,7 @@ import { ComponentesListComponent } from './components/componentes/componentes-l
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
 import { PlanificacionComponent } from './components/planificacion/planificacion.component';
+import { HorariosCrudComponent } from './components/horarios/horarios.component';
 
 
 const routes: Routes = [
@@ -69,7 +70,8 @@ const routes: Routes = [
   { path: 'planestudio/edit/:id', component: AddplanestudioComponent, canActivate: [AuthGuard] },
   { path: 'grupos', component: CrearGrupoComponent, canActivate: [AuthGuard] },
   { path: 'doc-horas', component: DocHorasComponent, canActivate: [AuthGuard] },
-  { path: 'carrera/list', component: VercarreraComponent, canActivate: [AuthGuard] }
+  { path: 'carrera/list', component: VercarreraComponent, canActivate: [AuthGuard] },
+  { path: 'horarios', component: HorariosCrudComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
