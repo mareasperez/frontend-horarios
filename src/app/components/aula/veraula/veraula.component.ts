@@ -16,7 +16,8 @@ import { AddaulaComponent } from '../addaula/addaula.component';
 // tslint:disable: variable-name
 export class VeraulaComponent implements OnInit, OnDestroy {
   public aulas: AulaModel[] = [];
-  recintos: RecintoModel[] = [];
+  public recintos: RecintoModel[] = [];
+  private promesas: Promise<any>[] = [];
   public activartabla = false;
   public selectedR: RecintoModel;
   public dataSource = [];
@@ -32,11 +33,13 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
-    const p = new Promise<void>(() => {
+    const p = new Promise<void>((resolve) => {
       this.AulaService.getAula()
         .subscribe(
           res => { },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          ()=>resolve()
+
         );
     });
     const p1 = new Promise<void>(() => {
@@ -48,18 +51,21 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     });
     this.refRecintos = this._recinto.getList();
     this.refAula = this.AulaService.getList();
-
+    this.promesas.push(p,p1)
   }
 
   ngOnInit() {
-    this.refAula.subscribe((data: AulaModel[]) => {
-      this.dataSource = data.filter(aula => this.selectedR.recinto_id === aula.aula_recinto);
-      // this.dataSource = this.aulas;
-      this.aulas = data;
-    });
-    this.refRecintos.subscribe((data: RecintoModel[]) => {
-      this.recintos = data;
-    });
+    Promise.all(this.promesas).then(()=>{
+
+      this.refAula.subscribe((data: AulaModel[]) => {
+        this.dataSource = data.filter(aula => this.selectedR.recinto_id === String( aula.aula_recinto));
+        // this.dataSource = this.aulas;
+        this.aulas = data;
+      });
+      this.refRecintos.subscribe((data: RecintoModel[]) => {
+        this.recintos = data;
+      });
+    })
   }
   ngOnDestroy() {
     this.AulaService.list = [];

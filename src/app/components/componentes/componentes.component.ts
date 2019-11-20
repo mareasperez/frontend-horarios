@@ -67,13 +67,13 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
        this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo }
+        data: { type: tipo, areas:this.areas, pdes:this.pdes }
       });
     } else {
       const comp = this.componentes.find(d => d.componente_id === id);
       this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo, componente: comp }
+        data: { type: tipo, componente: comp, areas:this.areas, pdes:this.pdes }
       });
     }
   }

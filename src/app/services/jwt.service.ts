@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Api } from '../models/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class JwtService {
   constructor(private httpClient: HttpClient, public jwtHelper: JwtHelperService) { }
 
   login(username: string, password: string) {
-    return this.httpClient.post<{ token: string }>('http://localhost:8000/api/auth/', { username, password }).pipe(tap(res => {
+    return this.httpClient.post<{ token: string }>(`${Api}/auth/`, { username, password }).pipe(tap(res => {
       console.log(res.token);
       localStorage.setItem('access', String(res.token));
     }));
