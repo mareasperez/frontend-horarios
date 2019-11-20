@@ -34,7 +34,7 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder
   ) {
-    console.log(this.data.recintos);
+    // console.log(this.data.recintos);
     this.Recintos = this.data.recintos;
     this.ref = this.recintoS.getList();
   }
