@@ -5,6 +5,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 import { reject } from 'q';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-verfacult',
@@ -55,7 +56,9 @@ export class VerfacultComponent implements OnInit, OnDestroy {
             this.dataSource = [];
             this.facultades = [];
             this.facultades = res;
-            this.dataSource = res;
+            this.facultades.forEach( elemen => {
+              this.dataSource.push(elemen);
+            });
           },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )

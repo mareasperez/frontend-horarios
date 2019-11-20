@@ -16,6 +16,7 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
 export class VerdocenteComponent implements OnInit {
   public docentes: DocenteModel[] = [];
   public refDocentes: Observable<any[]>;
+  public refDepartamento: Observable<any>;
   public alerts = true;
   public dataSource;
   public departamentos: DepartamentoModel[] = [];
@@ -34,14 +35,17 @@ export class VerdocenteComponent implements OnInit {
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         );
     });
-    this.DocenteService.getDocente()
-      .subscribe(
-        res => {
-          this.docentes.push(res);
-          this.dataSource = this.docentes;
-        },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-      );
+    const p2 = new Promise<void>(() => {
+      this.DocenteService.getDocente()
+        .subscribe(
+          res => {
+            this.docentes.push(res);
+            this.dataSource = this.docentes;
+          },
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
+    this.refDepartamento = this._Departamento.getList();
     this.refDocentes = this.DocenteService.getList();
   }
 

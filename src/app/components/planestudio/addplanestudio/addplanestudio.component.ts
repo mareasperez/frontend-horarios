@@ -16,6 +16,7 @@ interface DialogData {
   templateUrl: './addplanestudio.component.html',
   styleUrls: ['./addplanestudio.component.scss']
 })
+// tslint:disable: variable-name
 export class AddplanestudioComponent implements OnInit {
   public form: FormGroup;
   public carreras: CarreraModel[] = [];
@@ -23,7 +24,6 @@ export class AddplanestudioComponent implements OnInit {
   public selected = '0';
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
-  // tslint:disable: variable-name
   constructor(
     private carrera$: CarreraService,
     private plan$: PlanEstudioService,
@@ -32,14 +32,7 @@ export class AddplanestudioComponent implements OnInit {
     private fb: FormBuilder,
     private _snack: MatSnackBar
   ) {
-    const p1 = new Promise((resolve, reject) => {
-      this.carrera$.getCarrera()
-        .subscribe(
-          res => this.carreras.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-        );
-    });
-
+    this.carreras = this.carrera$.list;
     this.refCarrera = this.carrera$.getList();
   }
 
