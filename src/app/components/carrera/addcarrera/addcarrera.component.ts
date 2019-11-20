@@ -11,6 +11,7 @@ import { matErrorsMessage } from 'src/app/utils/errors';
 interface DialogData {
   type: string;
   car?: CarreraModel;
+  departamentos: DepartamentoModel[];
 }
 @Component({
   selector: 'app-addcarrera',
@@ -36,10 +37,7 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private _snack: MatSnackBar
   ) {
-    const p = new Promise<void>(() => {
-      this.departamento$.getDepartamento().subscribe(res => this.departamentos.push(res));
-    });
-
+    this.departamentos = this.data.departamentos;
     this.refDepartamento = this.departamento$.getList();
   }
 

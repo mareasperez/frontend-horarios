@@ -11,6 +11,8 @@ interface DialogData {
   type: string;
   idr?: string;
   aul?: AulaModel;
+  // ref: Observable<any>;
+  recintos: RecintoModel[];
 }
 @Component({
   selector: 'app-addaula',
@@ -25,7 +27,6 @@ export class AddaulaComponent implements OnInit, OnDestroy {
   aula = new AulaModel();
   public Errors: matErrorsMessage = new matErrorsMessage();
   edit = false;
-
   constructor(
     private aulaService: AulaService,
     private recintoS: RecintoService,
@@ -33,9 +34,8 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder
   ) {
-    const p = new Promise<void>(() => {
-      this.recintoS.getRecinto().subscribe(res => this.Recintos.push(res));
-    });
+    console.log(this.data.recintos);
+    this.Recintos = this.data.recintos;
     this.ref = this.recintoS.getList();
   }
 

@@ -104,13 +104,13 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       const dialogRef = this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo, pde: this.pdeSelected }
+        data: { type: tipo, pde: this.pdeSelected, areas: this.areas, pdes: this.pdes }
       });
     } else {
       const comp = this.componentes.find(d => d.componente_id === id);
       this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo, pde: this.pdeSelected, componente: comp }
+        data: { type: tipo, pde: this.pdeSelected, componente: comp, areas: this.areas, pdes: this.pdes }
       });
     }
   }
