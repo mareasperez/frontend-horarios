@@ -30,7 +30,6 @@ export class VerareaComponent implements OnInit, OnDestroy {
       const sub = this._area.getAreas()
         .subscribe(
           res => {
-            console.log(res);
             this.areas.push(res);
           },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
