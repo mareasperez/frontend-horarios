@@ -78,6 +78,9 @@ import { AddGrupoComponent } from './components/grupo/add-grupo/add-grupo.compon
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
 import { ComponenteGrupoPipe } from './pipes/componente-grupo.pipe';
 import { NombreGrupoPipe } from './pipes/nombre-grupo.pipe';
+import { HorariosCrudComponent } from './components/horarios/horarios.component'
+import { AddHorarioComponent } from './components/horarios/add-horario/add-horario.component';
+import { RecintoNombrePipe } from './pipes/recinto-nombre.pipe';
 
 @NgModule({
   declarations: [
@@ -130,12 +133,16 @@ import { NombreGrupoPipe } from './pipes/nombre-grupo.pipe';
     DocenteGruposComponent,
     ComponenteGrupoPipe,
     NombreGrupoPipe,
+    AddHorarioComponent,
+    HorariosCrudComponent,
+    RecintoNombrePipe
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
     AddcarreraComponent,
     AddComponenteComponent,
-    AddGrupoComponent
+    AddGrupoComponent,
+    AddHorarioComponent
   ],
   imports: [
     BrowserModule,
@@ -149,7 +156,8 @@ import { NombreGrupoPipe } from './pipes/nombre-grupo.pipe';
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {tokenGetter: JWTtokenGetter,
-      whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/', 'localhost:4200'],
+      whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/',
+       'localhost:4200', '192.168.10.9:8000'],
       blacklistedRoutes: ['http://localhost:3000/api/auth/'],
       },
     }),

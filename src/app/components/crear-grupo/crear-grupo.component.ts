@@ -81,6 +81,7 @@ public carreraSelected = getItemLocalCache("carrera");
     this.refArea = this._area.getList();
     this.refDocente = this._docente.getList();
     this.refDocArea = this._docArea.getList();
+    this.refPla = this._planificacion.getList();
 
 }
 
@@ -110,6 +111,7 @@ public carreraSelected = getItemLocalCache("carrera");
        this.subs.push(this.refDocArea.subscribe(data=>this.docsByArea = data))
        this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
        this.subs.push(this.refDocente.subscribe(data=>this.docentes = data))
+       this.subs.push(this.refPla.subscribe(data=>this.planificaciones = data))
        this.subs.push(this.refComp.subscribe(data=>{this.componentes = data;
         this.componentesByCiclo(Number(this.cicloSelected));
          }));

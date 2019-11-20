@@ -14,47 +14,47 @@ interface DialogData {
   templateUrl: './addarea.component.html',
   styleUrls: ['./addarea.component.scss']
 })
+// tslint:disable: variable-name
 export class AddareaComponent implements OnInit, OnDestroy {
-
   @HostBinding('class') classes = 'row';
-
   public area = new AreaModel();
   edit = false;
   sub: Subscription;
 
-  constructor(private areaService: AreaService,
-              public dialogRef: MatDialogRef<AddareaComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private _snack:MatSnackBar
-    ) { }
+  constructor(
+    private areaService: AreaService,
+    public dialogRef: MatDialogRef<AddareaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private _snack: MatSnackBar
+  ) { }
 
   ngOnInit() {
     this.area.area_nombre = this.data.name;
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.sub !== undefined) {
       this.sub.unsubscribe();
     }
   }
 
-  updateArea(){
-    this.area.area_id = this.data.id
+  updateArea() {
+    this.area.area_id = this.data.id;
     this.sub = this.areaService.updateArea(this.area, this.area.area_id)
-    .subscribe(
-      res => this.dialogRef.close(),
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    );
+      .subscribe(
+        res => this.dialogRef.close(),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 
-  saveArea(){
+  saveArea() {
     this.area.area_id = null;
     this.sub = this.areaService.crearArea(this.area)
-    .subscribe(
-      res => this.dialogRef.close(),
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
+      .subscribe(
+        res => this.dialogRef.close(),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
 
-    );
+      );
 
   }
 }

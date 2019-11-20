@@ -13,6 +13,8 @@ import { CarreraService } from './carrera.service';
 import { DocenteHorasService } from './docente-horas.service';
 import { AulaService } from './aula.service';
 import { DocenteAreaService } from './docente-area.service';
+import { Api, ip } from '../models/api.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,7 +39,7 @@ export class WsService {
 
 
     setsock() {
-      this.socket = new WebSocket(`ws://localhost:8000/ws/?token=${this.jwt.Token}`);
+      this.socket = new WebSocket(`ws://${ip}:8000/ws/?token=${this.jwt.Token}`);
 
       this.socket.onopen = () => {
         console.log('WebSockets connection created for Socket Service');

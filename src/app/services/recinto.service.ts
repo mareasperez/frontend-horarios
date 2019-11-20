@@ -62,14 +62,12 @@ export class RecintoService extends MainService {
       case 'c':
         // console.log("Crear")
         this.list.push(recinto);
-        console.log(this.list)
         this.list$.next(this.list)
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.recinto_id).indexOf(recinto.recinto_id);
         this.list.splice(index, 1, recinto);
-        console.log(this.list)
         this.list$.next(this.list)
         break;
       case 'd':

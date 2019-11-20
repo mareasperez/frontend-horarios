@@ -23,7 +23,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
 
   public departamento = new DepartamentoModel();
   public facultades: FacultadModel[] = [];
-  edit = false;
+  public edit: boolean;
   subs: Subscription[] = [];
   public selected = '0';
   public form: FormGroup;
@@ -38,13 +38,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private _snack: MatSnackBar
   ) {
-    const p = new Promise<void>(() => {
-      this.facultad$.getFacultad()
-        .subscribe(
-          res => this.facultades.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-        );
-    });
+    this.facultades = this.facultad$.list;
     this.refFacultad = this.facultad$.getList();
   }
 

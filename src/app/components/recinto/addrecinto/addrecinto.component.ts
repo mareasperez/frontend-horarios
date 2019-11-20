@@ -16,18 +16,17 @@ interface DialogData {
   templateUrl: './addrecinto.component.html',
   styleUrls: ['./addrecinto.component.css']
 })
+// tslint:disable: variable-name
 export class AddrecintoComponent implements OnInit {
   @HostBinding('class') classes = 'row';
-
   public recinto = new RecintoModel();
   public facultades: FacultadModel[] = [];
-  edit = false;
+  public edit: boolean;
   subs: Subscription[] = [];
   public selected = '0';
   public form: FormGroup;
   public refFacultad: Observable<any>;
   public Errors: matErrorsMessage = new matErrorsMessage();
-  // tslint:disable: variable-name
   constructor(
     private recintoService: RecintoService,
     private facultad$: FacultadSerivice,
@@ -36,14 +35,7 @@ export class AddrecintoComponent implements OnInit {
     private fb: FormBuilder,
     private _snack: MatSnackBar
   ) {
-    const p1 = new Promise((resolve, reject) => {
-      this.facultad$.getFacultad()
-        .subscribe(
-          res => this.facultades.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-        );
-    });
-
+    this.facultades = this.facultad$.list;
     this.refFacultad = this.facultad$.getList();
   }
 

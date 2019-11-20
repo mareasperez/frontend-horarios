@@ -11,75 +11,77 @@ import { AddPlanificacionComponent } from './add-planificacion/add-planificacion
   templateUrl: './planificacion.component.html',
   styleUrls: ['./planificacion.component.scss']
 })
+// tslint:disable: variable-name
 export class PlanificacionComponent implements OnInit, OnDestroy {
-  public planificaciones: PlanificacionModel[] = []
-  refPla:Observable<any>;
-  subs:Subscription[]=[];
-  public visible = false;
+  public planificaciones: PlanificacionModel[] = [];
+  refPla: Observable<any>;
+  subs: Subscription[] = [];
+  public visible: boolean;
   private p1: Promise<any>;
-  public dataSource;
+  public dataSource = [];
   displayedColumns: string[] = ['id', 'nombre', 'opciones'];
-  constructor(private _planificacion:PlanificacionService,
-              private dialog: MatDialog,
-              private _snack:MatSnackBar    
-    ) { 
-      
-      this.p1 = new Promise((resolve, reject)=>{
-        let sub = this._planificacion.getPlanificaciones()
-          .subscribe(
-            res=>this.planificaciones.push(res),
-            error=>this._snack.open(error.message,"OK",{duration: 3000}),
-            ()=>resolve()
-          )  
-        this.subs.push(sub);
-        this.dataSource = this.planificaciones;
-      });
-    
-      this.refPla = this._planificacion.getList()
+  constructor(
+    private _planificacion: PlanificacionService,
+    private dialog: MatDialog,
+    private _snack: MatSnackBar
+  ) {
+
+    this.p1 = new Promise((resolve, reject) => {
+      const sub = this._planificacion.getPlanificaciones()
+        .subscribe(
+          res => this.planificaciones.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+      this.dataSource = this.planificaciones;
+    });
+
+    this.refPla = this._planificacion.getList();
   }
 
   ngOnInit() {
-    this.p1.then(()=>{
+    this.p1.then(() => {
       this.visible = true;
       this.subs.push(
-        );
+      );
     });
-    this.refPla.subscribe(data=>{
-      console.log(data)
+    this.refPla.subscribe(data => {
+      console.log(data);
       this.planificaciones = data;
       this.dataSource = [];
       this.planificaciones.forEach(dep => {
         this.dataSource.push(dep);
       });
-    })
+    });
 
   }
 
-  ngOnDestroy(){
-    this._planificacion.list = []
-    this.subs.map(sub=>sub.unsubscribe())
+  ngOnDestroy() {
+    this._planificacion.list = [];
+    this.subs.map(sub => sub.unsubscribe());
   }
 
-  delPlan(id){
+  delPlan(id) {
     this._planificacion.deletePlanificacion(id)
-    .subscribe(
-      res=>{},
-      error=>this._snack.open(error.message,"OK",{duration: 3000}),
-    )
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 
   openDialog(tipo, id?): void {
-    if(tipo === 'c'){
-       this.dialog.open(AddPlanificacionComponent, {
+    if (tipo === 'c') {
+      this.dialog.open(AddPlanificacionComponent, {
         width: '450px',
-        data: {type: tipo}
+        data: { type: tipo }
       });
     } else {
 
-      let plan = this.planificaciones.find(p => p.planificacion_id === id);
+      const plan = this.planificaciones.find(p => p.planificacion_id === id);
       this.dialog.open(AddPlanificacionComponent, {
         width: '450px',
-        data: {type: tipo, plan: plan}
+        data: { type: tipo, plan }
       });
     }
   }

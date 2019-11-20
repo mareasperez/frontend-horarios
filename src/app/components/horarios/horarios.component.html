@@ -1,0 +1,79 @@
+<mat-card>
+     <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+             <mat-panel-title>Filtros</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field class="font-size-12" appearance="outline">
+                    <mat-label>Carrera</mat-label>
+                    <mat-select  [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value)" >
+                        <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">{{carrera.carrera_nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+                    <mat-label>Ciclo</mat-label>
+                    <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected"  (selectionChange)="componentesByCiclo($event.value)">
+                        <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="font-size-12 ml-1" appearance="outline">
+                    <mat-label>Plan de estudios</mat-label>
+                    <mat-select [disabled]="cicloSelected != '0' ? false:true" [(value)]="pdeSelected" (selectionChange)="componentesByPde($event.value)" >
+                        <mat-option *ngFor="let pde of pdeByCarrera" [value]="pde.pde_id">{{pde.pde_nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="font-size-12 ml-1" appearance="outline">
+                    <mat-label>Planificaci&oacute;n</mat-label>            
+                    <mat-select [disabled]="pdeSelected != '0' ? false:true"  [(value)]="planSelected" (selectionChange)="groupsByPlan($event.value)"  >
+                        <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
+                            Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="font-size-12 ml-1" appearance="outline">
+                  <mat-label>Recinto</mat-label>
+                  <mat-select [(value)]="selectedR"  (selectionChange)="getAulas($event.value)">
+                      <mat-option *ngFor="let recinto of recintos" [value]="recinto.recinto_id">
+                          {{recinto.recinto_nombre}}
+                      </mat-option>
+                  </mat-select>
+                 </mat-form-field>
+        </mat-expansion-panel>
+     </mat-accordion>
+    <form class="d-flex flex-column font-size-12 "  style="height: 80vh;" *ngIf="show">
+        <div class="row">
+            <div class="col-1">
+                <mat-radio-group name="dia" class="Radio-group"
+                aria-labelledby="dias">
+                    <mat-radio-button class="Radio-button" *ngFor="let dia of dias" [value]="dia">
+                        {{dia}}
+                    </mat-radio-button>        
+                </mat-radio-group>
+            </div>
+                <div class="col-1">         
+                    <mat-radio-group name="hora"  class="Radio-group"
+                    aria-labelledby="horas">
+                        <mat-radio-button class="Radio-button" *ngFor="let hora of horas" [value]="hora.value">
+                            {{hora.hora}}
+                        </mat-radio-button>
+                    </mat-radio-group >
+                </div>
+             <div class="col-4">  
+                 <mat-radio-group name="aula" class="Radio-group"
+                 aria-labelledby="aulas">
+                     <mat-radio-button class="Radio-button" *ngFor="let aula of aulas" [value]="aula.aula_id">
+                         {{aula.aula_nombre}} {{aula.aula_recinto | recintoNombre : recintos}}
+                        </mat-radio-button>           
+                    </mat-radio-group>
+                </div>
+              <div class="col-6">  
+                  <mat-radio-group name="grupo"  class="Radio-group"
+                  aria-labelledby="grupos">
+                      <mat-radio-button class="Radio-button" *ngFor="let grupo of gruposByPlan" [value]="grupo.grupo_id" >
+                          {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </form>
+</mat-card>

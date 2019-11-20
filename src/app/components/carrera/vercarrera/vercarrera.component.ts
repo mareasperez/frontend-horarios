@@ -12,6 +12,7 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
   templateUrl: './vercarrera.component.html',
   styleUrls: ['./vercarrera.component.scss']
 })
+// tslint:disable: variable-name
 export class VercarreraComponent implements OnInit, OnDestroy {
   public carreras: CarreraModel[] = [];
   public departamentos: DepartamentoModel[] = [];
@@ -23,19 +24,17 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   public dataSource = [];
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'departamento', 'opciones'];
-  // tslint:disable: variable-name
   constructor(
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
     private dialog: MatDialog,
-
     private _snack: MatSnackBar
   ) {
     const p1 = new Promise((resolve) => {
       const sub = this.carrera$.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
-          error => this._snack.open(error, 'OK', {duration: 3000}),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -45,7 +44,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
       const sub = this.departamento$.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
-          error => this._snack.open(error, 'OK', {duration: 3000}),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -56,7 +55,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     this.refDep = this.departamento$.getList();
   }
 
-   ngOnInit() {
+  ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
       this.refCarrera.subscribe(data => {
@@ -64,6 +63,9 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         this.carreras = data;
         this.dataSource = [];
         this.carreras.forEach(car => this.dataSource.push(car));
+      });
+      this.refDep.subscribe(data => {
+        this.departamentos = data;
       });
     });
   }
@@ -76,23 +78,23 @@ export class VercarreraComponent implements OnInit, OnDestroy {
 
   delCarrera(id: any) {
     this.sub = this.carrera$.deleteCarrera(id)
-    .subscribe(
-      res => {},
-      error => this._snack.open(error.message, 'OK', {duration: 5000}),
-    );
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 5000 }),
+      );
   }
 
   openDialog(tipo: string, id?: any): void {
     if (tipo === 'c') {
       this.dialog.open(AddcarreraComponent, {
         width: '450px',
-        data: { type: tipo }
+        data: { type: tipo, departamentos: this.departamentos }
       });
     } else {
       const carrera = this.carreras.find(d => d.carrera_id === id);
       this.dialog.open(AddcarreraComponent, {
         width: '450px',
-        data: { type: tipo, car: carrera }
+        data: { type: tipo, car: carrera, departamentos: this.departamentos }
       });
     }
   }

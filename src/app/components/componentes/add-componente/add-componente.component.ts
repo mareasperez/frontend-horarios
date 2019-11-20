@@ -8,11 +8,13 @@ import { AreaService } from 'src/app/services/area.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { AreaModel } from 'src/app/models/area.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 interface DialogData {
   type: string;
   pde?: string;
   componente?: ComponenteModel;
+  areas: AreaModel[];
+  pdes: PlanEstudioModel[];
 }
 @Component({
   selector: 'app-add-componente',
@@ -26,6 +28,8 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
   public componentes: ComponenteModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public areas: AreaModel[] = [];
+  public refAreas: Observable<any>;
+  public refPdes: Observable<any>;
   public Errors: matErrorsMessage = new matErrorsMessage();
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
@@ -39,31 +43,23 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
     private _area: AreaService,
     private _snack: MatSnackBar
   ) {
-    const p1 = new Promise((resolve, reject) => {
-      const sub = this._pde.getPlanEstudio()
-        .subscribe(
-          res => this.pdes.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    });
-    const p3 = new Promise((resolve, reject) => {
-      const sub = this._area.getAreas()
-        .subscribe(
-          res => this.areas.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    });
-    this.promesas.push(p3, p1);
+    console.log(this.data.areas);
+    this.pdes = this.data.pdes;
+    this.areas = this.data.areas;
+    this.refAreas = this._area.getList();
+    this.refPdes = this._pde.getList();
   }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(() => {
-      this.createForm();
-    });
+    this.refAreas.subscribe(
+      areas => this.areas = areas,
+      error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+    );
+    this.refPdes.subscribe(
+      pd => this.pdes = pd,
+      error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+    );
+    this.createForm();
   }
 
   ngOnDestroy() {

@@ -11,18 +11,18 @@ import { DepartamentoService } from 'src/app/services/departamento.service';
   templateUrl: './verdocente.component.html',
   styleUrls: ['./verdocente.component.scss']
 })
+// tslint:disable: no-shadowed-variable
+// tslint:disable variable-name
 export class VerdocenteComponent implements OnInit {
-
   public docentes: DocenteModel[] = [];
   public refDocentes: Observable<any[]>;
+  public refDepartamento: Observable<any>;
   public alerts = true;
   public dataSource;
   public departamentos: DepartamentoModel[] = [];
   subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
   constructor(
-    // tslint:disable: no-shadowed-variable
-    // tslint:disable variable-name
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
     private dialog: MatDialog,
@@ -30,19 +30,22 @@ export class VerdocenteComponent implements OnInit {
   ) {
     const p = new Promise<void>(() => {
       this._Departamento.getDepartamento()
-      .subscribe(
-        res => this.departamentos.push(res),
-        error => this._snack.open(error.message, 'OK', {duration: 3000}),
-      );
+        .subscribe(
+          res => this.departamentos.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
     });
-    this.DocenteService.getDocente()
-    .subscribe(
-      res => {
-      this.docentes.push(res);
-      this.dataSource = this.docentes;
-      },
-      error => this._snack.open(error.message, 'OK', {duration: 3000}),
-    );
+    const p2 = new Promise<void>(() => {
+      this.DocenteService.getDocente()
+        .subscribe(
+          res => {
+            this.docentes.push(res);
+            this.dataSource = this.docentes;
+          },
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        );
+    });
+    this.refDepartamento = this._Departamento.getList();
     this.refDocentes = this.DocenteService.getList();
   }
 
@@ -62,15 +65,15 @@ export class VerdocenteComponent implements OnInit {
 
   deleteDocente(id: string) {
     this.DocenteService.deleteDocente(id)
-    .subscribe(
-      res => {},
-      error => this._snack.open(error.message, 'OK', {duration: 3000}),
-    );
+      .subscribe(
+        res => { },
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      );
   }
 
   openDialog(tipo, id?: string): void {
     if (tipo === 'c') {
-     this.dialog.open(AdddocenteComponent, {
+      this.dialog.open(AdddocenteComponent, {
         width: '450px',
         data: { type: tipo, doc: null }
       });
