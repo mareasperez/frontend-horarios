@@ -42,6 +42,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
   componentes: ComponenteModel[] = [];
   pdes: PlanEstudioModel[] = [];
   docentes: DocenteModel[] = [];
+  docentes2: DocenteModel[] = [];
   facultades: FacultadModel[] = [];
   recintos: RecintoModel[] = [];
   aulas: AulaModel[] = [];
@@ -49,6 +50,8 @@ export class HorariosComponent implements OnInit, OnDestroy {
   carreras: CarreraModel[] = [];
   grupos: GrupoModel[] = [];
   reporte: string;
+  onComponente: any[][] = [];
+  onDocente: any[][] = [];
   anyos = [1, 2, 3, 4, 5];
   constructor(
     // tslint:disable: variable-name
@@ -73,7 +76,6 @@ export class HorariosComponent implements OnInit, OnDestroy {
     this._planificacion.getPlanificaciones().subscribe();
     this._grupo.getGrupos().subscribe();
     this._carrera.getCarrera().subscribe();
-    this._docente.getDocente().subscribe();
     this._doho.getDcHoras().subscribe();
     this._departamento.getDepartamento().subscribe();
     this._recinto.getRecinto().subscribe();
@@ -84,6 +86,14 @@ export class HorariosComponent implements OnInit, OnDestroy {
       this._componente.getComponentes().subscribe(res => this.componentes.push(res));
       this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
       this._grupo.getGrupos().subscribe(res => this.grupos.push(res));
+      this._docente.getDocente().subscribe(res => {this.docentes2.push(res); console.log(res);
+      });
+      this.onComponente[0] = this.componentes;
+      this.onComponente[1] = this.grupos;
+      if (this.reporte !== 'docente') {
+        this.onDocente[0] = this.docentes2;
+        this.onDocente[1] = this.grupos;
+      }
     });
 
   }
@@ -107,32 +117,35 @@ export class HorariosComponent implements OnInit, OnDestroy {
   }
   async getDepartamentos(id: number) {
     this.departamentos = [];
-    this.departamentos = await this._departamento.list.filter(dep => dep.departamento_facultad === id);
+    this.departamentos = this._departamento.list.filter(dep => dep.departamento_facultad === id);
   }
   async getRecintos(id: number) {
     this.recintos = [];
-    this.recintos = await this._recinto.list.filter(recinto => recinto.recinto_facultad === id);
+    this.recintos = this._recinto.list.filter(recinto => recinto.recinto_facultad === id);
   }
   async getDocentesOrCarreras(id: number) {
     if (this.reporte === 'docente') {
+      console.log('primera vez', this.docentes);
       this.docentes = [];
-      this.docentes = await this._docente.list.filter(doc => doc.docente_departamento === id);
+      console.log('La segunda', this.docentes);
+      this.docentes = this._docente.list.filter(doc => doc.docente_departamento === id);
+      console.log('por placer', this.docentes);
     } else {
       this.carreras = [];
-      this.carreras = await this._carrera.list.filter(carr => carr.carrera_departamento === id);
+      this.carreras = this._carrera.list.filter(carr => carr.carrera_departamento === id);
     }
   }
   async getAulas(id: number) {
     this.aulas = [];
-    this.aulas = await this._aula.list.filter(aula => aula.aula_recinto === id);
+    this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
   }
 
   async getGrupos(id: string) {
     this.grupos = [];
     console.log(this._grupo.list);
     for (const grupo of this._grupo.list) {
-      const comp = await this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
-      const pd = await this.pdes.find(p => p.pde_id === comp.componente_pde);
+      const comp = this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
+      const pd = this.pdes.find(p => p.pde_id === comp.componente_pde);
       if (pd.pde_carrera === id) {
         this.grupos.push(grupo);
         console.log('se agrego: ', grupo);
@@ -159,13 +172,13 @@ export class HorariosComponent implements OnInit, OnDestroy {
     }
     if (query === 'grupo') {
       console.log('el id grupo es: ', id);
-      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_grupo) === id);
+      this.horarios = this._horario.list.filter(horario => Number(horario.horario_grupo) === id);
       console.log(this.horarios);
       this.fun();
     }
     if (query === 'aula') {
       console.log('el id de aula es: ', id);
-      this.horarios = await this._horario.list.filter(horario => Number(horario.horario_aula) === id);
+      this.horarios = this._horario.list.filter(horario => Number(horario.horario_aula) === id);
       console.log(this.horarios);
       this.fun();
     }
@@ -189,7 +202,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
         case 'Lunes': i = 0; break;
         case 'Martes': i = 1; break;
         case 'Miercoles': i = 2; break;
-        case 'jueves': i = 3; break;
+        case 'Jueves': i = 3; break;
         case 'Viernes': i = 4; break;
         default: console.log('No such day exists!', dia); break;
       }
@@ -203,7 +216,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
         default: console.log('No such hour exists!', dia); break;
       }
       console.log(dia);
-      this.array[i][j] = dia;
+      this.array[j][i] = dia;
       i = 0;
       j = 0;
     }
