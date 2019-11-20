@@ -203,8 +203,8 @@ export class HorariosAnyoComponent implements OnInit {
         if (gp.grupo_tipo === 'practico') {
           diaView.grupo = `gp${gp.grupo_numero}`;
         }
-        const aula = this.aulas.find(au => au.aula_id === Number(dia.horario_aula));
-        const recinto = this.recintos.find(rec => rec.recinto_id === String(aula.aula_recinto));
+        const aula = this.aulas.find(au => au.aula_id === dia.horario_aula);
+        const recinto = this.recintos.find(rec => rec.recinto_id === aula.aula_recinto);
         diaView.aula = `${aula.aula_nombre}: ${recinto.recinto_nombre}`;
         const dc = this.docentes.find(d => d.docente_id === gp.grupo_docente);
         diaView.docente = dc.docente_nombre;

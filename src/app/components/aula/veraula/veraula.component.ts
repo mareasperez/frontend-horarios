@@ -58,7 +58,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(()=>{
 
       this.refAula.subscribe((data: AulaModel[]) => {
-        this.dataSource = data.filter(aula => this.selectedR.recinto_id === String( aula.aula_recinto));
+        this.dataSource = data.filter(aula => this.selectedR.recinto_id === aula.aula_recinto);
         // this.dataSource = this.aulas;
         this.aulas = data;
       });
