@@ -6,14 +6,14 @@ import { AddrecintoComponent } from '../addrecinto/addrecinto.component';
 import { Subscription, Observable } from 'rxjs';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
-import { resolve } from 'url';
-import { promise } from 'protractor';
 
 @Component({
   selector: 'app-verrecinto',
   templateUrl: './verrecinto.component.html',
   styleUrls: ['./verrecinto.component.scss']
 })
+// tslint:disable: variable-name
+// tslint:disable: no-shadowed-variable
 export class VerrecintoComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   public facults: FacultadModel[] = [];
@@ -26,7 +26,6 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
   refFacultades: Observable<any[]>;
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'recinto_facultad', 'opciones'];
   socket: WebSocket;
-  // tslint:disable-next-line: no-shadowed-variable
   constructor(
     private RecintoService: RecintoService,
     private facultad$: FacultadSerivice,
@@ -42,8 +41,8 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
         );
     });
 
-    let p2 = new Promise((resolve) => {
-      let sub = this.facultad$.getFacultad()
+    const p2 = new Promise((resolve) => {
+      const sub = this.facultad$.getFacultad()
         .subscribe(
           res => this.facults.push(res),
           error => this._snack.open(error, 'OK', { duration: 3000 }),

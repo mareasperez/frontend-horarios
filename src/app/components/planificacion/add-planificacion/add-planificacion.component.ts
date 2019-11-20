@@ -14,65 +14,65 @@ interface DialogData {
   templateUrl: './add-planificacion.component.html',
   styleUrls: ['./add-planificacion.component.scss']
 })
+// tslint:disable: variable-name
 export class AddPlanificacionComponent implements OnInit {
-  public form:FormGroup
-  private subs:Subscription[]=[]
-  public Errors:matErrorsMessage = new matErrorsMessage();
-  constructor(private _planificacion: PlanificacionService,
-              public dialogRef: MatDialogRef<AddPlanificacionComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb:FormBuilder,
-              private _snack:MatSnackBar
+  public form: FormGroup;
+  private subs: Subscription[] = [];
+  public Errors: matErrorsMessage = new matErrorsMessage();
+  constructor(
+    private _planificacion: PlanificacionService,
+    public dialogRef: MatDialogRef<AddPlanificacionComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder,
+    private _snack: MatSnackBar
   ) { }
-            
-
   ngOnInit() {
-    this.createForm()
+    this.createForm();
   }
-  
-  createForm(id?: string){
+
+  createForm(id?: string) {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
-        planificacion_anyo_lectivo: new FormControl('',[Validators.required, Validators.min(2008)]),
-        planificacion_semestre: new FormControl('1',[Validators.required])
-    
-      })
+        planificacion_anyo_lectivo: new FormControl('', [Validators.required, Validators.min(2008)]),
+        planificacion_semestre: new FormControl('1', [Validators.required])
 
-    }else{
+      });
+
+    } else {
       this.form = this.fb.group({
         planificacion_id: this.data.plan.planificacion_id,
-        planificacion_anyo_lectivo: new FormControl(this.data.plan.planificacion_anyo_lectivo,[Validators.required, Validators.min(2008)]),
-        planificacion_semestre: new FormControl(this.data.plan.planificacion_semestre,[Validators.required])
-      })
+        planificacion_anyo_lectivo: new FormControl(this.data.plan.planificacion_anyo_lectivo, [Validators.required, Validators.min(2008)]),
+        planificacion_semestre: new FormControl(this.data.plan.planificacion_semestre, [Validators.required])
+      });
     }
   }
 
-  savePlanificacion(){
-    let plan = new PlanificacionModel()
-    plan = Object.assign(plan, this.form.value)
+  savePlanificacion() {
+    let plan = new PlanificacionModel();
+    plan = Object.assign(plan, this.form.value);
     this.subs.push(
       this._planificacion.crearPlanificacion(plan)
         .subscribe(
-          res=>this.dialogRef.close(),
-          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+          res => this.dialogRef.close(),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
   }
 
-  updatePlanificacion(){
-    let plan = new PlanificacionModel()
-    plan = Object.assign(plan, this.form.value)
+  updatePlanificacion() {
+    let plan = new PlanificacionModel();
+    plan = Object.assign(plan, this.form.value);
     this.subs.push(
-      this._planificacion.updatePlanificacion(plan,plan.planificacion_id)
+      this._planificacion.updatePlanificacion(plan, plan.planificacion_id)
         .subscribe(
-          res=>this.dialogRef.close(),
-          error=>this._snack.open(error.message,"OK",{duration: 3000}),
+          res => this.dialogRef.close(),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
         )
     );
   }
 
-  get Form(){
-    return this.form.controls
+  get Form() {
+    return this.form.controls;
   }
 
 }
