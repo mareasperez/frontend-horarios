@@ -14,21 +14,20 @@ import { AreaModel } from 'src/app/models/area.model';
   templateUrl: './componentes-list.component.html',
   styleUrls: ['./componentes-list.component.scss']
 })
+// tslint:disable: variable-name
 export class ComponentesListComponent implements OnInit, OnDestroy {
-
   public refComp: Observable<any>;
+  public refPde: Observable<PlanEstudioModel[]>;
+  public refArea: Observable<AreaModel[]>;
   public componentes: ComponenteModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public areas: AreaModel[] = [];
   private subs: Subscription[] = [];
-  public show = false;
+  public show: boolean;
   private promesas: Promise<any>[] = [];
   public dataSource = [];
   public pdeSelected = '0';
-
-  displayedColumns: string[] = ['nombre', 'area', 'thoras', 'phoras', 'ciclo', 'creditos', 'opciones'];
-
-// tslint:disable: variable-name
+  displayedColumns: string[] = ['nombre', 'ciclo', 'area', 'thoras', 'phoras', 'creditos', 'opciones'];
   constructor(
     private _comp: ComponenteService,
     private _pde: PlanEstudioService,
@@ -66,18 +65,22 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
     });
 
     this.promesas.push(p1, p2, p3);
+    this.refPde = this._pde.getList();
     this.refComp = this._comp.getList();
+    this.refArea = this._area.getList();
   }
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
       this.show = true;
-      this.subs.push(this.refComp
-        .subscribe(data => {
+      this.subs.push(
+        this.refComp.subscribe(data => {
           this.componentes = [];
           this.componentes = data;
           this.componentesByPde(this.pdeSelected);
-        })
+        }),
+        this.refPde.subscribe(data => this.pdes = data),
+        this.refArea.subscribe(data => this.areas = data)
       );
     });
   }

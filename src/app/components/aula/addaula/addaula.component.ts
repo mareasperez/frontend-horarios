@@ -56,7 +56,7 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         aula_id: null,
-        aula_nombre: new FormControl('', [Validators.required,Validators.minLength(2), Validators.maxLength(100)]),
+        aula_nombre: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
         aula_capacidad: new FormControl('40', [Validators.required, Validators.maxLength(100)]),
         aula_tipo: new FormControl('false', [Validators.required]),
         aula_recinto: new FormControl(this.data.idr, [Validators.required])
@@ -66,7 +66,10 @@ export class AddaulaComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         aula_id: this.data.aul.aula_id,
         aula_nombre: new FormControl(this.data.aul.aula_nombre, [Validators.required, Validators.maxLength(100)]),
-        aula_capacidad: new FormControl(this.data.aul.aula_capacidad, [Validators.required,Validators.minLength(2), Validators.maxLength(100)]),
+        aula_capacidad: new FormControl(
+          this.data.aul.aula_capacidad,
+          [Validators.required, Validators.minLength(2),
+          Validators.maxLength(100)]),
         aula_tipo: new FormControl(this.data.aul.aula_tipo, [Validators.required]),
         aula_recinto: new FormControl(this.data.aul.aula_recinto, [Validators.required])
       });

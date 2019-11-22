@@ -63,12 +63,14 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         carrera_id: null,
         carrera_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        carrera_tipo: new FormControl('P', [Validators.required, Validators.maxLength(10)]),
         carrera_departamento: new FormControl('', [Validators.required])
       });
     } else {
       this.form = this.fb.group({
         carrera_id: this.data.car.carrera_id,
         carrera_nombre: new FormControl(this.data.car.carrera_nombre, [Validators.required, Validators.maxLength(100)]),
+        carrera_tipo: new FormControl(this.carrera.carrera_tipo, [Validators.required, Validators.maxLength(10)]),
         carrera_departamento: new FormControl(this.data.car.carrera_departamento, [Validators.required])
       });
     }

@@ -11,7 +11,7 @@
   </div>
   <mat-form-field appearance="outline">
     <mat-label>Nombre</mat-label>
-    <input matInput formControlName="componente_nombre">
+    <input matInput formControlName="componente_nombre" autofocus>
     <mat-error *ngIf="Form.componente_nombre.invalid">{{Errors.getError(Form.componente_nombre)}}</mat-error>
   </mat-form-field>
   <mat-label>Horas</mat-label>
