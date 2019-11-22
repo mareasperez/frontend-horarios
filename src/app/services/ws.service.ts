@@ -14,6 +14,7 @@ import { DocenteHorasService } from './docente-horas.service';
 import { AulaService } from './aula.service';
 import { DocenteAreaService } from './docente-area.service';
 import { Api, ip } from '../models/api.model';
+import { HorarioService } from './horario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class WsService {
               private carrera$: CarreraService,
               private _doho: DocenteHorasService,
               private _dcAr: DocenteAreaService,
+              private _horario: HorarioService,
               private AulaService: AulaService
     ) { }
 
@@ -78,6 +80,9 @@ export class WsService {
             break;
           case 'grupo':
             this.grupoS.updateList(action);
+            break;
+          case 'horario':
+            this._horario.updateList(action);
             break;
           case 'docente_hora':
             this._doho.updateList(action);

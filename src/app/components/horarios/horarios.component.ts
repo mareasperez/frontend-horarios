@@ -18,6 +18,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
+import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
 
 @Component({
   selector: 'app-horarios',
@@ -46,7 +47,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public cicloSelected = '0';
   public carreraSelected = getItemLocalCache("carrera");
   public planID = '0';
-  public grupoSelected = '0'
+  public HorarioID = '0';
+  public grupoSelected = '0';
   public diaSelected = '0';
   public horaSelected = '0';
   public aulaSelected = '0';
@@ -56,12 +58,16 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public refPde: Observable<any>;
   public refCarrera: Observable<any>;
   public refPla: Observable<any>;
+  public refHorario: Observable<any>;
   public refRecintos: Observable<any>;
   public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
  
   public show = false;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
+  public array: any[][] = [];
+  onComponente: any[][] = [];
+
   constructor(private _grupo: GrupoService,
               private _aula: AulaService,
               private _horario: HorarioService,
@@ -69,14 +75,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               private _pde: PlanEstudioService,
               private _carrera: CarreraService,
               private _planificacion: PlanificacionService,
-              private _recinto: RecintoService,
-
-              
+              private _recinto: RecintoService,              
               private _snack: MatSnackBar
-
-
               ) { 
-
                 this.servicos();
                 this.refPde = this._pde.getList();
                 this.refCarrera = this._carrera.getList();
@@ -85,28 +86,35 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                 this.refAula = this._aula.getList();
                 this.refPla = this._planificacion.getList();
                 this.refRecintos = this._recinto.getList();
+                this.refHorario = this._horario.getList();
               }
 
   ngOnInit() {
     Promise.all(this.promesas).then(()=>{
-      this.show = true;
+      this.onComponente[0] = this.componentes;
+      this.onComponente[1] = this.grupos;
       this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
       this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
       this.subs.push(this.refPla.subscribe(data=>this.planificaciones = data))
+      this.subs.push(this.refHorario.subscribe(data=>{
+        this.horarioByAula(this.aulaSelected)
+        
+      }))
       this.subs.push(this.refComp.subscribe(data=>{this.componentes = data;
         this.refRecintos.subscribe((data: RecintoModel[]) => {
           this.recintos = data;
         });
-       this.componentesByCiclo(Number(this.cicloSelected));
+        this.componentesByCiclo(Number(this.cicloSelected));
         }));
       this.subs.push( this.refGP.subscribe(data =>
         {this.grupos = data;
-         this.pdesByCarrera(this.carreraSelected);
-       })
-       );
-      if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected)}
-      if(this.planSelected !== '0' ) {this.groupsByPlan(this.planSelected)}
-    })
+          this.pdesByCarrera(this.carreraSelected);
+        })
+        );
+        if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected)}
+        if(this.planSelected !== '0' ) {this.groupsByPlan(this.planSelected)}
+        this.show = true;
+      })
   }
 
   ngOnDestroy() {
@@ -153,7 +161,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.planID = id;
     let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
     this.gruposByPlan = grupos;
-    console.log(this.gruposByPlan)
   }
 
   getAulas(id: number) {
@@ -168,17 +175,65 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     horario.horario_grupo = this.grupoSelected;
     horario.horario_hora = Number(this.horaSelected);
     horario.horario_vacio = false;
-    this._horario.crearHorario(horario).subscribe(
+    horario.horario_id = this.HorarioID
+    this._horario.updateHorario(horario, horario.horario_id).subscribe(
       res =>{
          console.log(res);
-         this.aulaSelected = '0';
          this.diaSelected = '0';
          this.grupoSelected = '0';
          this.horaSelected = '0';
+         this.fun()
       },
       error => this._snack.open(error.message, "OK", {duration: 3000})
       
     )
+  }
+
+  horarioByAula(id:string){
+    this._horario.getHorarioByFilter("horario_aula", id)
+    .subscribe(res=>{
+      this.horarios = res;
+      this.HorarioID = this.horarios[0].horario_id;
+      console.log(this.HorarioID)
+      this.fun()
+    })
+
+  }
+
+  fun() {
+    let i = 0; let j = 0;
+    const vacio = new HorarioViewModel();
+    vacio.horario_vacio = true;
+    for (let aux = 0; aux < 6; aux++) {
+      this.array[aux] = [];
+    }
+    for (let aux = 0; aux < 5; aux++) {
+      for (let aux2 = 0; aux2 < 6; aux2++) {
+        this.array[aux2][aux] = vacio;
+      }
+    }
+    for (const dia of this.horarios) {
+      switch (dia.horario_dia) {
+        case 'Lunes': i = 0; break;
+        case 'Martes': i = 1; break;
+        case 'Miercoles': i = 2; break;
+        case 'Jueves': i = 3; break;
+        case 'Viernes': i = 4; break;
+        default: console.log('No such day exists!', dia); break;
+      }
+      switch (dia.horario_hora) {
+        case 7: j = 0; break;
+        case 9: j = 1; break;
+        case 11: j = 2; break;
+        case 13: j = 3; break;
+        case 15: j = 4; break;
+        case 17: j = 5; break;
+        default: console.log('No such hour exists!', dia); break;
+      }
+      this.array[j][i] = dia;
+      i = 0;
+      j = 0;
+    }
   }
   servicos(){
     let p1 = new Promise((resolve,reject)=>{
@@ -259,6 +314,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
       );
   });
+
     this.promesas.push(p1,p2,p3,p4,p5,p6,p7,p8)
   }
 

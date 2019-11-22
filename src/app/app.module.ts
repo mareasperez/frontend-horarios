@@ -135,7 +135,7 @@ import { RecintoNombrePipe } from './pipes/recinto-nombre.pipe';
     NombreGrupoPipe,
     AddHorarioComponent,
     HorariosCrudComponent,
-    RecintoNombrePipe
+    RecintoNombrePipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
