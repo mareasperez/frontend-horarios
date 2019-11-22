@@ -46,7 +46,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public cicloSelected = '0';
   public carreraSelected = getItemLocalCache("carrera");
   public planID = '0';
-
+  public grupoSelected = '0'
+  public diaSelected = '0';
+  public horaSelected = '0';
+  public aulaSelected = '0';
   public refGP: Observable<any>;
   public refComp: Observable<any>;
   public refAula: Observable<any>
@@ -132,7 +135,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     if(String(this.carreraSelected) !== "0"){
       this.compsByCiclo = [];
       this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
-      if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
+      if(ciclo!== 0) this.componentesByPde(this.pdeSelected);
     }
    }
 
@@ -158,6 +161,25 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
   }
 
+  save(){
+    let horario = new HorarioModel();
+    horario.horario_aula = this.aulaSelected;
+    horario.horario_dia = this.diaSelected;
+    horario.horario_grupo = this.grupoSelected;
+    horario.horario_hora = Number(this.horaSelected);
+    horario.horario_vacio = false;
+    this._horario.crearHorario(horario).subscribe(
+      res =>{
+         console.log(res);
+         this.aulaSelected = '0';
+         this.diaSelected = '0';
+         this.grupoSelected = '0';
+         this.horaSelected = '0';
+      },
+      error => this._snack.open(error.message, "OK", {duration: 3000})
+      
+    )
+  }
   servicos(){
     let p1 = new Promise((resolve,reject)=>{
       let sub =  this._grupo.getGrupos()

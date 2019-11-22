@@ -1,9 +1,4 @@
-<mat-card>
-     <mat-accordion>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-             <mat-panel-title>Filtros</mat-panel-title>
-            </mat-expansion-panel-header>
+<mat-card  style="height: 80vh;  overflow: auto;"> 
             <mat-form-field class="font-size-12" appearance="outline">
                     <mat-label>Carrera</mat-label>
                     <mat-select  [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value)" >
@@ -38,41 +33,54 @@
                       </mat-option>
                   </mat-select>
                  </mat-form-field>
-        </mat-expansion-panel>
-     </mat-accordion>
-    <form class="d-flex flex-column font-size-12 "  style="height: 80vh;" *ngIf="show">
+
+    <form class="d-flex flex-column font-size-12 mt-2 " *ngIf="show">
         <div class="row">
-            <div class="col-1">
-                <mat-radio-group name="dia" class="Radio-group"
+            <div class="col-12">
+                <mat-radio-group [(ngModel)]="diaSelected" name="dia" class="Radio-group"
                 aria-labelledby="dias">
-                    <mat-radio-button class="Radio-button" *ngFor="let dia of dias" [value]="dia">
+                <label><strong>Dia</strong></label>
+                    <mat-radio-button class="ml-1 " *ngFor="let dia of dias" [value]="dia">
                         {{dia}}
                     </mat-radio-button>        
                 </mat-radio-group>
+                <button mat-raised-button class="btnEditar ml-2" (click)="save()">
+                    <mat-icon>save</mat-icon>Guardar
+                </button>
             </div>
-                <div class="col-1">         
-                    <mat-radio-group name="hora"  class="Radio-group"
+                <div class="col-12 mb-2">  
+                    <mat-radio-group [(ngModel)]="horaSelected" name="hora"  class="Radio-group"
                     aria-labelledby="horas">
-                        <mat-radio-button class="Radio-button" *ngFor="let hora of horas" [value]="hora.value">
+                    <label><strong>Hora</strong></label>       
+                        <mat-radio-button class="ml-1" *ngFor="let hora of horas" [value]="hora.value">
                             {{hora.hora}}
                         </mat-radio-button>
                     </mat-radio-group >
                 </div>
-             <div class="col-4">  
-                 <mat-radio-group name="aula" class="Radio-group"
+        </div>
+                <div class="row">
+
+             <div class="col-2 overflow-auto mb-2">  
+
+                 <mat-radio-group [(ngModel)]="aulaSelected" name="aula" class="d-flex flex-column"
                  aria-labelledby="aulas">
+                 <label><strong>Aulas</strong></label>
                      <mat-radio-button class="Radio-button" *ngFor="let aula of aulas" [value]="aula.aula_id">
                          {{aula.aula_nombre}} {{aula.aula_recinto | recintoNombre : recintos}}
                         </mat-radio-button>           
                     </mat-radio-group>
                 </div>
-              <div class="col-6">  
-                  <mat-radio-group name="grupo"  class="Radio-group"
+              <div class="col-3 .overflow-auto mb-2">  
+                  <mat-radio-group [(ngModel)]="grupoSelected" name="grupo"  class="d-flex flex-column"
                   aria-labelledby="grupos">
+                  <label><strong>Grupos</strong></label>
                       <mat-radio-button class="Radio-button" *ngFor="let grupo of gruposByPlan" [value]="grupo.grupo_id" >
                           {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
                         </mat-radio-button>
                     </mat-radio-group>
+                </div>
+                <div class="col-7 bg-color-green">
+
                 </div>
             </div>
         </form>

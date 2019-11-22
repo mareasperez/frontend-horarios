@@ -15,6 +15,7 @@ import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 class cargaDocencia {
   grupo:GrupoModel;
@@ -40,6 +41,7 @@ export class CargaDocenciaComponent implements OnInit {
   private promesas:Promise<any>[]=[];
   public planificaciones:PlanificacionModel[]=[];
   public show=false;
+  public selected = getItemLocalCache("planificacion");
   subs:Subscription[]=[]
   cargas:cargaDocencia[]=[];
   displayedColumns: string[] = ['departamento', 'docente', 'carrera', 'tgrupo', 'thoras'];
@@ -121,15 +123,19 @@ export class CargaDocenciaComponent implements OnInit {
     Promise.all(this.promesas)
       .then(res=>{
       this.show = true;
+      if(this.selected !== '0') this.groupByPlan(this.selected)
         
       })//end then
   }
 
   groupByPlan(id:string){
     let grupos = this.grupos.filter(gp=> id === gp.grupo_planificacion)   
-    console.log(grupos)
     this.reporte(grupos) 
   }
+  getPlanName(id){
+    let plan = this.planificaciones.find(plan=>id === plan.planificacion_id)
+    return `semestre ${plan.planificacion_semestre} del año ${plan.planificacion_anyo_lectivo}`
+}
 
   reporte(gruposByPlan:GrupoModel[]){
     let planes=[];
@@ -163,7 +169,6 @@ export class CargaDocenciaComponent implements OnInit {
        this.cargas[i].departamento = this.dep.filter(dp=>dp.departamento_id === carga.carrera.carrera_departamento)[0]
        // 
      })
-     console.log(this.cargas)
      this.dataSource = this.cargas;
      this.cargas =[]
   }

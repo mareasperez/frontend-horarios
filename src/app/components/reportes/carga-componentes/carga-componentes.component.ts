@@ -13,6 +13,7 @@ import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { MatTableDataSource, MatSnackBar } from '@angular/material';
+import { getItemLocalCache } from 'src/app/utils/utils';
 class cargaComponente{
   componente:ComponenteModel
   grupo:GrupoModel
@@ -32,7 +33,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
   private planes:PlanEstudioModel[]=[]
   private carreras:CarreraModel[]=[]
   public show = false
-  public selected = "0"
+  public selected = getItemLocalCache("planificacion");
   private subs:Subscription[]=[]
   promesas: Promise<any>[]=[];
   public cargas:any[]=[];
@@ -114,7 +115,11 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(res=>this.show = true)
+    Promise.all(this.promesas).then(res=>{
+      this.show = true
+      if(this.selected !== '0') this.groupByPlan(this.selected)
+
+    })
   }
 
   ngOnDestroy(){
@@ -162,7 +167,6 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
        })
       })
      this.dataSource = this.cargas
-     console.log(this.dataSource)
      this.cargas =[]
 
   }

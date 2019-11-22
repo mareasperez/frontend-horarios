@@ -1,8 +1,8 @@
-<div class="container-fluid">
+<div class="container-fluid"  style="max-height: 200vh; overflow: auto;">
     <div class="row">
-    <div class="col-12 text-center"><h1>Universidad Nacional Autonoma de Nicaragua</h1></div>
-    <div class="col-12 text-center"><h4>UNAN-Le&oacute;n</h4></div>
-    <div class="col-12 text-center"><h4>Departamento de cumputaci&oacute;n</h4></div>
+    <div class="col-12 text-center"><h4>Universidad Nacional Autonoma de Nicaragua</h4></div>
+    <div class="col-12 text-center"><h5>UNAN-Le&oacute;n</h5></div>
+    <div class="col-12 text-center"><h5>Departamento de cumputaci&oacute;5</h5></div>
     <div class="col-12 text-center">
       <h4>Reporte de Carga Gen&eacute;rica de Docencia Directa por componente planificacion 
        {{selected !== '0' ? getPlanName(selected):null}}
@@ -11,8 +11,8 @@
     </div>
 </div>
 <mat-card>
-  <mat-card-content style="max-height: 600px; overflow: auto;">
-    <mat-form-field *ngIf="show" appearance="outline">
+  <mat-card-content>
+    <mat-form-field *ngIf="show" class="font-size-12" appearance="outline">
         <mat-label>Seleccionar planificaci&oacute;n</mat-label>
         <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
             <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
