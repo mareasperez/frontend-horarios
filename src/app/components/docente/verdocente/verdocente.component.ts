@@ -6,6 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
+import { resolve } from 'dns';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
