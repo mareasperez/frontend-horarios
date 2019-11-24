@@ -29,7 +29,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public selected = '0';
   public selected2 = '0';
   public selectedComp = '0';
-  public componente:ComponenteModel;
+  public componente:ComponenteModel = new ComponenteModel();
 
   // validacion de edicion o creacion
   public add = false;
@@ -44,8 +44,10 @@ export class GrupoComponent implements OnInit, OnDestroy {
     private _snack: MatSnackBar,
     private dialog: MatDialog,
     ) {
+      this.componente.componente_chp = '0'
+      this.componente.componente_cht = '0'
+      
     }
-    
     get Grupos(): GrupoModel[] {
       return this.grupos;
     }
@@ -54,6 +56,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
 
     get Componente(): ComponenteModel {
+      console.log(this.componente)
       return this.componente;
     }
       @Input()  public set _componente(comp:ComponenteModel){

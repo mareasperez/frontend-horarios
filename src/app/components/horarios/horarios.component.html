@@ -70,58 +70,49 @@
             <div class="col-3 .overflow-auto mb-2">
                 <mat-radio-group [(ngModel)]="grupoSelected" name="grupo" class="d-flex flex-column" aria-labelledby="grupos">
                     <label><strong>Grupos</strong></label>
-                    <mat-radio-button class="Radio-button" *ngFor="let grupo of gruposByPlan" [value]="grupo.grupo_id">
-                        {{grupo.grupo_componente | componenteNombreSimple : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
+                    <mat-radio-button class="Radio-button" *ngFor="let grupo of gruposByPlan" [value]="grupo">
+                        {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
                     </mat-radio-button>
                 </mat-radio-group>
             </div>
             <div class="col-7 ">
                 <table class=" table table-striped  ">
                     <tr class="row">
-                        <th class="col-2">Hora</th>
-                        <th class="col-2">Lunes</th>
-                        <th class="col-2">Martes </th>
-                        <th class="col-2">Mi&eacute;rcoles</th>
-                        <th class="col-2">Jueves</th>
-                        <th class="col-2">Viernes</th>
+                        <th class="col-2">07am - 09am</th>
+                        <td class="col-2" *ngFor="let hora of array[0]">
+                            {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
+                        </td>
                     </tr>
-                    <tbody>
-                        <tr class="row">
-                            <th class="col-2">07am - 09am</th>
-                            <td class="col-2" *ngFor="let hora of array[0]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">09am - 11am</th>
-                            <td class="col-2" *ngFor="let hora of array[1]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">11am-01pm</th>
-                            <td class="col-2" *ngFor="let hora of array[2]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">01pm - 03pm</th>
-                            <td class="col-2" *ngFor="let hora of array[3]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">03pm - 05pm</th>
-                            <td class="col-2" *ngFor="let hora of array[4]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">05m - 07pm</th>
-                            <td class="col-2" *ngFor="let hora of array[5]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
+                    <tr class="row">
+                        <th class="col-2">09am - 11am</th>
+                        <td class="col-2" *ngFor="let hora of array[1]">
+                            {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <th class="col-2">11am-01pm</th>
+                        <td class="col-2" *ngFor="let hora of array[2]">
+                            {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <th class="col-2">01pm - 03pm</th>
+                        <td class="col-2" *ngFor="let hora of array[3]">
+                            {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <th class="col-2">03pm - 05pm</th>
+                        <td class="col-2" *ngFor="let hora of array[4]">
+                            {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <th class="col-2">05m - 07pm</th>
+                        <td class="col-2" *ngFor="let hora of array[5]">
+                            {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
+                        </td>
+                    </tr>
                     </tbody>
 
                 </table>

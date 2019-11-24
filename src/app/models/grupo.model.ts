@@ -10,4 +10,5 @@ export class GrupoModel {
     grupo_docente: string;
     grupo_planificacion: string;
     grupo_planta: boolean;
+    grupo_asignado: boolean;
 }
