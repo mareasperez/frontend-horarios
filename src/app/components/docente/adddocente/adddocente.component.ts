@@ -29,14 +29,15 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
   public areas: AreaModel[] = [];
   public areasSelecteds: string[] = [];
-
-  private doc_areas: DocenteAreaModel[] = [];
-  edit = false;
-  subs: Subscription[] = [];
+  public doc_areas: DocenteAreaModel[] = [];
+  public refDocAreas: Observable<DocenteAreaModel[]>;
+  public edit: boolean;
+  public subs: Subscription[] = [];
   public form: FormGroup;
   public refDepartamento: Observable<any>;
   public refArea: Observable<any>;
   public Errors: matErrorsMessage = new matErrorsMessage();
+  promesas: Promise<any>[] = [];
   constructor(
     private docenteService: DocenteService,
     private departamento$: DepartamentoService,
@@ -47,37 +48,43 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private _snack: MatSnackBar
   ) {
-    this._area.getAreas().subscribe(
-      res => this.areas.push(res),
-      error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-    );
-    this._doc_ar.getDcArea()
-      .subscribe(
-        res => this.doc_areas.push(res),
+    const p = new Promise<void>((resolve) => {
+      this._area.getAreas().subscribe(
+        res => this.areas.push(res),
         error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        () => resolve()
       );
+    });
+    const p2 = new Promise<void>((resolve) => {
+      this._doc_ar.getDcArea()
+        .subscribe(
+          res => this.doc_areas.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+    });
     this.departamentos = this.departamento$.list;
-    console.log(this.departamento$.list);
+    // console.log(this.departamento$.list);
     this.refArea = this._area.getList();
+    this.refDocAreas = this._doc_ar.getList();
     this.refDepartamento = this.departamento$.getList();
-
+    this.promesas.push(p, p2);
   }
 
   ngOnInit() {
-    this.subs.push(
-      this.refDepartamento
-        .subscribe(deps => this.departamentos = deps)
-    );
-    this.subs.push(
-      this.refArea.subscribe(areas => this.areas = areas)
-    );
-    this.createForm();
+    Promise.all(this.promesas).then(() => {
+      this.subs.push(this.refDepartamento.subscribe(deps => this.departamentos = deps));
+      this.subs.push(this.refArea.subscribe(areas => this.areas = areas));
+      this.subs.push(this.refDocAreas.subscribe(doc_a => this.doc_areas = doc_a));
+      this.createForm();
+    });
+
   }
 
   ngOnDestroy() {
-    this._area.list = [];
-    this.departamento$.list = [];
-    this._doc_ar.list = [];
+    this.areas = [];
+    this.departamentos = [];
+    this.doc_areas = [];
     // this.docenteService.list = []
     this.subs.map(sub => sub.unsubscribe());
   }
@@ -131,6 +138,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
 
   post_areas(docenteID) {
     const body = { docenteArea: [{ da_area: this.areasSelecteds }] };
+    console.log('areas sel: ', this.areasSelecteds);
     this._doc_ar.client.put(`${this._doc_ar.getUrl()}docente_id=${docenteID}`, body)
       .subscribe(
         res => this.dialogRef.close(),
@@ -146,10 +154,11 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     if (this.data.doc != null) {
       let area = new DocenteAreaModel();
       area = this.doc_areas.find(do_ar => do_ar.da_area === id);
-      // console.log("llamado por area: ",id, "\n",area,"\n",area.da_docente, this.data.doc.docente_id)
+
       if (area) {
 
         if (area.da_docente === this.data.doc.docente_id) {
+          console.log(`llamado por area: ${id}, se encontro el area: ${area.da_area} el docente del area es: ${area.da_docente} y al docente que se busca es ${this.data.doc.docente_id}`)
           return true;
         } else {
           return false;
