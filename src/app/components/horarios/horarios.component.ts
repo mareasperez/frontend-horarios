@@ -39,6 +39,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public compsByCiclo: ComponenteModel[]=[];
   public pdeByCarrera: PlanEstudioModel[]=[];
   public gruposByPlan: GrupoModel[] = [];
+  public gruposFiltrados: GrupoModel[] = [];
   public pdes: PlanEstudioModel[]=[];
   public horas = Horas;
   public selectedR: RecintoModel;
@@ -48,7 +49,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public carreraSelected = getItemLocalCache("carrera");
   public planID = '0';
   public HorarioID = '0';
-  public grupoSelected = '0';
+  public grupoSelected: GrupoModel = new GrupoModel()
   public diaSelected = '0';
   public horaSelected = '0';
   public aulaSelected = '0';
@@ -78,6 +79,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               private _recinto: RecintoService,              
               private _snack: MatSnackBar
               ) { 
+                this.grupoSelected.grupo_id = '0';
                 this.servicos();
                 this.refPde = this._pde.getList();
                 this.refCarrera = this._carrera.getList();
@@ -160,8 +162,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   groupsByPlan(id: string) {
     this.planID = id;
     let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-    this.gruposByPlan = grupos;
+    this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === false);
   }
+
 
   getAulas(id: number) {
     this.aulas = [];
@@ -172,17 +175,19 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     let horario = new HorarioModel();
     horario.horario_aula = this.aulaSelected;
     horario.horario_dia = this.diaSelected;
-    horario.horario_grupo = this.grupoSelected;
+    horario.horario_grupo = this.grupoSelected.grupo_id;
     horario.horario_hora = Number(this.horaSelected);
     horario.horario_vacio = false;
     horario.horario_id = this.HorarioID
+    this.grupoSelected.grupo_asignado = true;
     this._horario.updateHorario(horario, horario.horario_id).subscribe(
       res =>{
          console.log(res);
          this.diaSelected = '0';
-         this.grupoSelected = '0';
+         this.grupoSelected.grupo_id = '0';
          this.horaSelected = '0';
          this.fun()
+         this.groupsByPlan(this.planSelected)
       },
       error => this._snack.open(error.message, "OK", {duration: 3000})
       

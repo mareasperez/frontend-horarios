@@ -95,7 +95,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     } else {
       this.form = this.fb.group({
         docente_id: this.data.doc.docente_id,
-        docente_nombre: new FormControl(this.data.doc.docente_nombre, [Validators.required, Validators.maxLength(10)]),
+        docente_nombre: new FormControl(this.data.doc.docente_nombre, [Validators.required, Validators.maxLength(100)]),
         docente_inss: new FormControl(this.data.doc.docente_inss, [Validators.required, Validators.min(10000)]),
         docente_tipo_contrato: new FormControl(this.data.doc.docente_tipo_contrato, [Validators.required]),
         docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
