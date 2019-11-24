@@ -40,7 +40,7 @@
                         <mat-card-content>
                             <mat-list class="list-grupos">
                                 <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
-                                    <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </strong> {{grupo.grupo_componente | componenteNombre: componentes}} <strong>Hrs: </strong> {{grupo.grupo_horas_clase}}
+                                    <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </strong> {{grupo.grupo_componente | componenteNombreSimple: componentes}} <strong>Hrs: </strong> {{grupo.grupo_horas_clase}}
                                     <span style="flex: 1 1 auto;"></span>
                                     <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
                                         <mat-icon>delete</mat-icon>
@@ -53,7 +53,7 @@
                                                 }">
                             {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
                         </mat-card-footer>
-                        </mat-card>
+                    </mat-card>
                 </div>
             </div>
         </div>
