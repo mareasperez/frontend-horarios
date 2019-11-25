@@ -7,28 +7,28 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class DocenteAreaService extends MainService {
-  public resource = "doar"
-  constructor(httpclient:HttpClient) { 
-    super(httpclient)
+  public resource = 'doar'
+  constructor(httpclient: HttpClient) {
+    super(httpclient);
   }
 
   getDcArea(): Observable<DocenteAreaModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
         data.docenteArea.forEach(el => {
-          //console.log(el)
+          // console.log(el)
           let docenteArea = new DocenteAreaModel();
-          docenteArea = Object.assign(docenteArea,el);
+          docenteArea = Object.assign(docenteArea, el);
           this.list.push(docenteArea);
           observer.next(docenteArea);
         });
-        observer.complete()
+        observer.complete();
       });
     });
   }
 
-  crearDcArea(docenteId, areas:any[]): Observable<any> {
-    let body = { docenteArea: [{"da_docente":docenteId, "da_area":areas}]};
+  crearDcArea(docenteId, areas: any[]): Observable<any> {
+    const body = { docenteArea: [{ da_docente: docenteId, da_area: areas }] };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -37,39 +37,51 @@ export class DocenteAreaService extends MainService {
     });
   }
 
-  updateDcArea(dcArea: DocenteAreaModel, id: string|number) {
+  updateDcArea(dcArea: DocenteAreaModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { docenteArea: dcArea };
+    const body = { docenteArea: dcArea };
     return this.update(body, id);
   }
-  deleteDcArea(idDcArea: number|string)  {
-    return this.delete(idDcArea)
+  deleteDcArea(idDcArea: number | string) {
+    return this.delete(idDcArea);
   }
-  
+  getByDocente(filtro: string, id: string | number): Observable<DocenteAreaModel> {
+    return new Observable(observer => {
+      this.getByFiltro(filtro, id).subscribe(data => {
+        data.docenteArea.forEach(el => {
+          let docenteArea = new DocenteAreaModel();
+          docenteArea = Object.assign(docenteArea, el);
+          this.list.push(docenteArea);
+          observer.next(docenteArea);
+        });
+        observer.complete();
+      });
+    });
+  }
   updateList(data: wsModel) {
-  //   console.log(data)
+    //   console.log(data)
     let docenteA = new DocenteAreaModel();
-    docenteA = Object.assign(docenteA,data.data);
-     switch (data.event) {
-       case 'c':
+    docenteA = Object.assign(docenteA, data.data);
+    switch (data.event) {
+      case 'c':
         // console.log("Crear")
-         this.list.push(docenteA);
-         this.list$.next(this.list)
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.da_id).indexOf(docenteA.da_id);
-         this.list.splice(index, 1, docenteA);
-         this.list$.next(this.list)
-         break;
-       case 'd':
+        this.list.push(docenteA);
+        this.list$.next(this.list);
+        break;
+      case 'u':
+        //  console.log("update")
+        const index = this.list.map(el => el.da_id).indexOf(docenteA.da_id);
+        this.list.splice(index, 1, docenteA);
+        this.list$.next(this.list);
+        break;
+      case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.da_id !== docenteA.da_id);
-         this.list$.next(this.list)
-         break;
- 
-     }
- 
-   }
+        this.list = this.list.filter(el => el.da_id !== docenteA.da_id);
+        this.list$.next(this.list);
+        break;
+
+    }
+
+  }
 
 }

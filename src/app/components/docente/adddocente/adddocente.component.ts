@@ -56,7 +56,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       );
     });
     const p2 = new Promise<void>((resolve) => {
-      this._doc_ar.getDcArea()
+      this._doc_ar.getByDocente('docente_id',this.data.doc.docente_id)
         .subscribe(
           res => this.doc_areas.push(res),
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),

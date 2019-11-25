@@ -84,6 +84,7 @@ import { RecintoNombrePipe } from './pipes/recinto-nombre.pipe';
 import { ComponenteNameSimplePipe } from './pipes/componente-name-simple.pipe';
 import { ComponenteGrupoSimplePipe } from './pipes/componente-grupo-simple.pipe';
 import { PlanNamePipe } from './pipes/plan-name.pipe';
+import { DocAreasPipe } from './pipes/doc-areas.pipe';
 
 @NgModule({
   declarations: [
@@ -142,6 +143,7 @@ import { PlanNamePipe } from './pipes/plan-name.pipe';
     ComponenteNameSimplePipe,
     ComponenteGrupoSimplePipe,
     PlanNamePipe,
+    DocAreasPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
