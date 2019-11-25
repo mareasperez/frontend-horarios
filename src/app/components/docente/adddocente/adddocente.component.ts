@@ -56,17 +56,21 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       );
     });
     const p2 = new Promise<void>((resolve) => {
-      this._doc_ar.getByDocente('docente_id',this.data.doc.docente_id)
-        .subscribe(
-          res => this.doc_areas.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
+      if (this.data.type === 'u') {
+        this._doc_ar.getByDocente('docente_id', this.data.doc.docente_id)
+          .subscribe(
+            res => this.doc_areas.push(res),
+            error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.refDocAreas = this._doc_ar.getList();
+      } else {
+        resolve();
+      }
     });
     this.departamentos = this.departamento$.list;
     // console.log(this.departamento$.list);
     this.refArea = this._area.getList();
-    this.refDocAreas = this._doc_ar.getList();
     this.refDepartamento = this.departamento$.getList();
     this.promesas.push(p, p2);
   }
@@ -75,7 +79,10 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(() => {
       this.subs.push(this.refDepartamento.subscribe(deps => this.departamentos = deps));
       this.subs.push(this.refArea.subscribe(areas => this.areas = areas));
-      this.subs.push(this.refDocAreas.subscribe(doc_a => this.doc_areas = doc_a));
+      if (this.data.type === 'u') {
+        this.subs.push(this.refDocAreas.subscribe(doc_a => this.doc_areas = doc_a));
+      }
+
       this.createForm();
     });
 
@@ -96,7 +103,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         docente_nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
         docente_inss: new FormControl('', [Validators.required, Validators.min(10000)]),
         docente_tipo_contrato: new FormControl('H', [Validators.required]),
-        docente_departamento: new FormControl('0', [Validators.required])
+        docente_departamento: new FormControl(1, [Validators.required])
 
       });
     } else {
@@ -150,24 +157,25 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     this.areasSelecteds = areas._value;
   }
 
-  onDocente(id: string) {
-    if (this.data.doc != null) {
-      let area = new DocenteAreaModel();
-      area = this.doc_areas.find(do_ar => do_ar.da_area === id);
+  // onDocente(id: string) {
+  //   if (this.data.doc != null) {
+  //     let area = new DocenteAreaModel();
+  //     area = this.doc_areas.find(do_ar => do_ar.da_area === id);
 
-      if (area) {
+  //     if (area) {
 
-        if (area.da_docente === this.data.doc.docente_id) {
-          console.log(`llamado por area: ${id}, se encontro el area: ${area.da_area} el docente del area es: ${area.da_docente} y al docente que se busca es ${this.data.doc.docente_id}`)
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } else {
-      return false;
-    }
-  }
+  //       if (area.da_docente === this.data.doc.docente_id) {
+  // tslint:disable-next-line: max-line-length
+  //         console.log(`llamado por area: ${id}, se encontro el area: ${area.da_area} el docente del area es: ${area.da_docente} y al docente que se busca es ${this.data.doc.docente_id}`)
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     }
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   get Form() {
     // console.log(this.form.controls);
