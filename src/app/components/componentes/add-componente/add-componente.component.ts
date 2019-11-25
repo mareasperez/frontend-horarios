@@ -52,7 +52,7 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.refAreas.subscribe(
-      areas => this.areas = areas,
+      res => { this.areas = []; this.areas = res; },
       error => this._snack.open(error.message, 'OK', { duration: 3000 }),
     );
     this.refPdes.subscribe(
