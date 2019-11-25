@@ -1,16 +1,21 @@
 <div class="container-fluid">
     <div class="row">
-          <div class="col-12 text-center"><h4>Universidad Nacional Autonoma de Nicaragua</h4></div>
-        <div class="col-12 text-center"><h5>UNAN-Le&oacute;n</h5></div>
-        <div class="col-12 text-center"><h5>Departamento de cumputaci&oacute;n</h5></div>
         <div class="col-12 text-center">
-            <h5>Reporte de Carga Gen&eacute;rica de Docencia Directa planificacion 
-            {{selected !== '0' ? getPlanName(selected):null}}
-        </h5>
+            <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+        </div>
+        <div class="col-12 text-center">
+            <h5>UNAN-Le&oacute;n</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h5>Departamento de cumputaci&oacute;n</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h5>Reporte de Carga Gen&eacute;rica de Docencia Directa planificacion {{ selected | planName: planificaciones }}
+            </h5>
         </div>
     </div>
 </div>
-<mat-form-field *ngIf="show"  class="font-size-12" appearance="outline">
+<mat-form-field *ngIf="show" class="font-size-12" appearance="outline">
     <mat-label>Seleccionar planificaci&oacute;n</mat-label>
     <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
         <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
@@ -19,19 +24,19 @@
     </mat-select>
 </mat-form-field>
 
-<table mat-table *ngIf="dataSource !== undefined && dataSource.length>0"  [dataSource]="dataSource" class="w-100 mat-elevation-z8">
-   
+<table mat-table *ngIf="dataSource !== undefined && dataSource.length>0" [dataSource]="dataSource" class="w-100 mat-elevation-z8">
+
     <ng-container matColumnDef="departamento">
-      <th mat-header-cell *matHeaderCellDef> Departamento </th>
-      <td mat-cell *matCellDef="let carga"> {{carga.departamento.departamento_nombre }} </td>
+        <th mat-header-cell *matHeaderCellDef> Departamento </th>
+        <td mat-cell *matCellDef="let carga"> {{carga.departamento.departamento_nombre }} </td>
     </ng-container>
     <ng-container matColumnDef="docente">
         <th mat-header-cell *matHeaderCellDef> Docente </th>
         <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_docente | docenteName:docentes}} </td>
-        </ng-container>
+    </ng-container>
     <ng-container matColumnDef="carrera">
-       <th mat-header-cell *matHeaderCellDef> Carrera </th>
-       <td mat-cell *matCellDef="let carga"> {{carga.carrera.carrera_nombre}} </td>
+        <th mat-header-cell *matHeaderCellDef> Carrera </th>
+        <td mat-cell *matCellDef="let carga"> {{carga.carrera.carrera_nombre}} </td>
     </ng-container>
     <ng-container matColumnDef="tgrupo">
         <th mat-header-cell *matHeaderCellDef> Tgrupo </th>

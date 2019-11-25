@@ -1,26 +1,31 @@
-<div class="container-fluid"  style="max-height: 200vh; overflow: auto;">
+<div class="container-fluid" style="max-height: 200vh; overflow: auto;">
     <div class="row">
-    <div class="col-12 text-center"><h4>Universidad Nacional Autonoma de Nicaragua</h4></div>
-    <div class="col-12 text-center"><h5>UNAN-Le&oacute;n</h5></div>
-    <div class="col-12 text-center"><h5>Departamento de cumputaci&oacute;</h5></div>
-    <div class="col-12 text-center">
-      <h4>Reporte de Carga Gen&eacute;rica de Docencia Directa por componente planificacion 
-       {{selected !== '0' ? getPlanName(selected):null}}
-      </h4>
-    </div>
+        <div class="col-12 text-center">
+            <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+        </div>
+        <div class="col-12 text-center">
+            <h5>UNAN-Le&oacute;n</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h5>Departamento de cumputaci&oacute;</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h4>Reporte de Carga Gen&eacute;rica de Docencia Directa por componente planificacion {{ selected | planName: planificaciones }}
+            </h4>
+        </div>
     </div>
 </div>
 <mat-card>
-  <mat-card-content>
-    <mat-form-field *ngIf="show" class="font-size-12" appearance="outline">
-        <mat-label>Seleccionar planificaci&oacute;n</mat-label>
-        <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
-            <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
-              planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <span *ngFor="let item of dataSource; let i = index">
+    <mat-card-content>
+        <mat-form-field *ngIf="show" class="font-size-12" appearance="outline">
+            <mat-label>Seleccionar planificaci&oacute;n</mat-label>
+            <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
+                <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
+                    planificacion semestre {{ plan.planificacion_semestre }} año {{plan.planificacion_anyo_lectivo}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span *ngFor="let item of dataSource; let i = index">
       <h4 class=" mt-4">{{item[0].componente.componente_nombre}}</h4>
       <div class="px-4">
         <table mat-table   [dataSource]="item" class="w-100 mat-elevation-z8">
@@ -51,5 +56,5 @@
         </table>
       </div>
     </span>
-  </mat-card-content>
+    </mat-card-content>
 </mat-card>
