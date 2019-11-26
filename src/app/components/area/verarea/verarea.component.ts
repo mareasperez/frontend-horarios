@@ -45,10 +45,13 @@ export class VerareaComponent implements OnInit, OnDestroy {
       this.dataSource = this.areas;
       this.activartabla = true;
       this.refArea.subscribe((data: AreaModel[]) => {
+        console.log('se llamo al subs con lo siguiente:', data);
         this.areas = [];
         this.dataSource = [];
         this.areas = data;
-        this.dataSource = this.areas;
+        this.areas.forEach(element => {
+          this.dataSource.push(element);
+        });
       });
     });
 
