@@ -105,7 +105,7 @@ export class WsService {
     };
     this.socket.onclose = () => {
       // connection closed, discard old websocket and create a new one
-      if (this.contador != 0 && this.contador <= this.MAX_RECONNECTION) {
+      if (this.contador !== 0 && this.contador <= this.MAX_RECONNECTION) {
         console.log(`reconectando ws intento ${this.contador} de ${this.MAX_RECONNECTION}`);
         this.socket = null;
         const p3 = new Promise((resolve) => {
