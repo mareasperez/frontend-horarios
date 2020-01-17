@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WsService } from './services/ws.service';
-import { DepartamentoModel } from './models/departamento.model';
-import { DepartamentoService } from './services/departamento.service';
 import { JwtService } from './services/jwt.service';
 
 @Component({

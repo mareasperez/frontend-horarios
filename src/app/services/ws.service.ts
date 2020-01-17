@@ -15,6 +15,7 @@ import { AulaService } from './aula.service';
 import { DocenteAreaService } from './docente-area.service';
 import { Api, ip } from '../models/api.model';
 import { HorarioService } from './horario.service';
+declare let alertify: any;
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +41,7 @@ export class WsService {
     private AulaService: AulaService
   ) { }
   private MAX_RECONNECTION = 5;
-  private contador = 1;
+  private contador = 0;
 
   setsock() {
     this.socket = new WebSocket(`ws://${ip}:8000/ws/?token=${this.jwt.Token}`);
@@ -48,6 +49,10 @@ export class WsService {
 
     this.socket.onopen = () => {
       console.log('WebSockets connection created for Socket Service');
+      if (this.contador > 1) {
+        alertify.success('WebSocket reconectado, si hay multiples usuarios trabajando es recomendable recargar la pagina');
+      }
+      this.contador = 1;
     };
 
     this.socket.onmessage = (event) => {
@@ -99,20 +104,26 @@ export class WsService {
       }
     };
     this.socket.onclose = () => {
-      // connection closed, discard old websocket and create a new one in 5s
-      if (this.contador < this.MAX_RECONNECTION) {
-        console.log('reconectando ws intento ' + this.contador + ' de ' + this.MAX_RECONNECTION);
+      // connection closed, discard old websocket and create a new one
+      if (this.contador != 0 && this.contador <= this.MAX_RECONNECTION) {
+        console.log(`reconectando ws intento ${this.contador} de ${this.MAX_RECONNECTION}`);
         this.socket = null;
-        setTimeout(() => {    // <<<---    using ()=> syntax
-          this.setsock();
-          alert('reconectando ws intento ' + this.contador + ' de ' + this.MAX_RECONNECTION);
-        }, 3000 * this.contador);
-        this.contador++;
+        const p3 = new Promise((resolve) => {
+          alertify.error(`reconectando ws intento ${this.contador} de ${this.MAX_RECONNECTION}`);
+          this.contador++;
+          setTimeout(() => {
+            this.setsock();
+          }, 3000 * this.contador);
+          resolve();
+        });
       } else {
-        window.location.reload();
+        alertify.confirm('Recargar pagina')
+          .set('onok', () => {
+            window.location.reload();
+          })
+          .set({ title: 'Error de conexion' });
       }
     };
-
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.onopen(null);
     }
