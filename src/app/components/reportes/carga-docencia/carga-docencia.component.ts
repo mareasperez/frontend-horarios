@@ -16,6 +16,7 @@ import { DocenteService } from 'src/app/services/docente.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
+import { async } from '@angular/core/testing';
 
 class cargaDocencia {
   grupo: GrupoModel;
@@ -54,16 +55,6 @@ export class CargaDocenciaComponent implements OnInit {
               private _planificaciones: PlanificacionService
 
     ) {
-
-      this.promesas.push(
-        new Promise((resolve) => {
-          this._carrera.getCarrera().subscribe(res => {
-            this.carreras.push(res);
-            resolve(this.carreras);
-          });
-        })
-      );
-
       this.promesas.push(
         new Promise((resolve) => {
           this._planificaciones.getPlanificaciones().subscribe(res => {
@@ -74,6 +65,17 @@ export class CargaDocenciaComponent implements OnInit {
           });
         })
       );
+
+      this.promesas.push(
+        new Promise((resolve) => {
+          this._carrera.getCarrera().subscribe(res => {
+            this.carreras.push(res);
+            resolve(this.carreras);
+          });
+        })
+      );
+
+
       this.promesas.push(
         new Promise((resolve) => {
           this._docente.getDocente().subscribe(res => {
@@ -121,13 +123,18 @@ export class CargaDocenciaComponent implements OnInit {
 
     }
 
-  ngOnInit() {
-    Promise.all(this.promesas)
-      .then(res => {
+   async ngOnInit() {
+    console.log("pacman");
+    await this.sleep(5000);
+    this.show = true;
+    Promise.all(this.promesas).then(async res => {
       this.show = true;
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
 
       }); // end then
+  }
+  sleep(ms = 0) {
+    return new Promise(r => setTimeout(r, ms));
   }
 
   groupByPlan(id: string) {

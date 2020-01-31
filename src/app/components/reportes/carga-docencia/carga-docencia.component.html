@@ -1,20 +1,23 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h4>Universidad Nacional Autonoma de Nicaragua</h4>
-        </div>
-        <div class="col-12 text-center">
-            <h5>UNAN-Le&oacute;n</h5>
-        </div>
-        <div class="col-12 text-center">
-            <h5>Departamento de cumputaci&oacute;n</h5>
-        </div>
-        <div class="col-12 text-center">
-            <h5>Reporte de Carga Gen&eacute;rica de Docencia Directa planificacion {{ selected | planName: planificaciones }}
-            </h5>
+<div *ngIf="show">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+            </div>
+            <div class="col-12 text-center">
+                <h5>UNAN-Le&oacute;n</h5>
+            </div>
+            <div class="col-12 text-center">
+                <h5>Departamento de cumputaci&oacute;n</h5>
+            </div>
+            <div class="col-12 text-center">
+                <h5>Reporte de Carga Gen&eacute;rica de Docencia Directa planificacion {{ selected | planName: planificaciones }}
+                </h5>
+            </div>
         </div>
     </div>
 </div>
+
 <mat-form-field *ngIf="show" class="font-size-12" appearance="outline">
     <mat-label>Seleccionar planificaci&oacute;n</mat-label>
     <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
