@@ -7,7 +7,7 @@ import { GrupoModel } from '../models/grupo.model';
 export class NombreGrupoPipe implements PipeTransform {
 
   transform(id: string, grupos: GrupoModel[]): any {
-    if (id !== undefined && grupos !== []) {
+    if (id !== undefined && grupos.length<0) {
       console.log('se recibe  id: ', id, 'grupos:', grupos);
       const grupo = grupos.find(g => id === g.grupo_id);
       return grupo.grupo_tipo + grupo.grupo_numero;

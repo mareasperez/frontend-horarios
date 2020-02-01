@@ -13,17 +13,12 @@ td {
 }
 
 td.elemento {
-    width: 20%;
+    font-style: italic;
+    width: 250px;
 }
 
 table {
     margin: auto;
     align-content: center;
     text-align: center;
-}
-
-.caja {
-    overflow: auto;
-    height: 340px;
-    overflow-x: hidden;
 }

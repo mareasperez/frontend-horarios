@@ -7,7 +7,7 @@ import { DocenteModel } from '../models/docente.model';
 })
 export class DocenteNamePipe implements PipeTransform {
   transform(id: string, array: any[][]): string {
-    if (id !== undefined) {
+    if (id !== undefined && id !== null) {
       console.log('se recibe  id: ', id, 'docentes:', array);
       const doc: GrupoModel = array[1].find(doce => id === doce.grupo_id);
       const retorno: DocenteModel = array[0].find(doce => doc.grupo_docente === doce.docente_id);

@@ -124,36 +124,36 @@
 </div>
 <!-- horarios -->
 <div *ngIf="array.length===6">
-    <table class="table" style="width: 90%;">
+    <table class="table" style="width: 80%;">
         <thead>
             <tr class="row">
-                <th class="col-1">Hora</th>
-                <th class="col">Lunes</th>
-                <th class="col">Martes</th>
-                <th class="col">Mi&eacute;rcoles</th>
-                <th class="col">Jueves</th>
-                <th class="col">Viernes</th>
+                <th class="col-2">Hora</th>
+                <th class="col-2">Lunes</th>
+                <th class="col-2">Martes</th>
+                <th class="col-2">Mi&eacute;rcoles</th>
+                <th class="col-2">Jueves</th>
+                <th class="col-2">Viernes</th>
             </tr>
         </thead>
-        <tbody class="row caja">
+        <tbody class="row">
             <div class="mat-figure">
                 <tr class="row">
-                    <td class="col-1">
+                    <td class="col-2">
                         7:00 - 9:00
                     </td>
-                    <div *ngIf="reporte==='docente'" class="col-11">
+                    <div *ngIf="reporte==='docente'" class="col-10">
                         <td *ngFor="let hora of array[0]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complexLink : simpleLink" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='grupo'" class="col-11">
+                    <div *ngIf="reporte==='grupo'" class="col-10">
                         <td *ngFor="let hora of array[0]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex1Link : simple1Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='aula'" class="col-11">
+                    <div *ngIf="reporte==='aula'" class="col-10">
                         <td *ngFor="let hora of array[0]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex2Link : simple2Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
@@ -162,22 +162,22 @@
 
                 </tr>
                 <tr class="row">
-                    <td class="col">
+                    <td class="col-2">
                         9:00 - 11:00
                     </td>
-                    <div *ngIf="reporte==='docente'" class="col-11">
+                    <div *ngIf="reporte==='docente'" class="col-10">
                         <td *ngFor="let hora of array[1]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complexLink : simpleLink" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='grupo'" class="col-11">
+                    <div *ngIf="reporte==='grupo'" class="col-10">
                         <td *ngFor="let hora of array[1]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex1Link : simple1Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='aula'" class="col-11">
+                    <div *ngIf="reporte==='aula'" class="col-10">
                         <td *ngFor="let hora of array[1]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex2Link : simple2Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
@@ -185,22 +185,22 @@
                     </div>
                 </tr>
                 <tr class="row">
-                    <td class="col">
+                    <td class="col-2">
                         11:00 - 13:00
                     </td>
-                    <div *ngIf="reporte==='docente'" class="col-11">
+                    <div *ngIf="reporte==='docente'" class="col-10">
                         <td *ngFor="let hora of array[2]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complexLink : simpleLink" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='grupo'" class="col-11">
+                    <div *ngIf="reporte==='grupo'" class="col-10">
                         <td *ngFor="let hora of array[2]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex1Link : simple1Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='aula'" class="col-11">
+                    <div *ngIf="reporte==='aula'" class="col-10">
                         <td *ngFor="let hora of array[2]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex2Link : simple2Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
@@ -208,22 +208,22 @@
                     </div>
                 </tr>
                 <tr class="row">
-                    <td class="col">
+                    <td class="col-2">
                         13:00 - 15:00
                     </td>
-                    <div *ngIf="reporte==='docente'" class="col-11">
+                    <div *ngIf="reporte==='docente'" class="col-10">
                         <td *ngFor="let hora of array[3]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complexLink : simpleLink" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='grupo'" class="col-11">
+                    <div *ngIf="reporte==='grupo'" class="col-10">
                         <td *ngFor="let hora of array[3]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex1Link : simple1Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='aula'" class="col-11">
+                    <div *ngIf="reporte==='aula'" class="col-10">
                         <td *ngFor="let hora of array[3]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex2Link : simple2Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
@@ -231,22 +231,22 @@
                     </div>
                 </tr>
                 <tr class="row">
-                    <td class="col">
+                    <td class="col-2">
                         15:00 - 17:00
                     </td>
-                    <div *ngIf="reporte==='docente'" class="col-11">
+                    <div *ngIf="reporte==='docente'" class="col-10">
                         <td *ngFor="let hora of array[4]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complexLink : simpleLink" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='grupo'" class="col-11">
+                    <div *ngIf="reporte==='grupo'" class="col-10">
                         <td *ngFor="let hora of array[4]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex1Link : simple1Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='aula'" class="col-11">
+                    <div *ngIf="reporte==='aula'" class="col-10">
                         <td *ngFor="let hora of array[4]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex2Link : simple2Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
@@ -254,22 +254,22 @@
                     </div>
                 </tr>
                 <tr class="row">
-                    <td class="col">
+                    <td class="col-2">
                         17:00 - 19:00
                     </td>
-                    <div *ngIf="reporte==='docente'" class="col-11">
+                    <div *ngIf="reporte==='docente'" class="col-10">
                         <td *ngFor="let hora of array[5]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complexLink : simpleLink" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='grupo'" class="col-11">
+                    <div *ngIf="reporte==='grupo'" class="col-10">
                         <td *ngFor="let hora of array[5]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex1Link : simple1Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
                         </td>
                     </div>
-                    <div *ngIf="reporte==='aula'" class="col-11">
+                    <div *ngIf="reporte==='aula'" class="col-10">
                         <td *ngFor="let hora of array[5]" class="elemento">
                             <ng-container [ngTemplateOutlet]="hora.horario_vacio === Vacio ? complex2Link : simple2Link" [ngTemplateOutletContext]="{hora:hora}">
                             </ng-container>
@@ -278,7 +278,7 @@
                 </tr>
             </div>
             <ng-template #simpleLink let-hora='hora'>
-                Componente: {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} Aula: {{hora.horario_aula}}
+                Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} Aula: {{hora.horario_aula}}
             </ng-template>
 
             <ng-template #complexLink let-hora='hora'>
@@ -286,7 +286,7 @@
             </ng-template>
 
             <ng-template #simple1Link let-hora='hora'>
-                Componente: {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | docenteName:onDocente}} Aula: {{hora.horario_aula}}
+                Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | docenteName:onDocente}} Aula: {{hora.horario_aula}}
             </ng-template>
 
             <ng-template #complex1Link let-hora='hora'>
@@ -294,7 +294,9 @@
             </ng-template>
 
             <ng-template #simple2Link let-hora='hora'>
-                Componente: {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} {{hora.dia}} Docente: {{hora.horario_grupo | docenteName:onDocente}}
+                Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} {{hora.dia}} Docente: {{hora.horario_grupo | docenteName:onDocente}}
+                <!-- Componente: Fisica Quantica Docente: Isaac Newton Grupo: ACM1PT -->
+
             </ng-template>
 
             <ng-template #complex2Link let-hora='hora'>
@@ -302,5 +304,4 @@
             </ng-template>
         </tbody>
     </table>
-
 </div>
