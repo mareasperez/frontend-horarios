@@ -23,6 +23,9 @@ import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
+import { MatSnackBar } from '@angular/material';
+import { Subscription } from 'rxjs';
+import { PlanificacionModel } from 'src/app/models/planificacion.model';
 
 @Component({
   selector: 'app-horarios',
@@ -32,6 +35,9 @@ import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
 export class HorariosComponent implements OnInit, OnDestroy {
   public horarios: HorarioModel[] = [];
   public array: any[][] = new Array();
+  public Vacio = true;
+  private promesas: Promise<any>[] = [];
+  private subs: Subscription[] = [];
   selectedF: FacultadModel;
   selectedR: RecintoModel;
   selectedA: AulaModel;
@@ -47,6 +53,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
   recintos: RecintoModel[] = [];
   aulas: AulaModel[] = [];
   departamentos: DepartamentoModel[] = [];
+  planificaciones: PlanificacionModel[] = [];
   carreras: CarreraModel[] = [];
   grupos: GrupoModel[] = [];
   reporte: string;
@@ -67,27 +74,91 @@ export class HorariosComponent implements OnInit, OnDestroy {
     private _carrera: CarreraService,
     private _docente: DocenteService,
     private _componente: ComponenteService,
-    private _pde: PlanEstudioService) { }
+    private _pde: PlanEstudioService,
+    private _snack: MatSnackBar
+    ) {
+      this._grupo.getGrupos().subscribe();
+      this._carrera.getCarrera().subscribe();
+      this._doho.getDcHoras().subscribe();
+      this._departamento.getDepartamento().subscribe();
+      this._recinto.getRecinto().subscribe();
+      this._aula.getAula().subscribe();
+      this._horario.getHorarios().subscribe();
+      this.promesas.push(
+        new Promise((resolve, reject) => {
+        const sub = this._planificacion.getPlanificaciones()
+        .subscribe(
+          res => this.planificaciones.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
+        this.subs.push(sub);
+        })
+      );
+      this.promesas.push(
+        new Promise((resolve, reject) => {
+        const sub = this._facultad.getFacultad()
+        .subscribe(
+          res => this.facultades.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
+        this.subs.push(sub);
+        })
+      );
+      this.promesas.push(
+        new Promise((resolve, reject) => {
+        const sub = this._componente.getComponentes()
+        .subscribe(
+          res => this.componentes.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
+        this.subs.push(sub);
+        })
+      );
+      this.promesas.push(
+        new Promise((resolve, reject) => {
+        const sub = this._pde.getPlanEstudio()
+        .subscribe(
+          res => this.pdes.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
+        this.subs.push(sub);
+        })
+      );
+      this.promesas.push(
+        new Promise((resolve, reject) => {
+        const sub = this._grupo.getGrupos()
+        .subscribe(
+          res => this.grupos.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
+        this.subs.push(sub);
+        })
+      );
+      this.promesas.push(
+        new Promise((resolve, reject) => {
+        const sub = this._docente.getDocente()
+        .subscribe(
+          res => { this.docentes2.push(res); console.log(res); },
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
+        this.subs.push(sub);
+        })
+      );
+    }
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.reporte = (params.get('reporte'));
-      this.selectedF = undefined;
+      this.selectedF = this.facultades[0];
     });
-    this._planificacion.getPlanificaciones().subscribe();
-    this._grupo.getGrupos().subscribe();
-    this._carrera.getCarrera().subscribe();
-    this._doho.getDcHoras().subscribe();
-    this._departamento.getDepartamento().subscribe();
-    this._recinto.getRecinto().subscribe();
-    this._aula.getAula().subscribe();
-    this._horario.getHorarios().subscribe();
-    const p = new Promise((resolve, reject) => {
-      this._facultad.getFacultad().subscribe(res => this.facultades.push(res));
-      this._componente.getComponentes().subscribe(res => this.componentes.push(res));
-      this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
-      this._grupo.getGrupos().subscribe(res => this.grupos.push(res));
-      this._docente.getDocente().subscribe(res => {this.docentes2.push(res); console.log(res);
-      });
+    Promise.all(this.promesas).then(res => {
+      console.log(this.facultades);
+      this.filtros(this.reporte, this.facultades[0].facultad_id);
       this.onComponente[0] = this.componentes;
       this.onComponente[1] = this.grupos;
       if (this.reporte !== 'docente') {
@@ -95,7 +166,6 @@ export class HorariosComponent implements OnInit, OnDestroy {
         this.onDocente[1] = this.grupos;
       }
     });
-
   }
   ngOnDestroy() {
     this.selectedA = undefined;
@@ -106,7 +176,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
     this.selectedGrupo = undefined;
     this.selectedR = undefined;
   }
-  filtros(filtro: string, id: number) {
+  filtros(filtro: string, id: number | string) {
     switch (filtro) {
       case 'docente': this.getDepartamentos(id); break;
       case 'aula': this.getRecintos(id); break;
@@ -115,15 +185,18 @@ export class HorariosComponent implements OnInit, OnDestroy {
       default: alert('no hay filtro para eso');
     }
   }
-  async getDepartamentos(id: number) {
+  async getDepartamentos(id: number | string) {
     this.departamentos = [];
     this.departamentos = this._departamento.list.filter(dep => dep.departamento_facultad === id);
+    if ( this.reporte !== 'aula') {
+      this.getDocentesOrCarreras(this.departamentos[0].departamento_id);
+    }
   }
-  async getRecintos(id: number) {
+  async getRecintos(id: number | string) {
     this.recintos = [];
     this.recintos = this._recinto.list.filter(recinto => recinto.recinto_facultad === id);
   }
-  async getDocentesOrCarreras(id: number) {
+  async getDocentesOrCarreras(id: number | string) {
     if (this.reporte === 'docente') {
       console.log('primera vez', this.docentes);
       this.docentes = [];
@@ -135,13 +208,14 @@ export class HorariosComponent implements OnInit, OnDestroy {
       this.carreras = this._carrera.list.filter(carr => carr.carrera_departamento === id);
     }
   }
-  async getAulas(id: number) {
+  async getAulas(id: number | string) {
     this.aulas = [];
     this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
   }
 
   async getGrupos(id: string) {
     this.grupos = [];
+    this.array = new Array();
     console.log(this._grupo.list);
     for (const grupo of this._grupo.list) {
       const comp = this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
@@ -154,6 +228,8 @@ export class HorariosComponent implements OnInit, OnDestroy {
   }
 
   async getHorarioByFilter(query: string, id: number) {
+
+    this.array = new Array();
     this.horarios = [];
     // docente se obtiene asi porque el horario no tiene un elemento "docente" sino que es el grupo del horario
     // el que contiene el docente por lo tanto se debe pedir al api para mayor rapides

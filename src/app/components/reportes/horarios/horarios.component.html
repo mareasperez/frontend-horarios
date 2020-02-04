@@ -1,6 +1,6 @@
 <!-- Traer facultades y mostrarlas, y en dependencia de lo que se tenga en el queryString se llamara a mostrar elementos -->
 <div class="row">
-    <div class="col-3">
+    <div class="col-3" hidden>
         <mat-form-field class="font-size-12" appearance="outline">
             <mat-label>Facultad</mat-label>
             <mat-select [(ngModel)]="selectedF" name="facultad" (selectionChange)="filtros(reporte,$event.value.facultad_id)">
@@ -31,7 +31,7 @@
     <div *ngIf="reporte==='aula'" class="col-3">
         <div *ngIf="aulas.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
-                <mat-label>Recinto</mat-label>
+                <mat-label>Aula</mat-label>
                 <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="getHorarioByFilter('aula', $event.value.aula_id)">
                     <mat-option *ngFor="let aula of aulas" [value]="aula">
                         {{aula.aula_nombre}}
@@ -44,7 +44,7 @@
 
     <!-- se pediran los departamentos de la facultad escogida y mostraran para que se escoja el departamento -->
 
-    <div *ngIf="reporte!=='aula'" class="col-3">
+    <div *ngIf="reporte!=='aula'" class="col-3" hidden>
         <div *ngIf="departamentos.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Departamento</mat-label>
@@ -120,6 +120,17 @@
                 </mat-select>
             </mat-form-field>
         </div>
+    </div>
+
+    <div class="col-3">
+        <mat-form-field class="font-size-12" appearance="outline">
+            <mat-label>Planificaci&oacute;n</mat-label>
+            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id)">
+                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
+                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 </div>
 <!-- horarios -->
@@ -282,7 +293,7 @@
             </ng-template>
 
             <ng-template #complexLink let-hora='hora'>
-                Void
+                -
             </ng-template>
 
             <ng-template #simple1Link let-hora='hora'>
@@ -290,17 +301,16 @@
             </ng-template>
 
             <ng-template #complex1Link let-hora='hora'>
-                Void
+                -
             </ng-template>
 
             <ng-template #simple2Link let-hora='hora'>
                 Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} {{hora.dia}} Docente: {{hora.horario_grupo | docenteName:onDocente}}
-                <!-- Componente: Fisica Quantica Docente: Isaac Newton Grupo: ACM1PT -->
 
             </ng-template>
 
             <ng-template #complex2Link let-hora='hora'>
-                Void
+                -
             </ng-template>
         </tbody>
     </table>

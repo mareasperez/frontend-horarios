@@ -61,7 +61,6 @@ export class CargaDocenciaComponent implements OnInit {
             this.planificaciones.push(res);
             resolve(this.planificaciones);
             console.log(this.planificaciones);
-            
           });
         })
       );
