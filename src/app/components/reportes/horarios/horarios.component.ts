@@ -26,6 +26,7 @@ import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
 import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
+import { NumberFormatStyle } from '@angular/common';
 
 @Component({
   selector: 'app-horarios',
@@ -45,6 +46,10 @@ export class HorariosComponent implements OnInit, OnDestroy {
   selectedDocente: DocenteModel;
   selectedCarrera: CarreraModel;
   selectedGrupo: GrupoModel;
+  selectedPlan: PlanificacionModel;
+  planG = false;
+  planA = false;
+  planD = false;
   componentes: ComponenteModel[] = [];
   pdes: PlanEstudioModel[] = [];
   docentes: DocenteModel[] = [];
@@ -211,11 +216,13 @@ export class HorariosComponent implements OnInit, OnDestroy {
   async getAulas(id: number | string) {
     this.aulas = [];
     this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
+    this.planA = false;
   }
 
   async getGrupos(id: string) {
     this.grupos = [];
     this.array = new Array();
+    this.planG = false;
     console.log(this._grupo.list);
     for (const grupo of this._grupo.list) {
       const comp = this.componentes.find(componente => componente.componente_id === grupo.grupo_componente);
@@ -227,10 +234,11 @@ export class HorariosComponent implements OnInit, OnDestroy {
     }
   }
 
-  async getHorarioByFilter(query: string, id: number) {
+  async getHorarioByFilter(query: string, id: number, idp: number) {
 
     this.array = new Array();
     this.horarios = [];
+    console.log('planificacion: ', idp);
     // docente se obtiene asi porque el horario no tiene un elemento "docente" sino que es el grupo del horario
     // el que contiene el docente por lo tanto se debe pedir al api para mayor rapides
     if (query === 'docente') {
@@ -253,10 +261,18 @@ export class HorariosComponent implements OnInit, OnDestroy {
       this.fun();
     }
     if (query === 'aula') {
-      console.log('el id de aula es: ', id);
-      this.horarios = this._horario.list.filter(horario => Number(horario.horario_aula) === id);
-      console.log(this.horarios);
-      this.fun();
+      const p2 = new Promise<any>((resolve, reject) => {
+        console.log('el id del aula es: ', id);
+        this._horario.getHorarioByPlan(id, idp).subscribe(res => resolve(res));
+      });
+      p2.then((gr) => {
+        console.log('gr: ',gr);
+        this.horarios = gr;
+      });
+      p2.finally(() => {
+        console.log(this.horarios);
+        this.fun();
+      });
     }
   }
 

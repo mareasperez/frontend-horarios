@@ -32,13 +32,23 @@
         <div *ngIf="aulas.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Aula</mat-label>
-                <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="getHorarioByFilter('aula', $event.value.aula_id)">
+                <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="planA = true">
                     <mat-option *ngFor="let aula of aulas" [value]="aula">
                         {{aula.aula_nombre}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
+    </div>
+    <div class="col-3" *ngIf="planA === true">
+        <mat-form-field class="font-size-12" appearance="outline">
+            <mat-label>Planificaci&oacute;n</mat-label>
+            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('aula', selectedA.aula_id, $event.value.planificacion_id)">
+                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
+                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
 
@@ -63,13 +73,24 @@
         <div *ngIf="docentes.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Docentes</mat-label>
-                <mat-select [(ngModel)]="selectedDocente" name="docente" (selectionChange)="getHorarioByFilter('docente', $event.value.docente_id)">
+                <mat-select [(ngModel)]="selectedDocente" name="docente" (selectionChange)="planD = true; selectedPlan = undefined">
                     <mat-option *ngFor="let docente of docentes" [value]="docente">
                         {{docente.docente_nombre}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
+    </div>
+
+    <div class="col-3" *ngIf="planD === true">
+        <mat-form-field class="font-size-12" appearance="outline">
+            <mat-label>Planificaci&oacute;n</mat-label>
+            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('docente', selectedDocente.docente_id, $event.value.planificacion_id)">
+                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
+                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
     <!-- se piden carreras y se muestran  para su seleccion  -->
@@ -113,7 +134,7 @@
         <div *ngIf="grupos.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Grupo</mat-label>
-                <mat-select [(ngModel)]="selectedGrupo" name="grupo" (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id)">
+                <mat-select [(ngModel)]="selectedGrupo" name="grupo" (selectionChange)="planG = true">
                     <mat-option *ngFor="let grupo of grupos" [value]="grupo">
                         Grupo: {{grupo.grupo_numero}} de {{grupo.grupo_componente}}
                     </mat-option>
@@ -122,10 +143,10 @@
         </div>
     </div>
 
-    <div class="col-3">
+    <div class="col-3" *ngIf="planG === true">
         <mat-form-field class="font-size-12" appearance="outline">
             <mat-label>Planificaci&oacute;n</mat-label>
-            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id)">
+            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('grupo', selectedGrupo.grupo_id, $event.value.planificacion_id)">
                 <mat-option *ngFor="let plan of planificaciones" [value]="plan">
                     Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
                 </mat-option>

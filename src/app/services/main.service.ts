@@ -57,6 +57,11 @@ export class MainService {
     return this.client.get<any>(`${this.getUrl()}${filtro}=${id}`);
   }
 
+  getByPlan(filtro: string | number, id: string|number): Observable<any> {
+    console.log(`${this.getUrl()}${filtro}/${id}`);
+    return this.client.get<any>(`${this.getUrl()}${filtro}/${id}`);
+  }
+
   updateList(data: wsModel) {
   }
 }

@@ -70,6 +70,23 @@ export class HorarioService extends MainService {
     });
   }
 
+  getHorarioByPlan(filtro: string | number, id: string | number): Observable<HorarioModel[]> {
+    return new Observable(observer => {
+      this.getByPlan(filtro, id).subscribe((data: any) => {
+        let horarios = [];
+        console.log(data);
+        if (data.Detail !== 'not found') {
+          data.horario.forEach(el => {
+            let horario = new HorarioModel();
+            horario = Object.assign(horario, el); // Tipar Objeto
+            horarios.push(horario);
+          });
+          observer.next(horarios);
+         }
+      });
+    });
+  }
+
   updateList(data: wsModel) {
     // console.log(data)
     let horario = new HorarioModel();
