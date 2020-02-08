@@ -14,13 +14,18 @@ export class GrupoService extends MainService {
   getGrupos(): Observable<GrupoModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.grupos.forEach(el => {
-          // console.log(el)
-          let grupo = new GrupoModel();
-          grupo = Object.assign(grupo, el);
-          this.list.push(grupo);
-          observer.next(grupo);
-        });
+        if (!data.Detail) {
+          this.successObten();
+          data.grupos.forEach(el => {
+            // console.log(el)
+            let grupo = new GrupoModel();
+            grupo = Object.assign(grupo, el);
+            this.list.push(grupo);
+            observer.next(grupo);
+          });
+        } else {
+          this.errorObten();
+        }
         observer.complete();
       });
     });
@@ -55,13 +60,16 @@ export class GrupoService extends MainService {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
         if (!data.Detail) {
+          this.successObten();
           data.grupo.forEach(el => {
-            console.log(el)
+            console.log(el);
             let grupo = new GrupoModel();
             grupo = Object.assign(grupo, el);
             this.list.push(grupo);
             observer.next(grupo);
           });
+        } else {
+          this.errorObten();
         }
         observer.complete();
       });

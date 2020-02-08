@@ -14,21 +14,26 @@ export class PlanEstudioService extends MainService {
     super(Http);
   }
 
-  getPlanEstudio(): Observable<PlanEstudioModel> { 
+  getPlanEstudio(): Observable<PlanEstudioModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.planDeEstudio.forEach(el => {
-          let pde = new PlanEstudioModel();
-          pde = Object.assign(pde,el); //Tipar Objeto
-          this.list.push(pde)
-          observer.next(pde);
-        });
-        observer.complete()
+        if (!data.Detail) {
+          this.successObten();
+          data.planDeEstudio.forEach(el => {
+            let pde = new PlanEstudioModel();
+            pde = Object.assign(pde, el); //Tipar Objeto
+            this.list.push(pde)
+            observer.next(pde);
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }
 
-  getPlanEstudioByID(id: number|string) {
+  getPlanEstudioByID(id: number | string) {
     return this.getByID(id);
   }
 
@@ -41,42 +46,42 @@ export class PlanEstudioService extends MainService {
     });
   }
 
-  updatePlanEstudio(pde: PlanEstudioModel, id: string|number) {
+  updatePlanEstudio(pde: PlanEstudioModel, id: string | number) {
     // Ejemplo del parametro body
     let body = { planDeEstudio: pde };
     return this.update(body, id);
   }
 
-  deletePde(idPlanEstudio: number|string)  {
+  deletePde(idPlanEstudio: number | string) {
     return this.delete(idPlanEstudio);
   }
 
   updateList(data: wsModel) {
     // console.log(data)
     let pde = new PlanEstudioModel();
-    pde = Object.assign(pde,data.data);
-     switch (data.event) {
-       case 'c':
+    pde = Object.assign(pde, data.data);
+    switch (data.event) {
+      case 'c':
         // console.log("Crear")
-         console.log(pde)
-         data.data = pde;
-         this.list.push(pde);
-         this.list$.next(this.list)
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.pde_id).indexOf(pde.pde_id);
-         this.list.splice(index, 1, pde);
-         this.list$.next(this.list)
-         break;
-       case 'd':
+        console.log(pde)
+        data.data = pde;
+        this.list.push(pde);
+        this.list$.next(this.list)
+        break;
+      case 'u':
+        //  console.log("update")
+        const index = this.list.map(el => el.pde_id).indexOf(pde.pde_id);
+        this.list.splice(index, 1, pde);
+        this.list$.next(this.list)
+        break;
+      case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.pde_id !== pde.pde_id);
-         this.list$.next(this.list)
-         break;
- 
-     }
- 
-   }
+        this.list = this.list.filter(el => el.pde_id !== pde.pde_id);
+        this.list$.next(this.list)
+        break;
+
+    }
+
+  }
 
 }

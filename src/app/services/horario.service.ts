@@ -16,14 +16,19 @@ export class HorarioService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.horarios.forEach(el => {
-          // console.log(el);
-          let horario = new HorarioModel();
-          horario = Object.assign(horario, el);
-          this.list.push(horario);
-          observer.next(horario);
-        });
-        observer.complete()
+        if (!data.Detail) {
+          this.successObten();
+          data.horarios.forEach(el => {
+            // console.log(el);
+            let horario = new HorarioModel();
+            horario = Object.assign(horario, el);
+            this.list.push(horario);
+            observer.next(horario);
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }
@@ -58,14 +63,17 @@ export class HorarioService extends MainService {
       this.getByFiltro(filtro, id).subscribe((data: any) => {
         let horarios = [];
         // console.log(data);
-        if (data.Detail !== 'not found') {
+        if (!data.Detail) {
+          this.successObten();
           data.horario.forEach(el => {
             let horario = new HorarioModel();
             horario = Object.assign(horario, el); // Tipar Objeto
             horarios.push(horario);
           });
           observer.next(horarios);
-         }
+        } else {
+          this.errorObten();
+        }
       });
     });
   }
@@ -75,14 +83,17 @@ export class HorarioService extends MainService {
       this.getByPlan(query, filtro, id).subscribe((data: any) => {
         let horarios = [];
         console.log(data);
-        if (data.Detail !== 'not found') {
+        if (!data.Detail) {
+          this.successObten();
           data.horario.forEach(el => {
             let horario = new HorarioModel();
             horario = Object.assign(horario, el); // Tipar Objeto
             horarios.push(horario);
           });
           observer.next(horarios);
-         }
+        } else {
+          this.errorObten();
+        }
       });
     });
   }

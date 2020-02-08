@@ -17,13 +17,18 @@ export class DepartamentoService extends MainService {
 
         return new Observable(observer => {
             this.get().subscribe(data => {
-                data.departamento.forEach(el => {
-                    // console.log(el)
-                    let Departamento = new DepartamentoModel();
-                    Departamento = Object.assign(Departamento, el);
-                    this.list.push(Departamento);
-                    observer.next(Departamento);
-                });
+                if (!data.Detail) {
+                    this.successObten();
+                    data.departamento.forEach(el => {
+                        // console.log(el)
+                        let Departamento = new DepartamentoModel();
+                        Departamento = Object.assign(Departamento, el);
+                        this.list.push(Departamento);
+                        observer.next(Departamento);
+                    });
+                } else {
+                    this.errorObten();
+                }
                 observer.complete();
             });
         });
@@ -56,11 +61,16 @@ export class DepartamentoService extends MainService {
         return new Observable(observer => {
             console.log('se va a mandar a pedir al api:', filtro, ' ', id);
             this.getByFiltro(filtro, id).subscribe(data => {
-                data.departamento.forEach(el => {
-                    let departamento = new DepartamentoModel();
-                    departamento = Object.assign(el);
-                    observer.next(departamento);
-                });
+                if (!data.Detail) {
+                    this.successObten();
+                    data.departamento.forEach(el => {
+                        let departamento = new DepartamentoModel();
+                        departamento = Object.assign(el);
+                        observer.next(departamento);
+                    });
+                } else {
+                    this.errorObten();
+                }
             });
         });
     }

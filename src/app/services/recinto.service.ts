@@ -16,14 +16,19 @@ export class RecintoService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.recinto.forEach(el => {
-          // console.log(el)
-          let recinto = new RecintoModel();
-          recinto = Object.assign(recinto,el);
-          this.list.push(recinto)
-          observer.next(recinto);
-        });
-        observer.complete()
+        if (!data.Detail) {
+          this.successObten();
+          data.recinto.forEach(el => {
+            // console.log(el)
+            let recinto = new RecintoModel();
+            recinto = Object.assign(recinto, el);
+            this.list.push(recinto)
+            observer.next(recinto);
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }
@@ -83,12 +88,18 @@ export class RecintoService extends MainService {
   getRecintoByFilter(filtro: string, id: string | number): Observable<RecintoModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        data.recinto.forEach(el => {
-          // console.log(el)
-          let recinto = new RecintoModel();
-          recinto = Object.assign(el);
-          observer.next(recinto);
-        });
+        if (!data.Detail) {
+          this.successObten();
+          data.recinto.forEach(el => {
+            // console.log(el)
+            let recinto = new RecintoModel();
+            recinto = Object.assign(el);
+            observer.next(recinto);
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }

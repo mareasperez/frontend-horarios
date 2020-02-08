@@ -14,15 +14,20 @@ export class DocenteHorasService extends MainService {
   getDcHoras(): Observable<DocenteHorasModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.docenteHoras.forEach(el => {
-          // console.log(el)
-          let docH = new DocenteHorasModel();
-          docH = Object.assign(docH,el);
-          this.list.push(docH);
-          observer.next(docH);
+        if (!data.Detail) {
+          this.successObten();
+          data.docenteHoras.forEach(el => {
+            // console.log(el)
+            let docH = new DocenteHorasModel();
+            docH = Object.assign(docH, el);
+            this.list.push(docH);
+            observer.next(docH);
 
-        });
-        observer.complete()
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }
@@ -55,7 +60,7 @@ export class DocenteHorasService extends MainService {
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-    //    console.log(dco);
+        //    console.log(dco);
         data.data = dco;
         this.list.push(dco);
         this.list$.next(this.list);

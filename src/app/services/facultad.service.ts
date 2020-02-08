@@ -17,13 +17,18 @@ export class FacultadSerivice extends MainService {
   getFacultad(): Observable<FacultadModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.facultad.forEach(el => {
-          // console.log(el)
-          let facultad = new FacultadModel();
-          facultad = Object.assign(facultad, el); // Tipar Objeto
-          this.list.push(facultad);
-          observer.next(facultad);
-        });
+        if (!data.Detail) {
+          this.successObten();
+          data.facultad.forEach(el => {
+            // console.log(el)
+            let facultad = new FacultadModel();
+            facultad = Object.assign(facultad, el); // Tipar Objeto
+            this.list.push(facultad);
+            observer.next(facultad);
+          });
+        } else {
+          this.errorObten();
+        }
         observer.complete();
       });
     });

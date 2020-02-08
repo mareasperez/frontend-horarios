@@ -15,13 +15,18 @@ export class AulaService extends MainService {
   getAula(): Observable<AulaModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.aula.forEach(el => {
-          // console.log(el)
-          let aula = new AulaModel();
-          aula = Object.assign(aula, el);
-          this.list.push(aula);
-          observer.next(aula);
-        });
+        if (!data.Detail) {
+          this.successObten();
+          data.aula.forEach(el => {
+            // console.log(el)
+            let aula = new AulaModel();
+            aula = Object.assign(aula, el);
+            this.list.push(aula);
+            observer.next(aula);
+          });
+        } else {
+          this.errorObten();
+        }
         observer.complete();
       });
     });

@@ -3,6 +3,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { wsModel } from 'src/app/models/ws.model';
 import { Api } from 'src/app/models/api.model';
+declare let alertify: any;
 
 @Injectable()
 export class MainService {
@@ -64,5 +65,13 @@ export class MainService {
   }
 
   updateList(data: wsModel) {
+  }
+  errorObten() {
+    alertify.error('fallo al intentar obtener la informacion');
+
+  }
+
+  successObten() {
+    alertify.success('Datos obtenidos de manera exitosa');
   }
 }

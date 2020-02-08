@@ -13,24 +13,29 @@ export class PensumService extends MainService {
     super(Http);
   }
   getPlanDeEstudios(): Observable<PlanEstudioModel> {
-    
+
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.planDeEstudio.forEach(el => {
-          //console.log(el)
-          let planDeEstudio = new PlanEstudioModel();
-          planDeEstudio = Object.assign(el);
-          observer.next(planDeEstudio);
-        });
-        observer.complete()
+        if (!data.Detail) {
+          this.successObten();
+          data.planDeEstudio.forEach(el => {
+            //console.log(el)
+            let planDeEstudio = new PlanEstudioModel();
+            planDeEstudio = Object.assign(el);
+            observer.next(planDeEstudio);
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }
 
-  getPlanDeEstudioByID(id: number|string) {
-   
+  getPlanDeEstudioByID(id: number | string) {
+
     return this.getByID(id);
-     
+
   }
 
   crearPlanDeEstudio(planDeEstudio: PlanEstudioModel): Observable<any> {
@@ -43,42 +48,42 @@ export class PensumService extends MainService {
     });
   }
 
-  updatePlanDeEstudio(planDeEstudio: PlanEstudioModel, id: string|number) {
+  updatePlanDeEstudio(planDeEstudio: PlanEstudioModel, id: string | number) {
     // Ejemplo del parametro body
     let body = { planDeEstudio: planDeEstudio };
     return this.update(body, id);
   }
 
-  deletePlanDeEstudio(idplanDeEstudio: number|string)  {
+  deletePlanDeEstudio(idplanDeEstudio: number | string) {
     return this.delete(idplanDeEstudio)
   }
 
   updateList(data: wsModel) {
     // console.log(data)
     let pensum = new PensumModel();
-    pensum = Object.assign(pensum,data.data);
-     switch (data.event) {
-       case 'c':
+    pensum = Object.assign(pensum, data.data);
+    switch (data.event) {
+      case 'c':
         // console.log("Crear")
-         console.log(pensum)
-         data.data = pensum;
-         this.list.push(pensum);
-         this.list$.next(this.list)
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.pensum_id).indexOf(pensum.pensum_id);
-         this.list.splice(index, 1, pensum);
-         this.list$.next(this.list)
-         break;
-       case 'd':
+        console.log(pensum)
+        data.data = pensum;
+        this.list.push(pensum);
+        this.list$.next(this.list)
+        break;
+      case 'u':
+        //  console.log("update")
+        const index = this.list.map(el => el.pensum_id).indexOf(pensum.pensum_id);
+        this.list.splice(index, 1, pensum);
+        this.list$.next(this.list)
+        break;
+      case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el=>el.pensum_id !== pensum.pensum_id);
-         this.list$.next(this.list)
-         break;
- 
-     }
- 
-   }
+        this.list = this.list.filter(el => el.pensum_id !== pensum.pensum_id);
+        this.list$.next(this.list)
+        break;
+
+    }
+
+  }
 
 }

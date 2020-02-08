@@ -17,13 +17,18 @@ export class CarreraService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        data.carrera.forEach(el => {
-          // console.log(el)
-          let carrera = new CarreraModel();
-          carrera = Object.assign(carrera, el);
-          this.list.push(carrera);
-          observer.next(carrera);
-        });
+        if (!data.Detail) {
+          this.successObten();
+          data.carrera.forEach(el => {
+            // console.log(el)
+            let carrera = new CarreraModel();
+            carrera = Object.assign(carrera, el);
+            this.list.push(carrera);
+            observer.next(carrera);
+          });
+        } else {
+          this.errorObten();
+        }
         observer.complete();
       });
     });
@@ -57,13 +62,19 @@ export class CarreraService extends MainService {
   getCarreraByFiltro(filtro: string, id: number): Observable<CarreraModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        data.carrera.forEach(el => {
-          // console.log(el)
-          let carrera = new CarreraModel();
-          carrera = Object.assign(carrera, el);
-          this.list.push(carrera);
-          observer.next(carrera);
-        });
+        if (!data.Detail) {
+          this.successObten();
+          data.carrera.forEach(el => {
+            // console.log(el)
+            let carrera = new CarreraModel();
+            carrera = Object.assign(carrera, el);
+            this.list.push(carrera);
+            observer.next(carrera);
+          });
+        } else {
+          this.errorObten();
+        }
+        observer.complete();
       });
     });
   }

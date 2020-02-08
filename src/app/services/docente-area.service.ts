@@ -17,6 +17,7 @@ export class DocenteAreaService extends MainService {
       this.get().subscribe(data => {
         console.log('aqui esta data: ', data);
         if (!data.Detail) {
+          this.successObten();
           data.docenteArea.forEach(el => {
             // console.log(el)
             let docenteArea = new DocenteAreaModel();
@@ -24,6 +25,8 @@ export class DocenteAreaService extends MainService {
             this.list.push(docenteArea);
             observer.next(docenteArea);
           });
+        } else {
+          this.errorObten();
         }
         observer.complete();
       });
