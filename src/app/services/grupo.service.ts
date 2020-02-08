@@ -21,12 +21,12 @@ export class GrupoService extends MainService {
           this.list.push(grupo);
           observer.next(grupo);
         });
-        observer.complete()
+        observer.complete();
       });
     });
   }
 
-  getGrupoByID(id: number|string) {
+  getGrupoByID(id: number | string) {
 
     return this.getByID(id);
 
@@ -42,25 +42,28 @@ export class GrupoService extends MainService {
     });
   }
 
-  updategrupo(grupo: GrupoModel, id: string|number) {
+  updategrupo(grupo: GrupoModel, id: string | number) {
     // Ejemplo del parametro body
     const body = { grupo };
     return this.update(body, id);
   }
 
-  deleteGrupo(idgrupo: number|string)  {
+  deleteGrupo(idgrupo: number | string) {
     return this.delete(idgrupo);
   }
   gerGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        data.grupo.forEach(el => {
-          // console.log(el)
-          let grupo = new GrupoModel();
-          grupo = Object.assign(grupo, el);
-          this.list.push(grupo)
-          observer.next(grupo);
-        });
+        if (!data.Detail) {
+          data.grupo.forEach(el => {
+            console.log(el)
+            let grupo = new GrupoModel();
+            grupo = Object.assign(grupo, el);
+            this.list.push(grupo);
+            observer.next(grupo);
+          });
+        }
+        observer.complete();
       });
     });
   }
@@ -68,28 +71,28 @@ export class GrupoService extends MainService {
     // console.log(data)
     let grupo = new GrupoModel();
     grupo = Object.assign(grupo, data.data);
-     switch (data.event) {
-       case 'c':
+    switch (data.event) {
+      case 'c':
         // console.log("Crear")
         // console.log(grupo);
-         data.data = grupo;
-         this.list.push(grupo);
-         this.list$.next(this.list);
-         break;
-       case 'u':
-       //  console.log("update")
-         const index = this.list.map(el => el.grupo_id).indexOf(grupo.grupo_id);
-         this.list.splice(index, 1, grupo);
-         this.list$.next(this.list);
-         break;
-       case 'd':
+        data.data = grupo;
+        this.list.push(grupo);
+        this.list$.next(this.list);
+        break;
+      case 'u':
+        //  console.log("update")
+        const index = this.list.map(el => el.grupo_id).indexOf(grupo.grupo_id);
+        this.list.splice(index, 1, grupo);
+        this.list$.next(this.list);
+        break;
+      case 'd':
         // console.log("delete")
-         this.list = this.list.filter(el => el.grupo_id !== grupo.grupo_id);
-         this.list$.next(this.list);
-         break;
+        this.list = this.list.filter(el => el.grupo_id !== grupo.grupo_id);
+        this.list$.next(this.list);
+        break;
 
-     }
+    }
 
-   }
+  }
 
 }

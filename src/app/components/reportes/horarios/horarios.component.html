@@ -11,7 +11,16 @@
         </mat-form-field>
     </div>
 
-
+    <div class="col-3">
+        <mat-form-field class="font-size-12" appearance="outline">
+            <mat-label>Planificaci&oacute;n</mat-label>
+            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="filtros( reporte, selectedF.facultad_id);">
+                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
+                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
     <!-- se piden recintos y se muestran recintos y al escoger recinto se mandara a traer aulas  -->
     <div *ngIf="reporte==='aula'" class="col-3">
         <div *ngIf="recintos.length>0">
@@ -28,11 +37,11 @@
 
 
     <!-- se pediran aulas del recinto previamente escogido y se mostraran para escoger de cual de ellas mostrar el horario -->
-    <div *ngIf="reporte==='aula'" class="col-3">
+    <div *ngIf="activarA" class="col-3">
         <div *ngIf="aulas.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Aula</mat-label>
-                <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="planA = true">
+                <mat-select [(ngModel)]="selectedA" name="aula" (selectionChange)="getHorarioByFilter('aula', $event.value.aula_id, selectedPlan.planificacion_id)">
                     <mat-option *ngFor="let aula of aulas" [value]="aula">
                         {{aula.aula_nombre}}
                     </mat-option>
@@ -40,17 +49,6 @@
             </mat-form-field>
         </div>
     </div>
-    <div class="col-3" *ngIf="planA === true">
-        <mat-form-field class="font-size-12" appearance="outline">
-            <mat-label>Planificaci&oacute;n</mat-label>
-            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('aula', selectedA.aula_id, $event.value.planificacion_id)">
-                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
-                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-
 
     <!-- se pediran los departamentos de la facultad escogida y mostraran para que se escoja el departamento -->
 
@@ -69,28 +67,17 @@
 
 
     <!-- se muestran los docentes del departamento para que se seleccione de cual mostrar los horarios -->
-    <div *ngIf="reporte==='docente'" class="col-3">
+    <div *ngIf="activarD" class="col-3">
         <div *ngIf="docentes.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Docentes</mat-label>
-                <mat-select [(ngModel)]="selectedDocente" name="docente" (selectionChange)="planD = true; selectedPlan = undefined">
+                <mat-select [(ngModel)]="selectedDocente" name="docente" (selectionChange)="getHorarioByFilter('docente', $event.value.docente_id, selectedPlan.planificacion_id)">
                     <mat-option *ngFor="let docente of docentes" [value]="docente">
                         {{docente.docente_nombre}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-    </div>
-
-    <div class="col-3" *ngIf="planD === true">
-        <mat-form-field class="font-size-12" appearance="outline">
-            <mat-label>Planificaci&oacute;n</mat-label>
-            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('docente', selectedDocente.docente_id, $event.value.planificacion_id)">
-                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
-                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
     </div>
 
     <!-- se piden carreras y se muestran  para su seleccion  -->
@@ -130,28 +117,17 @@
         </mat-form-field>
     </div>
 
-    <div *ngIf="reporte==='grupo'" class="col-3">
-        <div *ngIf="grupos.length>0">
+    <div *ngIf="activarG" class="col-3">
+        <div *ngIf="grupos2.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Grupo</mat-label>
-                <mat-select [(ngModel)]="selectedGrupo" name="grupo" (selectionChange)="planG = true">
-                    <mat-option *ngFor="let grupo of grupos" [value]="grupo">
-                        Grupo: {{grupo.grupo_numero}} de {{grupo.grupo_componente}}
+                <mat-select [(ngModel)]="selectedGrupo" name="grupo" (selectionChange)="getHorarioByFilter('grupo', $event.value.grupo_id, selectedPlan.planificacion_id)">
+                    <mat-option *ngFor="let grupo of grupos2" [value]="grupo">
+                        Grupo {{grupo.grupo_numero}} {{grupo.grupo_componente | componenteNameSimple: componentes}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-    </div>
-
-    <div class="col-3" *ngIf="planG === true">
-        <mat-form-field class="font-size-12" appearance="outline">
-            <mat-label>Planificaci&oacute;n</mat-label>
-            <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getHorarioByFilter('grupo', selectedGrupo.grupo_id, $event.value.planificacion_id)">
-                <mat-option *ngFor="let plan of planificaciones" [value]="plan">
-                    Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
     </div>
 </div>
 <!-- horarios -->

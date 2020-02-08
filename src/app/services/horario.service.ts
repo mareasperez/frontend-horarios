@@ -70,9 +70,9 @@ export class HorarioService extends MainService {
     });
   }
 
-  getHorarioByPlan(filtro: string | number, id: string | number): Observable<HorarioModel[]> {
+  getHorarioByPlan(query: string, filtro: string | number, id: string | number): Observable<HorarioModel[]> {
     return new Observable(observer => {
-      this.getByPlan(filtro, id).subscribe((data: any) => {
+      this.getByPlan(query, filtro, id).subscribe((data: any) => {
         let horarios = [];
         console.log(data);
         if (data.Detail !== 'not found') {
