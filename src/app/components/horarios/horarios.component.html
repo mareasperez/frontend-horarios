@@ -33,8 +33,8 @@
             </mat-option>
         </mat-select>
     </mat-form-field >
-    
     <mat-form-field class="font-size-12 ml-1" appearance="outline">
+        <mat-label>Aula</mat-label>
         <mat-select [(value)]="aulaSelected" (selectionChange)="horarioByAula($event.value)" >
             <mat-option *ngFor="let aula of aulas" [value]="aula.aula_id">
                 {{aula.aula_nombre}} {{aula.aula_recinto | recintoNombre : recintos}}

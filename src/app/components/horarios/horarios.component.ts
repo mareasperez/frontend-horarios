@@ -43,17 +43,17 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public gruposFiltrados: GrupoModel[] = [];
   public pdes: PlanEstudioModel[]=[];
   public horas = Horas;
-  public selectedR: RecintoModel;
+  public selectedR = getItemLocalCache('recinto');
   public pdeSelected = getItemLocalCache("pde");
   public planSelected = getItemLocalCache("planificacion");
-  public cicloSelected = '0';
+  public cicloSelected = getItemLocalCache("ciclo");
   public carreraSelected = getItemLocalCache("carrera");
   public planID = '0';
   public HorarioID = '0';
   public grupoSelected: GrupoModel = new GrupoModel()
   public diaSelected = '0';
   public horaSelected = '0';
-  public aulaSelected = '0';
+  public aulaSelected = getItemLocalCache('aula');
   public refGP: Observable<any>;
   public refComp: Observable<any>;
   public refAula: Observable<any>
@@ -94,6 +94,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(()=>{
+      
       this.onComponente[0] = this.componentes;
       this.onComponente[1] = this.grupos;
       this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
@@ -130,6 +131,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this._planificacion.list = [];
     this._recinto.list = [];
     this.subs.forEach(sub => sub.unsubscribe());
+    localStorage.setItem('ciclo', this.cicloSelected);
+    localStorage.setItem('carrera', this.carreraSelected);
+    localStorage.setItem('pde', this.pdeSelected);
+    localStorage.setItem('planificacion', this.planSelected);
+    localStorage.setItem('recinto', this.selectedR);
+    localStorage.setItem('aula', this.aulaSelected);
+
   }
 
 
@@ -246,6 +254,17 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
   }
   servicos(){
+    // let ls = new Promise((resolve,reject)=>{
+    //   localStorage.getItem('carrera');
+    //   localStorage.getItem('departamento');
+    //   localStorage.getItem('pde');
+    //   localStorage.getItem('planificacion');
+    //   localStorage.getItem('recinto');
+    //   localStorage.getItem('aula');
+    //   localStorage.getItem('ciclo');
+    //   resolve();
+    // });
+    // this.promesas.push(ls);
     let p1 = new Promise((resolve,reject)=>{
       let sub =  this._grupo.getGrupos()
       .subscribe(

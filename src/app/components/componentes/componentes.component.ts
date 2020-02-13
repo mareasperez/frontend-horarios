@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { Observable, Subscription } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
@@ -79,7 +79,19 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
 
-  addG(comp: string) {
+  addG(e,comp: string) {
     this.gpComp.emit(comp);
+    this.changeColor(e);
+  }
+
+  changeColor(e){
+    console.log(e)
+    let item = document.getElementsByClassName('bg-color-yellow')[0];
+    if(item){
+      let elr = new ElementRef(item);
+      elr.nativeElement.classList.remove('bg-color-yellow')
+    }
+    e.target.parentNode.classList.add('bg-color-yellow');
+
   }
 }

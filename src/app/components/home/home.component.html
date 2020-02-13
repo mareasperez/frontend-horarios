@@ -25,7 +25,13 @@
                   semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
                 </mat-option>
             </mat-select>
-        </mat-form-field>   
+        </mat-form-field>  
+        <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+            <mat-label>Ciclo</mat-label>
+            <mat-select formControlName="ciclo" >
+                <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field> 
         <button mat-raised-button class="bg-color-green color-white ml-1" (click)="save()">
             <mat-icon>save</mat-icon>Guardar
         </button>

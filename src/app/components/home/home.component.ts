@@ -118,7 +118,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       carrera: new FormControl(getItemLocalCache("carrera") ),
       departamento: new FormControl(getItemLocalCache("departamento")),
       pde: new FormControl(getItemLocalCache("pde")),
-      planificacion: new FormControl(getItemLocalCache("planificacion"))
+      planificacion: new FormControl(getItemLocalCache("planificacion")),
+      ciclo: new FormControl(getItemLocalCache("ciclo"))
     })
   }
 
@@ -137,6 +138,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           break;
         case 'planificacion':
             localStorage.setItem('planificacion', this.form.controls[key].value)
+          break;
+        case 'ciclo':
+          localStorage.setItem('ciclo', this.form.controls[key].value)
           break;
       }
     })

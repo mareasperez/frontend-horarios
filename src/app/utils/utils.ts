@@ -1,4 +1,5 @@
 export function getItemLocalCache(item:string):string{
+   console.log( localStorage.getItem(item))
     return  JSON.parse( localStorage.getItem(item))
 }
 export const Horas = [
