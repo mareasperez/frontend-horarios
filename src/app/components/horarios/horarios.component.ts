@@ -4,7 +4,7 @@ import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { Observable, Subscription } from 'rxjs';
 import { HorarioService } from 'src/app/services/horario.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { AulaModel } from 'src/app/models/aula.model';
 import { HorarioModel } from 'src/app/models/horario.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
@@ -19,6 +19,7 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
+import { AddHorarioComponent } from './add-horario/add-horario.component';
 
 @Component({
   selector: 'app-horarios',
@@ -62,7 +63,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public refHorario: Observable<any>;
   public refRecintos: Observable<any>;
   public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
- 
   public show = false;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
@@ -76,7 +76,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               private _pde: PlanEstudioService,
               private _carrera: CarreraService,
               private _planificacion: PlanificacionService,
-              private _recinto: RecintoService,              
+              private _recinto: RecintoService,    
+              private dialog: MatDialog,          
               private _snack: MatSnackBar
               ) { 
                 this.grupoSelected.grupo_id = '0';
@@ -170,19 +171,23 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.aulas = [];
     this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
   }
-
+  openDialog(horario: HorarioModel, grupos:GrupoModel[]): void {
+      this.dialog.open(AddHorarioComponent, {
+        width: '850px',
+        data: { hr: horario, gps: grupos, cps: this.onComponente}
+      });
+  }
   save(){
     let horario = new HorarioModel();
     horario.horario_aula = this.aulaSelected;
     horario.horario_dia = this.diaSelected;
     horario.horario_grupo = this.grupoSelected.grupo_id;
-    horario.horario_hora = Number(this.horaSelected);
     horario.horario_vacio = false;
+    horario.horario_hora = Number(this.horaSelected);
     horario.horario_id = this.HorarioID
     this.grupoSelected.grupo_asignado = true;
     this._horario.updateHorario(horario, horario.horario_id).subscribe(
       res =>{
-         console.log(res);
          this.diaSelected = '0';
          this.grupoSelected.grupo_id = '0';
          this.horaSelected = '0';

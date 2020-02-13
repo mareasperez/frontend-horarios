@@ -1,4 +1,4 @@
-<mat-card style="height: 80vh;  overflow: auto;">
+<mat-card style="height: 80vh;  overflow: auto;" *ngIf="show">
     <mat-form-field class="font-size-12" appearance="outline">
         <mat-label>Carrera</mat-label>
         <mat-select [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value)">
@@ -25,99 +25,78 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-form-field class="font-size-12 ml-1" appearance="outline">
+    <mat-form-field  class="font-size-12 ml-1" appearance="outline">
         <mat-label>Recinto</mat-label>
         <mat-select [(value)]="selectedR" (selectionChange)="getAulas($event.value)">
             <mat-option *ngFor="let recinto of recintos" [value]="recinto.recinto_id">
                 {{recinto.recinto_nombre}}
             </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field >
+    
+    <mat-form-field class="font-size-12 ml-1" appearance="outline">
+        <mat-select [(value)]="aulaSelected" (selectionChange)="horarioByAula($event.value)" >
+            <mat-option *ngFor="let aula of aulas" [value]="aula.aula_id">
+                {{aula.aula_nombre}} {{aula.aula_recinto | recintoNombre : recintos}}
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
 
-    <form class="d-flex flex-column font-size-12 mt-2 " *ngIf="show">
-        <div class="row">
-            <div class="col-12">
-                <mat-radio-group [(ngModel)]="diaSelected" name="dia" class="Radio-group" aria-labelledby="dias">
-                    <label><strong>Dia</strong></label>
-                    <mat-radio-button class="ml-1 " *ngFor="let dia of dias" [value]="dia">
-                        {{dia}}
-                    </mat-radio-button>
-                </mat-radio-group>
-                <button mat-raised-button class="btnEditar ml-2" (click)="save()">
-                    <mat-icon>save</mat-icon>Guardar
-                </button>
-            </div>
-            <div class="col-12 mb-2">
-                <mat-radio-group [(ngModel)]="horaSelected" name="hora" class="Radio-group" aria-labelledby="horas">
-                    <label><strong>Hora</strong></label>
-                    <mat-radio-button class="ml-1" *ngFor="let hora of horas" [value]="hora.value">
-                        {{hora.hora}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-        </div>
-        <div class="row">
+    <table class="font-size-12 mt-2 table table-striped table-bordered w-100" *ngIf="array.length>0">
+       <thead>
+           <tr class="row mx-0">
+               <th class="col-2">Hora</th>
+               <th class="col-2">Lunes</th>
+               <th class="col-2">Martes</th>
+               <th class="col-2">Miercoles</th>
+               <th class="col-2">Jueves</th>
+               <th class="col-2">Viernes</th>
+           </tr>
+       </thead>
+       <tbody>
+        <tr class="row mx-0">
+            <td class="col-2">07am - 09am</td>
+            <td class="col-2" *ngFor="let hora of array[0]" (click)="openDialog(hora, onComponente[1])">
+                {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                <!-- {{hora.horario_id}} -->
+            </td>
+        </tr>
+        <tr class="row mx-0">
+            <td class="col-2">09am - 11am</td>
+            <td class="col-2" *ngFor="let hora of array[1]" (click)="openDialog(hora, onComponente[1])">
+                {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                <!-- {{hora.horario_id}} -->
+            </td>
+        </tr>
+        <tr class="row mx-0">
+            <td class="col-2">11am-01pm</td>
+            <td class="col-2" *ngFor="let hora of array[2]" (click)="openDialog(hora, onComponente[1])">
+                {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                <!-- {{hora.horario_id}} -->
+            </td>
+        </tr>
+        <tr class="row mx-0">
+            <td class="col-2">01pm - 03pm</td>
+            <td class="col-2" *ngFor="let hora of array[3]" (click)="openDialog(hora, onComponente[1])">
+                {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                <!-- {{hora.horario_id}} -->
+            </td>
+        </tr>
+        <tr class="row mx-0">
+            <td class="col-2">03pm - 05pm</td>
+            <td class="col-2" *ngFor="let hora of array[4]" (click)="openDialog(hora, onComponente[1])">
+                {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                <!-- {{hora.horario_id}} -->
+            </td>
+        </tr>
+        <tr class="row mx-0">
+            <td class="col-2">05m - 07pm</td>
+            <td class="col-2" *ngFor="let hora of array[5]" (click)="openDialog(hora, onComponente[1])">
+                {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                <!-- {{hora.horario_id}} -->
+            </td>
+        </tr>
+    </tbody>
 
-            <div class="col-2 overflow-auto mb-2">
-
-                <mat-radio-group [(ngModel)]="aulaSelected" name="aula" class="d-flex flex-column" aria-labelledby="aulas">
-                    <label><strong>Aulas</strong></label>
-                    <mat-radio-button class="Radio-button" (click)="horarioByAula(aula.aula_id)" *ngFor="let aula of aulas" [value]="aula.aula_id">
-                        {{aula.aula_nombre}} {{aula.aula_recinto | recintoNombre : recintos}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-            <div class="col-3 .overflow-auto mb-2">
-                <mat-radio-group [(ngModel)]="grupoSelected" name="grupo" class="d-flex flex-column" aria-labelledby="grupos">
-                    <label><strong>Grupos</strong></label>
-                    <mat-radio-button class="Radio-button" *ngFor="let grupo of gruposByPlan" [value]="grupo">
-                        {{grupo.grupo_componente | componenteNombre : componentes}} {{grupo.grupo_tipo}}{{grupo.grupo_numero}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-            <div class="col-7 ">
-                <table class=" table table-striped  ">
-                    <tbody>
-                        <tr class="row">
-                            <th class="col-2">07am - 09am</th>
-                            <td class="col-2" *ngFor="let hora of array[0]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">09am - 11am</th>
-                            <td class="col-2" *ngFor="let hora of array[1]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">11am-01pm</th>
-                            <td class="col-2" *ngFor="let hora of array[2]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">01pm - 03pm</th>
-                            <td class="col-2" *ngFor="let hora of array[3]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">03pm - 05pm</th>
-                            <td class="col-2" *ngFor="let hora of array[4]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                        <tr class="row">
-                            <th class="col-2">05m - 07pm</th>
-                            <td class="col-2" *ngFor="let hora of array[5]">
-                                {{hora.horario_grupo | componenteGrupoSimple : onComponente}}
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-        </div>
-    </form>
+    </table>
 </mat-card>

@@ -8,9 +8,10 @@ export class ComponenteGrupoSimplePipe implements PipeTransform {
 
   transform(id: string, componentes: ComponenteModel[]): any {
     if (id !== undefined) {
-      console.log('se recibe  id: ', id, 'comp:', componentes);
+    //  console.log('se recibe  id: ', id, 'comp:', componentes);
       const comp = componentes.find(c => id === c.componente_id);
-      return comp.componente_nombre;
+
+      return comp != undefined ?  comp.componente_nombre:'no component';
     }
     return '';
 

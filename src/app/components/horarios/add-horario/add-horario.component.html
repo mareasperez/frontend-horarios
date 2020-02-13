@@ -1,1 +1,5 @@
-<p>add-horario works!</p>
+<div class="container-fluid">
+    <mat-radio-group class="row" [(ngModel)]="componenteSelected" (change)="save($event)" style="max-height: 700px; overflow:auto;" aria-label="Seleccione un componente">
+        <mat-radio-button class="col-4"  *ngFor="let gp of data.gps" [value]="gp.grupo_id">{{gp.grupo_id |  nombreGrupo : data.gps}} {{gp.grupo_id | componenteGrupo : data.cps}}</mat-radio-button>
+      </mat-radio-group> 
+</div>
