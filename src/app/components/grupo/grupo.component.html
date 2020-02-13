@@ -1,5 +1,5 @@
 <mat-card>
-    <div class="row">
+    <div class="row" *ngIf="grupos.length>0">
         <div class="horas col-12">
             <button mat-raised-button [disabled]="componente.componente_cht != '0' ?  false : true" (click)="addGroup(componente.componente_id, 'GT')" class="w-25" style="background-color: #4d96ff;">
               GT

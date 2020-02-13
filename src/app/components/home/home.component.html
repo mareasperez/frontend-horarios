@@ -8,7 +8,7 @@
         </mat-form-field>
         <mat-form-field class="ml-1" appearance="outline">
           <mat-label>Departamento</mat-label>
-          <mat-select formControlName="departamento">
+          <mat-select disabled formControlName="departamento">
               <mat-option  [value]="dep.departamento_id" *ngFor="let dep of departamentos">{{dep.departamento_nombre}}</mat-option>
             </mat-select>
         </mat-form-field>

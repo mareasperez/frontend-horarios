@@ -6,6 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddaulaComponent } from '../addaula/addaula.component';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-veraula',
@@ -19,8 +20,8 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   private promesas: Promise<any>[] = [];
   public activartabla = false;
-  public selectedR: RecintoModel;
-  public dataSource = [];
+  public selectedR = getItemLocalCache("recinto") ;
+  public dataSource ;
   public refAula: Observable<any[]>;
   public refRecintos: Observable<any[]>;
   public alerts = true;
@@ -60,12 +61,13 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       this.refAula.subscribe((data: AulaModel[]) => {
         console.log('se ejecuto el subs de aula');
         this.aulas = data;
-        this.getAulas(this.selectedR.recinto_id);
+        this.getAulas(this.selectedR);
 
       });
       this.refRecintos.subscribe((data: RecintoModel[]) => {
         this.recintos = data;
       });
+      this.getAulas(this.selectedR);
     });
   }
   ngOnDestroy() {
@@ -78,6 +80,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
 
   getAulas(id: string) {
     this.dataSource = this.aulas.filter(aula => aula.aula_recinto === id);
+    console.log(this.dataSource)
     this.alerts = false;
     this.activartabla = true;
   }

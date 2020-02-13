@@ -1,17 +1,17 @@
 <mat-card class="w-100" style="height: 80vh; overflow: auto;">
     <div class="row">
         <div class="col-3">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="font-size-12">
                 <mat-label>Recinto</mat-label>
-                <mat-select [(value)]="selectedR" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
-                    <mat-option *ngFor="let recinto of recintos" [value]="recinto">
+                <mat-select [(value)]="selectedR" name="recinto" (selectionChange)="getAulas($event.value)">
+                    <mat-option *ngFor="let recinto of recintos" [value]="recinto.recinto_id">
                         {{recinto.recinto_nombre}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
             <br>
             <span *ngIf="activartabla">
-                <button mat-raised-button color="primary" (click)="openDialog('c', selectedR.recinto_id)">
+                <button mat-raised-button color="primary" (click)="openDialog('c', selectedR)">
                     <mat-icon>add</mat-icon>Agregar
                 </button>
             </span>

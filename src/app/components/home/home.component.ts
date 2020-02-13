@@ -116,7 +116,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   createForm(){
     this.form = this.fb.group({
       carrera: new FormControl(getItemLocalCache("carrera") ),
-      departamento: new FormControl(getItemLocalCache("departamento")),
+      // departamento: new FormControl(getItemLocalCache("departamento")),
+      departamento: new FormControl('4'),
       pde: new FormControl(getItemLocalCache("pde")),
       planificacion: new FormControl(getItemLocalCache("planificacion")),
       ciclo: new FormControl(getItemLocalCache("ciclo"))

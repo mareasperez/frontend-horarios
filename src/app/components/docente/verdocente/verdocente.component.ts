@@ -23,20 +23,22 @@ export class VerdocenteComponent implements OnInit {
   public departamentos: DepartamentoModel[] = [];
   subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
+  public promesas: Promise<any>[]=[];
   constructor(
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
-    const p = new Promise<void>(() => {
+    const p = new Promise<void>((resolve) => {
       this._Departamento.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          ()=> resolve()
         );
     });
-    const p2 = new Promise<void>(() => {
+    const p2 = new Promise<void>((resolve) => {
       this.DocenteService.getDocente()
         .subscribe(
           res => {
@@ -44,23 +46,27 @@ export class VerdocenteComponent implements OnInit {
             this.dataSource = this.docentes;
           },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          ()=> resolve()
         );
     });
     this.refDepartamento = this._Departamento.getList();
     this.refDocentes = this.DocenteService.getList();
+    this.promesas.push(p,p2)
   }
 
   ngOnInit() {
-    this.docentes.forEach(res => console.log(res));
-    this.subs.push(
-      this.refDocentes.subscribe(data => {
-        this.dataSource = [];
-        this.docentes = data;
-        data.map(doc => {
-          this.dataSource.push(doc);
-        });
+    Promise.all(this.promesas).then(()=>{
+    //  this.docentes.forEach(res => console.log(res));
+      this.subs.push(
+        this.refDocentes.subscribe(data => {
+          this.dataSource = [];
+          this.docentes = data;
+          data.map(doc => {
+            this.dataSource.push(doc);
+          });
+        })
+        );
       })
-    );
   }
 
 

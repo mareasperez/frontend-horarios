@@ -6,8 +6,8 @@ import { DepartamentoModel } from '../models/departamento.model';
 })
 export class DepartamentoNamePipe implements PipeTransform {
   transform(id: string, departamentos: DepartamentoModel[]): string {
-    const dep = departamentos.find(depa => id === depa.departamento_id);
-    return dep.departamento_nombre;
+    let dep = departamentos.find(depa => id === depa.departamento_id);
+    return dep != undefined ? dep.departamento_nombre:'';
    }
 
 }

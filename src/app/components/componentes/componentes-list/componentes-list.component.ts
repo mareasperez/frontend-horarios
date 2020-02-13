@@ -8,6 +8,7 @@ import { AddComponenteComponent } from '../add-componente/add-componente.compone
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-componentes-list',
@@ -26,7 +27,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   public show: boolean;
   private promesas: Promise<any>[] = [];
   public dataSource = [];
-  public pdeSelected = '0';
+  public pdeSelected =  getItemLocalCache("pde") ;;
   displayedColumns: string[] = ['nombre', 'ciclo', 'area', 'thoras', 'phoras', 'creditos', 'opciones'];
   constructor(
     private _comp: ComponenteService,
@@ -82,6 +83,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
         this.refPde.subscribe(data => this.pdes = data),
         this.refArea.subscribe(data => this.areas = data)
       );
+      this.componentesByPde(this.pdeSelected);
     });
   }
 

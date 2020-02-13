@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="table-scroll">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Position Column -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> N<sup>o</sup></th>
