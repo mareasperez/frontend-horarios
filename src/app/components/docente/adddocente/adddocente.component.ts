@@ -11,7 +11,6 @@ import { AreaModel } from 'src/app/models/area.model';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
 import { DocenteAreaModel } from 'src/app/models/docente.area.model';
 import { matErrorsMessage } from 'src/app/utils/errors';
-import { getItemLocalCache } from 'src/app/utils/utils';
 
 interface DialogData {
   type: string;
@@ -70,7 +69,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       }
     });
     this.departamentos = this.departamento$.list;
-     console.log(this.departamento$.list);
+    // console.log(this.departamento$.list);
     this.refArea = this._area.getList();
     this.refDepartamento = this.departamento$.getList();
     this.promesas.push(p, p2);
@@ -104,7 +103,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         docente_inss: new FormControl('', [Validators.required, Validators.min(10000)]),
         docente_tipo_contrato: new FormControl('H', [Validators.required]),
         // docente_departamento: new FormControl(1, [Validators.required])
-        docente_departamento: new FormControl(getItemLocalCache("departamento"), [Validators.required])
+        docente_departamento: new FormControl(this.departamentos[0].departamento_id, [Validators.required])
 
       });
     } else {
@@ -113,8 +112,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         docente_nombre: new FormControl(this.data.doc.docente_nombre, [Validators.required, Validators.maxLength(100)]),
         docente_inss: new FormControl(this.data.doc.docente_inss, [Validators.required, Validators.min(10000)]),
         docente_tipo_contrato: new FormControl(this.data.doc.docente_tipo_contrato, [Validators.required]),
-        // docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
-        docente_departamento: new FormControl(4, [Validators.required])
+        docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
 
       });
     }

@@ -8,7 +8,7 @@ import { GrupoModel } from '../models/grupo.model';
 export class ComponenteGrupoPipe implements PipeTransform {
 
   transform(id: string, superarray: any[][]): string {
-    if (id !== undefined && id !== null) {
+    if (id !== undefined && id !== null && superarray.length > 0) {
       const comp: GrupoModel = superarray[1].find(c => id === c.grupo_id);
       const regresar: ComponenteModel = superarray[0].find((a:ComponenteModel) => comp.grupo_componente === a.componente_id);
       return regresar.componente_nombre;
