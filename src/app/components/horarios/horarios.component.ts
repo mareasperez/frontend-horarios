@@ -94,7 +94,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(()=>{
-      
       this.onComponente[0] = this.componentes;
       this.onComponente[1] = this.grupos;
       this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
@@ -117,6 +116,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         );
         if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected)}
         if(this.planSelected !== '0' ) {this.groupsByPlan(this.planSelected)}
+        if(this.aulaSelected != '0') this.horarioByAula(this.aulaSelected)
         this.show = true;
       })
   }
@@ -142,15 +142,16 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
 
   pdesByCarrera(id: string) {
-    this.cicloSelected = '0';
+  //  if(this.cicloSelected == '0') this.cicloSelected = '0';
     this.gruposByPlan = []
-    this.pdeSelected = '0'
+    //if(this.pdeSelected == '0') this.pdeSelected = '0'
     this.pdeByCarrera = this.pdes.filter(pde => pde.pde_carrera === id);
    this.componentesByCiclo(Number(this.cicloSelected));
 
   }
 
   componentesByCiclo(ciclo: number) {
+    console.log(this.cicloSelected, this.pdeSelected)
     if(String(this.carreraSelected) !== "0"){
       this.compsByCiclo = [];
       this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);

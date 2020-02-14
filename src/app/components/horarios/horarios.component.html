@@ -56,42 +56,42 @@
        <tbody>
         <tr class="row mx-0">
             <td class="col-2">07am - 09am</td>
-            <td class="col-2" *ngFor="let hora of array[0]" (click)="openDialog(hora, onComponente[1])">
+            <td class="col-2" *ngFor="let hora of array[0]" (click)="openDialog(hora, gruposByPlan)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">09am - 11am</td>
-            <td class="col-2" *ngFor="let hora of array[1]" (click)="openDialog(hora, onComponente[1])">
+            <td class="col-2" *ngFor="let hora of array[1]" (click)="openDialog(hora, gruposByPlan)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">11am-01pm</td>
-            <td class="col-2" *ngFor="let hora of array[2]" (click)="openDialog(hora, onComponente[1])">
+            <td class="col-2" *ngFor="let hora of array[2]" (click)="openDialog(hora, gruposByPlan)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">01pm - 03pm</td>
-            <td class="col-2" *ngFor="let hora of array[3]" (click)="openDialog(hora, onComponente[1])">
+            <td class="col-2" *ngFor="let hora of array[3]" (click)="openDialog(hora, gruposByPlan)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">03pm - 05pm</td>
-            <td class="col-2" *ngFor="let hora of array[4]" (click)="openDialog(hora, onComponente[1])">
+            <td class="col-2" *ngFor="let hora of array[4]" (click)="openDialog(hora, gruposByPlan)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">05m - 07pm</td>
-            <td class="col-2" *ngFor="let hora of array[5]" (click)="openDialog(hora, onComponente[1])">
+            <td class="col-2" *ngFor="let hora of array[5]" (click)="openDialog(hora, gruposByPlan)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
             </td>
