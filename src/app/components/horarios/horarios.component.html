@@ -41,8 +41,9 @@
             </mat-option>
         </mat-select>
         </mat-form-field>
-
-    <table class="font-size-12 mt-2 table table-striped table-bordered w-100" *ngIf="array.length>0">
+<div class="row">
+    
+    <table class="col-8 font-size-10 mt-2 table table-striped table-bordered w-100" *ngIf="array.length>0">
        <thead>
            <tr class="row mx-0">
                <th class="col-2">Hora</th>
@@ -56,47 +57,61 @@
        <tbody>
         <tr class="row mx-0">
             <td class="col-2">07am - 09am</td>
-            <td class="col-2" *ngFor="let hora of array[0]" (click)="openDialog(hora, gruposByPlan)">
+            <td class="col-2" *ngFor="let hora of array[0]" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
+                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">09am - 11am</td>
-            <td class="col-2" *ngFor="let hora of array[1]" (click)="openDialog(hora, gruposByPlan)">
+            <td class="col-2" *ngFor="let hora of array[1]" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
+                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">11am-01pm</td>
-            <td class="col-2" *ngFor="let hora of array[2]" (click)="openDialog(hora, gruposByPlan)">
+            <td class="col-2" *ngFor="let hora of array[2]" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
+                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">01pm - 03pm</td>
-            <td class="col-2" *ngFor="let hora of array[3]" (click)="openDialog(hora, gruposByPlan)">
+            <td class="col-2" *ngFor="let hora of array[3]" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
+                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">03pm - 05pm</td>
-            <td class="col-2" *ngFor="let hora of array[4]" (click)="openDialog(hora, gruposByPlan)">
+            <td class="col-2" *ngFor="let hora of array[4]" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
+                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">05m - 07pm</td>
-            <td class="col-2" *ngFor="let hora of array[5]" (click)="openDialog(hora, gruposByPlan)">
+            <td class="col-2" *ngFor="let hora of array[5]" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <!-- {{hora.horario_id}} -->
+                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
             </td>
         </tr>
     </tbody>
 
     </table>
+    <div class="col-4 ">
+       <mat-list class="max-h overflow-auto">
+           <mat-list-item class="font-size-10 mt-n4" *ngFor="let gp of gruposByPlan" (click)="selectGP($event, gp)">
+               {{gp.grupo_id |  nombreGrupo : onComponente[1]}} {{gp.grupo_id | componenteGrupo : onComponente}}
+            </mat-list-item>
+       </mat-list>
+    </div>
+</div>
 </mat-card>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { AulaService } from 'src/app/services/aula.service';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
@@ -50,9 +50,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public carreraSelected = getItemLocalCache("carrera");
   public planID = '0';
   public HorarioID = '0';
-  public grupoSelected: GrupoModel = new GrupoModel()
-  public diaSelected = '0';
-  public horaSelected = '0';
+  public gpID = '0';
+  public grupoSelected: GrupoModel = null
+  public horarioSelected: HorarioModel = null;
   public aulaSelected = getItemLocalCache('aula');
   public refGP: Observable<any>;
   public refComp: Observable<any>;
@@ -80,7 +80,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,          
               private _snack: MatSnackBar
               ) { 
-                this.grupoSelected.grupo_id = '0';
                 this.servicos();
                 this.refPde = this._pde.getList();
                 this.refCarrera = this._carrera.getList();
@@ -186,34 +185,74 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         data: { hr: horario, gps: grupos, cps: this.onComponente}
       });
   }
-  save(){
-    let horario = new HorarioModel();
-    horario.horario_aula = this.aulaSelected;
-    horario.horario_dia = this.diaSelected;
-    horario.horario_grupo = this.grupoSelected.grupo_id;
-    horario.horario_vacio = false;
-    horario.horario_hora = Number(this.horaSelected);
-    horario.horario_id = this.HorarioID
-    this.grupoSelected.grupo_asignado = true;
-    this._horario.updateHorario(horario, horario.horario_id).subscribe(
-      res =>{
-         this.diaSelected = '0';
-         this.grupoSelected.grupo_id = '0';
-         this.horaSelected = '0';
-         this.fun()
-         this.groupsByPlan(this.planSelected)
-      },
-      error => this._snack.open(error.message, "OK", {duration: 3000})
-      
-    )
+  selectH(e, hr: HorarioModel){
+    
+    this.changeColor(e)
+    this.horarioSelected = hr;
+    console.log(this.grupoSelected, this.horarioSelected)
+    if(this.grupoSelected == null) return
+    this.save();
   }
 
+  selectGP(e, gp: GrupoModel){
+    this.changeColor(e)
+    this.grupoSelected = gp;
+    console.log(this.grupoSelected, this.horarioSelected)
+    if(this.horarioSelected == null) return
+    this.save();
+  }
+
+  changeColor(e){
+    let item = document.getElementsByClassName('bg-color-yellow')[0];
+    if(item){
+      let elr = new ElementRef(item);
+      elr.nativeElement.classList.remove('bg-color-yellow')
+    }
+    e.target.classList.add('bg-color-yellow');
+  }
+  save(){
+    this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
+    this.horarioSelected.horario_vacio = false;
+    this.grupoSelected.grupo_asignado = true;
+    let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
+      res =>{
+        this.fun()
+        this.groupsByPlan(this.planSelected)
+        let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe()
+        this.horarioSelected = this.grupoSelected = null;
+        this.subs.push(sub);
+      },
+      error => {this._snack.open(error.message, "OK", {duration: 3000}); this.horarioSelected = this.grupoSelected = null;} 
+    );
+    this.subs.push(sub);
+  }
+
+  rmGrupo(hr: HorarioModel){
+    
+    console.log(this.grupos)
+    let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
+    hr.horario_grupo = null
+    console.log(gp)
+
+    let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
+      res => {
+        this.fun();
+        this.groupsByPlan(this.planSelected);
+        gp.grupo_asignado = false;
+        let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe()
+        this.subs.push(sub);
+      },
+      error => this._snack.open(error.message, "OK", {duration: 3000})
+    );
+   this.subs.push(sub);
+
+  }
   horarioByAula(id:string){
     this._horario.getHorarioByFilter("horario_aula", id)
     .subscribe(res=>{
       this.horarios = res;
       this.HorarioID = this.horarios[0].horario_id;
-      console.log(this.HorarioID)
+      // console.log(this.HorarioID)
       this.fun()
     })
 
