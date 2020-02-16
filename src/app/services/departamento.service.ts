@@ -17,7 +17,7 @@ export class DepartamentoService extends MainService {
 
         return new Observable(observer => {
             this.get().subscribe(data => {
-                if (!data.Detail) {
+                if (!data.detail) {
                     this.successObten();
                     data.departamento.forEach(el => {
                         // console.log(el)
@@ -61,7 +61,7 @@ export class DepartamentoService extends MainService {
         return new Observable(observer => {
             console.log('se va a mandar a pedir al api:', filtro, ' ', id);
             this.getByFiltro(filtro, id).subscribe(data => {
-                if (!data.Detail) {
+                if (!data.detail) {
                     this.successObten();
                     data.departamento.forEach(el => {
                         let departamento = new DepartamentoModel();

@@ -16,7 +16,7 @@ export class DocenteAreaService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         console.log('aqui esta data: ', data);
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.docenteArea.forEach(el => {
             // console.log(el)
@@ -54,7 +54,7 @@ export class DocenteAreaService extends MainService {
   getByDocente(filtro: string, id: string | number): Observable<DocenteAreaModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        if (!data.Detail){
+        if (!data.detail){
           data.docenteArea.forEach(el => {
             let docenteArea = new DocenteAreaModel();
             docenteArea = Object.assign(docenteArea, el);

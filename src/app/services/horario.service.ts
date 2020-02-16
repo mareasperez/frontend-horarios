@@ -16,7 +16,7 @@ export class HorarioService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.horarios.forEach(el => {
             // console.log(el);
@@ -63,7 +63,7 @@ export class HorarioService extends MainService {
       this.getByFiltro(filtro, id).subscribe((data: any) => {
         let horarios = [];
         // console.log(data);
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.horario.forEach(el => {
             let horario = new HorarioModel();
@@ -83,7 +83,7 @@ export class HorarioService extends MainService {
       this.getByPlan(query, filtro, id).subscribe((data: any) => {
         let horarios = [];
         console.log(data);
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.horario.forEach(el => {
             let horario = new HorarioModel();

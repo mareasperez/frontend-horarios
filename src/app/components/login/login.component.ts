@@ -16,17 +16,15 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (this.JwtService.isAuthenticated()) {
       this.router.navigate(['/home']);
-      window.location.reload();
     }
   }
 
   login() {
-    console.log(this.user);
     this.JwtService.login(this.user.username, this.user.password)
       .subscribe(
         res => {
-          console.log(res);
-          this.router.navigate(['/home']);
+          // this.router.navigate(['/home']);
+          window.location.reload();
         },
         err => console.error(err)
       );

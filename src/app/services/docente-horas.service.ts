@@ -14,7 +14,7 @@ export class DocenteHorasService extends MainService {
   getDcHoras(): Observable<DocenteHorasModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.docenteHoras.forEach(el => {
             // console.log(el)

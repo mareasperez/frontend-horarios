@@ -14,7 +14,7 @@ export class ComponenteService extends MainService {
   getComponentes(): Observable<ComponenteModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.componente.forEach(el => {
             // console.log(el)

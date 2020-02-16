@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (this.JwtService.isAuthenticated && this.JwtService.loggedIn) {
-      console.log('supuestamente esta login');
       this.wSocket.setsock();
     }
   }

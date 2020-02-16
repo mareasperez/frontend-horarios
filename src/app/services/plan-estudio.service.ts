@@ -17,7 +17,7 @@ export class PlanEstudioService extends MainService {
   getPlanEstudio(): Observable<PlanEstudioModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
+        if (!data.detail) {
           this.successObten();
           data.planDeEstudio.forEach(el => {
             let pde = new PlanEstudioModel();
