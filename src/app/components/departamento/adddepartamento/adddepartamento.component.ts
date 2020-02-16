@@ -40,6 +40,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
   ) {
     this.facultades = this.facultad$.list;
     this.refFacultad = this.facultad$.getList();
+    this.selected = this.facultades[0].facultad_id;
   }
 
   ngOnInit() {

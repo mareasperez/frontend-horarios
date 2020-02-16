@@ -19,8 +19,7 @@
       <div class="row">
         <mat-form-field appearance="outline" class="col-9">
           <mat-label>Departamento</mat-label>
-          <mat-select formControlName="carrera_departamento" ([value])="selected">
-            <mat-option value="0">Departamento...</mat-option>
+          <mat-select formControlName="carrera_departamento" [(ngModel)]="selected">
             <mat-option *ngFor="let departamento of departamentos" [value]="departamento.departamento_id">
               {{departamento.departamento_nombre}}
             </mat-option>

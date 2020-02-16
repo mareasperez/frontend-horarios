@@ -60,6 +60,7 @@ public pdeSelected = getItemLocalCache("pde");
 public planSelected = getItemLocalCache("planificacion");
 public cicloSelected = '0';
 public carreraSelected = getItemLocalCache("carrera");
+public clear: boolean = false;
 
   constructor(private _componente: ComponenteService,
               private _grupo: GrupoService,
@@ -155,6 +156,7 @@ public carreraSelected = getItemLocalCache("carrera");
   componentesByPde(id: string) {
     this.compsByPde = this.compsByCiclo.filter(comp => comp.componente_pde === id);
     this.gruposByComp = [];
+  //  this.compsByPde.length == 0 ? this.componente.componente_id = '0': this.compsByPde;
     this.compsByPde.forEach(comp => {
       let res =  this.grupos.filter(gp => gp.grupo_componente === comp.componente_id);
       res.forEach(gp => this.gruposByComp.push(gp));
@@ -170,9 +172,9 @@ public carreraSelected = getItemLocalCache("carrera");
   }
 
   groupsByComp(id: string) {
-    console.log("groupsByComp")
     let com = this.componentes.find(comp => comp.componente_id === id)
     this.componente = com;
+    console.log(this.componente)
     this.docenteByArea(this.componente.componente_area)
     this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
   }

@@ -37,6 +37,7 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private _snack: MatSnackBar
   ) {
+    this.selected = this.data.departamentos[0].departamento_id;
     this.departamentos = this.data.departamentos;
     this.refDepartamento = this.departamento$.getList();
   }

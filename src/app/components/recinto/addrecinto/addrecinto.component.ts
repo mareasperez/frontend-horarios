@@ -37,6 +37,7 @@ export class AddrecintoComponent implements OnInit {
   ) {
     this.facultades = this.facultad$.list;
     this.refFacultad = this.facultad$.getList();
+    this.selected = this.facultades[0].facultad_id;
   }
 
   ngOnInit() {

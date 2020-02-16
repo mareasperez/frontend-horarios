@@ -60,7 +60,7 @@ export class CargaDocenciaComponent implements OnInit {
           this._planificaciones.getPlanificaciones().subscribe(res => {
             this.planificaciones.push(res);
             resolve(this.planificaciones);
-            console.log(this.planificaciones);
+           // console.log(this.planificaciones);
           });
         })
       );
@@ -122,9 +122,9 @@ export class CargaDocenciaComponent implements OnInit {
 
     }
 
-   async ngOnInit() {
+ ngOnInit() {
     console.log("pacman");
-    await this.sleep(5000);
+ //   await this.sleep(5000);
     this.show = true;
     Promise.all(this.promesas).then(async res => {
       this.show = true;

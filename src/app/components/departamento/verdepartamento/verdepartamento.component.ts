@@ -22,7 +22,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public visible: boolean;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
-  public dataSource;
+  public dataSource = [];
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'facultad', 'opciones'];
   constructor(

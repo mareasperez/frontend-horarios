@@ -54,7 +54,7 @@ export class AddplanestudioComponent implements OnInit {
         pde_id: null,
         pde_nombre: new FormControl('', [Validators.required, Validators.maxLength(150)]),
         pde_anyo: new FormControl('', [Validators.required, Validators.min(2008)]),
-        pde_carrera: new FormControl('0', [Validators.required])
+        pde_carrera: new FormControl('', [Validators.required])
 
       });
     } else {

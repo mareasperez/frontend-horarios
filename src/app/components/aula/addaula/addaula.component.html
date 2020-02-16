@@ -9,7 +9,7 @@
             <div class="row">
                 <mat-form-field appearance="outline" class="col-9">
                     <mat-label>Recinto</mat-label>
-                    <mat-select formControlName="aula_recinto" [(value)]="selected">
+                    <mat-select formControlName="aula_recinto" [disabled]="this.data.idr != '0'" [(value)]="selected">
                         <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}</mat-option>
                     </mat-select>
                 </mat-form-field>

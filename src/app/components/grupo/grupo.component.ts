@@ -35,7 +35,8 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public add = false;
   public editing = false;
   public gpadd = true;
-
+  public show = true;
+  ant = '0';
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
 
@@ -53,16 +54,23 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
     @Input() set _grupos(grupos: GrupoModel[]) {
       this.grupos = grupos;
+      // let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
+      // console.log(this.grupos,r, this.componente)
+      // if(this.grupos.length > 0){
+      //   this.show = true;
+      // }
     }
 
     get Componente(): ComponenteModel {
-      console.log(this.componente)
+     // console.log(this.componente)
       return this.componente;
     }
-      @Input()  public set _componente(comp:ComponenteModel){
-        this.componente = comp
+    @Input()  public set _componente(comp:ComponenteModel){
+      this.componente = comp
     } 
   ngOnInit() {
+    console.log('hi', this.componente)
+    
   }
 
   ngOnDestroy() {

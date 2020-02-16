@@ -1,7 +1,7 @@
 <div class="row" *ngIf="!loader && reportes.length==0">
   <div class="col">
     <h4>Seleccione Planificacion</h4>
-    <mat-form-field>
+    <mat-form-field apparaence="outline">
       <mat-label>Planificacion</mat-label>
       <mat-select name="planificacion"
       [(ngModel)]="selectPlani" (selectionChange)="seleccion($event.value)">

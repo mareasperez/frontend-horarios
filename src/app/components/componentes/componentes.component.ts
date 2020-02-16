@@ -85,7 +85,6 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   changeColor(e){
-    console.log(e)
     let item = document.getElementsByClassName('bg-color-yellow')[0];
     if(item){
       let elr = new ElementRef(item);

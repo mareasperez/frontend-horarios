@@ -6,15 +6,14 @@ import { DocenteModel } from '../models/docente.model';
   name: 'docenteName'
 })
 export class DocenteNamePipe implements PipeTransform {
-  transform(id: string, array: any[][]): string {
+  transform(id: string, docentes: DocenteModel[]): string {
     if (id !== undefined && id !== null) {
-      console.log('se recibe  id: ', id, 'docentes:', array);
-      const doc: GrupoModel = array[1].find(doce => id === doce.grupo_id);
-      const retorno: DocenteModel = array[0].find(doce => doc.grupo_docente === doce.docente_id);
-      if (retorno === undefined) {
+     // console.log('se recibe  id: ', id, 'docentes:', array);
+      let doc= docentes.find(doce => id == doce.docente_id);
+      if (doc === undefined) {
         return '';
       } else {
-        return retorno.docente_nombre;
+        return doc.docente_nombre;
       }
     }
     return '';
