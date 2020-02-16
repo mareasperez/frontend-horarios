@@ -17,8 +17,7 @@ export class FacultadSerivice extends MainService {
   getFacultad(): Observable<FacultadModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.facultad.forEach(el => {
             // console.log(el)
             let facultad = new FacultadModel();
@@ -27,7 +26,7 @@ export class FacultadSerivice extends MainService {
             observer.next(facultad);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

@@ -77,9 +77,10 @@ export class AddGrupoComponent implements OnInit, OnDestroy {
      }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
+    Promise.all(this.promesas).then(() => {
       this.createForm();
-      this.show = true
+      this.show = true;
+      this._docente.successObten();
     })
   }
 

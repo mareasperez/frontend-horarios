@@ -60,6 +60,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
+      this._departamento.successObten();
     });
     this.refDepartamento.subscribe(data => {
       console.log(data);

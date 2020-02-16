@@ -7,6 +7,7 @@ import { JwtService } from './services/jwt.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+// tslint:disable: no-shadowed-variable
 export class AppComponent implements OnInit {
   title = 'Frontend';
 
@@ -17,13 +18,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.wSocket.setsock();
-
+    if (this.JwtService.isAuthenticated && this.JwtService.loggedIn) {
+      this.wSocket.setsock();
+    }
   }
   verificar(): boolean {
     var aux = this.JwtService.loggedIn;
     var aux2 = this.JwtService.isAuthenticated();
     return aux && aux2;
-    
+
   }
 }

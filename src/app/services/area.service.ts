@@ -10,16 +10,15 @@ import { wsModel } from '../models/ws.model';
   providedIn: 'root'
 })
 export class AreaService extends MainService {
-  public resource = "area"
+  public resource = 'area';
   constructor(httpclient: HttpClient) {
-    super(httpclient)
+    super(httpclient);
   }
 
   getAreas(): Observable<AreaModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.area.forEach(el => {
             // console.log(el)
             let area = new AreaModel();
@@ -28,7 +27,7 @@ export class AreaService extends MainService {
             observer.next(area);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -36,7 +35,7 @@ export class AreaService extends MainService {
   }
 
   crearArea(area: AreaModel): Observable<any> {
-    let body = { area: area };
+    const body = { area };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
         console.log(response);
@@ -46,14 +45,14 @@ export class AreaService extends MainService {
   }
 
   updateArea(area: AreaModel, id: string | number) {
-    let body = { area: area };
+    const body = { area };
     return this.update(body, id);
 
   }
 
   deleteArea(idarea: number | string) {
 
-    return this.delete(idarea)
+    return this.delete(idarea);
   }
 
   updateList(data: wsModel) {
@@ -66,20 +65,20 @@ export class AreaService extends MainService {
         // console.log("Crear")
         data.data = area;
         this.list.push(area);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.area_id).indexOf(area.area_id);
         this.list.splice(index, 1, area);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
-        let list = this.list.filter(el => el.area_id !== area.area_id);
-        console.log(list)
-        this.list = list
-        this.list$.next(this.list)
+        const list = this.list.filter(el => el.area_id !== area.area_id);
+        console.log(list);
+        this.list = list;
+        this.list$.next(this.list);
         break;
 
     }

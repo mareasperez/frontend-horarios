@@ -44,6 +44,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(() => {
       this.dataSource = this.areas;
       this.activartabla = true;
+      this._area.successObten();
       this.refArea.subscribe((data: AreaModel[]) => {
         console.log('se llamo al subs con lo siguiente:', data);
         this.areas = [];

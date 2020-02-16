@@ -77,6 +77,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
+      this.docenteService.successObten();
       this.subs.push(this.refDepartamento.subscribe(deps => this.departamentos = deps));
       this.subs.push(this.refArea.subscribe(areas => this.areas = areas));
       if (this.data.type === 'u') {

@@ -28,10 +28,10 @@ import { AddHorarioComponent } from './add-horario/add-horario.component';
 })
 export class HorariosCrudComponent implements OnInit, OnDestroy {
   public grupos: GrupoModel[] = [];
-  public componentes: ComponenteModel[]=[]
+  public componentes: ComponenteModel[]=[];
   public aulas: AulaModel[] =[];
   public horarios: HorarioModel[]=[];
-  public carreras: CarreraModel[]=[]
+  public carreras: CarreraModel[]=[];
   public planificaciones: PlanificacionModel[]=[];
   public recintos: RecintoModel[] = [];
 
@@ -51,18 +51,18 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public planID = '0';
   public HorarioID = '0';
   public gpID = '0';
-  public grupoSelected: GrupoModel = null
+  public grupoSelected: GrupoModel = null;
   public horarioSelected: HorarioModel = null;
   public aulaSelected = getItemLocalCache('aula');
   public refGP: Observable<any>;
   public refComp: Observable<any>;
-  public refAula: Observable<any>
+  public refAula: Observable<any>;
   public refPde: Observable<any>;
   public refCarrera: Observable<any>;
   public refPla: Observable<any>;
   public refHorario: Observable<any>;
   public refRecintos: Observable<any>;
-  public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+  public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
   public show = false;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
@@ -76,10 +76,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               private _pde: PlanEstudioService,
               private _carrera: CarreraService,
               private _planificacion: PlanificacionService,
-              private _recinto: RecintoService,    
-              private dialog: MatDialog,          
+              private _recinto: RecintoService,
+              private dialog: MatDialog,
               private _snack: MatSnackBar
-              ) { 
+              ) {
                 this.servicos();
                 this.refPde = this._pde.getList();
                 this.refCarrera = this._carrera.getList();
@@ -95,29 +95,31 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(()=>{
       this.onComponente[0] = this.componentes;
       this.onComponente[1] = this.grupos;
-      this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
-      this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
-      this.subs.push(this.refPla.subscribe(data=>this.planificaciones = data))
+      this._horario.successObten();
+      this.subs.push(this.refPde.subscribe(data=>this.pdes = data));
+      this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data));
+      this.subs.push(this.refPla.subscribe(data=>this.planificaciones = data));
       this.subs.push(this.refHorario.subscribe(data=>{
-        this.horarioByAula(this.aulaSelected)
-        
-      }))
-      this.subs.push(this.refComp.subscribe(data=>{this.componentes = data;
+        this.horarioByAula(this.aulaSelected);
+
+      }));
+      this.subs.push(this.refComp.subscribe(data=>{
+        this.componentes = data;
         this.refRecintos.subscribe((data: RecintoModel[]) => {
           this.recintos = data;
         });
         this.componentesByCiclo(Number(this.cicloSelected));
         }));
-      this.subs.push( this.refGP.subscribe(data =>
-        {this.grupos = data;
-          this.pdesByCarrera(this.carreraSelected);
+      this.subs.push( this.refGP.subscribe(data =>{
+        this.grupos = data;
+        this.pdesByCarrera(this.carreraSelected);
         })
         );
-        if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected)}
-        if(this.planSelected !== '0' ) {this.groupsByPlan(this.planSelected)}
-        if(this.aulaSelected != '0') this.horarioByAula(this.aulaSelected)
+        if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected);}
+        if(this.planSelected !== '0' ) {this.groupsByPlan(this.planSelected);}
+        if(this.aulaSelected != '0') this.horarioByAula(this.aulaSelected);
         this.show = true;
-      })
+      });
   }
 
   ngOnDestroy() {
@@ -142,7 +144,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   pdesByCarrera(id: string) {
   //  if(this.cicloSelected == '0') this.cicloSelected = '0';
-    this.gruposByPlan = []
+    this.gruposByPlan = [];
     //if(this.pdeSelected == '0') this.pdeSelected = '0'
     this.pdeByCarrera = this.pdes.filter(pde => pde.pde_carrera === id);
    this.componentesByCiclo(Number(this.cicloSelected));
@@ -150,7 +152,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   componentesByCiclo(ciclo: number) {
-    console.log(this.cicloSelected, this.pdeSelected)
+    console.log(this.cicloSelected, this.pdeSelected);
     if(String(this.carreraSelected) !== "0"){
       this.compsByCiclo = [];
       this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
@@ -186,19 +188,19 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       });
   }
   selectH(e, hr: HorarioModel){
-    
-    this.changeColor(e)
+
+    this.changeColor(e);
     this.horarioSelected = hr;
-    console.log(this.grupoSelected, this.horarioSelected)
-    if(this.grupoSelected == null) return
+    console.log(this.grupoSelected, this.horarioSelected);
+    if(this.grupoSelected == null) return;
     this.save();
   }
 
   selectGP(e, gp: GrupoModel){
-    this.changeColor(e)
+    this.changeColor(e);
     this.grupoSelected = gp;
-    console.log(this.grupoSelected, this.horarioSelected)
-    if(this.horarioSelected == null) return
+    console.log(this.grupoSelected, this.horarioSelected);
+    if(this.horarioSelected == null) return;
     this.save();
   }
 
@@ -206,7 +208,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     let item = document.getElementsByClassName('bg-color-yellow')[0];
     if(item){
       let elr = new ElementRef(item);
-      elr.nativeElement.classList.remove('bg-color-yellow')
+      elr.nativeElement.classList.remove('bg-color-yellow');
     }
     e.target.classList.add('bg-color-yellow');
   }
@@ -216,30 +218,30 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.grupoSelected.grupo_asignado = true;
     let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
       res =>{
-        this.fun()
-        this.groupsByPlan(this.planSelected)
-        let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe()
+        this.fun();
+        this.groupsByPlan(this.planSelected);
+        let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
         this.horarioSelected = this.grupoSelected = null;
         this.subs.push(sub);
       },
-      error => {this._snack.open(error.message, "OK", {duration: 3000}); this.horarioSelected = this.grupoSelected = null;} 
+      error => {this._snack.open(error.message, "OK", {duration: 3000}); this.horarioSelected = this.grupoSelected = null;}
     );
     this.subs.push(sub);
   }
 
   rmGrupo(hr: HorarioModel){
-    
-    console.log(this.grupos)
+
+    console.log(this.grupos);
     let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
-    hr.horario_grupo = null
-    console.log(gp)
+    hr.horario_grupo = null;
+    console.log(gp);
 
     let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
       res => {
         this.fun();
         this.groupsByPlan(this.planSelected);
         gp.grupo_asignado = false;
-        let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe()
+        let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe();
         this.subs.push(sub);
       },
       error => this._snack.open(error.message, "OK", {duration: 3000})
@@ -253,8 +255,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.horarios = res;
       this.HorarioID = this.horarios[0].horario_id;
       // console.log(this.HorarioID)
-      this.fun()
-    })
+      this.fun();
+    });
 
   }
 
@@ -312,8 +314,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
-      this.subs.push(sub)
-    })
+      this.subs.push(sub);
+    });
     let p2 = new Promise((resolve,reject)=>{
       let sub =  this._aula.getAula()
       .subscribe(
@@ -321,8 +323,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
-      this.subs.push(sub)
-    })
+      this.subs.push(sub);
+    });
     let p3 = new Promise((resolve,reject)=>{
       let sub =  this._horario.getHorarios()
       .subscribe(
@@ -330,8 +332,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
-      this.subs.push(sub)
-    })
+      this.subs.push(sub);
+    });
 
 
     let p4 = new Promise((resolve,reject)=>{
@@ -341,7 +343,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
-      this.subs.push(sub)
+      this.subs.push(sub);
 
    });
 
@@ -352,7 +354,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       error=>this._snack.open(error.message,"OK",{duration: 3000}),
       ()=>resolve()
       );
-    this.subs.push(sub)
+    this.subs.push(sub);
   });
 
   let p6 = new Promise((resolve,reject)=>{
@@ -362,7 +364,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       error=>this._snack.open(error.message,"OK",{duration: 3000}),
       ()=>resolve()
       );
-    this.subs.push(sub)
+    this.subs.push(sub);
     });
 
     let p7 = new Promise((resolve,reject)=>{
@@ -372,7 +374,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         error=>this._snack.open(error.message,"OK",{duration: 3000}),
         ()=>resolve()
         );
-      this.subs.push(sub)
+      this.subs.push(sub);
    });
    const p8 = new Promise((resolve) => {
     this._recinto.getRecinto()
@@ -384,7 +386,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       );
   });
 
-    this.promesas.push(p1,p2,p3,p4,p5,p6,p7,p8)
+    this.promesas.push(p1,p2,p3,p4,p5,p6,p7,p8);
   }
 
 }

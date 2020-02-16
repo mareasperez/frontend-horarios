@@ -15,8 +15,7 @@ export class AulaService extends MainService {
   getAula(): Observable<AulaModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.aula.forEach(el => {
             // console.log(el)
             let aula = new AulaModel();
@@ -25,7 +24,7 @@ export class AulaService extends MainService {
             observer.next(aula);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

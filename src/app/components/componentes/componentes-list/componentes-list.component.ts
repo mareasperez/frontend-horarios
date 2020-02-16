@@ -74,6 +74,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
       this.show = true;
+      this._comp.successObten();
       this.subs.push(
         this.refComp.subscribe(data => {
           this.componentes = [];

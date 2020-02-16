@@ -14,8 +14,7 @@ export class GrupoService extends MainService {
   getGrupos(): Observable<GrupoModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.grupos.forEach(el => {
             // console.log(el)
             let grupo = new GrupoModel();
@@ -24,7 +23,7 @@ export class GrupoService extends MainService {
             observer.next(grupo);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -59,8 +58,7 @@ export class GrupoService extends MainService {
   gerGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.grupo.forEach(el => {
             console.log(el);
             let grupo = new GrupoModel();
@@ -69,7 +67,7 @@ export class GrupoService extends MainService {
             observer.next(grupo);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

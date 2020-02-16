@@ -16,8 +16,7 @@ export class PensumService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.planDeEstudio.forEach(el => {
             //console.log(el)
             let planDeEstudio = new PlanEstudioModel();
@@ -25,7 +24,7 @@ export class PensumService extends MainService {
             observer.next(planDeEstudio);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

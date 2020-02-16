@@ -64,7 +64,8 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
     @Input()  public set _componente(comp:ComponenteModel){
       this.componente = comp
-    } 
+    }
+
   ngOnInit() {
     console.log('init', this.componente)
    // this.onGruposChanges().subscribe(res=> console.log(res))

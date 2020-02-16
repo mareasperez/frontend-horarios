@@ -17,8 +17,7 @@ export class CarreraService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.carrera.forEach(el => {
             // console.log(el)
             let carrera = new CarreraModel();
@@ -27,7 +26,7 @@ export class CarreraService extends MainService {
             observer.next(carrera);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -62,8 +61,7 @@ export class CarreraService extends MainService {
   getCarreraByFiltro(filtro: string, id: number): Observable<CarreraModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.carrera.forEach(el => {
             // console.log(el)
             let carrera = new CarreraModel();
@@ -72,7 +70,7 @@ export class CarreraService extends MainService {
             observer.next(carrera);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

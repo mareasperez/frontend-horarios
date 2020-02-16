@@ -15,8 +15,7 @@ export class DocenteService extends MainService {
   getDocente(): Observable<DocenteModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.docente.forEach(el => {
             let docente = new DocenteModel();
             docente = Object.assign(docente, el);
@@ -25,7 +24,7 @@ export class DocenteService extends MainService {
             observer.next(docente);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -55,8 +54,7 @@ export class DocenteService extends MainService {
   getDocenteByFilter(filtro: string, id: number | string): Observable<DocenteModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.docente.forEach(el => {
             // console.log(el)
             let docente = new DocenteModel();
@@ -64,7 +62,7 @@ export class DocenteService extends MainService {
             observer.next(docente);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

@@ -128,6 +128,7 @@ export class CargaDocenciaComponent implements OnInit {
     this.show = true;
     Promise.all(this.promesas).then(async res => {
       this.show = true;
+      this._planificaciones.successObten();
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
 
       }); // end then

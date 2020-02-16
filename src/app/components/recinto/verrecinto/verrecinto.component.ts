@@ -59,6 +59,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
+      this.RecintoService.successObten();
     });
     this.refRecinto.subscribe(data => {
       console.log(data);

@@ -58,6 +58,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.visible = true;
+      this.carrera$.successObten();
       this.refCarrera.subscribe(data => {
         console.log(data);
         this.carreras = data;

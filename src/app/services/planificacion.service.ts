@@ -15,8 +15,7 @@ export class PlanificacionService extends MainService {
 
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.planificacion.forEach(el => {
             //console.log(el)
             let planificacion = new PlanificacionModel();
@@ -25,7 +24,7 @@ export class PlanificacionService extends MainService {
             observer.next(planificacion);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

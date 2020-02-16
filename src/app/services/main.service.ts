@@ -66,8 +66,8 @@ export class MainService {
 
   updateList(data: wsModel) {
   }
-  errorObten() {
-    alertify.error('fallo al intentar obtener la informacion');
+  errorObten(err: string) {
+    alertify.error(`${err}`);
 
   }
 

@@ -57,6 +57,7 @@ export class VerdocenteComponent implements OnInit {
   ngOnInit() {
     Promise.all(this.promesas).then(()=>{
     //  this.docentes.forEach(res => console.log(res));
+    this.DocenteService.successObten();
       this.subs.push(
         this.refDocentes.subscribe(data => {
           this.dataSource = [];

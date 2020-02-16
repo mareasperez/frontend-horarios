@@ -17,8 +17,7 @@ export class PlanEstudioService extends MainService {
   getPlanEstudio(): Observable<PlanEstudioModel> {
     return new Observable(observer => {
       this.get().subscribe(data => {
-        if (!data.Detail) {
-          this.successObten();
+        if (!data.detail) {
           data.planDeEstudio.forEach(el => {
             let pde = new PlanEstudioModel();
             pde = Object.assign(pde, el); //Tipar Objeto
@@ -26,7 +25,7 @@ export class PlanEstudioService extends MainService {
             observer.next(pde);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
