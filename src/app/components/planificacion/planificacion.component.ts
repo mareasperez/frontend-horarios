@@ -43,6 +43,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.p1.then(() => {
       this.visible = true;
+      this._planificacion.successObten();
       this.subs.push(
       );
     });

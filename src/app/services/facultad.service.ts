@@ -18,7 +18,6 @@ export class FacultadSerivice extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.facultad.forEach(el => {
             // console.log(el)
             let facultad = new FacultadModel();

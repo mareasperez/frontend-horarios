@@ -17,7 +17,6 @@ export class DocenteAreaService extends MainService {
       this.get().subscribe(data => {
         console.log('aqui esta data: ', data);
         if (!data.detail) {
-          this.successObten();
           data.docenteArea.forEach(el => {
             // console.log(el)
             let docenteArea = new DocenteAreaModel();

@@ -16,7 +16,6 @@ export class AulaService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.aula.forEach(el => {
             // console.log(el)
             let aula = new AulaModel();

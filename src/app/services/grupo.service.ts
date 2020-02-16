@@ -15,7 +15,6 @@ export class GrupoService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.grupos.forEach(el => {
             // console.log(el)
             let grupo = new GrupoModel();
@@ -60,7 +59,6 @@ export class GrupoService extends MainService {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.grupo.forEach(el => {
             console.log(el);
             let grupo = new GrupoModel();

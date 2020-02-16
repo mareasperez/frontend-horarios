@@ -60,9 +60,9 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
-        this.subs.push(sub);
-        });
-        const p3 = new Promise((resolve) => {
+      this.subs.push(sub);
+      });
+    const p3 = new Promise((resolve) => {
           const sub = this._componete.getComponentes()
             .subscribe(
               res => this.componentes.push(res),
@@ -71,7 +71,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
             );
           this.subs.push(sub);
         }); 
-      const p4 = new Promise((resolve) => {
+    const p4 = new Promise((resolve) => {
         const sub = this._dohr.getDcHoras()
           .subscribe(
             res => this.docHoras.push(res),
@@ -80,7 +80,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
           );
         this.subs.push(sub);
       });
-      const p5 = new Promise((resolve) => {
+    const p5 = new Promise((resolve) => {
         const sub = this._dep.getDepartamento()
           .subscribe(
             res => this.departamentos.push(res),
@@ -99,8 +99,9 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
+    Promise.all(this.promesas).then(() => {
       this.docentesList = this.docentes;
+      this._docente.successObten();
       let sub = this.refDocente.subscribe(res => {
         this.docentes = res;
       }) 

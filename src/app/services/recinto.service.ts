@@ -17,7 +17,6 @@ export class RecintoService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.recinto.forEach(el => {
             // console.log(el)
             let recinto = new RecintoModel();
@@ -89,7 +88,6 @@ export class RecintoService extends MainService {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.recinto.forEach(el => {
             // console.log(el)
             let recinto = new RecintoModel();

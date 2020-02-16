@@ -7,7 +7,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class ComponenteService extends MainService {
-  public resource = "componente"
+  public resource = 'componente';
   constructor(httpclient: HttpClient) {
     super(httpclient)
   }
@@ -15,7 +15,6 @@ export class ComponenteService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.componente.forEach(el => {
             // console.log(el)
             let componente = new ComponenteModel();

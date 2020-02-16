@@ -59,6 +59,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(()=>{
       this.show = true;
+      this._pde.successObten();
       this.subs.push(
         this.refPde.subscribe(data => {
         this.dataSource = [];

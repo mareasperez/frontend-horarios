@@ -89,6 +89,7 @@ public clear: boolean = false;
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
       this.show = true;
+      this._grupo.successObten();
       this.subs.push(this.refComp
         .subscribe(
           data => {

@@ -163,6 +163,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
     });
     Promise.all(this.promesas).then(res => {
       console.log(this.facultades);
+      this._horario.successObten();
       this.selectedF = this.facultades[0];
       this.onComponente[0] = this.componentes;
       if (this.reporte !== 'docente') {

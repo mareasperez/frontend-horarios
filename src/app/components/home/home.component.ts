@@ -91,9 +91,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
+    Promise.all(this.promesas).then(() => {
       this.show = true;
-      this.createForm()
+      this.createForm();
+      this._carrera.successObten();
       this.subs.push(this.refPde.subscribe(data=>this.pdes = data))
       this.subs.push(this.refCarrera.subscribe(data=>this.carreras = data))
       this.subs.push(this.refDep.subscribe(data=>this.departamentos = data))

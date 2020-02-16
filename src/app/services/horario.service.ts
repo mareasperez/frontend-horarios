@@ -17,7 +17,6 @@ export class HorarioService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.horarios.forEach(el => {
             // console.log(el);
             let horario = new HorarioModel();
@@ -64,7 +63,6 @@ export class HorarioService extends MainService {
         let horarios = [];
         // console.log(data);
         if (!data.detail) {
-          this.successObten();
           data.horario.forEach(el => {
             let horario = new HorarioModel();
             horario = Object.assign(horario, el); // Tipar Objeto
@@ -84,7 +82,6 @@ export class HorarioService extends MainService {
         let horarios = [];
         console.log(data);
         if (!data.detail) {
-          this.successObten();
           data.horario.forEach(el => {
             let horario = new HorarioModel();
             horario = Object.assign(horario, el); // Tipar Objeto

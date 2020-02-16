@@ -118,6 +118,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
       this.show = true;
+      this._planificacion.successObten();
       console.log(this.planificaciones);
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
 

@@ -58,6 +58,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
+      this.AulaService.successObten();
       this.refAula.subscribe((data: AulaModel[]) => {
         console.log('se ejecuto el subs de aula');
         this.aulas = data;

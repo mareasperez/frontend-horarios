@@ -19,7 +19,6 @@ export class AreaService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.area.forEach(el => {
             // console.log(el)
             let area = new AreaModel();

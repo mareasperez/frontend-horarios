@@ -34,24 +34,21 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
               private _docente:DocenteService,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private _snack:MatSnackBar
-    ) { 
+    ) {
       this.subs.push( this._docente.getDocente().subscribe(res=>this.docentes.push(res)));
       this.subs.push( this._planificacion.getPlanificaciones().subscribe(res=>this.planificaciones.push(res)));
-
-
-      
     }
 
   ngOnInit() {
-    this.createForm()
+    this.createForm();
   }
 
-  ngOnDestroy(){
-    this.subs.map(sub=>sub.unsubscribe())
+  ngOnDestroy() {
+    this.subs.map(sub => sub.unsubscribe());
   }
 
   get Form(){
-    return this.form.controls
+    return this.form.controls;
   }
 
   createForm(){

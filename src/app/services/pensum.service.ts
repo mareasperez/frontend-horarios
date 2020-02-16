@@ -17,7 +17,6 @@ export class PensumService extends MainService {
     return new Observable(observer => {
       this.get().subscribe(data => {
         if (!data.detail) {
-          this.successObten();
           data.planDeEstudio.forEach(el => {
             //console.log(el)
             let planDeEstudio = new PlanEstudioModel();
