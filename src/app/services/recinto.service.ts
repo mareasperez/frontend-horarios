@@ -25,7 +25,7 @@ export class RecintoService extends MainService {
             observer.next(recinto);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -95,7 +95,7 @@ export class RecintoService extends MainService {
             observer.next(recinto);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

@@ -25,7 +25,7 @@ export class HorarioService extends MainService {
             observer.next(horario);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -70,7 +70,7 @@ export class HorarioService extends MainService {
           });
           observer.next(horarios);
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
       });
     });
@@ -89,7 +89,7 @@ export class HorarioService extends MainService {
           });
           observer.next(horarios);
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
       });
     });

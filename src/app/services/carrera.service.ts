@@ -26,7 +26,7 @@ export class CarreraService extends MainService {
             observer.next(carrera);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -70,7 +70,7 @@ export class CarreraService extends MainService {
             observer.next(carrera);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

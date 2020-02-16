@@ -26,7 +26,7 @@ export class DepartamentoService extends MainService {
                         observer.next(Departamento);
                     });
                 } else {
-                    this.errorObten();
+                    this.errorObten(data.detail);
                 }
                 observer.complete();
             });
@@ -67,7 +67,7 @@ export class DepartamentoService extends MainService {
                         observer.next(departamento);
                     });
                 } else {
-                    this.errorObten();
+                    this.errorObten(data.detail);
                 }
             });
         });

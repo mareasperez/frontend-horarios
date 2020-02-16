@@ -24,7 +24,7 @@ export class PlanificacionService extends MainService {
             observer.next(planificacion);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

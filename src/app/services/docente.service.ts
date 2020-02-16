@@ -24,7 +24,7 @@ export class DocenteService extends MainService {
             observer.next(docente);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -62,7 +62,7 @@ export class DocenteService extends MainService {
             observer.next(docente);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

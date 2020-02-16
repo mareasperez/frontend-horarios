@@ -23,7 +23,7 @@ export class GrupoService extends MainService {
             observer.next(grupo);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
@@ -67,7 +67,7 @@ export class GrupoService extends MainService {
             observer.next(grupo);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

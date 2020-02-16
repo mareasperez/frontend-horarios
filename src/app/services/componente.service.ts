@@ -23,7 +23,7 @@ export class ComponenteService extends MainService {
             observer.next(componente);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

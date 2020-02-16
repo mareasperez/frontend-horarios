@@ -27,7 +27,7 @@ export class AreaService extends MainService {
             observer.next(area);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

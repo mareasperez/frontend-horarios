@@ -25,7 +25,7 @@ export class DocenteAreaService extends MainService {
             observer.next(docenteArea);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

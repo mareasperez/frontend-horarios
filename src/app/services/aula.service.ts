@@ -24,7 +24,7 @@ export class AulaService extends MainService {
             observer.next(aula);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

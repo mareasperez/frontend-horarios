@@ -26,7 +26,7 @@ export class FacultadSerivice extends MainService {
             observer.next(facultad);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

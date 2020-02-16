@@ -24,7 +24,7 @@ export class PensumService extends MainService {
             observer.next(planDeEstudio);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

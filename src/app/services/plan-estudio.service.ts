@@ -25,7 +25,7 @@ export class PlanEstudioService extends MainService {
             observer.next(pde);
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });

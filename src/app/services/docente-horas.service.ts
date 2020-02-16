@@ -24,7 +24,7 @@ export class DocenteHorasService extends MainService {
 
           });
         } else {
-          this.errorObten();
+          this.errorObten(data.detail);
         }
         observer.complete();
       });
