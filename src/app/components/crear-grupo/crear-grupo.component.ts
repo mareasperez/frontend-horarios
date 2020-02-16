@@ -54,13 +54,14 @@ public refDocArea: Observable<any>;
 /*Flags y subscripciones */
 private subs: Subscription[] = [];
 public planID = '0';
+public lastCP = '0';
 private promesas: Promise<any>[] = [];
 public show = false;
 public pdeSelected = getItemLocalCache("pde");
 public planSelected = getItemLocalCache("planificacion");
-public cicloSelected = '0';
+public cicloSelected = getItemLocalCache("ciclo");;
 public carreraSelected = getItemLocalCache("carrera");
-public clear: boolean = false;
+public visible: boolean = false;
 
   constructor(private _componente: ComponenteService,
               private _grupo: GrupoService,
@@ -145,6 +146,7 @@ public clear: boolean = false;
   }
 
   componentesByCiclo(ciclo: number) {
+    this.visible = false;
     if(String(this.carreraSelected) !== "0"){
       this.compsByCiclo = [];
       this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
@@ -161,6 +163,7 @@ public clear: boolean = false;
       let res =  this.grupos.filter(gp => gp.grupo_componente === comp.componente_id);
       res.forEach(gp => this.gruposByComp.push(gp));
     });
+    
     if(id !== "0") this.groupsByPlan(this.planSelected);
   }
 
@@ -171,12 +174,20 @@ public clear: boolean = false;
     if(this.componente.componente_id !== "0") this.groupsByComp(this.componente.componente_id);
   }
 
-  groupsByComp(id: string) {
+  groupsByComp(id: string, f?:string) {
+    // if(this.lastCP != id) {  
+    //  let com = this.componentes.find(comp => comp.componente_id === id)
+    // }
     let com = this.componentes.find(comp => comp.componente_id === id)
     this.componente = com;
-    console.log(this.componente)
+   // console.log(this.componente)
     this.docenteByArea(this.componente.componente_area)
     this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
+    if(f == 'c'){
+     // this.componente = new ComponenteModel();
+      
+    }
+    this.visible = true;
   }
 
   docenteByArea(area){
