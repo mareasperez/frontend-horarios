@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (this.JwtService.isAuthenticated()) {
       this.router.navigate(['/home']);
+      window.location.reload();
     }
   }
 

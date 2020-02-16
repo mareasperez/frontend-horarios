@@ -34,6 +34,7 @@ import { HorariosCrudComponent } from './components/horarios/horarios.component'
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
+  { path: 'login', component: LoginComponent},
   // reportes cargas
   { path: 'reporte/carga', component: CargaComponent, canActivate: [AuthGuard] }, // debe quitarse solo es de prueba
   { path: 'reporte/cargas/total', component: CargasComponent, canActivate: [AuthGuard] },
