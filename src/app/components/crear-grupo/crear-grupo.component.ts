@@ -53,15 +53,12 @@ public refDocente: Observable<any>;
 public refDocArea: Observable<any>;
 /*Flags y subscripciones */
 private subs: Subscription[] = [];
-public planID = '0';
-public lastCP = '0';
 private promesas: Promise<any>[] = [];
 public show = false;
 public pdeSelected = getItemLocalCache("pde");
-public planSelected = getItemLocalCache("planificacion");
 public cicloSelected = getItemLocalCache("ciclo");;
+public planSelected = getItemLocalCache("planificacion");
 public carreraSelected = getItemLocalCache("carrera");
-public visible: boolean = false;
 
   constructor(private _componente: ComponenteService,
               private _grupo: GrupoService,
@@ -147,16 +144,17 @@ public visible: boolean = false;
   }
 
   componentesByCiclo(ciclo: number) {
-    this.visible = false;
+    localStorage.setItem('ciclo', ciclo+'')
     if(String(this.carreraSelected) !== "0"){
-      this.compsByCiclo = [];
-      this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
-      if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
+    this.compsByCiclo = [];
+    this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
+    if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
     }
 
    }
 
   componentesByPde(id: string) {
+    localStorage.setItem('pde', id)
     this.compsByPde = this.compsByCiclo.filter(comp => comp.componente_pde === id);
     this.gruposByComp = [];
   //  this.compsByPde.length == 0 ? this.componente.componente_id = '0': this.compsByPde;
@@ -169,27 +167,18 @@ public visible: boolean = false;
   }
 
   groupsByPlan(id: string) {
-    this.planID = id;
+    localStorage.setItem('planificacion', id)
     let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
     this.gruposByPlan = grupos;
     if(this.componente.componente_id !== "0") this.groupsByComp(this.componente.componente_id);
   }
 
   groupsByComp(id: string, f?:string) {
-    // if(this.lastCP != id) {  
-    //  let com = this.componentes.find(comp => comp.componente_id === id)
-    // }
     let com = this.componentes.find(comp => comp.componente_id === id)
     this.componente = com;
-   // console.log(this.componente)
     this.docenteByArea(this.componente.componente_area)
     this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
-    if(f == 'c'){
-     // this.componente = new ComponenteModel();
-      
-    }
-    this.visible = true;
-  }
+   }
 
   docenteByArea(area){
     let docs = this.docsByArea.filter(doc => area === doc.da_area)
@@ -198,7 +187,6 @@ public visible: boolean = false;
       return docentes[0]
     })
     this.docFiltroArea = res;
-
   }
 
   servicios() {

@@ -32,7 +32,7 @@
             <div class="col-12" >
                 <div class="row">
                     <span class="col-6">
-                        <app-componentes *ngIf="compsByPde.length>0" [componentes]="compsByPde" [areas]="areas" [pdes]="pdes"
+                        <app-componentes  [componentes]="compsByPde" [areas]="areas" [pdes]="pdes"
                           (gpComp)="groupsByComp($event, 'c')"
                         ></app-componentes>
                     </span>
