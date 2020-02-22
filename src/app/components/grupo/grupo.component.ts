@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, observable, of } from 'rxjs';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -53,12 +53,9 @@ export class GrupoComponent implements OnInit, OnDestroy {
       return this.grupos;
     }
     @Input() set _grupos(grupos: GrupoModel[]) {
+      console.log(grupos)
       this.grupos = grupos;
-      // let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
-      // console.log(this.grupos,r, this.componente)
-      // if(this.grupos.length > 0){
-      //   this.show = true;
-      // }
+      
     }
 
     get Componente(): ComponenteModel {
@@ -70,15 +67,23 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    console.log('hi', this.componente);
+    console.log('init', this.componente)
+   // this.onGruposChanges().subscribe(res=> console.log(res))
+    
   }
 
   ngOnDestroy() {
     this._grupo.list = [];
     this.subs.map(sub => sub.unsubscribe());
+    console.log('destroy', this.componente)
+
   }
 
   addGroup(e, tipo: string) {
+    let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
+     // console.log(this.grupos,r, this.componente)
+      if(r == undefined && this.grupos.length == 0)return
+
     let grupo = new GrupoModel();
     let gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);
     let n = Math.max.apply(Math, gruposT.map(gp => {
@@ -94,8 +99,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
     grupo.grupo_id = null;
     grupo.grupo_tipo = tipo;
     grupo.grupo_planificacion = this.planificacion;
-    this._grupo.crearGrupo(grupo).subscribe(res => {
-    });
+    this._grupo.crearGrupo(grupo).subscribe();
   }
 
   setDocente(idD, idG) {
@@ -126,4 +130,10 @@ export class GrupoComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  onGruposChanges(){
+    return of(this.grupos)
+    }
+
+  
 }

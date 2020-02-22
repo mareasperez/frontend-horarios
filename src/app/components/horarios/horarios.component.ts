@@ -193,7 +193,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.horarioSelected = hr;
     console.log(this.grupoSelected, this.horarioSelected);
     if(this.grupoSelected == null) return;
-    this.save();
+    if(this.horarioSelected.horario_grupo != null){
+      this.rmGrupo(this.horarioSelected).then(res=>{
+        this.save();
+        
+      })
+    }else{
+      this.save();
+    }
   }
 
   selectGP(e, gp: GrupoModel){
@@ -201,7 +208,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.grupoSelected = gp;
     console.log(this.grupoSelected, this.horarioSelected);
     if(this.horarioSelected == null) return;
-    this.save();
+    if(this.horarioSelected.horario_grupo != null){
+      this.rmGrupo(this.horarioSelected).then(res=>{
+        this.save();
+      })
+    }else{
+      this.save();
+    }
   }
 
   changeColor(e){
@@ -230,23 +243,25 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   rmGrupo(hr: HorarioModel){
+    return new Promise((resolve)=>{
+      console.log(this.grupos);
+      let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
+      hr.horario_grupo = null;
+      console.log(gp);
 
-    console.log(this.grupos);
-    let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
-    hr.horario_grupo = null;
-    console.log(gp);
-
-    let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
-      res => {
-        this.fun();
-        this.groupsByPlan(this.planSelected);
-        gp.grupo_asignado = false;
-        let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe();
-        this.subs.push(sub);
-      },
-      error => this._snack.open(error.message, "OK", {duration: 3000})
-    );
-   this.subs.push(sub);
+      let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
+        res => {
+          this.fun();
+          this.groupsByPlan(this.planSelected);
+          gp.grupo_asignado = false;
+          let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe();
+          this.subs.push(sub);
+        },
+        error => this._snack.open(error.message, "OK", {duration: 3000})
+      );
+    this.subs.push(sub);
+    resolve()
+  })
 
   }
   horarioByAula(id:string){
@@ -296,17 +311,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
   }
   servicos(){
-    // let ls = new Promise((resolve,reject)=>{
-    //   localStorage.getItem('carrera');
-    //   localStorage.getItem('departamento');
-    //   localStorage.getItem('pde');
-    //   localStorage.getItem('planificacion');
-    //   localStorage.getItem('recinto');
-    //   localStorage.getItem('aula');
-    //   localStorage.getItem('ciclo');
-    //   resolve();
-    // });
-    // this.promesas.push(ls);
     let p1 = new Promise((resolve,reject)=>{
       let sub =  this._grupo.getGrupos()
       .subscribe(

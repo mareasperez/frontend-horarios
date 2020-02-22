@@ -13,6 +13,7 @@ interface DialogData {
   type: string;
   pde?: string;
   componente?: ComponenteModel;
+  ciclo?: string;
   areas: AreaModel[];
   pdes: PlanEstudioModel[];
 }
@@ -73,7 +74,7 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
         componente_nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
         componente_chp: new FormControl('0', [Validators.required, Validators.min(0)]),
         componente_cht: new FormControl('4', [Validators.required, Validators.min(0)]),
-        componente_ciclo: new FormControl('1', [Validators.required, Validators.min(1)]),
+        componente_ciclo: new FormControl(this.data.ciclo ? this.data.ciclo : '0', [Validators.required, Validators.min(1)]),
         componente_credito: new FormControl('1', [Validators.required, Validators.min(1), Validators.max(10)]),
         componente_area: new FormControl('', [Validators.required]),
         componente_pde: new FormControl(this.data.pde, [Validators.required])

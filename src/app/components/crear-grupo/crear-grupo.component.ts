@@ -26,41 +26,39 @@ import { getItemLocalCache } from 'src/app/utils/utils';
 })
 export class CrearGrupoComponent implements OnInit, OnDestroy {
   /*Variables de payloas */
-  public componentes: ComponenteModel[] = [];
-  public compsByPde: ComponenteModel[] = [];
-  public compsByCiclo: ComponenteModel[] = [];
-  public pdes: PlanEstudioModel[] = [];
-  public pdeByCarrera: PlanEstudioModel[] = [];
-  public carreras: CarreraModel[] = [];
-  public grupos: GrupoModel[] = [];
-  public gruposByPlan: GrupoModel[] = [];
-  public gruposByComp: GrupoModel[] = [];
-  public gruposFiltrados: GrupoModel[] = [];
-  public docentes: DocenteModel[] = [];
-  public docFiltroArea: DocenteModel[] = [];
-  public areas: AreaModel[] = [];
-  public docsByArea: DocenteAreaModel[] = [];
-  public planificaciones: PlanificacionModel[] = [];
-  public componente: ComponenteModel = new ComponenteModel();
-  /*Actualizacion por ws */
-  public refComp: Observable<any>;
-  public refGP: Observable<any>;
-  public refPla: Observable<any>;
-  public refPde: Observable<any>;
-  public refCarrera: Observable<any>;
-  public refArea: Observable<any>;
-  public refDocente: Observable<any>;
-  public refDocArea: Observable<any>;
-  /*Flags y subscripciones */
-  private subs: Subscription[] = [];
-  public planID = '0';
-  private promesas: Promise<any>[] = [];
-  public show = false;
-  public pdeSelected = getItemLocalCache('pde');
-  public planSelected = getItemLocalCache('planificacion');
-  public cicloSelected = '0';
-  public carreraSelected = getItemLocalCache('carrera');
-  public clear = false;
+public componentes: ComponenteModel[]=[]
+public compsByPde: ComponenteModel[]=[]
+public compsByCiclo: ComponenteModel[]=[]
+public pdes: PlanEstudioModel[]=[];
+public pdeByCarrera: PlanEstudioModel[]=[]
+public carreras: CarreraModel[]=[]
+public grupos: GrupoModel[] = [];
+public gruposByPlan: GrupoModel[] = [];
+public gruposByComp: GrupoModel[] = [];
+public gruposFiltrados: GrupoModel[]=[];
+public docentes: DocenteModel[]=[];
+public docFiltroArea: DocenteModel[]=[];
+public areas: AreaModel[]=[];
+public docsByArea: DocenteAreaModel[]=[];
+public planificaciones: PlanificacionModel[]=[];
+public componente : ComponenteModel = new ComponenteModel();
+/*Actualizacion por ws */
+public refComp: Observable<any>;
+public refGP: Observable<any>;
+public refPla: Observable<any>;
+public refPde: Observable<any>;
+public refCarrera: Observable<any>;
+public refArea: Observable<any>;
+public refDocente: Observable<any>;
+public refDocArea: Observable<any>;
+/*Flags y subscripciones */
+private subs: Subscription[] = [];
+private promesas: Promise<any>[] = [];
+public show = false;
+public pdeSelected = getItemLocalCache("pde");
+public cicloSelected = getItemLocalCache("ciclo");;
+public planSelected = getItemLocalCache("planificacion");
+public carreraSelected = getItemLocalCache("carrera");
 
   constructor(private _componente: ComponenteService,
               private _grupo: GrupoService,
@@ -147,15 +145,17 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   }
 
   componentesByCiclo(ciclo: number) {
-    if (String(this.carreraSelected) !== '0') {
-      this.compsByCiclo = [];
-      this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
-      if (String(ciclo) !== '0') { this.componentesByPde(this.pdeSelected); }
+    localStorage.setItem('ciclo', ciclo+'')
+    if(String(this.carreraSelected) !== "0"){
+    this.compsByCiclo = [];
+    this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
+    if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
     }
 
   }
 
   componentesByPde(id: string) {
+    localStorage.setItem('pde', id)
     this.compsByPde = this.compsByCiclo.filter(comp => comp.componente_pde === id);
     this.gruposByComp = [];
     //  this.compsByPde.length == 0 ? this.componente.componente_id = '0': this.compsByPde;
@@ -163,23 +163,23 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       const res = this.grupos.filter(gp => gp.grupo_componente === comp.componente_id);
       res.forEach(gp => this.gruposByComp.push(gp));
     });
-    if (id !== '0') { this.groupsByPlan(this.planSelected); }
+    
+    if(id !== "0") this.groupsByPlan(this.planSelected);
   }
 
   groupsByPlan(id: string) {
-    this.planID = id;
-    const grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
+    localStorage.setItem('planificacion', id)
+    let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
     this.gruposByPlan = grupos;
     if (this.componente.componente_id !== '0') { this.groupsByComp(this.componente.componente_id); }
   }
 
-  groupsByComp(id: string) {
-    const com = this.componentes.find(comp => comp.componente_id === id);
+  groupsByComp(id: string, f?:string) {
+    let com = this.componentes.find(comp => comp.componente_id === id)
     this.componente = com;
-    console.log(this.componente);
-    this.docenteByArea(this.componente.componente_area);
+    this.docenteByArea(this.componente.componente_area)
     this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
-  }
+   }
 
   docenteByArea(area) {
     const docs = this.docsByArea.filter(doc => area === doc.da_area);
@@ -188,7 +188,6 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       return docentes[0];
     });
     this.docFiltroArea = res;
-
   }
 
   servicios() {
