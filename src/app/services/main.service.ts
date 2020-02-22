@@ -74,4 +74,8 @@ export class MainService {
   successObten() {
     alertify.success('Datos obtenidos de manera exitosa');
   }
+
+  realizado() {
+    alertify.success('Realizado');
+  }
 }

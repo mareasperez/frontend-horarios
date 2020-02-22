@@ -35,8 +35,12 @@ export class DocenteHorasService extends MainService {
     const body = { docenteHoras: docH };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }

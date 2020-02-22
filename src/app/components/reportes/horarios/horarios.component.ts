@@ -133,17 +133,17 @@ export class HorariosComponent implements OnInit, OnDestroy {
         this.subs.push(sub);
       })
     );
-    // this.promesas.push(
-    //   new Promise((resolve, reject) => {
-    //     const sub = this._grupo.getGrupos()
-    //       .subscribe(
-    //         res => this.grupos.push(res),
-    //         error => this._snack.open(error, 'OK', { duration: 3000 }),
-    //         () => resolve()
-    //       );
-    //     this.subs.push(sub);
-    //   })
-    // );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._grupo.getGrupos()
+          .subscribe(
+            res => this.grupos.push(res),
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
     this.promesas.push(
       new Promise((resolve, reject) => {
         const sub = this._docente.getDocente()
@@ -166,9 +166,11 @@ export class HorariosComponent implements OnInit, OnDestroy {
       this._horario.successObten();
       this.selectedF = this.facultades[0];
       this.onComponente[0] = this.componentes;
-      if (this.reporte !== 'docente') {
-        this.onDocente[0] = this.docentes2;
-      }
+      this.onDocente[0] = this.docentes2;
+      this.onComponente[1] = this.grupos;
+      this.onDocente[1] = this.grupos;
+      console.log('..........................................................');
+      console.log(this.onComponente, this.onDocente);
     });
   }
   ngOnDestroy() {
@@ -242,8 +244,6 @@ export class HorariosComponent implements OnInit, OnDestroy {
           );
       });
     p2.then( res => {
-      this.onComponente[1] = this.grupos;
-      this.onDocente[1] = this.grupos;
       for (const gr of this.grupos ) {
         comp = this.componentes.find(componente => componente.componente_id === gr.grupo_componente);
         console.log('componente', comp);

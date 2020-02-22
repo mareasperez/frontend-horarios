@@ -9,7 +9,7 @@ import { wsModel } from '../models/ws.model';
   providedIn: 'root'
 })
 export class PlanEstudioService extends MainService {
-  public resource = "pde";
+  public resource = 'pde';
   constructor(Http: HttpClient) {
     super(Http);
   }
@@ -20,8 +20,8 @@ export class PlanEstudioService extends MainService {
         if (!data.detail) {
           data.planDeEstudio.forEach(el => {
             let pde = new PlanEstudioModel();
-            pde = Object.assign(pde, el); //Tipar Objeto
-            this.list.push(pde)
+            pde = Object.assign(pde, el); // Tipar Objeto
+            this.list.push(pde);
             observer.next(pde);
           });
         } else {
@@ -37,17 +37,22 @@ export class PlanEstudioService extends MainService {
   }
 
   crearPlanEstudio(pde: PlanEstudioModel): Observable<any> {
-    let body = { planDeEstudio: pde };
+    const body = { planDeEstudio: pde };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }
 
   updatePlanEstudio(pde: PlanEstudioModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { planDeEstudio: pde };
+    const body = { planDeEstudio: pde };
     return this.update(body, id);
   }
 
@@ -62,21 +67,21 @@ export class PlanEstudioService extends MainService {
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        console.log(pde)
+        console.log(pde);
         data.data = pde;
         this.list.push(pde);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.pde_id).indexOf(pde.pde_id);
         this.list.splice(index, 1, pde);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
         this.list = this.list.filter(el => el.pde_id !== pde.pde_id);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
 
     }

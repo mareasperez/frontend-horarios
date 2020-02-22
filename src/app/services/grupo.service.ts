@@ -16,7 +16,7 @@ export class GrupoService extends MainService {
       this.get().subscribe(data => {
         if (!data.detail) {
           data.grupos.forEach(el => {
-            // console.log(el)
+            console.log(el);
             let grupo = new GrupoModel();
             grupo = Object.assign(grupo, el);
             this.list.push(grupo);
@@ -40,8 +40,12 @@ export class GrupoService extends MainService {
     const body = { grupo };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }

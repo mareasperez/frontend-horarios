@@ -41,8 +41,12 @@ export class DepartamentoService extends MainService {
         const body = { departamento };
         return new Observable(observer => {
             this.create(body).subscribe(response => {
-                console.log(response);
-                observer.next(response);
+                if (!response.detail) {
+                    this.realizado();
+                    observer.next(response);
+                  } else {
+                    this.errorObten(response.detail);
+                  }
             });
         });
     }

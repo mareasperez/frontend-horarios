@@ -8,7 +8,7 @@ import { PensumModel } from '../models/pensum.model';
 
 @Injectable()
 export class PensumService extends MainService {
-  public resource = "pde"
+  public resource = 'pde'
   constructor(Http: HttpClient) {
     super(Http);
   }
@@ -18,7 +18,7 @@ export class PensumService extends MainService {
       this.get().subscribe(data => {
         if (!data.detail) {
           data.planDeEstudio.forEach(el => {
-            //console.log(el)
+            // console.log(el)
             let planDeEstudio = new PlanEstudioModel();
             planDeEstudio = Object.assign(el);
             observer.next(planDeEstudio);
@@ -38,23 +38,27 @@ export class PensumService extends MainService {
   }
 
   crearPlanDeEstudio(planDeEstudio: PlanEstudioModel): Observable<any> {
-    let body = { planDeEstudio: planDeEstudio };
+    const body = { planDeEstudio };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }
 
   updatePlanDeEstudio(planDeEstudio: PlanEstudioModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { planDeEstudio: planDeEstudio };
+    const body = { planDeEstudio };
     return this.update(body, id);
   }
 
   deletePlanDeEstudio(idplanDeEstudio: number | string) {
-    return this.delete(idplanDeEstudio)
+    return this.delete(idplanDeEstudio);
   }
 
   updateList(data: wsModel) {
@@ -64,21 +68,21 @@ export class PensumService extends MainService {
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        console.log(pensum)
+        console.log(pensum);
         data.data = pensum;
         this.list.push(pensum);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.pensum_id).indexOf(pensum.pensum_id);
         this.list.splice(index, 1, pensum);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
         this.list = this.list.filter(el => el.pensum_id !== pensum.pensum_id);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
 
     }

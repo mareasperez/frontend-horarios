@@ -43,7 +43,12 @@ export class CarreraService extends MainService {
     const body = { carrera };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }

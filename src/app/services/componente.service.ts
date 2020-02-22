@@ -9,7 +9,7 @@ import { wsModel } from '../models/ws.model';
 export class ComponenteService extends MainService {
   public resource = 'componente';
   constructor(httpclient: HttpClient) {
-    super(httpclient)
+    super(httpclient);
   }
   getComponentes(): Observable<ComponenteModel> {
     return new Observable(observer => {
@@ -31,24 +31,28 @@ export class ComponenteService extends MainService {
   }
 
   crearComponente(componente: ComponenteModel): Observable<any> {
-    let body = { componente: componente };
+    const body = { componente };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }
 
   updateComponente(componente: ComponenteModel, id: string | number) {
-    let body = { componente: componente };
+    const body = { componente };
     return this.update(body, id);
 
   }
 
   deleteComponente(idcomponente: number | string) {
 
-    return this.delete(idcomponente)
+    return this.delete(idcomponente);
   }
 
   updateList(data: wsModel) {
@@ -59,21 +63,21 @@ export class ComponenteService extends MainService {
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        console.log(componente)
+        console.log(componente);
         data.data = componente;
         this.list.push(componente);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.componente_id).indexOf(componente.componente_id);
         this.list.splice(index, 1, componente);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
         this.list = this.list.filter(el => el.componente_id !== componente.componente_id);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
 
     }

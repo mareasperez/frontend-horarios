@@ -23,8 +23,8 @@ export class AppComponent implements OnInit {
     }
   }
   verificar(): boolean {
-    var aux = this.JwtService.loggedIn;
-    var aux2 = this.JwtService.isAuthenticated();
+    const aux = this.JwtService.loggedIn;
+    const aux2 = this.JwtService.isAuthenticated();
     return aux && aux2;
 
   }

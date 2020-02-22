@@ -7,7 +7,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class PlanificacionService extends MainService {
-  public resource = "planificacion"
+  public resource = 'planificacion'
   constructor(Http: HttpClient) {
     super(Http);
   }
@@ -17,10 +17,10 @@ export class PlanificacionService extends MainService {
       this.get().subscribe(data => {
         if (!data.detail) {
           data.planificacion.forEach(el => {
-            //console.log(el)
+            // console.log(el)
             let planificacion = new PlanificacionModel();
             planificacion = Object.assign(planificacion, el);
-            this.list.push(planificacion)
+            this.list.push(planificacion);
             observer.next(planificacion);
           });
         } else {
@@ -38,23 +38,27 @@ export class PlanificacionService extends MainService {
   }
 
   crearPlanificacion(planificacion: PlanificacionModel): Observable<any> {
-    let body = { planificacion: planificacion };
+    const body = { planificacion };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }
 
   updatePlanificacion(planificacion: PlanificacionModel, id: string | number) {
     // Ejemplo del parametro body
-    let body = { planificacion: planificacion };
+    const body = { planificacion };
     return this.update(body, id);
   }
 
   deletePlanificacion(idplanificacion: number | string) {
-    return this.delete(idplanificacion)
+    return this.delete(idplanificacion);
   }
 
   updateList(data: wsModel) {
@@ -64,21 +68,21 @@ export class PlanificacionService extends MainService {
     switch (data.event) {
       case 'c':
         // console.log("Crear")
-        console.log(planificacion)
+        console.log(planificacion);
         data.data = planificacion;
         this.list.push(planificacion);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.planificacion_id).indexOf(planificacion.planificacion_id);
         this.list.splice(index, 1, planificacion);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
         this.list = this.list.filter(el => el.planificacion_id !== planificacion.planificacion_id);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
 
     }

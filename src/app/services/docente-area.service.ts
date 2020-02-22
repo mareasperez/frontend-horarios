@@ -36,8 +36,12 @@ export class DocenteAreaService extends MainService {
     const body = { docenteArea: [{ da_docente: docenteId, da_area: areas }] };
     return new Observable(observer => {
       this.create(body).subscribe(response => {
-        console.log(response);
-        observer.next(response);
+        if (!response.detail) {
+          this.realizado();
+          observer.next(response);
+        } else {
+          this.errorObten(response.detail);
+        }
       });
     });
   }
