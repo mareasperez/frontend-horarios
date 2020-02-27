@@ -5,12 +5,7 @@
             <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">{{carrera.carrera_nombre}}</mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-form-field class="font-size-12 ml-1 " appearance="outline">
-        <mat-label>Ciclo</mat-label>
-        <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected" (selectionChange)="componentesByCiclo($event.value)">
-            <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
-        </mat-select>
-    </mat-form-field>
+   
     <mat-form-field class="font-size-12 ml-1" appearance="outline">
         <mat-label>Plan de estudios</mat-label>
         <mat-select [disabled]="cicloSelected != '0' ? false:true" [(value)]="pdeSelected" (selectionChange)="componentesByPde($event.value)">
@@ -28,6 +23,7 @@
     <mat-form-field  class="font-size-12 ml-1" appearance="outline">
         <mat-label>Recinto</mat-label>
         <mat-select [(value)]="selectedR" (selectionChange)="getAulas($event.value)">
+            <mat-option value="0">sin filtro</mat-option>
             <mat-option *ngFor="let recinto of recintos" [value]="recinto.recinto_id">
                 {{recinto.recinto_nombre}}
             </mat-option>
@@ -40,7 +36,13 @@
                 {{aula.aula_nombre}} {{aula.aula_recinto | recintoNombre : recintos}}
             </mat-option>
         </mat-select>
-        </mat-form-field>
+    </mat-form-field>
+    <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+        <mat-label>Ciclo</mat-label>
+        <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected" (selectionChange)="componentesByCiclo($event.value)">
+            <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+        </mat-select>
+    </mat-form-field>
 <div class="row">
     
     <table class="col-8 font-size-10 mt-2 table table-striped table-bordered w-100" *ngIf="array.length>0">
@@ -59,61 +61,75 @@
             <td class="col-2">07am - 09am</td>
             <td class="col-2" *ngFor="let hora of array[0]"  [class.bg-color-green]="hora.horario_grupo != null" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
-                <!-- {{hora.horario_id}} -->
-                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                <span *ngIf="hora.horario_grupo != null">
+                    {{getGrupo(hora.horario_grupo)}}
+                    <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                </span>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">09am - 11am</td>
             <td class="col-2" *ngFor="let hora of array[1]" [class.bg-color-green]="hora.horario_grupo != null" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
-                <!-- {{hora.horario_id}} -->
-                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                <span *ngIf="hora.horario_grupo != null">
+                    {{getGrupo(hora.horario_grupo)}}
+                    <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                </span>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">11am-01pm</td>
             <td class="col-2" *ngFor="let hora of array[2]" [class.bg-color-green]="hora.horario_grupo != null" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
-                <!-- {{hora.horario_id}} -->
-                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                <span *ngIf="hora.horario_grupo != null">
+                    {{getGrupo(hora.horario_grupo)}}
+                    <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                </span>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">01pm - 03pm</td>
             <td class="col-2" *ngFor="let hora of array[3]" [class.bg-color-green]="hora.horario_grupo != null" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
-                <!-- {{hora.horario_id}} -->
-                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                <span *ngIf="hora.horario_grupo != null">
+                    {{getGrupo(hora.horario_grupo)}}
+                    <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                </span>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">03pm - 05pm</td>
             <td class="col-2" *ngFor="let hora of array[4]" [class.bg-color-green]="hora.horario_grupo != null" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
-                <!-- {{hora.horario_id}} -->
-                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                <span *ngIf="hora.horario_grupo != null">
+                    {{getGrupo(hora.horario_grupo)}}
+                    <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                </span>
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">05m - 07pm</td>
             <td class="col-2" *ngFor="let hora of array[5]" [class.bg-color-green]="hora.horario_grupo != null" (click)="selectH($event, hora)">
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
-                <!-- {{hora.horario_id}} -->
-                <button mat-icon-button color="warn" *ngIf="hora.horario_grupo != null" (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                <span *ngIf="hora.horario_grupo != null">
+                    {{getGrupo(hora.horario_grupo)}}
+                    <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
+                </span>
             </td>
         </tr>
     </tbody>
 
     </table>
     <div class="col-4 ">
-        <strong>Componetes no asignados</strong>
-       <mat-list class="max-h overflow-auto mt-2">
-           <mat-list-item class="font-size-10 " *ngFor="let gp of gruposByPlan; let i = index;"
-           [class.bg-color-ligth]="i % 2 === 1" (click)="selectGP($event, gp)">
-               {{gp.grupo_id |  nombreGrupo : onComponente[1]}} {{gp.grupo_id | componenteGrupo : onComponente}}
+        <mat-card>
+            <strong>Componetes no asignados</strong>
+            <mat-list class="max-h overflow-auto mt-2">
+                <mat-list-item class="font-size-10 " *ngFor="let gp of gruposByPlan; let i = index;"
+                [class.bg-color-ligth]="i % 2 === 1" (click)="selectGP($event, gp)">
+                {{gp.grupo_id |  nombreGrupo : onComponente[1]}} {{gp.grupo_id | componenteGrupo : onComponente}}
             </mat-list-item>
-       </mat-list>
+        </mat-list>
+    </mat-card>
     </div>
 </div>
 </mat-card>

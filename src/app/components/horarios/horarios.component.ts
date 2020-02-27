@@ -20,7 +20,9 @@ import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
 import { AddHorarioComponent } from './add-horario/add-horario.component';
-
+import { DocenteService } from 'src/app/services/docente.service';
+import { DocenteModel } from 'src/app/models/docente.model';
+import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
 @Component({
   selector: 'app-horarios',
   templateUrl: './horarios.component.html',
@@ -34,6 +36,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public carreras: CarreraModel[]=[];
   public planificaciones: PlanificacionModel[]=[];
   public recintos: RecintoModel[] = [];
+  public docentes: DocenteModel[] = [];
 
   public gruposByComp: GrupoModel[] = [];
   public compsByPde: ComponenteModel[]=[];
@@ -62,6 +65,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public refPla: Observable<any>;
   public refHorario: Observable<any>;
   public refRecintos: Observable<any>;
+  public refDocentes: Observable<any>;
   public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
   public show = false;
   private subs: Subscription[] = [];
@@ -77,8 +81,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               private _carrera: CarreraService,
               private _planificacion: PlanificacionService,
               private _recinto: RecintoService,
+              private _docente: DocenteService,
               private dialog: MatDialog,
-              private _snack: MatSnackBar
+              private _snack: MatSnackBar,
+              private docenteName: DocenteNamePipe
               ) {
                 this.servicos();
                 this.refPde = this._pde.getList();
@@ -89,6 +95,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                 this.refPla = this._planificacion.getList();
                 this.refRecintos = this._recinto.getList();
                 this.refHorario = this._horario.getList();
+                this.refDocentes = this._docente.getList();
               }
 
   ngOnInit() {
@@ -115,6 +122,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         this.pdesByCarrera(this.carreraSelected);
         })
         );
+      this.subs.push(this.refDocentes.subscribe(data=>this.docentes = data));
         if(this.carreraSelected !== '0' ) {this.pdesByCarrera(this.carreraSelected);}
         if(this.planSelected !== '0' ) {this.groupsByPlan(this.planSelected);}
         if(this.aulaSelected != '0') this.horarioByAula(this.aulaSelected);
@@ -131,6 +139,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this._carrera.list = [];
     this._planificacion.list = [];
     this._recinto.list = [];
+    this._docente.list = [];
     this.subs.forEach(sub => sub.unsubscribe());
     localStorage.setItem('ciclo', this.cicloSelected);
     localStorage.setItem('carrera', this.carreraSelected);
@@ -177,9 +186,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
 
-  getAulas(id: number) {
-    this.aulas = [];
-    this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
+  getAulas(id: string) {
+    if(id != "0") {
+      this.aulas = [];
+      this.aulas = this._aula.list.filter(aula => aula.aula_recinto === id);
+    }else{
+      this.aulas = this._aula.list;
+    }
+
   }
   openDialog(horario: HorarioModel, grupos:GrupoModel[]): void {
       this.dialog.open(AddHorarioComponent, {
@@ -272,6 +286,20 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       // console.log(this.HorarioID)
       this.fun();
     });
+
+  }
+
+  docenteNombre(id){
+    let r = this.docenteName.transform(id, this.docentes);
+    console.log(r)
+    return r
+  }
+
+  getGrupo(id){
+    let gp = this.grupos.find(gp=> gp.grupo_id == id);
+    if(gp != undefined) {
+      return this.docenteNombre(gp.grupo_docente)
+    }else return 'sin docente'
 
   }
 
@@ -389,8 +417,16 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
       );
   });
-
-    this.promesas.push(p1,p2,p3,p4,p5,p6,p7,p8);
+  const p9 = new Promise((resolve, reject) => {
+    const sub = this._docente.getDocente()
+      .subscribe(
+        res => this.docentes.push(res),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        () => resolve()
+      );
+    this.subs.push(sub);
+  });
+    this.promesas.push(p1,p2,p3,p4,p5,p6,p7,p8,p9);
   }
 
 }

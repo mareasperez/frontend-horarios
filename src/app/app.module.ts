@@ -188,7 +188,8 @@ import { DocAreasPipe } from './pipes/doc-areas.pipe';
     DepartamentoService,
     DocenteHorasService,
     DocenteAreaService,
-    GrupoService
+    GrupoService,
+    DocenteNamePipe
   ],
   bootstrap: [AppComponent]
 })

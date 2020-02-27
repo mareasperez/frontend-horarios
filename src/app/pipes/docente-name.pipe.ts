@@ -11,11 +11,11 @@ export class DocenteNamePipe implements PipeTransform {
      // console.log('se recibe  id: ', id, 'docentes:', array);
       let doc= docentes.find(doce => id == doce.docente_id);
       if (doc === undefined) {
-        return '';
+        return 'sin docente';
       } else {
         return doc.docente_nombre;
       }
     }
-    return '';
+    return 'sin docente';
   }
 }

@@ -182,11 +182,8 @@ public carreraSelected = getItemLocalCache("carrera");
 
   groupsByComp(id: string, f?:string) {
     let com = this.componentes.find(comp => comp.componente_id === id)
-
     this.componente = com;
-    console.log(com)
     if(this.componente){
-
       this.docenteByArea(this.componente.componente_area)
       this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
     }
