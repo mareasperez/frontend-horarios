@@ -112,14 +112,17 @@ public carreraSelected = getItemLocalCache("carrera");
       this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
       this.subs.push(this.refDocente.subscribe(data => this.docentes = data));
       this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
-      this.subs.push(this.refComp.subscribe(data => {
-      this.componentes = data;
-      this.componentesByCiclo(Number(this.cicloSelected));
-      }));
-      this.subs.push(this.refGP.subscribe(data => {
-      this.grupos = data;
-      this.pdesByCarrera(this.carreraSelected);
-      })
+      this.subs.push(
+        this.refComp.subscribe(data => {
+          this.componentes = data;
+          this.componentesByCiclo(Number(this.cicloSelected));
+        })
+      );
+      this.subs.push(
+        this.refGP.subscribe(data => {
+          this.grupos = data;
+          this.pdesByCarrera(this.carreraSelected);
+        })
       );
       if (this.carreraSelected !== '0') { this.pdesByCarrera(this.carreraSelected); }
     });
@@ -144,12 +147,13 @@ public carreraSelected = getItemLocalCache("carrera");
 
   }
 
-  componentesByCiclo(ciclo: number) {
+  componentesByCiclo(ciclo: number, f?:string) {
     localStorage.setItem('ciclo', ciclo+'')
+    if(f) this.componente = null;
     if(String(this.carreraSelected) !== "0"){
-    this.compsByCiclo = [];
-    this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
-    if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
+      this.compsByCiclo = [];
+      this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
+      if(String(ciclo) !== "0") this.componentesByPde(this.pdeSelected);
     }
 
   }
@@ -171,14 +175,21 @@ public carreraSelected = getItemLocalCache("carrera");
     localStorage.setItem('planificacion', id)
     let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
     this.gruposByPlan = grupos;
-    if (this.componente.componente_id !== '0') { this.groupsByComp(this.componente.componente_id); }
+    // if (this.componente.componente_id !== '0') { this.groupsByComp(this.componente.componente_id); }
+    if (this.componente != null) { this.groupsByComp(this.componente.componente_id); }
+
   }
 
   groupsByComp(id: string, f?:string) {
     let com = this.componentes.find(comp => comp.componente_id === id)
+
     this.componente = com;
-    this.docenteByArea(this.componente.componente_area)
-    this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
+    console.log(com)
+    if(this.componente){
+
+      this.docenteByArea(this.componente.componente_area)
+      this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
+    }
    }
 
   docenteByArea(area) {

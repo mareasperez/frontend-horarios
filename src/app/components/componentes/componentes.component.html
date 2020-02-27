@@ -24,13 +24,13 @@
                         <input matInput #horasp [value]="comp.componente_chp">
                     </mat-form-field>
                     <button mat-icon-button [value]="comp.componente_id" (click)="editHoras(comp.componente_id, horast.value, horasp.value)">
-                <mat-icon>save</mat-icon>
+                <mat-icon class="color-blue">save</mat-icon>
               </button>
-                    <button mat-raised-button class="btnBorrar" [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
-              <mat-icon>delete</mat-icon>
+                    <button mat-icon-button  [value]="comp.componente_id" (click)="delComponente(comp.componente_id)">
+              <mat-icon class="color-red">delete</mat-icon>
             </button>
-                    <button mat-raised-button class="btnEditar" [value]="comp.componente_id" (click)="openDialog('u', comp.componente_id)">
-              <mat-icon>edit</mat-icon>
+                    <button mat-icon-button  [value]="comp.componente_id" (click)="openDialog('u', comp.componente_id)">
+              <mat-icon class="color-green">edit</mat-icon>
             </button>
                 </mat-list-item>
             </mat-list>

@@ -73,16 +73,18 @@ export class GrupoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._grupo.list = [];
+  //  this._grupo.list = [];
     this.subs.map(sub => sub.unsubscribe());
     console.log('destroy', this.componente)
 
   }
 
   addGroup(e, tipo: string) {
-    let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
-     // console.log(this.grupos,r, this.componente)
-      if(r == undefined && this.grupos.length == 0)return
+    if(this.grupos.length > 0){
+      let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
+      console.log(this.grupos,r, this.componente)
+     if( r == undefined ) return
+    }
 
     let grupo = new GrupoModel();
     let gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);

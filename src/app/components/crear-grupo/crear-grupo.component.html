@@ -10,7 +10,7 @@
                 </mat-form-field>
                 <mat-form-field class="font-size-12 ml-1 " appearance="outline">
                     <mat-label>Ciclo</mat-label>
-                    <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected"  (selectionChange)="componentesByCiclo($event.value)">
+                    <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected"  (selectionChange)="componentesByCiclo($event.value, '1')">
                         <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -36,7 +36,7 @@
                           (gpComp)="groupsByComp($event, 'c')"
                         ></app-componentes>
                     </span>
-                    <span class="col-6"  *ngIf="componente.componente_id !== '0' ">
+                    <span class="col-6"  *ngIf="componente != null ">
                         <app-grupo *ngIf="planSelected !== '0'" [componentes]="componentes" [planificacion]="planSelected" 
                         [_grupos]="gruposFiltrados" [planificaciones]="planificaciones"
                         [docentes]="docFiltroArea" [_componente]="componente" >
