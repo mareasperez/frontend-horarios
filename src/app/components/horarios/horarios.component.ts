@@ -205,7 +205,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
     this.changeColor(e);
     this.horarioSelected = hr;
-    console.log(this.grupoSelected, this.horarioSelected);
     if(this.grupoSelected == null) return;
     if(this.horarioSelected.horario_grupo != null){
       this.rmGrupo(this.horarioSelected).then(res=>{
@@ -220,7 +219,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   selectGP(e, gp: GrupoModel){
     this.changeColor(e);
     this.grupoSelected = gp;
-    console.log(this.grupoSelected, this.horarioSelected);
     if(this.horarioSelected == null) return;
     if(this.horarioSelected.horario_grupo != null){
       this.rmGrupo(this.horarioSelected).then(res=>{
@@ -261,8 +259,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       console.log(this.grupos);
       let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
       hr.horario_grupo = null;
-      console.log(gp);
-
       let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
         res => {
           this.fun();
@@ -291,7 +287,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   docenteNombre(id){
     let r = this.docenteName.transform(id, this.docentes);
-    console.log(r)
     return r
   }
 
@@ -300,7 +295,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     if(gp != undefined) {
       return this.docenteNombre(gp.grupo_docente)
     }else return 'sin docente'
+  }
 
+  getCarrera(idGp){
+    let gp = this.grupos.find(gp => gp.grupo_id == idGp);
+    let comp = this.componentes.find(cp => cp.componente_id == gp.grupo_componente);
+    let pde = this.pdes.find(pde => pde.pde_id == comp.componente_pde);
+    return this.carreras.find(cr => cr.carrera_id == pde.pde_carrera).carrera_nombre;
   }
 
   fun() {
