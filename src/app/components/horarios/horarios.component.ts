@@ -285,7 +285,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       // console.log(this.HorarioID)
       this.fun();
     });
-
+//mocos
   }
 
   docenteNombre(id){
