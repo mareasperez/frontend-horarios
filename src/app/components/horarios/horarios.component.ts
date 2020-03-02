@@ -161,7 +161,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   componentesByCiclo(ciclo: number) {
-    console.log(this.cicloSelected, this.pdeSelected);
+   this.grupoSelected = null;
+
+    // console.log(this.cicloSelected, this.pdeSelected);
     if(String(this.carreraSelected) !== "0"){
       this.compsByCiclo = [];
       this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
@@ -275,6 +277,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   }
   horarioByAula(id:string){
+    this.horarioSelected = null;
     this._horario.getHorarioByFilter("horario_aula", id)
     .subscribe(res=>{
       this.horarios = res;
