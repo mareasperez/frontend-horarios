@@ -73,6 +73,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   private promesas: Promise<any>[] = [];
   public array: any[][] = [];
   onComponente: any[][] = [];
+  public hrChoque: any[]=[];
 
   constructor(private _grupo: GrupoService,
     private _aula: AulaService,
@@ -242,6 +243,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     e.target.classList.add('bg-color-yellow');
   }
   save() {
+    this.choque();
     this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
     this.horarioSelected.horario_vacio = false;
     this.grupoSelected.grupo_asignado = true;
@@ -286,6 +288,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         this.HorarioID = this.horarios[0].horario_id;
         // console.log(this.HorarioID)
         this.fun();
+        this.choque()
       });
     //mocos
   }
@@ -309,11 +312,21 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     return this.carreras.find(cr => cr.carrera_id == pde.pde_carrera).carrera_nombre;
   }
 
-  async  choque( hr: HorarioModel) {
+  choque( hr?: HorarioModel) {
     let head: any = {};
     head['Content-Type'] = 'application/json';
-    let r = await this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { Horario_hora: hr.horario_hora, horario_dia: hr.horario_dia } }, head).toPromise();
-    console.log( r);
+    this.horarios.forEach( hr =>{
+      if(hr.horario_grupo != null){
+        let r =  this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: hr.horario_hora, horario_dia: hr.horario_dia } }, head)
+        .toPromise().then((res:any) =>{
+          console.log(res);
+          if(res.horario.length > 1 ){
+            hr.horario_choque = 'd'
+          }
+        });
+        // let r = await this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: 7, horario_dia: "Viernes" } }, head).toPromise();
+      }
+    })
     // if (r.horario.length > 0) {
     //   e.target.classList.add('bg-warning');
     // }
