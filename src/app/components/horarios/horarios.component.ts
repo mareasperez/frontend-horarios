@@ -317,14 +317,27 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     head['Content-Type'] = 'application/json';
     this.horarios.forEach( hr =>{
       if(hr.horario_grupo != null){
-        let r =  this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: hr.horario_hora, horario_dia: hr.horario_dia } }, head)
-        .toPromise().then((res:any) =>{
-          console.log(res);
-          if(res.horario.length > 1 ){
-            hr.horario_choque = 'd'
-          }
-        });
-        // let r = await this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: 7, horario_dia: "Viernes" } }, head).toPromise();
+        this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: hr.horario_hora, horario_dia: hr.horario_dia } }, head)
+          .toPromise()
+            .then((res:any) =>{
+              console.log('choque d',res);
+              if(res.horario.length < 1 ){
+                hr.horario_choque = 'd'
+              } else return  this.http.post('http://localhost:8000/api/horario/horariobycomp', 
+                  { "busqueda": { horario_hora: hr.horario_hora,
+                                 horario_dia: hr.horario_dia,
+                                 horario_componente: this.componentes.find(cp => cp.componente_id ==  this.grupos.find(gp => gp.grupo_id == hr.horario_grupo).grupo_componente).componente_id,
+                                 horario_planificacion: this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_planificacion
+                                }
+                  }, head).toPromise()
+             })
+            .then((res:any)=>{
+              console.log('choque c',res);
+              if(res.horario.length > 1 ){
+                hr.horario_choque = 'c'
+              }
+            });
+            // let r = await this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: 7, horario_dia: "Viernes" } }, head).toPromise();
       }
     })
     // if (r.horario.length > 0) {
