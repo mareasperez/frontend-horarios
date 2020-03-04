@@ -12,6 +12,7 @@ import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-docente-grupos',
@@ -34,7 +35,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public refComp: Observable<any>
   public refDcHr: Observable<any>
   public refDep: Observable<any>
-  public depSelected = '0'
+  public depSelected = getItemLocalCache('departamento');
   constructor(private _grupo:GrupoService,
               private _docente:DocenteService,
               private _dep: DepartamentoService,
@@ -126,7 +127,8 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this._docente.list = [];
     this._componete.list =[];
     this._dep.list=[];
-    this._dohr.list=[]
+    this._dohr.list=[];
+    localStorage.setItem('departamento', this.depSelected);
     this.subs.forEach(sub => sub.unsubscribe());
   }
 

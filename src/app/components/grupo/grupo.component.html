@@ -18,6 +18,7 @@
                     <mat-form-field class="font-size-12 ml-1" appearance="outline">
                         <mat-label>Docente</mat-label>
                         <mat-select [value]="grupo.grupo_docente" (selectionChange)="setDocente($event.value, grupo.grupo_id)">
+                            <mat-option value="0">sin docente</mat-option>
                             <mat-option *ngFor="let docente of docentes" [value]="docente.docente_id">{{docente.docente_nombre}}</mat-option>
                         </mat-select>
                     </mat-form-field>

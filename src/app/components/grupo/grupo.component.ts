@@ -106,7 +106,8 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
   setDocente(idD, idG) {
     let grupo = new GrupoModel();
-    grupo.grupo_docente = idD;
+    grupo.grupo_docente = idD == '0' ? null:idD;
+    console.log(grupo)
     this._grupo.updategrupo(grupo, idG).subscribe();
   }
 
