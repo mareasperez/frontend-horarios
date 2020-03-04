@@ -6,4 +6,5 @@ export class HorarioModel{
     horario_aula: string;
     horario_grupo: string;
     horario_vacio: boolean;
+    horario_choque: 'd' | 'c' | 'a' | '';//variable del front
 }

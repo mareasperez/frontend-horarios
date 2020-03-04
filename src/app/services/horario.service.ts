@@ -70,6 +70,7 @@ export class HorarioService extends MainService {
           data.horario.forEach(el => {
             let horario = new HorarioModel();
             horario = Object.assign(horario, el); // Tipar Objeto
+            horario.horario_choque = '';
             horarios.push(horario);
           });
           observer.next(horarios);
