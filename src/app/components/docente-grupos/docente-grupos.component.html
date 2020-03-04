@@ -7,7 +7,7 @@
         <button mat-raised-button class="ml-1 btnBorrar" [disabled]="!docGrupos.length === 0" (click)="cerrarTodos()">
             <mat-icon>highlight_off</mat-icon>
         </button>
-        <mat-form-field class="ml-5" appearance="outline">
+        <mat-form-field class="ml-5 font-size-12" appearance="outline">
             <mat-label>Departamento</mat-label>
             <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
                 <mat-option value="0">Ninguno</mat-option>
@@ -39,7 +39,7 @@
                         </mat-card-header>
                         <mat-card-content>
                             <mat-list class="list-grupos">
-                                <mat-list-item *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
+                                <mat-list-item class="font-size-12" *ngFor="let grupo of gruposDoc(docente.docente_id)" [class.bg-color-ligth]="i % 2 === 1">
                                     <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </strong> {{grupo.grupo_componente | componenteNameSimple: componentes}} <strong>Hrs: </strong> {{grupo.grupo_horas_clase}}
                                     <span style="flex: 1 1 auto;"></span>
                                     <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
@@ -48,7 +48,7 @@
                                 </mat-list-item>
                             </mat-list>
                         </mat-card-content>
-                        <mat-card-footer [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
+                        <mat-card-footer class="mb-1" [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
                                                  'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id)
                                                 }">
                             {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
