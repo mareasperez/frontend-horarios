@@ -243,7 +243,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     e.target.classList.add('bg-color-yellow');
   }
   save() {
-    this.choque();
     this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
     this.horarioSelected.horario_vacio = false;
     this.grupoSelected.grupo_asignado = true;
@@ -288,7 +287,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         this.HorarioID = this.horarios[0].horario_id;
         // console.log(this.HorarioID)
         this.fun();
-        this.choque()
       });
     //mocos
   }
@@ -313,6 +311,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   choque( hr?: HorarioModel) {
+    console.log('dibujar')
     let head: any = {};
     head['Content-Type'] = 'application/json';
     this.horarios.forEach( hr =>{
@@ -320,8 +319,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
        if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
         let gp = this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo);
         let cp = this.componentes.find(cp => cp.componente_id ==  gp.grupo_componente)
-        this.http.post('http://localhost:8000/api/horario/horadia',
-         { "busqueda": { horario_hora: hr.horario_hora, 
+        this.http.post('http://localhost:8000/api/horario/choques',
+         { "busqueda": { 
+                        choque: 'Docente',
+                        horario_hora: hr.horario_hora, 
                         horario_dia: hr.horario_dia, 
                         horario_planificacion: gp.grupo_planificacion,
                         horario_docente: gp.grupo_docente
@@ -331,32 +332,43 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               if(res.horario.length > 1 ){
                 console.log('choque d',res);
                 hr.horario_choque = 'd';
-              } else return this.http.post('http://localhost:8000/api/horario/horariobycomp', 
-                  { "busqueda": { horario_hora: hr.horario_hora,
+              } else this.http.post('http://localhost:8000/api/horario/choques', 
+                  { "busqueda": {
+                                 choque: 'Componente',
+                                 horario_hora: hr.horario_hora,
                                  horario_dia: hr.horario_dia,
                                  horario_planificacion: gp.grupo_planificacion,
                                  horario_componente: cp.componente_id,
                                 }
                   }, head).toPromise()
+                  .then((res:any)=>{
+                    if(res.horario.length > 1 ){
+                      console.log('choque c',res);
+                      hr.horario_choque = 'c';
+                    } else{
+                      this.http.post('http://localhost:8000/api/horario/choques', 
+                      { "busqueda": {
+                                    choque: 'Ciclo',
+                                    horario_hora: hr.horario_hora,
+                                    horario_dia: hr.horario_dia,
+                                    horario_planificacion: gp.grupo_planificacion,
+                                    horario_ciclo: cp.componente_ciclo,
+                                    horario_pde: cp.componente_pde
+                                  }
+                      }, head).toPromise()
+                        .then((res:any)=>{
+                          if(res.horario.length > 1 ){
+                            console.log('choque a',res);
+                            hr.horario_choque = 'a';
+                          }else hr.horario_choque = ''
+                        });
+                    }
+                  })
+                 
              })
-            .then((res:any)=>{
-              if(res.horario.length > 1 ){
-                console.log('choque c',res);
-                hr.horario_choque = 'c';
-              } else return this.http.post('http://localhost:8000/api/horario/horariobycomp', 
-                { "busqueda": { horario_hora: hr.horario_hora,
-                              horario_dia: hr.horario_dia,
-                              horario_planificacion: gp.grupo_planificacion,
-                              horario_ciclo: cp.componente_ciclo,
-                            }
-                }, head).toPromise()
-            })
-            .then((res:any)=>{
-              console.log('choque a',res);
-            });
             // let r = await this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: 7, horario_dia: "Viernes" } }, head).toPromise();
       }
-    })
+    })//forEach
     // if (r.horario.length > 0) {
     //   e.target.classList.add('bg-warning');
     // }
@@ -396,6 +408,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       i = 0;
       j = 0;
     }
+    this.choque()
   }
   servicos() {
     let p1 = new Promise((resolve, reject) => {

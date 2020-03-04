@@ -60,7 +60,7 @@
         <tr class="row mx-0">
             <td class="col-2">07am - 09am</td>
             <td class="col-2" *ngFor="let hora of array[0]"  (click)="selectH($event, hora)"
-                [ngClass]="{'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-color-green': hora.horario_grupo != null}" >
+                [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" >
                 {{hora.horario_grupo | nombreGrupo : onComponente[1]}} {{hora.horario_grupo | componenteGrupo : onComponente}}
                 <span *ngIf="hora.horario_grupo != null">
                     {{getGrupo(hora.horario_grupo)}}
