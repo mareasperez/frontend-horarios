@@ -1,15 +1,23 @@
-<div *ngIf="reporte==='docente'">
-
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+        </div>
+        <div class="col-12 text-center">
+            <h5>UNAN-Le&oacute;n</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h5>Departamento de cumputaci&oacute;n</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h5>Horarios por {{reporte}}</h5>
+        </div>
+        <div class="col-12 text-center">
+            <h5>Horarios del semestre {{selectedPlan.planificacion_anyo_lectivo}} a&ntilde;n {{selectedPlan.planificacion_semestre}}</h5>
+        </div>
+    </div>
 </div>
-<div *ngIf="reporte==='aula'">
 
-</div>
-<div *ngIf="(reporte==='grupo')">
-
-</div>
-<div *ngIf="(reporte==='anyo')">
-
-</div>
 <!-- Traer facultades y mostrarlas, y en dependencia de lo que se tenga en el queryString se llamara a mostrar elementos -->
 <div class="row">
     <div class="col-3" hidden>

@@ -27,6 +27,7 @@ import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { NumberFormatStyle } from '@angular/common';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-horarios',
@@ -165,6 +166,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
       console.log(this.facultades);
       this._horario.successObten();
       this.selectedF = this.facultades[0];
+      this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache("planificacion"));
       this.onComponente[0] = this.componentes;
       this.onDocente[0] = this.docentes2;
       this.onComponente[1] = this.grupos;
