@@ -27,16 +27,27 @@ export class LogHorarioComponent implements OnInit {
   }
 
   reducer(previus, current:HorarioModel){
-     previus.push(this.data.gps.find(gp=> gp.grupo_id == current.horario_grupo))
-     
+      let gp = this.data.gps.find(gp=> gp.grupo_id == current.horario_grupo)
+      let aula = '';
+      this.getAula(gp.grupo_id).then(aula=>{
+        gp['aula'] = aula;
+
+      });
+      console.log(gp)
+     previus.push(gp)
      return previus;
   }
 
-  async getAula(id){
-    let hr = null;
-    let r = await this._horario.getHorarioByFilter("horario_grupo", id).toPromise()[0]
-    console.log(r)
-    return this.data.aulas.find(au => au.aula_id == r.horario_aula).aula_nombre;
+   getAula(id){
+    return new Promise((resolve)=> {
+      this._horario.getHorarioByFilter("horario_grupo", id).subscribe(res=>{
+      let aula =  this.data.aulas.find(au => au.aula_id == res[0].horario_aula).aula_nombre;
+        resolve(aula)
+
+      });
+    })
+
+     
   }
   
   getRecinto(){
