@@ -85,6 +85,7 @@ import { ComponenteNameSimplePipe } from './pipes/componente-name-simple.pipe';
 import { ComponenteGrupoSimplePipe } from './pipes/componente-grupo-simple.pipe';
 import { PlanNamePipe } from './pipes/plan-name.pipe';
 import { DocAreasPipe } from './pipes/doc-areas.pipe';
+import { LogHorarioComponent } from './components/horarios/log-horario/log-horario.component';
 
 @NgModule({
   declarations: [
@@ -144,13 +145,15 @@ import { DocAreasPipe } from './pipes/doc-areas.pipe';
     ComponenteGrupoSimplePipe,
     PlanNamePipe,
     DocAreasPipe,
+    LogHorarioComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
     AddcarreraComponent,
     AddComponenteComponent,
     AddGrupoComponent,
-    AddHorarioComponent
+    AddHorarioComponent,
+    LogHorarioComponent
   ],
   imports: [
     BrowserModule,

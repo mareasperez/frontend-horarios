@@ -24,6 +24,7 @@ import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
 import { HttpClient } from '@angular/common/http';
+import { LogHorarioComponent } from './log-horario/log-horario.component';
 @Component({
   selector: 'app-horarios',
   templateUrl: './horarios.component.html',
@@ -202,7 +203,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
   openDialog(horario: HorarioModel, grupos: GrupoModel[]): void {
     this.dialog.open(AddHorarioComponent, {
-      width: '850px',
+      width: '850px',maxHeight: '600px',
       data: { hr: horario, gps: grupos, cps: this.onComponente }
     });
   }
@@ -316,7 +317,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     head['Content-Type'] = 'application/json';
     this.horarios.forEach( hr =>{
       if(hr.horario_grupo != null){
-       if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
+      //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
         let gp = this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo);
         let cp = this.componentes.find(cp => cp.componente_id ==  gp.grupo_componente)
         this.http.post('http://localhost:8000/api/horario/choques',
@@ -332,6 +333,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               if(res.horario.length > 1 ){
                 console.log('choque d',res);
                 hr.horario_choque = 'd';
+                hr.horario_infochoque = res.horario;
               } else this.http.post('http://localhost:8000/api/horario/choques', 
                   { "busqueda": {
                                  choque: 'Componente',
@@ -344,7 +346,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                   .then((res:any)=>{
                     if(res.horario.length > 1 ){
                       console.log('choque c',res);
-                      hr.horario_choque = 'c';
+                      hr.horario_choque = 'c'; 
+                      hr.horario_infochoque = res.horario;
+
                     } else{
                       this.http.post('http://localhost:8000/api/horario/choques', 
                       { "busqueda": {
@@ -360,6 +364,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                           if(res.horario.length > 1 ){
                             console.log('choque a',res);
                             hr.horario_choque = 'a';
+                            hr.horario_infochoque = res.horario;
                           }else hr.horario_choque = ''
                         });
                     }
@@ -372,6 +377,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     // if (r.horario.length > 0) {
     //   e.target.classList.add('bg-warning');
     // }
+  }
+
+  infoChoque(hr:HorarioModel){
+    this.dialog.open(LogHorarioComponent, {
+      width: '450px',
+      data: { hr: hr, gps: this.grupos, cps: this.componentes, aulas: this.aulas, recintos: this.recintos }
+    });
   }
 
   fun() {
