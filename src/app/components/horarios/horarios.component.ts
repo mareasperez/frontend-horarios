@@ -371,12 +371,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                   })
                  
              })
-            // let r = await this.http.post('http://localhost:8000/api/horario/horadia', { "horario": { horario_hora: 7, horario_dia: "Viernes" } }, head).toPromise();
       }
     })//forEach
-    // if (r.horario.length > 0) {
-    //   e.target.classList.add('bg-warning');
-    // }
   }
 
   infoChoque(hr:HorarioModel){
