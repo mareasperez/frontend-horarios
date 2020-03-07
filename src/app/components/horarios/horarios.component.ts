@@ -122,7 +122,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         this.componentesByCiclo(Number(this.cicloSelected));
       }));
       this.subs.push(this.refGP.subscribe(data => {
-        this.grupos = data;
+        this.grupos = this.onComponente[1] = data;
         this.pdesByCarrera(this.carreraSelected);
       })
       );
