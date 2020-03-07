@@ -334,29 +334,26 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                       } }, head)
           .toPromise()
             .then((res:any) =>{
+              if(res.detail) return
+              console.log('choques',res);
               if(res.horario.length > 1 ){
-                console.log('choque d',res);
-                hr.horario_choque = 'd';
-                hr.horario_infochoque = res.horario;
-              } else this.http.post('http://localhost:8000/api/horario/choques', 
-                  { "busqueda": {
-                                 choque: 'Componente',
-                                 horario_hora: hr.horario_hora,
-                                 horario_dia: hr.horario_dia,
-                                 horario_planificacion: gp.grupo_planificacion,
-                                 horario_componente: cp.componente_id,
-                                }
-                  }, head).toPromise()
-                  .then((res:any)=>{
-                    console.log('choques',res);
-                    if(res.horario.length > 1 ){
-                      hr.horario_choque = 'd'; 
-                      hr.horario_infochoque = res.horario;
-
-                    } 
-                    })
+                switch(res.tipo){
+                  case 'd':
+                    hr.horario_choque = 'd';
+                    hr.horario_infochoque = res.horario;
+                    break;
+                  case 'c':
+                    hr.horario_choque = 'c';
+                    hr.horario_infochoque = res.horario;
+                    break;
+                  case 'a':
+                    hr.horario_choque = 'a';
+                    hr.horario_infochoque = res.horario;
+                    break;
+                } 
+              }
                   
-                  })
+            })
       }
     })//forEach
   }
