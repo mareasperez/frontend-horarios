@@ -326,7 +326,11 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                         horario_hora: hr.horario_hora, 
                         horario_dia: hr.horario_dia, 
                         horario_planificacion: gp.grupo_planificacion,
-                        horario_docente: gp.grupo_docente
+                        horario_docente: gp.grupo_docente,
+                        horario_componente: cp.componente_id,
+                        horario_ciclo: cp.componente_ciclo,
+                        horario_pde: cp.componente_pde
+
                       } }, head)
           .toPromise()
             .then((res:any) =>{
@@ -344,33 +348,15 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                                 }
                   }, head).toPromise()
                   .then((res:any)=>{
+                    console.log('choques',res);
                     if(res.horario.length > 1 ){
-                      console.log('choque c',res);
-                      hr.horario_choque = 'c'; 
+                      hr.horario_choque = 'd'; 
                       hr.horario_infochoque = res.horario;
 
-                    } else{
-                      this.http.post('http://localhost:8000/api/horario/choques', 
-                      { "busqueda": {
-                                    choque: 'Ciclo',
-                                    horario_hora: hr.horario_hora,
-                                    horario_dia: hr.horario_dia,
-                                    horario_planificacion: gp.grupo_planificacion,
-                                    horario_ciclo: cp.componente_ciclo,
-                                    horario_pde: cp.componente_pde
-                                  }
-                      }, head).toPromise()
-                        .then((res:any)=>{
-                          if(res.horario.length > 1 ){
-                            console.log('choque a',res);
-                            hr.horario_choque = 'a';
-                            hr.horario_infochoque = res.horario;
-                          }else hr.horario_choque = ''
-                        });
-                    }
+                    } 
+                    })
+                  
                   })
-                 
-             })
       }
     })//forEach
   }
