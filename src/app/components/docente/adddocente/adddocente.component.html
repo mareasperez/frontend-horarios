@@ -44,7 +44,7 @@
           {{area.area_nombre}}
         </mat-list-option>
       </mat-selection-list>
-      <button mat-raised-button [disabled]="form.invalid" class="bg-color-green"
+      <button mat-raised-button [disabled]="form.invalid  || areasSelecteds.length === 0" class="bg-color-green"
         (click)="data.type === 'c' ? saveDocente():updateDocente()">
         <mat-icon>save</mat-icon> Guardar
       </button>

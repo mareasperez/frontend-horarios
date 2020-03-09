@@ -116,6 +116,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
 
       });
+      
     }
   }
 
@@ -134,6 +135,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   updateDocente() {
     let doc = new DocenteModel();
     doc = Object.assign(doc, this.form.value);
+    console.log('areas seleccionadas al update',this.areasSelecteds);
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(
