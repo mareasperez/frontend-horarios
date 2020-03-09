@@ -7,7 +7,7 @@ import { PlanificacionModel } from '../models/planificacion.model';
 export class PlanificacionPipePipe implements PipeTransform {
 
   transform(id: string, planificaciones: PlanificacionModel[]): string {
-    if (id !== undefined && planificaciones.length > 0) {
+    if ((id !== '-1' && id !== '0') && (planificaciones.length > 0)) {
       console.log('estamos en la pipe id', id, planificaciones);
       const plan = planificaciones.find(pl => pl.planificacion_id === id);
       console.log('el elegido', plan);

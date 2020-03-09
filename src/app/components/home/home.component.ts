@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public refCarrera: Observable<any>;
   public show = false;
   private promesas: Promise<any>[] = [];
+  public planSelected = getItemLocalCache('planificacion') ? getItemLocalCache('planificacion') : '-1';
 
   public form: FormGroup;
   constructor(
