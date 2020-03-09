@@ -15,12 +15,11 @@
     <mat-form-field class="font-size-12 ml-1" appearance="outline">
         <mat-label>Planificaci&oacute;n</mat-label>
         <mat-select [disabled]="pdeSelected != '0' ? false:true" [(value)]="planSelected" (selectionChange)="groupsByPlan($event.value)">
-            <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_semestre">
+            <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
                 Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <span *ngIf="planSelected">{{planSelected}}</span>
     <mat-form-field  class="font-size-12 ml-1" appearance="outline">
         <mat-label>Recinto</mat-label>
         <mat-select [(value)]="selectedR" (selectionChange)="getAulas($event.value)">
@@ -41,14 +40,15 @@
     <mat-form-field class="font-size-12 ml-1 " appearance="outline">
         <mat-label>Ciclo</mat-label>
         <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected" (selectionChange)="componentesByCiclo($event.value)">
-            <span *ngIf="planSelected == '1'">
+            <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '1'">
                 <mat-option  *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
             </span>
-            <span *ngIf="planSelected == '2'">
+            <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '2'">
                <mat-option *ngFor="let i of [2,4,6,8,10]" [value]="i">{{i}}</mat-option>
             </span>
         </mat-select>
     </mat-form-field>
+    <!-- <span *ngIf="planSelected">{{planSelected}}</span> -->
 <div class="row">
     
     <table class="col-8 font-size-10 mt-2 table table-striped table-bordered w-100" *ngIf="array.length>0">

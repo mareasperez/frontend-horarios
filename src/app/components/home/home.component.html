@@ -23,7 +23,7 @@
     <mat-form-field class="ml-1" appearance="outline">
       <mat-select formControlName="planificacion">
         <mat-label>Planificai&oacute;n</mat-label>
-        <mat-option [value]="plan.planificacion_semestre" *ngFor="let plan of planificaciones">
+        <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
           semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
         </mat-option>
       </mat-select>
