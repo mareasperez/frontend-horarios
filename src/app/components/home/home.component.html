@@ -1,39 +1,41 @@
 <mat-card style="height: 80vh;">
-    <form [formGroup]="form" *ngIf="show" class="font-size-12 d-flex" >
-        <mat-form-field appearance="outline">
-            <mat-label>Carrera</mat-label>
-            <mat-select formControlName="carrera">
-                <mat-option  [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera_nombre}}</mat-option>
-        </mat-select>
-        </mat-form-field>
-        <mat-form-field class="ml-1" appearance="outline">
-          <mat-label>Departamento</mat-label>
-          <mat-select disabled formControlName="departamento">
-              <mat-option  [value]="dep.departamento_id" *ngFor="let dep of departamentos">{{dep.departamento_nombre}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="ml-1" appearance="outline">
-            <mat-label>Plan de estudios</mat-label>
-            <mat-select formControlName="pde">
-                <mat-option  [value]="pde.pde_id" *ngFor="let pde of pdes">{{pde.pde_nombre}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="ml-1" appearance="outline">
-            <mat-select formControlName="planificacion">
-                <mat-label>Planificai&oacute;n</mat-label>
-                <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
-                  semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>  
-        <mat-form-field class="font-size-12 ml-1 " appearance="outline">
-            <mat-label>Ciclo</mat-label>
-            <mat-select formControlName="ciclo" >
-                <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
-            </mat-select>
-        </mat-form-field> 
-        <button mat-raised-button class="bg-color-green color-white ml-1" (click)="save()">
-            <mat-icon>save</mat-icon>Guardar
-        </button>
-    </form>
+  <form [formGroup]="form" *ngIf="show" class="font-size-12 d-flex">
+    <mat-form-field appearance="outline">
+      <mat-label>Carrera</mat-label>
+      <mat-select formControlName="carrera">
+        <mat-option [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera_nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-1" appearance="outline">
+      <mat-label>Departamento</mat-label>
+      <mat-select disabled formControlName="departamento">
+        <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos">{{dep.departamento_nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-1" appearance="outline">
+      <mat-label>Plan de estudios</mat-label>
+      <mat-select formControlName="pde">
+        <mat-option [value]="pde.pde_id" *ngFor="let pde of pdes">{{pde.pde_nombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-1" appearance="outline">
+      <mat-select formControlName="planificacion">
+        <mat-label>Planificai&oacute;n</mat-label>
+        <mat-option [value]="plan.planificacion_semestre" *ngFor="let plan of planificaciones">
+          semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+      <mat-label>Ciclo</mat-label>
+      <mat-select formControlName="ciclo">
+        <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="bg-color-green color-white ml-1" (click)="save()">
+      <mat-icon>save</mat-icon>Guardar
+    </button>
+  </form>
 </mat-card>
