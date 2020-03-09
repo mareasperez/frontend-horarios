@@ -37,6 +37,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   public refDepartamento: Observable<any>;
   public refArea: Observable<any>;
   public Errors: matErrorsMessage = new matErrorsMessage();
+  public disabled = true;
   promesas: Promise<any>[] = [];
   constructor(
     private docenteService: DocenteService,
@@ -107,6 +108,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         docente_departamento: new FormControl(this.departamentos[0].departamento_id, [Validators.required])
 
       });
+      this.disabled = false;
     } else {
       this.form = this.fb.group({
         docente_id: this.data.doc.docente_id,
@@ -116,7 +118,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         docente_departamento: new FormControl(this.data.doc.docente_departamento, [Validators.required])
 
       });
-      
+
     }
   }
 
@@ -135,7 +137,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
   updateDocente() {
     let doc = new DocenteModel();
     doc = Object.assign(doc, this.form.value);
-    console.log('areas seleccionadas al update',this.areasSelecteds);
+    console.log('areas seleccionadas al update', this.areasSelecteds);
     this.subs.push(
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(
@@ -158,6 +160,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
 
   add_area(areas) {
     this.areasSelecteds = areas._value;
+    this.disabled = false;
   }
 
   get Form() {
