@@ -156,6 +156,17 @@ export class HorariosComponent implements OnInit, OnDestroy {
         this.subs.push(sub);
       })
     );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._aula.getAula()
+          .subscribe(
+            res => { this.aulas.push(res); console.log(res); },
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
   }
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -167,6 +178,9 @@ export class HorariosComponent implements OnInit, OnDestroy {
       this._horario.successObten();
       this.selectedF = this.facultades[0];
       this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache("planificacion"));
+      if (this.reporte === 'docente') {
+        this.filtros( this.reporte, this.selectedF.facultad_id);
+      }
       this.onComponente[0] = this.componentes;
       this.onDocente[0] = this.docentes2;
       this.onComponente[1] = this.grupos;
@@ -187,7 +201,9 @@ export class HorariosComponent implements OnInit, OnDestroy {
     this.array = new Array();
     this.activarG = false;
     this.activarA = false;
-    this.activarD = false;
+    if (this.reporte !== 'docente') {
+      this.activarD = false;
+    }
     this.selectedCarrera = undefined;
     this.selectedR = undefined;
     this.selectedDocente = undefined;
@@ -204,8 +220,8 @@ export class HorariosComponent implements OnInit, OnDestroy {
     this.departamentos = this._departamento.list.filter(dep => dep.departamento_facultad === id);
     if (this.reporte !== 'aula') {
       this.getDocentesOrCarreras(this.departamentos[0].departamento_id);
-      this.activarD = true;
     }
+    this.activarD = true;
   }
   async getRecintos(id: number | string) {
     this.recintos = [];

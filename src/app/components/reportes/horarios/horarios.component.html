@@ -13,7 +13,7 @@
             <h5>Horarios por {{reporte}}</h5>
         </div>
         <div class="col-12 text-center">
-            <h5>Horarios del semestre {{selectedPlan.planificacion_anyo_lectivo}} a&ntilde;n {{selectedPlan.planificacion_semestre}}</h5>
+            <h5>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o {{selectedPlan.planificacion_anyo_lectivo}}</h5>
         </div>
     </div>
 </div>
@@ -87,7 +87,7 @@
 
 
     <!-- se muestran los docentes del departamento para que se seleccione de cual mostrar los horarios -->
-    <div *ngIf="activarD" class="col-3">
+    <div *ngIf="reporte ==='docente'" class="col-3">
         <div *ngIf="docentes.length>0">
             <mat-form-field class="font-size-12" appearance="outline">
                 <mat-label>Docentes</mat-label>
@@ -306,7 +306,9 @@
                 </tr>
             </div>
             <ng-template #simpleLink let-hora='hora'>
-                Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} Aula: {{hora.horario_aula}}
+                {{hora.horario_grupo | componenteGrupo:onComponente}} 
+                {{hora.horario_grupo | nombreGrupo:grupos}}<br>
+                {{hora.horario_aula | aulaName:aulas}}
             </ng-template>
 
             <ng-template #complexLink let-hora='hora'>
@@ -314,7 +316,9 @@
             </ng-template>
 
             <ng-template #simple1Link let-hora='hora'>
-                Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | docenteName:onDocente}} Aula: {{hora.horario_aula}}
+                {{hora.horario_grupo | componenteGrupo:onComponente}} 
+                {{hora.horario_grupo | docenteName:onDocente}}<br>
+                {{hora.horario_aula | aulaName:aulas}}
             </ng-template>
 
             <ng-template #complex1Link let-hora='hora'>
@@ -322,7 +326,10 @@
             </ng-template>
 
             <ng-template #simple2Link let-hora='hora'>
-                Componente: {{hora.horario_grupo}} {{hora.horario_grupo | componenteGrupo:onComponente}} - {{hora.horario_grupo | nombreGrupo:grupos}} {{hora.dia}} Docente: {{hora.horario_grupo | docenteName:onDocente}}
+                {{hora.horario_grupo | componenteGrupo:onComponente}} 
+                {{hora.horario_grupo | nombreGrupo:grupos}}<br>
+                {{hora.dia}}<br>
+                {{hora.horario_grupo | docenteName:onDocente}}
 
             </ng-template>
 
