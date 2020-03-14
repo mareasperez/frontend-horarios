@@ -285,7 +285,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this._horario.getHorarioByFilter("horario_aula", id)
       .subscribe(res => {
         this.horarios = res;
-        this.HorarioID = this.horarios[0].horario_id;
+        //this.HorarioID = this.horarios[0].horario_id;
         // console.log(this.HorarioID)
         this.fun();
       });

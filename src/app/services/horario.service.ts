@@ -77,6 +77,7 @@ export class HorarioService extends MainService {
           observer.next(horarios);
         } else {
           this.errorObten(data.detail);
+          observer.next(horarios);
         }
       });
     });
