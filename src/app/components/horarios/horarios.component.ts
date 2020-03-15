@@ -75,6 +75,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public array: any[][] = [];
   onComponente: any[][] = [];
   public hrChoque: any[]=[];
+  public aulaLabel: AulaModel = null;
 
   constructor(private _grupo: GrupoService,
     private _aula: AulaService,
@@ -208,7 +209,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     });
   }
   selectH(e, hr: HorarioModel) {
-
+     console.log(e);
+    // if(e.target.localName != 'td') return
     this.changeColor(e);
     this.horarioSelected = hr;
     if (this.grupoSelected == null) return;
@@ -283,11 +285,12 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   horarioByAula(id: string) {
     this.horarioSelected = null;
     this._horario.getHorarioByFilter("horario_aula", id)
-      .subscribe(res => {
-        this.horarios = res;
-        this.HorarioID = this.horarios[0].horario_id;
-        // console.log(this.HorarioID)
-        this.fun();
+    .subscribe(res => {
+      this.horarios = res;
+      this.HorarioID = this.horarios[0].horario_id;
+      // console.log(this.HorarioID)
+      this.fun();
+      this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
       });
     //mocos
   }
