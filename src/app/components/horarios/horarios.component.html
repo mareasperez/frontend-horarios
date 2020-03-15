@@ -65,12 +65,17 @@
        <tbody>
         <tr class="row mx-0">
             <td class="col-2">07am - 09am</td>
-            <td class="col-2" *ngFor="let hora of array[0]"  (click)="selectH($event, hora)"
+            <td class="col-2" *ngFor="let hora of array[0]"  
                 [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" >
-                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                 <span *ngIf="hora.horario_grupo != null">
-                    {{getGrupo(hora.horario_grupo)}} <br>
-                    {{getCarrera(hora.horario_grupo)}}
+
+                    <span (click)="selectH($event, hora)" >
+                        {{getGrupo(hora.horario_grupo)}} <br>
+                        {{getCarrera(hora.horario_grupo)}} <br>
+                        Ciclo:{{ hora.horario_ciclo}}
+                    </span>
+                    
                     <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
                     <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)"   ><mat-icon>info</mat-icon></button>
                 </span>
@@ -79,76 +84,96 @@
         <tr class="row mx-0">
             <td class="col-2">09am - 11am</td>
             <td class="col-2" *ngFor="let hora of array[1]"  [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" 
-             (click)="selectH($event, hora)">
-                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+             >
+                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                 <span *ngIf="hora.horario_grupo != null">
-                    {{getGrupo(hora.horario_grupo)}} <br>
-                    {{getCarrera(hora.horario_grupo)}}
 
+                    <span (click)="selectH($event, hora)" >
+                        {{getGrupo(hora.horario_grupo)}} <br>
+                        {{getCarrera(hora.horario_grupo)}} <br>
+                        Ciclo:{{ hora.horario_ciclo}}
+                        
+                    </span>
                     <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
                     <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)"   ><mat-icon>info</mat-icon></button>
-
                 </span>
+
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">11am-01pm</td>
             <td class="col-2" *ngFor="let hora of array[2]"  [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" 
-             (click)="selectH($event, hora)">
-                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+             >
+                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                 <span *ngIf="hora.horario_grupo != null">
-                    {{getGrupo(hora.horario_grupo)}} <br>
-                    {{getCarrera(hora.horario_grupo)}}
 
+                    <span (click)="selectH($event, hora)" >
+                        {{getGrupo(hora.horario_grupo)}} <br>
+                        {{getCarrera(hora.horario_grupo)}} <br>
+                        Ciclo:{{ hora.horario_ciclo}}
+                        
+                    </span>
                     <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
                     <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)"   ><mat-icon>info</mat-icon></button>
-
                 </span>
+
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">01pm - 03pm</td>
             <td class="col-2" *ngFor="let hora of array[3]"  [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" 
-             (click)="selectH($event, hora)">
-                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+             >
+                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                 <span *ngIf="hora.horario_grupo != null">
-                    {{getGrupo(hora.horario_grupo)}} <br>
-                    {{getCarrera(hora.horario_grupo)}}
 
+                    <span (click)="selectH($event, hora)" >
+                        {{getGrupo(hora.horario_grupo)}} <br>
+                        {{getCarrera(hora.horario_grupo)}} <br>
+                        Ciclo:{{ hora.horario_ciclo}}
+                        
+                    </span>
                     <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
                     <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)"   ><mat-icon>info</mat-icon></button>
-
                 </span>
+
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">03pm - 05pm</td>
             <td class="col-2" *ngFor="let hora of array[4]"  [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" 
-             (click)="selectH($event, hora)">
-                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+             >
+                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                 <span *ngIf="hora.horario_grupo != null">
-                    {{getGrupo(hora.horario_grupo)}} <br>
-                    {{getCarrera(hora.horario_grupo)}}
 
+                    <span (click)="selectH($event, hora)" >
+                        {{getGrupo(hora.horario_grupo)}} <br>
+                        {{getCarrera(hora.horario_grupo)}} <br>
+                        Ciclo:{{ hora.horario_ciclo}}
+                        
+                    </span>
                     <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
                     <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)"   ><mat-icon>info</mat-icon></button>
-
                 </span>
+
             </td>
         </tr>
         <tr class="row mx-0">
             <td class="col-2">05m - 07pm</td>
             <td class="col-2" *ngFor="let hora of array[5]"  [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" 
-             (click)="selectH($event, hora)">
-                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}}
+             >
+                {{hora.horario_grupo | nombreGrupo : grupos}} {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                 <span *ngIf="hora.horario_grupo != null">
-                    {{getGrupo(hora.horario_grupo)}} <br>
-                    {{getCarrera(hora.horario_grupo)}}
 
+                    <span (click)="selectH($event, hora)" >
+                        {{getGrupo(hora.horario_grupo)}} <br>
+                        {{getCarrera(hora.horario_grupo)}} <br>
+                        Ciclo:{{ hora.horario_ciclo}}
+                        
+                    </span>
                     <button mat-icon-button color="warn"  (click)="rmGrupo(hora)"><mat-icon>delete</mat-icon></button>
                     <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)"   ><mat-icon>info</mat-icon></button>
-
                 </span>
+
             </td>
         </tr>
     </tbody>

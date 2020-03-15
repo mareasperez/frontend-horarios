@@ -320,6 +320,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
         let gp = this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo);
         let cp = this.componentes.find(cp => cp.componente_id ==  gp.grupo_componente)
+        hr.horario_ciclo = cp.componente_ciclo + '';
         this.http.post('http://localhost:8000/api/horario/choques',
          { "busqueda": { 
                         choque: 'Docente',
