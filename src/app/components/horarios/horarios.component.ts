@@ -76,6 +76,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   onComponente: any[][] = [];
   public hrChoque: any[]=[];
   public aulaLabel: AulaModel = null;
+  public noassign = true;
+  public assign = false;
 
   constructor(private _grupo: GrupoService,
     private _aula: AulaService,
@@ -186,10 +188,17 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     if (id !== "0") this.groupsByPlan(this.planSelected);
   }
 
-  groupsByPlan(id: string) {
+  groupsByPlan(id: string, Assign?: boolean) {
+    if(Assign == true){
+      this.assign = true; this.noassign = false;
+      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
+      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === true);
+    }else{
+      this.assign = false; this.noassign = true;
+      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
+      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === false);
+    }
     this.planID = id;
-    let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-    this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === false);
   }
 
 
@@ -295,9 +304,12 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     //mocos
   }
 
-  docenteNombre(id) {
-    let r = this.docenteName.transform(id, this.docentes);
-    return r
+  docenteNombre(idGp) {
+    let gp = this.grupos.find(gp => gp.grupo_id == idGp);
+    if (gp != undefined) {
+      if(gp.grupo_docente != null)
+      {return this.docenteName.transform(gp.grupo_docente, this.docentes);}   
+    } else return 'sin docente';
   }
 
   getGrupo(id) {
