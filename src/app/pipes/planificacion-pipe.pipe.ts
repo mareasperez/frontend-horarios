@@ -8,9 +8,9 @@ export class PlanificacionPipePipe implements PipeTransform {
 
   transform(id: string, planificaciones: PlanificacionModel[]): string {
     if ((id !== '-1' && id !== '0') && (planificaciones.length > 0)) {
-      console.log('estamos en la pipe id', id, planificaciones);
+      // console.log('estamos en la pipe id', id, planificaciones);
       const plan = planificaciones.find(pl => pl.planificacion_id === id);
-      console.log('el elegido', plan);
+      // console.log('el elegido', plan);
       return `${plan.planificacion_semestre}`;
     }
     return '0';
