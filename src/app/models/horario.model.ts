@@ -8,4 +8,5 @@ export class HorarioModel{
     horario_vacio: boolean;
     horario_choque: 'd' | 'c' | 'a' | '';//variable del front
     horario_infochoque: HorarioModel[];//variable del front
+    horario_ciclo: string;//variable del front
 }
