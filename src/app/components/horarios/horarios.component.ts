@@ -74,7 +74,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   private promesas: Promise<any>[] = [];
   public array: any[][] = [];
   onComponente: any[][] = [];
+<<<<<<< HEAD
+  public hrChoque: any[] = [];
+=======
   public hrChoque: any[]=[];
+  public aulaLabel: AulaModel = null;
+  public noassign = true;
+  public assign = false;
+>>>>>>> 89c9d6fb8d816a1240e2ba64b884a76d49085aee
 
   constructor(private _grupo: GrupoService,
     private _aula: AulaService,
@@ -185,10 +192,17 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     if (id !== "0") this.groupsByPlan(this.planSelected);
   }
 
-  groupsByPlan(id: string) {
+  groupsByPlan(id: string, Assign?: boolean) {
+    if(Assign == true){
+      this.assign = true; this.noassign = false;
+      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
+      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === true);
+    }else{
+      this.assign = false; this.noassign = true;
+      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
+      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === false);
+    }
     this.planID = id;
-    let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-    this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === false);
   }
 
 
@@ -203,14 +217,16 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
   openDialog(horario: HorarioModel, grupos: GrupoModel[]): void {
     this.dialog.open(AddHorarioComponent, {
-      width: '850px',maxHeight: '600px',
+      width: '850px', maxHeight: '600px',
       data: { hr: horario, gps: grupos, cps: this.onComponente }
     });
   }
   selectH(e, hr: HorarioModel) {
-
+     console.log(e);
+    // if(e.target.localName != 'td') return
     this.changeColor(e);
     this.horarioSelected = hr;
+    console.log(this.horarioSelected);
     if (this.grupoSelected == null) return;
     if (this.horarioSelected.horario_grupo != null) {
       this.rmGrupo(this.horarioSelected).then(res => {
@@ -244,28 +260,44 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     e.target.classList.add('bg-color-yellow');
   }
   save() {
+    console.log(this.grupoSelected);
     this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
     this.horarioSelected.horario_vacio = false;
     this.grupoSelected.grupo_asignado = true;
-    let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
-      res => {
-        this.fun();
-        this.groupsByPlan(this.planSelected);
-        let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
-        this.horarioSelected = this.grupoSelected = null;
-        this.subs.push(sub);
-      },
-      error => { this._snack.open(error.message, "OK", { duration: 3000 }); this.horarioSelected = this.grupoSelected = null; }
-    );
-    this.subs.push(sub);
+    if (this.horarioSelected.horario_id !== null) {
+      let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
+        res => {
+          this.fun();
+          this.groupsByPlan(this.planSelected);
+          let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
+          this.horarioSelected = this.grupoSelected = null;
+          this.subs.push(sub);
+        },
+        error => { this._snack.open(error.message, "OK", { duration: 3000 }); this.horarioSelected = this.grupoSelected = null; }
+      );
+      this.subs.push(sub);
+    }
+    if (this.horarioSelected.horario_id == null){
+      let sub = this._horario.crearHorario(this.horarioSelected).subscribe(
+        res => {
+          this.fun();
+          this.groupsByPlan(this.planSelected);
+          let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
+          this.horarioSelected = this.grupoSelected = null;
+          this.subs.push(sub);
+        },
+        error => { this._snack.open(error.message, "OK", { duration: 3000 }); this.horarioSelected = this.grupoSelected = null; }
+      );
+      this.subs.push(sub);
+    }
   }
 
   rmGrupo(hr: HorarioModel) {
     return new Promise((resolve) => {
       console.log(this.grupos);
       let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
-      hr.horario_grupo = null;
-      let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
+      // hr.horario_grupo = null;
+      let sub = this._horario.deleteHorario(hr.horario_id).subscribe(
         res => {
           this.fun();
           this.groupsByPlan(this.planSelected);
@@ -283,18 +315,30 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   horarioByAula(id: string) {
     this.horarioSelected = null;
     this._horario.getHorarioByFilter("horario_aula", id)
+<<<<<<< HEAD
       .subscribe(res => {
         this.horarios = res;
-        this.HorarioID = this.horarios[0].horario_id;
+        //this.HorarioID = this.horarios[0].horario_id;
         // console.log(this.HorarioID)
         this.fun();
+=======
+    .subscribe(res => {
+      this.horarios = res;
+      this.HorarioID = this.horarios[0].horario_id;
+      // console.log(this.HorarioID)
+      this.fun();
+      this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
+>>>>>>> 89c9d6fb8d816a1240e2ba64b884a76d49085aee
       });
     //mocos
   }
 
-  docenteNombre(id) {
-    let r = this.docenteName.transform(id, this.docentes);
-    return r
+  docenteNombre(idGp) {
+    let gp = this.grupos.find(gp => gp.grupo_id == idGp);
+    if (gp != undefined) {
+      if(gp.grupo_docente != null)
+      {return this.docenteName.transform(gp.grupo_docente, this.docentes);}   
+    } else return 'sin docente';
   }
 
   getGrupo(id) {
@@ -311,54 +355,65 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     return this.carreras.find(cr => cr.carrera_id == pde.pde_carrera).carrera_nombre;
   }
 
-  choque( hr?: HorarioModel) {
+  choque(hr?: HorarioModel) {
     console.log('dibujar')
     let head: any = {};
     head['Content-Type'] = 'application/json';
+<<<<<<< HEAD
+    this.horarios.forEach(hr => {
+      if (hr.horario_grupo != null) {
+        //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
+        let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
+        let cp = this.componentes.find(cp => cp.componente_id == gp.grupo_componente)
+=======
     this.horarios.forEach( hr =>{
       if(hr.horario_grupo != null){
       //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
         let gp = this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo);
         let cp = this.componentes.find(cp => cp.componente_id ==  gp.grupo_componente)
+        hr.horario_ciclo = cp.componente_ciclo + '';
+>>>>>>> 89c9d6fb8d816a1240e2ba64b884a76d49085aee
         this.http.post('http://localhost:8000/api/horario/choques',
-         { "busqueda": { 
-                        choque: 'Docente',
-                        horario_hora: hr.horario_hora, 
-                        horario_dia: hr.horario_dia, 
-                        horario_planificacion: gp.grupo_planificacion,
-                        horario_docente: gp.grupo_docente,
-                        horario_componente: cp.componente_id,
-                        horario_ciclo: cp.componente_ciclo,
-                        horario_pde: cp.componente_pde
+          {
+            "busqueda": {
+              choque: 'Docente',
+              horario_hora: hr.horario_hora,
+              horario_dia: hr.horario_dia,
+              horario_planificacion: gp.grupo_planificacion,
+              horario_docente: gp.grupo_docente,
+              horario_componente: cp.componente_id,
+              horario_ciclo: cp.componente_ciclo,
+              horario_pde: cp.componente_pde
 
-                      } }, head)
+            }
+          }, head)
           .toPromise()
-            .then((res:any) =>{
-              if(res.detail) return
-              console.log('choques',res);
-              if(res.horario.length > 1 ){
-                switch(res.tipo){
-                  case 'd':
-                    hr.horario_choque = 'd';
-                    hr.horario_infochoque = res.horario;
-                    break;
-                  case 'c':
-                    hr.horario_choque = 'c';
-                    hr.horario_infochoque = res.horario;
-                    break;
-                  case 'a':
-                    hr.horario_choque = 'a';
-                    hr.horario_infochoque = res.horario;
-                    break;
-                } 
+          .then((res: any) => {
+            if (res.detail) return
+            console.log('choques', res);
+            if (res.horario.length > 1) {
+              switch (res.tipo) {
+                case 'd':
+                  hr.horario_choque = 'd';
+                  hr.horario_infochoque = res.horario;
+                  break;
+                case 'c':
+                  hr.horario_choque = 'c';
+                  hr.horario_infochoque = res.horario;
+                  break;
+                case 'a':
+                  hr.horario_choque = 'a';
+                  hr.horario_infochoque = res.horario;
+                  break;
               }
-                  
-            })
+            }
+
+          })
       }
     })//forEach
   }
 
-  infoChoque(hr:HorarioModel){
+  infoChoque(hr: HorarioModel) {
     this.dialog.open(LogHorarioComponent, {
       width: '450px',
       data: { hr: hr, gps: this.grupos, cps: this.componentes, aulas: this.aulas, recintos: this.recintos }
@@ -366,17 +421,24 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   fun() {
+    const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+    const horas = [7, 9, 11, 13, 15, 17];
     let i = 0; let j = 0;
-    const vacio = new HorarioViewModel();
-    vacio.horario_vacio = true;
+
     for (let aux = 0; aux < 6; aux++) {
       this.array[aux] = [];
     }
     for (let aux = 0; aux < 5; aux++) {
       for (let aux2 = 0; aux2 < 6; aux2++) {
+        const vacio = new HorarioViewModel();
+        vacio.horario_aula = this.aulaSelected;
+        vacio.horario_vacio = true;
+        vacio.horario_dia = dias[aux];
+        vacio.horario_hora = horas[aux2];
         this.array[aux2][aux] = vacio;
       }
     }
+    console.log(this.array);
     for (const dia of this.horarios) {
       switch (dia.horario_dia) {
         case 'Lunes': i = 0; break;

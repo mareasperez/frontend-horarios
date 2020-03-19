@@ -7,6 +7,7 @@ export class HorarioViewModel{
     componente: string;
     horario_vacio: boolean;
     aula?: string;
+    horario_aula:string;
     carrera?: string;
     grupo?: string;
     anyo?: number;
