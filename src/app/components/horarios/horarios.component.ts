@@ -74,14 +74,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   private promesas: Promise<any>[] = [];
   public array: any[][] = [];
   onComponente: any[][] = [];
-<<<<<<< HEAD
-  public hrChoque: any[] = [];
-=======
   public hrChoque: any[]=[];
   public aulaLabel: AulaModel = null;
   public noassign = true;
   public assign = false;
->>>>>>> 89c9d6fb8d816a1240e2ba64b884a76d49085aee
 
   constructor(private _grupo: GrupoService,
     private _aula: AulaService,
@@ -315,20 +311,12 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   horarioByAula(id: string) {
     this.horarioSelected = null;
     this._horario.getHorarioByFilter("horario_aula", id)
-<<<<<<< HEAD
-      .subscribe(res => {
-        this.horarios = res;
-        //this.HorarioID = this.horarios[0].horario_id;
-        // console.log(this.HorarioID)
-        this.fun();
-=======
     .subscribe(res => {
       this.horarios = res;
       this.HorarioID = this.horarios[0].horario_id;
       // console.log(this.HorarioID)
       this.fun();
       this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
->>>>>>> 89c9d6fb8d816a1240e2ba64b884a76d49085aee
       });
     //mocos
   }
@@ -359,20 +347,12 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     console.log('dibujar')
     let head: any = {};
     head['Content-Type'] = 'application/json';
-<<<<<<< HEAD
-    this.horarios.forEach(hr => {
-      if (hr.horario_grupo != null) {
-        //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
-        let gp = this.grupos.find(gp => gp.grupo_id == hr.horario_grupo);
-        let cp = this.componentes.find(cp => cp.componente_id == gp.grupo_componente)
-=======
     this.horarios.forEach( hr =>{
       if(hr.horario_grupo != null){
       //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
         let gp = this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo);
         let cp = this.componentes.find(cp => cp.componente_id ==  gp.grupo_componente)
         hr.horario_ciclo = cp.componente_ciclo + '';
->>>>>>> 89c9d6fb8d816a1240e2ba64b884a76d49085aee
         this.http.post('http://localhost:8000/api/horario/choques',
           {
             "busqueda": {
