@@ -74,7 +74,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   private promesas: Promise<any>[] = [];
   public array: any[][] = [];
   onComponente: any[][] = [];
-  public hrChoque: any[] = [];
+  public hrChoque: any[]=[];
   public aulaLabel: AulaModel = null;
   public noassign = true;
   public assign = false;
@@ -218,33 +218,20 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     });
   }
   selectH(e, hr: HorarioModel) {
-     console.log(e);
     // if(e.target.localName != 'td') return
     this.changeColor(e);
     this.horarioSelected = hr;
     console.log(this.horarioSelected);
     if (this.grupoSelected == null) return;
-    if (this.horarioSelected.horario_grupo != null) {
-      this.rmGrupo(this.horarioSelected).then(res => {
-        this.save();
-
-      })
-    } else {
-      this.save();
-    }
+    this.save();
+    
   }
 
   selectGP(e, gp: GrupoModel) {
     this.changeColor(e);
     this.grupoSelected = gp;
     if (this.horarioSelected == null) return;
-    if (this.horarioSelected.horario_grupo != null) {
-      this.rmGrupo(this.horarioSelected).then(res => {
-        this.save();
-      })
-    } else {
-      this.save();
-    }
+    this.save();
   }
 
   changeColor(e) {
@@ -256,11 +243,11 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     e.target.classList.add('bg-color-yellow');
   }
   save() {
-    console.log(this.grupoSelected);
+    console.log(this.grupoSelected, this.horarioSelected);
     this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
     this.horarioSelected.horario_vacio = false;
     this.grupoSelected.grupo_asignado = true;
-    if (this.horarioSelected.horario_id !== null) {
+    if (this.horarioSelected.horario_id != null) {
       let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
         res => {
           this.fun();

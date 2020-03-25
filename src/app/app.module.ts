@@ -87,6 +87,7 @@ import { PlanNamePipe } from './pipes/plan-name.pipe';
 import { DocAreasPipe } from './pipes/doc-areas.pipe';
 import { LogHorarioComponent } from './components/horarios/log-horario/log-horario.component';
 import { PlanificacionPipePipe } from './pipes/planificacion-pipe.pipe';
+import { AulaNamePipe } from './pipes/aula-name.pipe';
 
 @NgModule({
   declarations: [
@@ -148,6 +149,7 @@ import { PlanificacionPipePipe } from './pipes/planificacion-pipe.pipe';
     DocAreasPipe,
     LogHorarioComponent,
     PlanificacionPipePipe,
+    AulaNamePipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
