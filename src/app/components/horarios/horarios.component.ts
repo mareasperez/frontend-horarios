@@ -107,6 +107,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
+      console.log(this.array)
       this.onComponente[0] = this.componentes;
       this.onComponente[1] = this.grupos;
       this._horario.successObten();
@@ -192,11 +193,11 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     if(Assign == true){
       this.assign = true; this.noassign = false;
       let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === true);
+      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === true && gp.grupo_horas_clase == 0);
     }else{
       this.assign = false; this.noassign = true;
-      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === false);
+      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion );
+      this.gruposByPlan = grupos.filter(gp => gp.grupo_horas_clase > 0);
     }
     this.planID = id;
   }
@@ -247,6 +248,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
     this.horarioSelected.horario_vacio = false;
     this.grupoSelected.grupo_asignado = true;
+    this.grupoSelected.grupo_horas_clase -= 2;
     if (this.horarioSelected.horario_id != null) {
       let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
         res => {
@@ -284,6 +286,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         res => {
           this.fun();
           this.groupsByPlan(this.planSelected);
+          gp.grupo_horas_clase += 2;
           gp.grupo_asignado = false;
           let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe();
           this.subs.push(sub);
@@ -300,7 +303,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this._horario.getHorarioByFilter("horario_aula", id)
     .subscribe(res => {
       this.horarios = res;
-      this.HorarioID = this.horarios[0].horario_id;
+      if(this.horarios.length > 0) this.HorarioID = this.horarios[0].horario_id;
       // console.log(this.HorarioID)
       this.fun();
       this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
