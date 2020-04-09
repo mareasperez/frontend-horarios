@@ -200,6 +200,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.gruposByPlan = grupos.filter(gp => gp.grupo_horas_clase > 0);
     }
     this.planID = id;
+    // console.log(this.gruposByPlan)
+    this.horarioByAula(this.aulaSelected);
   }
 
 
@@ -301,9 +303,19 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   horarioByAula(id: string) {
     this.horarioSelected = null;
     this._horario.getHorarioByFilter("horario_aula", id)
-    .subscribe(res => {
-      this.horarios = res;
-      if(this.horarios.length > 0) this.HorarioID = this.horarios[0].horario_id;
+    .subscribe((res :HorarioModel[])=> {
+      // console.log( res);
+      this.horarios = res.map(hr =>{
+        let gpByplan = this.gruposByComp.filter(gp => this.planSelected == gp.grupo_planificacion);
+        let ghp = gpByplan.find(gp => gp.grupo_id == hr.horario_grupo );
+        // console.log(hr, ghp);
+        if(ghp != undefined){
+          return hr;
+        }
+      });
+      // this.horarios = res;
+      // console.log(this.horarios.l)
+      // if(this.horarios.length > 0) this.HorarioID = this.horarios[0].horario_id;
       // console.log(this.HorarioID)
       this.fun();
       this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
@@ -410,6 +422,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     console.log(this.array);
     for (const dia of this.horarios) {
+      if(dia == undefined) return;
       switch (dia.horario_dia) {
         case 'Lunes': i = 0; break;
         case 'Martes': i = 1; break;
