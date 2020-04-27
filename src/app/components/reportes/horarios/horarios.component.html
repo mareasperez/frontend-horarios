@@ -316,8 +316,8 @@
             </ng-template>
 
             <ng-template #simple1Link let-hora='hora'>
-                {{hora.horario_grupo | componenteGrupo:onComponente}} 
-                {{hora.horario_grupo | docenteName:onDocente}}<br>
+                {{hora.horario_grupo | componenteGrupo:onComponente}}<br>
+                {{hora.horario_grupo | docenteByGrupo:onDocente}}<br>
                 {{hora.horario_aula | aulaName:aulas}}
             </ng-template>
 
@@ -329,7 +329,7 @@
                 {{hora.horario_grupo | componenteGrupo:onComponente}} 
                 {{hora.horario_grupo | nombreGrupo:grupos}}<br>
                 {{hora.dia}}<br>
-                {{hora.horario_grupo | docenteName:onDocente}}
+                {{hora.horario_grupo | docenteByGrupo:onDocente}}
 
             </ng-template>
 

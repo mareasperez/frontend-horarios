@@ -20,6 +20,10 @@ import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
+import { MatSnackBar } from '@angular/material';
+import { Subscription } from 'rxjs';
+import { PlanificacionService } from 'src/app/services/planificacion.service';
+import { PlanificacionModel } from 'src/app/models/planificacion.model';
 
 @Component({
   selector: 'app-horarios-anyo',
@@ -29,10 +33,13 @@ import { DocenteService } from 'src/app/services/docente.service';
 export class HorariosAnyoComponent implements OnInit {
   public horarios: HorarioModel[][] = [];
   public array: any[][] = new Array();
+  private promesas: Promise<any>[] = [];
+  private subs: Subscription[] = [];
   facultades: FacultadModel[] = [];
   departamentos: DepartamentoModel[] = [];
   carreras: CarreraModel[] = [];
   grupos: GrupoModel[] = [];
+  planificaciones: PlanificacionModel[] = [];
   componentes: ComponenteModel[] = [];
   pdes: PlanEstudioModel[] = [];
   aulas: AulaModel[] = [];
@@ -44,6 +51,7 @@ export class HorariosAnyoComponent implements OnInit {
   selectedD: DepartamentoModel;
   selectedG: GrupoModel;
   selectedCarrera: CarreraModel;
+  selectedPlan: PlanificacionModel;
 
   anyos = [1, 2, 3, 4, 5];
   constructor(
@@ -53,29 +61,97 @@ export class HorariosAnyoComponent implements OnInit {
     private _carrera: CarreraService,
     private _grupo: GrupoService,
     private _horarios: HorarioService,
+    private _planificacion: PlanificacionService,
     // extras para funcionalidad
     private _componente: ComponenteService,
     private _pde: PlanEstudioService,
     private _aula: AulaService,
     private _recinto: RecintoService,
     private _docente: DocenteService,
-  ) { }
-  ngOnInit() {
-    this._aula.getAula().subscribe(res => this.aulas.push(res));
-    this._facultad.getFacultad().subscribe(res => this.facultades.push(res));
+    private _snack: MatSnackBar
+  ) {
     this._departamento.getDepartamento().subscribe();
     this._carrera.getCarrera().subscribe();
     this._grupo.getGrupos().subscribe();
-    this._componente.getComponentes().subscribe(res => this.componentes.push(res));
-    this._pde.getPlanEstudio().subscribe(res => this.pdes.push(res));
     this._horarios.getHorarios().subscribe();
-    this._recinto.getRecinto().subscribe(res => this.recintos.push(res));
-    this._docente.getDocente().subscribe(res => this.docentes.push(res));
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._planificacion.getPlanificaciones()
+          .subscribe(
+            res => this.planificaciones.push(res),
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._facultad.getFacultad()
+          .subscribe(
+            res => this.facultades.push(res),
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._componente.getComponentes()
+          .subscribe(
+            res => this.componentes.push(res),
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._pde.getPlanEstudio()
+          .subscribe(
+            res => this.pdes.push(res),
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._docente.getDocente()
+          .subscribe(
+            res => { this.docentes.push(res); console.log(res); },
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        const sub = this._aula.getAula()
+          .subscribe(
+            res => { this.aulas.push(res); console.log(res); },
+            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            () => resolve()
+          );
+        this.subs.push(sub);
+      })
+    );
   }
-  getDep(id: number) {
+  ngOnInit() {
+    Promise.all(this.promesas).then(res => {
+    this.selectedF = this.facultades[0];
+    this.getDep(this.selectedF.facultad_id);
+    this.selectedD = this.departamentos[0];
+  });
+  }
+  getDep(id: number|string) {
     this.departamentos = this._departamento.list.filter(dep => dep.departamento_facultad === id);
   }
-  getCarreras(id: number) {
+  getCarreras(id: number|string) {
     this.carreras = this._carrera.list.filter(car => car.carrera_departamento === id);
   }
   async getGrupos(anyo: number) {
@@ -99,7 +175,7 @@ export class HorariosAnyoComponent implements OnInit {
     this.rellenar();
     for (const grupo of this.grupos) {
       const p = new Promise<any>((resolve, reject) => {
-        this._horarios.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe(res => resolve(res));
+        this._horarios.getByPlan(this.selectedPlan.planificacion_id,'horario_grupo', grupo.grupo_id).subscribe(res => resolve(res));
       });
       p.then((gr: HorarioModel[]) => {
         this.fun(gr);
