@@ -54,7 +54,7 @@ export class MainService {
     return this.list$.asObservable();
   }
 
-  ogetByFiltro(filtro: string, id: string|number): Observable<any> {
+  getByFiltro(filtro: string, id: string|number): Observable<any> {
     console.log(`${this.getUrl()}${filtro}=${id}`);
     return this.client.get<any>(`${this.getUrl()}${filtro}=${id}`);
   }
