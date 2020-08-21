@@ -18,7 +18,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   public alerts = true;
   public facultad: FacultadModel;
   public a: Observable<any[]>;
-  @ViewChild('userMenu', { static: false }) userMenu: TemplateRef<any>;
+  @ViewChild('userMenu') userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
   sub: Subscription;
   subs: Subscription[] = [];
