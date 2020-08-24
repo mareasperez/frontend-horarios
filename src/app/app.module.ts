@@ -89,6 +89,7 @@ import { LogHorarioComponent } from './components/horarios/log-horario/log-horar
 import { PlanificacionPipePipe } from './pipes/planificacion-pipe.pipe';
 import { AulaNamePipe } from './pipes/aula-name.pipe';
 import { DocenteByGrupoPipe } from './pipes/docente-by-grupo.pipe';
+import { HorarioDocenteComponent } from './components/reportes/horarios/horario-docente/horario-docente.component';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import { DocenteByGrupoPipe } from './pipes/docente-by-grupo.pipe';
     PlanificacionPipePipe,
     AulaNamePipe,
     DocenteByGrupoPipe,
+    HorarioDocenteComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

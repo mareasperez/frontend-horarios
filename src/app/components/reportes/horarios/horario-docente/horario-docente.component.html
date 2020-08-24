@@ -1,0 +1,154 @@
+<div *ngIf="isLoaded; else stillLoading">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+      </div>
+      <div class="col-12 text-center">
+        <h5>UNAN-Le&oacute;n</h5>
+      </div>
+      <div class="col-12 text-center">
+        <h5>Departamento de cumputaci&oacute;n</h5>
+      </div>
+      <div class="col-12 text-center">
+        <h5>Horarios por Docente</h5>
+      </div>
+      <div class="col-12 text-center">
+        <h5>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
+          {{selectedPlan.planificacion_anyo_lectivo}}</h5>
+      </div>
+      <div class="col-3">
+        <mat-form-field class="font-size-12" appearance="outline">
+          <mat-label>Planificaci&oacute;n</mat-label>
+          <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getData()">
+            <mat-option *ngFor="let plan of planificaciones" [value]="plan">
+              Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-3">
+        <mat-form-field class="font-size-12" appearance="outline">
+          <mat-label>Docentes</mat-label>
+          <mat-select [(ngModel)]="selectedDoc" name="docente" (selectionChange)="getData()">
+            <mat-option *ngFor="let docente of docentes" [value]="docente">
+              {{docente.docente_nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="array.length===6">
+    <table class="table" style="width: 80%;">
+      <thead>
+        <tr class="row">
+          <th class="col-2">Hora</th>
+          <th class="col-2">Lunes</th>
+          <th class="col-2">Martes</th>
+          <th class="col-2">Mi&eacute;rcoles</th>
+          <th class="col-2">Jueves</th>
+          <th class="col-2">Viernes</th>
+        </tr>
+      </thead>
+      <tbody class="row">
+        <div class="mat-figure">
+          <tr class="row">
+            <td class="col-2">
+              7:00 - 9:00
+            </td>
+            <div class="col-10">
+              <td *ngFor="let hora of array[0]" class="elemento">
+                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{hora:hora}">
+                </ng-container>
+              </td>
+            </div>
+
+          </tr>
+          <tr class="row">
+            <td class="col-2">
+              9:00 - 11:00
+            </td>
+            <div class="col-10">
+              <td *ngFor="let hora of array[1]" class="elemento">
+                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{hora:hora}">
+                </ng-container>
+              </td>
+            </div>
+          </tr>
+          <tr class="row">
+            <td class="col-2">
+              11:00 - 13:00
+            </td>
+            <div class="col-10">
+              <td *ngFor="let hora of array[2]" class="elemento">
+                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{hora:hora}">
+                </ng-container>
+              </td>
+            </div>
+          </tr>
+          <tr class="row">
+            <td class="col-2">
+              13:00 - 15:00
+            </td>
+            <div class="col-10">
+              <td *ngFor="let hora of array[3]" class="elemento">
+                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{hora:hora}">
+                </ng-container>
+              </td>
+            </div>
+          </tr>
+          <tr class="row">
+            <td class="col-2">
+              15:00 - 17:00
+            </td>
+            <div class="col-10">
+              <td *ngFor="let hora of array[4]" class="elemento">
+                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{hora:hora}">
+                </ng-container>
+              </td>
+            </div>
+          </tr>
+          <tr class="row">
+            <td class="col-2">
+              17:00 - 19:00
+            </td>
+            <div class="col-10">
+              <td *ngFor="let hora of array[5]" class="elemento">
+                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{hora:hora}">
+                </ng-container>
+              </td>
+            </div>
+          </tr>
+        </div>
+        <ng-template #simpleLink let-hora='hora'>
+          {{hora.horario_grupo | componenteGrupo:onComponente}}<br>
+          {{hora.horario_grupo | nombreGrupo:grupos}}<br>
+          {{hora.horario_aula | aulaName:aulas}}
+        </ng-template>
+
+        <ng-template #complexLink let-hora='hora'>
+          -
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<ng-template #stillLoading>
+  <div class="google-loader">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</ng-template>
