@@ -90,6 +90,7 @@ import { PlanificacionPipePipe } from './pipes/planificacion-pipe.pipe';
 import { AulaNamePipe } from './pipes/aula-name.pipe';
 import { DocenteByGrupoPipe } from './pipes/docente-by-grupo.pipe';
 import { HorarioDocenteComponent } from './components/reportes/horarios/horario-docente/horario-docente.component';
+import { GpComponenteNoDataPipe } from './pipes/gp-componente-no-data.pipe';
 
 @NgModule({
   declarations: [
@@ -154,6 +155,7 @@ import { HorarioDocenteComponent } from './components/reportes/horarios/horario-
     AulaNamePipe,
     DocenteByGrupoPipe,
     HorarioDocenteComponent,
+    GpComponenteNoDataPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

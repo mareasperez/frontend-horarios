@@ -44,7 +44,10 @@ export class HorarioDocenteComponent implements OnInit {
   public planificaciones: PlanificacionModel[] = [];
   public horarios: HorarioModel[] = [];
   public PDes: PlanEstudioModel[] = [];
-  // temporales 
+  public grupos: GrupoModel[] = [];
+  public componentes: ComponenteModel[] = [];
+  public aulas: AulaModel[] = [];
+  // temporales
   public array: any[][] = new Array();
   // valores seteados por el usuario
   public selectedPlan: PlanificacionModel;
@@ -54,7 +57,10 @@ export class HorarioDocenteComponent implements OnInit {
     private _planificacion: PlanificacionService,
     private _horario: HorarioService,
     private _docente: DocenteService,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private _grupo: GrupoService,
+    private _componente: ComponenteService,
+    private _aula: AulaService
   ) {
     this.promesas.push(
       new Promise((resolve, reject) => {
@@ -63,19 +69,47 @@ export class HorarioDocenteComponent implements OnInit {
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
-      }).then(res => {
-        this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
-        if (!this.selectedPlan) {
-          console.log('no existe planificacion en localStorage seteando');
-          setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
-          this.selectedPlan = this.planificaciones[0];
-          this._docente.getDocente().subscribe(docente => this.docentes.push(docente));
-        }
-      }));
+      })
+        .then(res => {
+          this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
+          if (!this.selectedPlan) {
+            console.log('no existe planificacion en localStorage, seteando');
+            setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
+            this.selectedPlan = this.planificaciones[0];
+            this._docente.getDocente().subscribe(docente => this.docentes.push(docente));
+          }
+        }));
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._docente.getDocente().subscribe(
           docente => this.docentes.push(docente),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._grupo.getGrupos().subscribe(
+          grupo => this.grupos.push(grupo),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._componente.getComponentes().subscribe(
+          componente => this.componentes.push(componente),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._aula.getAula().subscribe(
+          aula => this.aulas.push(aula),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -101,7 +135,7 @@ export class HorarioDocenteComponent implements OnInit {
         });
     }
   }
-  async fun(horarios:HorarioModel[]) {
+  async fun(horarios: HorarioModel[]) {
     let i = 0; let j = 0;
     const vacio = new HorarioModel();
     vacio.horario_vacio = true;

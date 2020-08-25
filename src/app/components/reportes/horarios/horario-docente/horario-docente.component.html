@@ -130,7 +130,7 @@
           </tr>
         </div>
         <ng-template #simpleLink let-hora='hora'>
-          {{hora.horario_grupo | componenteGrupo:onComponente}}<br>
+          {{hora.horario_grupo | gpComponenteNoData: componentes : grupos}}<br>
           {{hora.horario_grupo | nombreGrupo:grupos}}<br>
           {{hora.horario_aula | aulaName:aulas}}
         </ng-template>
