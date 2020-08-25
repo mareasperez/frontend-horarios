@@ -91,6 +91,9 @@ import { AulaNamePipe } from './pipes/aula-name.pipe';
 import { DocenteByGrupoPipe } from './pipes/docente-by-grupo.pipe';
 import { HorarioDocenteComponent } from './components/reportes/horarios/horario-docente/horario-docente.component';
 import { GpComponenteNoDataPipe } from './pipes/gp-componente-no-data.pipe';
+import { HorarioAulaComponent } from './components/reportes/horarios/horario-aula/horario-aula.component';
+import { CompPdeCarreraPipe } from './pipes/comp--pde--carrera.pipe';
+import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
 
 @NgModule({
   declarations: [
@@ -156,6 +159,9 @@ import { GpComponenteNoDataPipe } from './pipes/gp-componente-no-data.pipe';
     DocenteByGrupoPipe,
     HorarioDocenteComponent,
     GpComponenteNoDataPipe,
+    HorarioAulaComponent,
+    CompPdeCarreraPipe,
+    CicloToYearPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

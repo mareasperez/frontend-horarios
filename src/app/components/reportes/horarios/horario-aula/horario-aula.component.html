@@ -11,7 +11,7 @@
         <h5>Departamento de cumputaci&oacute;n</h5>
       </div>
       <div class="col-12 text-center">
-        <h5>Horarios por Docente</h5>
+        <h5>Horarios por Aula</h5>
       </div>
       <div class="col-12 text-center">
         <h5>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
@@ -29,10 +29,20 @@
       </div>
       <div class="col-3">
         <mat-form-field class="font-size-12" appearance="outline">
-          <mat-label>Docentes</mat-label>
-          <mat-select [(ngModel)]="selectedDoc" name="docente" (selectionChange)="getData()">
-            <mat-option *ngFor="let docente of docentes" [value]="docente">
-              {{docente.docente_nombre}}
+          <mat-label>Recintos</mat-label>
+          <mat-select [(ngModel)]="selectedRec" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
+            <mat-option *ngFor="let recinto of recintos" [value]="recinto">
+              {{recinto.recinto_nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-3" *ngIf="aulas[0]">
+        <mat-form-field class="font-size-12" appearance="outline">
+          <mat-label>Aulas</mat-label>
+          <mat-select [(ngModel)]="selectedAula" name="aula" (selectionChange)="getData()">
+            <mat-option *ngFor="let aula of aulas" [value]="aula">
+              {{aula.aula_nombre}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -131,8 +141,9 @@
         </div>
         <ng-template #simpleLink let-hora='hora'>
           {{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}<br>
-          {{hora.horario_grupo | nombreGrupo:grupos}}<br>
-          {{hora.horario_aula | aulaName:aulas}}
+          {{hora.horario_grupo | nombreGrupo:grupos}} -
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear)}}<br>
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
         </ng-template>
 
         <ng-template #complexLink let-hora='hora'>

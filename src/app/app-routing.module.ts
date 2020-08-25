@@ -31,6 +31,7 @@ import { DocenteGruposComponent } from './components/docente-grupos/docente-grup
 import { PlanificacionComponent } from './components/planificacion/planificacion.component';
 import { HorariosCrudComponent } from './components/horarios/horarios.component';
 import { HorarioDocenteComponent } from './components/reportes/horarios/horario-docente/horario-docente.component';
+import { HorarioAulaComponent } from './components/reportes/horarios/horario-aula/horario-aula.component';
 
 
 const routes: Routes = [
@@ -46,8 +47,7 @@ const routes: Routes = [
   // reportes horarios
   { path: 'reporte/horarios/anyo', component: HorariosAnyoComponent, canActivate: [AuthGuard] },
   { path: 'reporte/horarios/docente', component: HorarioDocenteComponent, canActivate: [AuthGuard] },
-  // { path: 'reporte/horarios/docente', component: HorariosComponent, canActivate: [AuthGuard] },
-  // { path: 'reporte/horarios/aula', component: HorariosComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/horarios/aula', component: HorarioAulaComponent, canActivate: [AuthGuard] },
   // demas cosas
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'componente', component: ComponentesListComponent, canActivate: [AuthGuard] },

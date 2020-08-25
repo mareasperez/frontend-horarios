@@ -14,12 +14,18 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { getItemLocalCache, setItemLocalCache } from 'src/app/utils/utils';
 import { HorarioService } from 'src/app/services/horario.service';
 import { HorarioModel } from 'src/app/models/horario.model';
+import { RecintoModel } from 'src/app/models/recinto.model';
+import { RecintoService } from 'src/app/services/recinto.service';
+import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
+import { CarreraModel } from 'src/app/models/carrera.model';
+import { CarreraService } from 'src/app/services/carrera.service';
+
 @Component({
-  selector: 'app-horario-docente',
-  templateUrl: './horario-docente.component.html',
-  styleUrls: ['./horario-docente.component.scss']
+  selector: 'app-horario-aula',
+  templateUrl: './horario-aula.component.html',
+  styleUrls: ['./horario-aula.component.scss']
 })
-export class HorarioDocenteComponent implements OnInit {
+export class HorarioAulaComponent implements OnInit {
   // muestra la animacion de carga
   public isLoaded = false;
   // listas de datos llenadas por el api
@@ -30,11 +36,15 @@ export class HorarioDocenteComponent implements OnInit {
   public grupos: GrupoModel[] = [];
   public componentes: ComponenteModel[] = [];
   public aulas: AulaModel[] = [];
+  public recintos: RecintoModel[] = [];
+  public pdes: PlanEstudioModel[] = [];
+  public carreras: CarreraModel[] = [];
   // temporales
   public array: any[][] = new Array();
   // valores seteados por el usuario
   public selectedPlan: PlanificacionModel;
-  public selectedDoc: DocenteModel;
+  public selectedAula: AulaModel;
+  public selectedREc: RecintoModel;
   constructor(
     // tslint:disable: variable-name
     private _planificacion: PlanificacionService,
@@ -43,7 +53,10 @@ export class HorarioDocenteComponent implements OnInit {
     private _snack: MatSnackBar,
     private _grupo: GrupoService,
     private _componente: ComponenteService,
-    private _aula: AulaService
+    private _aula: AulaService,
+    private _recinto: RecintoService,
+    private _pde: PlanEstudioService,
+    private _carrera: CarreraService
   ) {
     this.promesas.push(
       new Promise((resolve, reject) => {
@@ -90,26 +103,59 @@ export class HorarioDocenteComponent implements OnInit {
     );
     this.promesas.push(
       new Promise((resolve, reject) => {
-        this._aula.getAula().subscribe(
-          aula => this.aulas.push(aula),
+        this._recinto.getRecinto().subscribe(
+          recinto => this.recintos.push(recinto),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._pde.getPlanEstudio().subscribe(
+          pde => this.pdes.push(pde),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._carrera.getCarrera().subscribe(
+          carrera => this.carreras.push(carrera),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
     );
 
+
   }
   ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
+      console.log(this.recintos);
+
       this.isLoaded = true;
     }); // end then
   }
+  getAulas(recinto: number | string) {
+    this.inicializar();
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._aula.getAulaByFilter('aula_recinto', recinto).subscribe(
+          aula => this.aulas.push(aula),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+  }
   getData() {
-    if (this.selectedDoc && this.selectedPlan) {
+    if (this.selectedAula && this.selectedPlan) {
       console.log('mandar a tarer horario');
       new Promise<any>((resolve, reject) => {
-        console.log('el id del Docente es: ', this.selectedDoc.docente_id);
-        this._horario.getHorarioByPlan('docente', this.selectedDoc.docente_id, this.selectedPlan.planificacion_id)
+        console.log('el id del aula es: ', this.selectedAula.aula_id);
+        this._horario.getHorarioByPlan('aula', this.selectedAula.aula_id, this.selectedPlan.planificacion_id)
           .subscribe(res => resolve(res));
       })
         .then((horarios: HorarioModel[]) => {
@@ -147,12 +193,16 @@ export class HorarioDocenteComponent implements OnInit {
         case 17: j = 5; break;
         default: console.log('No such hour exists!', dia); break;
       }
-      console.log(dia);
       this.array[j][i] = dia;
       i = 0;
       j = 0;
     }
     console.log(this.array);
   }
-
+  inicializar() {
+    this.aulas = [];
+    this.horarios = [];
+    this.array = [];
+    this.selectedAula = undefined;
+  }
 }
