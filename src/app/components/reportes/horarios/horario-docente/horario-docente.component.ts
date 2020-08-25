@@ -1,35 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FacultadModel } from 'src/app/models/facultad.model';
-import { FacultadSerivice } from 'src/app/services/facultad.service';
-import { RecintoService } from 'src/app/services/recinto.service';
-import { RecintoModel } from 'src/app/models/recinto.model';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { DepartamentoModel } from 'src/app/models/departamento.model';
-import { DepartamentoService } from 'src/app/services/departamento.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
-import { CarreraModel } from 'src/app/models/carrera.model';
-import { CarreraService } from 'src/app/services/carrera.service';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
-import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { ComponenteModel } from 'src/app/models/componente.model';
-import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
 import { MatSnackBar } from '@angular/material';
-import { Subscription, from } from 'rxjs';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
-import { NumberFormatStyle } from '@angular/common';
 import { getItemLocalCache, setItemLocalCache } from 'src/app/utils/utils';
 import { HorarioService } from 'src/app/services/horario.service';
 import { HorarioModel } from 'src/app/models/horario.model';
-import { async } from '@angular/core/testing';
-import { promise } from 'protractor';
 @Component({
   selector: 'app-horario-docente',
   templateUrl: './horario-docente.component.html',
