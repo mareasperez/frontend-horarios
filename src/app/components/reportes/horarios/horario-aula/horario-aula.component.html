@@ -8,13 +8,10 @@
         <h5>UNAN-Le&oacute;n</h5>
       </div>
       <div class="col-12 text-center">
-        <h5>Departamento de cumputaci&oacute;n</h5>
+        <h5>Departamento de Computaci&oacute;n - Horarios por Aula</h5>
       </div>
       <div class="col-12 text-center">
-        <h5>Horarios por Aula</h5>
-      </div>
-      <div class="col-12 text-center">
-        <h5>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
+        <h5>Semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
           {{selectedPlan.planificacion_anyo_lectivo}}</h5>
       </div>
       <div class="col-3">
@@ -51,7 +48,7 @@
     </div>
 
   </div>
-  <div *ngIf="array.length===6">
+  <div *ngIf="array.length===6; else stillLoading">
     <table class="table" style="width: 80%;">
       <thead>
         <tr class="row">

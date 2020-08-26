@@ -106,5 +106,11 @@ td.elemento {
 table {
     margin: auto;
     align-content: center;
-    text-align: center;
+	text-align: center;
+}
+
+tbody {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 285px;
 }
