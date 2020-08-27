@@ -256,7 +256,7 @@ export class HorariosComponent implements OnInit, OnDestroy {
     const p2 = new Promise<any>(
       (resolve, reject) => {
         console.log('el id del grupo desde getGrupos es: ', id);
-        this._grupo.gerGrupoByFilter('grupo_planificacion', Number(this.selectedPlan.planificacion_id))
+        this._grupo.getGrupoByFilter('grupo_planificacion', Number(this.selectedPlan.planificacion_id))
           .subscribe(
             res => { this.grupos.push(res); console.log('aun estamos en la promesa', res); },
             error => this._snack.open(error, 'OK', { duration: 3000 }),

@@ -59,7 +59,7 @@ export class GrupoService extends MainService {
   deleteGrupo(idgrupo: number | string) {
     return this.delete(idgrupo);
   }
-  gerGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
+  getGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
         if (!data.detail) {
