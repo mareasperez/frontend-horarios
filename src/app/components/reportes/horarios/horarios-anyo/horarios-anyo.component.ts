@@ -27,7 +27,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./horarios-anyo.component.scss']
 })
 export class HorariosAnyoComponent implements OnInit {
-
   // muestra la animacion de carga
   public isLoaded = false;
   public hLoaded = false;
@@ -69,17 +68,15 @@ export class HorariosAnyoComponent implements OnInit {
         this._planificacion.getPlanificaciones().subscribe(
           plan => this.planificaciones.push(plan),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      })
-        .then(res => {
-          this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
-          if (!this.selectedPlan) {
-            console.log('no existe planificacion en localStorage, seteando');
-            setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
-            this.selectedPlan = this.planificaciones[0];
-          }
-        }));
+          () => resolve());
+      }).then(res => {
+        this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
+        if (!this.selectedPlan) {
+          console.log('no existe planificacion en localStorage, seteando');
+          setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
+          this.selectedPlan = this.planificaciones[0];
+        }
+      }));
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._docente.getDocente().subscribe(
@@ -87,8 +84,7 @@ export class HorariosAnyoComponent implements OnInit {
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
-      })
-    );
+      }));
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._componente.getComponentes().subscribe(
@@ -143,15 +139,14 @@ export class HorariosAnyoComponent implements OnInit {
         );
       })
     );
-
-
   }
-  ngOnInit(): void {
 
+  ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
       this.isLoaded = true;
     }); // end then
   }
+
   getGrupos() {
     this.inicializar();
     const head: any = {};
@@ -164,7 +159,6 @@ export class HorariosAnyoComponent implements OnInit {
             carrera: Number(this.selectedCarr.carrera_id),
             ciclo,
             planificacion: Number(this.selectedPlan.planificacion_id)
-
           }
         }, head)
         .toPromise()
@@ -173,13 +167,12 @@ export class HorariosAnyoComponent implements OnInit {
             this.grupos = Object.assign(this.grupos, res.grupos);
             this.getData();
           }
-          else { alert('no hay grupos en el año seleccionado'); }
-
+          else { alert('no hay grupos en el año seleccionado'); console.log(res.detail); }
         });
     }
   }
+
   getData() {
-    // console.log(this.grupos);
     this.rellenar();
     if (this.grupos) {
       this.grupos.map(grupo => {
@@ -188,13 +181,11 @@ export class HorariosAnyoComponent implements OnInit {
         })
           .then((horario: HorarioModel[]) => {
             this.fun(horario);
-            // console.log(horario);
-          })
-          .finally(() => {
           });
       });
     }
   }
+
   rellenar() {
     const vacio = new HorarioModel();
     vacio.horario_vacio = true;
@@ -208,74 +199,28 @@ export class HorariosAnyoComponent implements OnInit {
       }
     }
   }
+
   async fun(horarios: HorarioModel[]) {
-    // console.log('recibio: ', horarios);
     let i = 0;
     let j = 0;
     for (const dia of horarios) {
-      // console.log(dia);
       switch (dia.horario_dia) {
-        case 'Lunes': {
-          i = 0;
-          break;
-        }
-        case 'Martes': {
-          i = 1;
-          break;
-        }
-        case 'Miercoles': {
-          i = 2;
-          break;
-        }
-        case 'Jueves': {
-          i = 3;
-          break;
-        }
-        case 'Viernes': {
-          i = 4;
-          break;
-        }
-        default:
-          {
-            console.log('No such day exists!', dia);
-            break;
-          }
+        case 'Lunes': { i = 0; break; }
+        case 'Martes': { i = 1; break; }
+        case 'Miercoles': { i = 2; break; }
+        case 'Jueves': { i = 3; break; }
+        case 'Viernes': { i = 4; break; }
+        default: { console.log('No such day exists!', dia); break; }
       }
       switch (dia.horario_hora) {
-        case 7: {
-          j = 0;
-          break;
-        }
-        case 9: {
-          j = 1;
-          break;
-        }
-        case 11: {
-          j = 2;
-          break;
-        }
-        case 13: {
-          // console.log('llego al jueves y se debe meter: ', dia);
-          j = 3;
-          break;
-        }
-        case 15: {
-          j = 4;
-          break;
-        }
-        case 17: {
-          j = 5;
-          break;
-        }
-        default:
-          {
-            console.log('No such Hour exists!', dia);
-            break;
-          }
+        case 7: { j = 0; break; }
+        case 9: { j = 1; break; }
+        case 11: { j = 2; break; }
+        case 13: { j = 3; break; }
+        case 15: { j = 4; break; }
+        case 17: { j = 5; break; }
+        default: { console.log('No such Hour exists!', dia); break; }
       }
-      // console.log(dia);
-      const diaView = new HorarioModel();
-      // console.log(dia);
       if (!dia.horario_vacio) {
         if (this.array[j][i][0].horario_vacio) {
           this.array[j][i].pop();
@@ -283,21 +228,15 @@ export class HorariosAnyoComponent implements OnInit {
         } else {
           this.array[j][i].push(dia);
         }
-        i = 0;
-        j = 0;
+        i = 0; j = 0;
       }
     }
     this.hLoaded = true;
-    // console.log(this.array);
   }
+
   inicializar() {
     this.array = [];
     this.grupos = [];
     this.hLoaded = false;
-  }
-
-  mostrar(array: any) {
-    console.log('guia para borachos');
-    console.log(array);
   }
 }
