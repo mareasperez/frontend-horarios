@@ -303,4 +303,9 @@ export class HorariosAnyoComponent implements OnInit {
     this.horarios = [];
     this.array = [];
   }
+
+  mostrar(array: any) {
+    console.log('guia para borachos');
+    console.log(array);
+  }
 }

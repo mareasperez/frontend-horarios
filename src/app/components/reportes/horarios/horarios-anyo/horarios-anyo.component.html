@@ -2,22 +2,21 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 text-center">
-        <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+        <h5>Universidad Nacional Autonoma de Nicaragua</h5>
       </div>
       <div class="col-12 text-center">
         <h5>UNAN-Le&oacute;n</h5>
       </div>
       <div class="col-12 text-center">
-        <h5>Departamento de cumputaci&oacute;n</h5>
+        <h6>Departamento de Computaci&oacute;n - Horarios por A&ntilde;o</h6>
       </div>
       <div class="col-12 text-center">
-        <h5>Horarios por Aula</h5>
+        <h6>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
+          {{selectedPlan.planificacion_anyo_lectivo}}</h6>
       </div>
-      <div class="col-12 text-center">
-        <h5>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
-          {{selectedPlan.planificacion_anyo_lectivo}}</h5>
-      </div>
-      <div class="col-3">
+    </div>
+    <div class="row center">
+      <div class="col-4">
         <mat-form-field class="font-size-12" appearance="outline">
           <mat-label>Planificaci&oacute;n</mat-label>
           <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getGrupos()">
@@ -27,7 +26,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <mat-form-field class="font-size-12" appearance="outline">
           <mat-label>Carreras</mat-label>
           <mat-select [(ngModel)]="selectedCarr" name="carrera" (selectionChange)="getGrupos()">
@@ -37,7 +36,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <mat-form-field class="font-size-12" appearance="outline">
           <mat-label>Años</mat-label>
           <mat-select name="anyos" [(ngModel)]="selectedAnyo" (selectionChange)="getGrupos()">
@@ -46,12 +45,11 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-
       </div>
     </div>
 
   </div>
-  <!-- <div *ngIf="array.length===6">
+  <div *ngIf="array.length===6">
     <table class="table" style="width: 80%;">
       <thead>
         <tr class="row">
@@ -70,9 +68,9 @@
               7:00 - 9:00
             </td>
             <div class="col-10">
-              <td *ngFor="let hora of array[0]" class="elemento">
-                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
-                  [ngTemplateOutletContext]="{hora:hora}">
+              <td *ngFor="let horas of array[0]" class="elemento">
+                <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{horas:horas}">
                 </ng-container>
               </td>
             </div>
@@ -83,9 +81,9 @@
               9:00 - 11:00
             </td>
             <div class="col-10">
-              <td *ngFor="let hora of array[1]" class="elemento">
-                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
-                  [ngTemplateOutletContext]="{hora:hora}">
+              <td *ngFor="let horas of array[1]" class="elemento">
+                <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{horas:horas}">
                 </ng-container>
               </td>
             </div>
@@ -95,9 +93,9 @@
               11:00 - 13:00
             </td>
             <div class="col-10">
-              <td *ngFor="let hora of array[2]" class="elemento">
-                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
-                  [ngTemplateOutletContext]="{hora:hora}">
+              <td *ngFor="let horas of array[2]" class="elemento">
+                <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{horas:horas}">
                 </ng-container>
               </td>
             </div>
@@ -107,9 +105,9 @@
               13:00 - 15:00
             </td>
             <div class="col-10">
-              <td *ngFor="let hora of array[3]" class="elemento">
-                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
-                  [ngTemplateOutletContext]="{hora:hora}">
+              <td *ngFor="let horas of array[3]" class="elemento">
+                <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{horas:horas}">
                 </ng-container>
               </td>
             </div>
@@ -119,9 +117,9 @@
               15:00 - 17:00
             </td>
             <div class="col-10">
-              <td *ngFor="let hora of array[4]" class="elemento">
-                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
-                  [ngTemplateOutletContext]="{hora:hora}">
+              <td *ngFor="let horas of array[4]" class="elemento">
+                <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{horas:horas}">
                 </ng-container>
               </td>
             </div>
@@ -131,19 +129,23 @@
               17:00 - 19:00
             </td>
             <div class="col-10">
-              <td *ngFor="let hora of array[5]" class="elemento">
-                <ng-container [ngTemplateOutlet]="hora.horario_vacio === isLoaded ? complexLink : simpleLink"
-                  [ngTemplateOutletContext]="{hora:hora}">
+              <td *ngFor="let horas of array[5]" class="elemento">
+                <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+                  [ngTemplateOutletContext]="{horas:horas}">
                 </ng-container>
               </td>
             </div>
           </tr>
         </div>
-        <ng-template #simpleLink let-hora='hora'>
-          {{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}<br>
-          {{hora.horario_grupo | nombreGrupo:grupos}} -
-          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear)}}<br>
-          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
+        <ng-template #simpleLink let-horas='horas'>
+          <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
+            <div *ngFor="let hora of horas">
+              {{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}
+              Aula: {{hora.horario_aula | aulaName: aulas}}
+              {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
+              <br>
+            </div>
+            </div>
         </ng-template>
 
         <ng-template #complexLink let-hora='hora'>
@@ -151,23 +153,40 @@
         </ng-template>
       </tbody>
     </table>
-  </div> -->
-  <div *ngIf="array.length===6">
-    <mat-grid-list cols="5" rowHeight="3:1" *ngFor="let dias of array">
-      <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas[0].horario_vacio ? 'true' : 'false'">
-        <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
-          <div *ngFor="let hora of horas">
-            {{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}
-            Aula: {{hora.horario_aula | aulaName: aulas}}
-            {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
-            <br>
-          </div>
-
-        </div>
-      </mat-grid-tile>
-
-    </mat-grid-list>
   </div>
+  <!-- <div *ngIf="array.length===6">
+    <table class="table" style="width: 100%;">
+      <thead>
+        <tr class="row">
+          <th class="col-2">Hora</th>
+          <th class="col-2">Lunes</th>
+          <th class="col-2">Martes</th>
+          <th class="col-2">Mi&eacute;rcoles</th>
+          <th class="col-2">Jueves</th>
+          <th class="col-2">Viernes</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="row">
+      <div class="col-2" style="background-color: black; height: 900px;"></div>
+      <div class="col-10">
+        <mat-grid-list cols="5" rowHeight="1:1" *ngFor="let dias of array">
+        <mat-grid-tile *ngFor="let horas of dias" [ngClass]="horas[0].horario_vacio ? 'true' : 'false'">
+          <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
+            <div *ngFor="let hora of horas">
+              {{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}
+              Aula: {{hora.horario_aula | aulaName: aulas}}
+              {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
+              <br>
+            </div>
+  
+          </div>
+        </mat-grid-tile>
+  
+      </mat-grid-list>
+    </div>
+    </div>
+  </div> -->
 </div>
 
 <ng-template #stillLoading>
