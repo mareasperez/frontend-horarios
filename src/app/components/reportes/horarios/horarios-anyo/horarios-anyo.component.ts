@@ -20,8 +20,6 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
-import { error } from 'console';
-
 
 @Component({
   selector: 'app-horarios-anyo',
@@ -32,6 +30,7 @@ export class HorariosAnyoComponent implements OnInit {
 
   // muestra la animacion de carga
   public isLoaded = false;
+  public hLoaded = false;
   // años aceptados
   anyos = [1, 2, 3, 4, 5];
   // listas de datos llenadas por el api
@@ -90,15 +89,6 @@ export class HorariosAnyoComponent implements OnInit {
         );
       })
     );
-    // this.promesas.push(
-    //   new Promise((resolve, reject) => {
-    //     this._grupo.getGrupos().subscribe(
-    //       grupo => this.grupos.push(grupo),
-    //       error => this._snack.open(error, 'OK', { duration: 3000 }),
-    //       () => resolve()
-    //     );
-    //   })
-    // );
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._componente.getComponentes().subscribe(
@@ -163,7 +153,7 @@ export class HorariosAnyoComponent implements OnInit {
     }); // end then
   }
   getGrupos() {
-    this.grupos = [];
+    this.inicializar();
     const head: any = {};
     head['Content-Type'] = 'application/json';
     if (this.selectedPlan && this.selectedCarr && this.selectedAnyo) {
@@ -297,11 +287,13 @@ export class HorariosAnyoComponent implements OnInit {
         j = 0;
       }
     }
+    this.hLoaded = true;
     // console.log(this.array);
   }
   inicializar() {
-    this.horarios = [];
     this.array = [];
+    this.grupos = [];
+    this.hLoaded = false;
   }
 
   mostrar(array: any) {

@@ -16,7 +16,6 @@ import { VerdocenteComponent } from './components/docente/verdocente/verdocente.
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
-import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
 import { CargaComponent } from './components/reportes/carga/carga.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';

@@ -13,6 +13,13 @@ export class GpComponenteNoDataPipe implements PipeTransform {
       const componente: ComponenteModel = componentes.find((a: ComponenteModel) => grupo.grupo_componente === a.componente_id);
       return componente;
     }
+    else {
+      console.log('error de busqueda de componente con id: ' + id);
+      const componente = new ComponenteModel();
+      componente.componente_nombre = 'busqueda fallida';
+      return componente;
+    }
+
   }
 
 }
