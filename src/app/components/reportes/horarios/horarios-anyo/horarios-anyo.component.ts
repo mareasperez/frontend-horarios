@@ -20,6 +20,7 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
+import { error } from 'console';
 
 
 @Component({
@@ -116,19 +117,37 @@ export class HorariosAnyoComponent implements OnInit {
         );
       })
     );
-    // this.promesas.push(
-    //   new Promise((resolve, reject) => {
-    //     this._pde.getPlanEstudio().subscribe(
-    //       pde => this.pdes.push(pde),
-    //       error => this._snack.open(error, 'OK', { duration: 3000 }),
-    //       () => resolve()
-    //     );
-    //   })
-    // );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._pde.getPlanEstudio().subscribe(
+          pde => this.pdes.push(pde),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._carrera.getCarrera().subscribe(
           carrera => this.carreras.push(carrera),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._aula.getAula().subscribe(
+          aula => this.aulas.push(aula),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._pde.getPlanEstudio().subscribe(
+          pde => this.pdes.push(pde),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -144,6 +163,7 @@ export class HorariosAnyoComponent implements OnInit {
     }); // end then
   }
   getGrupos() {
+    this.grupos = [];
     const head: any = {};
     head['Content-Type'] = 'application/json';
     if (this.selectedPlan && this.selectedCarr && this.selectedAnyo) {
@@ -159,15 +179,33 @@ export class HorariosAnyoComponent implements OnInit {
         }, head)
         .toPromise()
         .then((res: any) => {
-          this.grupos = res;
-          this.getData();
+          if (!res.detail) {
+            this.grupos = Object.assign(this.grupos, res.grupos);
+            this.getData();
+          }
+          else { alert('no hay grupos en el año seleccionado'); }
+
         });
     }
   }
   getData() {
+    // console.log(this.grupos);
+    this.rellenar();
+    if (this.grupos) {
+      this.grupos.map(grupo => {
+        new Promise<any>((resolve, reject) => {
+          this._horario.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe(res => resolve(res));
+        })
+          .then((horario: HorarioModel[]) => {
+            this.fun(horario);
+            // console.log(horario);
+          })
+          .finally(() => {
+          });
+      });
+    }
   }
-  async fun(horarios: HorarioModel[]) {
-    let i = 0; let j = 0;
+  rellenar() {
     const vacio = new HorarioModel();
     vacio.horario_vacio = true;
     for (let aux = 0; aux < 6; aux++) {
@@ -175,32 +213,91 @@ export class HorariosAnyoComponent implements OnInit {
     }
     for (let aux = 0; aux < 5; aux++) {
       for (let aux2 = 0; aux2 < 6; aux2++) {
-        this.array[aux2][aux] = vacio;
+        this.array[aux2][aux] = new Array();
+        this.array[aux2][aux].push(vacio);
       }
     }
+  }
+  async fun(horarios: HorarioModel[]) {
+    // console.log('recibio: ', horarios);
+    let i = 0;
+    let j = 0;
     for (const dia of horarios) {
+      // console.log(dia);
       switch (dia.horario_dia) {
-        case 'Lunes': i = 0; break;
-        case 'Martes': i = 1; break;
-        case 'Miercoles': i = 2; break;
-        case 'Jueves': i = 3; break;
-        case 'Viernes': i = 4; break;
-        default: console.log('No such day exists!', dia); break;
+        case 'Lunes': {
+          i = 0;
+          break;
+        }
+        case 'Martes': {
+          i = 1;
+          break;
+        }
+        case 'Miercoles': {
+          i = 2;
+          break;
+        }
+        case 'Jueves': {
+          i = 3;
+          break;
+        }
+        case 'Viernes': {
+          i = 4;
+          break;
+        }
+        default:
+          {
+            console.log('No such day exists!', dia);
+            break;
+          }
       }
       switch (dia.horario_hora) {
-        case 7: j = 0; break;
-        case 9: j = 1; break;
-        case 11: j = 2; break;
-        case 13: j = 3; break;
-        case 15: j = 4; break;
-        case 17: j = 5; break;
-        default: console.log('No such hour exists!', dia); break;
+        case 7: {
+          j = 0;
+          break;
+        }
+        case 9: {
+          j = 1;
+          break;
+        }
+        case 11: {
+          j = 2;
+          break;
+        }
+        case 13: {
+          // console.log('llego al jueves y se debe meter: ', dia);
+          j = 3;
+          break;
+        }
+        case 15: {
+          j = 4;
+          break;
+        }
+        case 17: {
+          j = 5;
+          break;
+        }
+        default:
+          {
+            console.log('No such Hour exists!', dia);
+            break;
+          }
       }
-      this.array[j][i] = dia;
-      i = 0;
-      j = 0;
+      // console.log(dia);
+      const diaView = new HorarioModel();
+      // console.log(dia);
+      if (!dia.horario_vacio) {
+        if (this.array[j][i][0].horario_vacio) {
+          this.array[j][i].pop();
+          this.array[j][i].push(dia);
+        } else {
+          this.array[j][i].push(dia);
+        }
+        i = 0;
+        j = 0;
+      }
     }
-    console.log(this.array);
+    // console.log(this.array);
   }
   inicializar() {
     this.horarios = [];

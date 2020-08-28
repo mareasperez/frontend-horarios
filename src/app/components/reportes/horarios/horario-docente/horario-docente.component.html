@@ -133,6 +133,8 @@
           {{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}<br>
           {{hora.horario_grupo | nombreGrupo:grupos}}<br>
           {{hora.horario_aula | aulaName:aulas}}
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear)}}<br>
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
         </ng-template>
 
         <ng-template #complexLink let-hora='hora'>
