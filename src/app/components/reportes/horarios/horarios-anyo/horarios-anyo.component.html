@@ -50,7 +50,7 @@
 
   </div>
   <div *ngIf="selectedAnyo && selectedCarr && selectedPlan">
-    <div *ngIf="array.length===6; else stillLoading">
+    <div *ngIf="array.length===6; else stillLoading2">
       <table class="table" style="width: 80%;">
         <thead>
           <tr class="row">
@@ -158,15 +158,19 @@
 </ng-template>
 <ng-template #stillLoading2>
   <div class="center col-2">
-    <div class="loadingio-spinner-pulse-9xg7ug48hnw">
-      <div class="ldio-61e31mvdy4a">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
         <div></div>
         <div></div>
-        <div></div>
+        <div>
+          <div></div>
+        </div>
+        <div>
+          <div></div>
+        </div>
       </div>
     </div>
   </div>
-
 </ng-template>
 
 
