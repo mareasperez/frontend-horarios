@@ -28,6 +28,7 @@ import { CarreraService } from 'src/app/services/carrera.service';
 export class HorarioAulaComponent implements OnInit {
   // muestra la animacion de carga
   public isLoaded = false;
+  public hloaded = false;
   // listas de datos llenadas por el api
   private promesas: Promise<any>[] = [];
   public docentes: DocenteModel[] = [];
@@ -134,7 +135,6 @@ export class HorarioAulaComponent implements OnInit {
   ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
       console.log(this.recintos);
-
       this.isLoaded = true;
     }); // end then
   }
@@ -152,9 +152,8 @@ export class HorarioAulaComponent implements OnInit {
   }
   getData() {
     if (this.selectedAula && this.selectedPlan) {
-      console.log('mandar a tarer horario');
+      this.array = []; this.hloaded = false;
       new Promise<any>((resolve, reject) => {
-        console.log('el id del aula es: ', this.selectedAula.aula_id);
         this._horario.getHorarioByPlan('aula', this.selectedAula.aula_id, this.selectedPlan.planificacion_id)
           .subscribe(res => resolve(res));
       })
@@ -197,7 +196,7 @@ export class HorarioAulaComponent implements OnInit {
       i = 0;
       j = 0;
     }
-    console.log(this.array);
+    this.hloaded = true;
   }
   inicializar() {
     this.aulas = [];
