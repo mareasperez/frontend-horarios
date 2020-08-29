@@ -130,9 +130,7 @@ export class HorarioDocenteComponent implements OnInit {
   }
   getData() {
     if (this.selectedDoc && this.selectedPlan) {
-      console.log('mandar a tarer horario');
       new Promise<any>((resolve, reject) => {
-        console.log('el id del Docente es: ', this.selectedDoc.docente_id);
         this._horario.getHorarioByPlan('docente', this.selectedDoc.docente_id, this.selectedPlan.planificacion_id)
           .subscribe(res => resolve(res));
       })
@@ -176,7 +174,6 @@ export class HorarioDocenteComponent implements OnInit {
       i = 0;
       j = 0;
     }
-    console.log(this.array);
   }
 
 }

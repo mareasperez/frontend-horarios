@@ -143,26 +143,8 @@
     </div>
   </div>
 
-
-  <ng-template #stillLoading2>
-    <div class="center col-2">
-      <div class="loadingio-spinner-double-ring-l8019rag0l">
-        <div class="ldio-c3a0kh417ci">
-          <div></div>
-          <div></div>
-          <div>
-            <div></div>
-          </div>
-          <div>
-            <div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-
 </div>
+
 <ng-template #simpleLink let-hora='hora'>
   <b>{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
   {{hora.horario_grupo | nombreGrupo:grupos}} -
@@ -183,4 +165,21 @@
     </div>
   </div>
 
+</ng-template>
+
+<ng-template #stillLoading2>
+  <div class="center col-2">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
+        <div></div>
+        <div></div>
+        <div>
+          <div></div>
+        </div>
+        <div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>
