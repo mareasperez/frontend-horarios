@@ -17,6 +17,8 @@ import { HorarioModel } from 'src/app/models/horario.model';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraService } from 'src/app/services/carrera.service';
+import { RecintoModel } from 'src/app/models/recinto.model';
+import { RecintoService } from 'src/app/services/recinto.service';
 @Component({
   selector: 'app-horario-docente',
   templateUrl: './horario-docente.component.html',
@@ -33,6 +35,7 @@ export class HorarioDocenteComponent implements OnInit {
   public grupos: GrupoModel[] = [];
   public componentes: ComponenteModel[] = [];
   public aulas: AulaModel[] = [];
+  public recintos: RecintoModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public carreras: CarreraModel[] = [];
   // temporales
@@ -49,6 +52,7 @@ export class HorarioDocenteComponent implements OnInit {
     private _grupo: GrupoService,
     private _componente: ComponenteService,
     private _aula: AulaService,
+    private _recinto: RecintoService,
     private _pde: PlanEstudioService,
     private _carrera: CarreraService
   ) {
@@ -117,6 +121,15 @@ export class HorarioDocenteComponent implements OnInit {
       new Promise((resolve, reject) => {
         this._carrera.getCarrera().subscribe(
           carrera => this.carreras.push(carrera),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._recinto.getRecinto().subscribe(
+          recinto => this.recintos.push(recinto),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );

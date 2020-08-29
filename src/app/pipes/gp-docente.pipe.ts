@@ -16,7 +16,7 @@ export class GpDocentePipe implements PipeTransform {
     else {
       console.log('error de busqueda de Docente con id: ' + id);
       const docente = new DocenteModel();
-      docente.docente_nombre = 'busqueda fallida';
+      docente.docente_nombre = 'No Asignado';
       return docente;
     }
   }

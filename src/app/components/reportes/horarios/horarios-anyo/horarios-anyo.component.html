@@ -179,12 +179,12 @@
     <div *ngFor="let hora of horas">
       <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
       Docente: {{(hora.horario_grupo | gpDocente: docentes : grupos).docente_nombre}}<br>
-      Aula: {{hora.horario_aula | aulaName: aulas}}
+      {{hora.horario_aula | aulaName: aulas}} - {{(hora.horario_aula | gpRecinto: recintos : aulas).recinto_nombre}}
       <br>
     </div>
   </div>
 </ng-template>
 
 <ng-template #complexLink let-hora='hora'>
-  -
+  <b>-</b>
 </ng-template>

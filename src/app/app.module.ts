@@ -93,6 +93,7 @@ import { GpDocentePipe } from './pipes/gp-docente.pipe';
 import { HorarioAulaComponent } from './components/reportes/horarios/horario-aula/horario-aula.component';
 import { CompPdeCarreraPipe } from './pipes/comp--pde--carrera.pipe';
 import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
+import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
 
 @NgModule({
   declarations: [
@@ -160,6 +161,7 @@ import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
     HorarioAulaComponent,
     CompPdeCarreraPipe,
     CicloToYearPipe,
+    GpRecintoPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
