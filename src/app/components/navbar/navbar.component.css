@@ -11,4 +11,12 @@
 
 .contenidos {
     height: 90%;
+    background-image: url(../../../assets/images/wallpaper.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+}
+.ima {
+    width: 40px;
+    height: 45px;
 }

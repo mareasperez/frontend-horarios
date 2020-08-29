@@ -177,9 +177,9 @@
 <ng-template #simpleLink let-horas='horas'>
   <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
     <div *ngFor="let hora of horas">
-      <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b>
+      <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
+      Docente: {{(hora.horario_grupo | gpDocente: docentes : grupos).docente_nombre}}<br>
       Aula: {{hora.horario_aula | aulaName: aulas}}
-      {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
       <br>
     </div>
   </div>
