@@ -56,6 +56,25 @@ export class DocenteHorasService extends MainService {
     return this.delete(iddocH);
   }
 
+  getDocenteHoraByFilter(filtro: string, id: number | string): Observable<DocenteHorasModel> {
+    return new Observable(observer => {
+      this.getByFiltro(filtro, id).subscribe(data => {
+        if (!data.detail) {
+          data.docenteHoras.forEach(el => {
+            // console.log(el);
+            let doho = new DocenteHorasModel();
+            doho = Object.assign(doho, el);
+            this.list.push(doho);
+            observer.next(doho);
+          });
+        } else {
+          this.errorObten(data.detail);
+        }
+        observer.complete();
+      });
+    });
+  }
+
   updateList(data: wsModel) {
     // console.log(data)
     let dco = new DocenteHorasModel();

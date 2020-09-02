@@ -17,7 +17,6 @@ import { AdddocenteComponent } from './components/docente/adddocente/adddocente.
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 import { HomeComponent } from './components/home/home.component';
-import { CargaComponent } from './components/reportes/carga/carga.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios/horarios-anyo/horarios-anyo.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
@@ -37,12 +36,12 @@ const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
   // reportes cargas
-  { path: 'reporte/carga', component: CargaComponent, canActivate: [AuthGuard] }, // debe quitarse solo es de prueba
-  { path: 'reporte/cargas/total', component: CargasComponent, canActivate: [AuthGuard] },
-  { path: 'reporte/cargas/planta', component: CargasComponent, canActivate: [AuthGuard] },
-  { path: 'reporte/cargas/horaria', component: CargasComponent, canActivate: [AuthGuard] },
   { path: 'reporte/cargas/docencia', component: CargaDocenciaComponent, canActivate: [AuthGuard] },
   { path: 'reporte/cargas/componentes', component: CargaComponentesComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/:reporte', component: CargasComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/planta', component: CargasComponent, canActivate: [AuthGuard] },
+  { path: 'reporte/cargas/horaria', component: CargasComponent, canActivate: [AuthGuard] },
+
   // reportes horarios
   { path: 'reporte/horarios/anyo', component: HorariosAnyoComponent, canActivate: [AuthGuard] },
   { path: 'reporte/horarios/docente', component: HorarioDocenteComponent, canActivate: [AuthGuard] },

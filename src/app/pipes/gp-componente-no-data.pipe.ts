@@ -7,6 +7,7 @@ import { GrupoModel } from '../models/grupo.model';
 })
 export class GpComponenteNoDataPipe implements PipeTransform {
 
+  // {{(id | gpComponenteNoData: componentes : grupos).componente_nombre}}
   transform(id: string, componentes: ComponenteModel[], grupos: GrupoModel[]): ComponenteModel {
     if (id !== undefined && id !== null && componentes.length > 0 && grupos.length > 0) {
       const grupo: GrupoModel = grupos.find(gp => id === gp.grupo_id);

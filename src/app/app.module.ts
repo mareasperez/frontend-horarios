@@ -26,10 +26,10 @@ import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
 import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
-import {AuthGuardService} from './services/auth-guard.service';
+import { AuthGuardService } from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
-import { VerplanestudioComponent} from './components/planestudio/verplanestudio/verplanestudio.component';
+import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { JWTtokenGetter } from './token.getter';
@@ -50,7 +50,6 @@ import { GrupoService } from './services/grupo.service';
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
-import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
@@ -76,7 +75,7 @@ import { AddGrupoComponent } from './components/grupo/add-grupo/add-grupo.compon
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
 import { ComponenteGrupoPipe } from './pipes/componente-grupo.pipe';
 import { NombreGrupoPipe } from './pipes/nombre-grupo.pipe';
-import { HorariosCrudComponent } from './components/horarios/horarios.component'
+import { HorariosCrudComponent } from './components/horarios/horarios.component';
 import { AddHorarioComponent } from './components/horarios/add-horario/add-horario.component';
 import { RecintoNombrePipe } from './pipes/recinto-nombre.pipe';
 import { ComponenteNameSimplePipe } from './pipes/componente-name-simple.pipe';
@@ -117,7 +116,6 @@ import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
     HomeComponent,
     ComponentesComponent,
     GrupoComponent,
-    CargaComponent,
     CargasComponent,
     AddcarreraComponent,
     VercarreraComponent,
@@ -178,10 +176,11 @@ import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
     FormsModule,
     ReactiveFormsModule,
     JwtModule.forRoot({
-      config: {tokenGetter: JWTtokenGetter,
-      whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/',
-       'localhost:4200', '192.168.10.9:8000'],
-      blacklistedRoutes: ['http://localhost:3000/api/auth/'],
+      config: {
+        tokenGetter: JWTtokenGetter,
+        whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/',
+          'localhost:4200', '192.168.10.9:8000'],
+        blacklistedRoutes: ['http://localhost:3000/api/auth/'],
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

@@ -7,6 +7,7 @@ import { ComponenteModel } from '../models/componente.model';
   name: 'compPdeCarrera'
 })
 export class CompPdeCarreraPipe implements PipeTransform {
+  // {{(Componente_id |compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
 
   transform(id: string, componentes: ComponenteModel[], pdes: PlanEstudioModel[], carreras: CarreraModel[]): CarreraModel {
     // console.log('llega id: ',id+'comp: '+componentes+' pdes: '+pdes+' carreras: '+carreras);

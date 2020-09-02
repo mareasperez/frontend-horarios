@@ -1,4 +1,4 @@
-<div class="row" *ngIf="!loader && reportes.length==0">
+<!-- <div class="row" *ngIf="!loader && reportes.length==0">
   <div class="col">
     <h4>Seleccione Planificacion</h4>
     <mat-form-field apparaence="outline">
@@ -65,4 +65,85 @@
       <br>
     </div>
   </div>
+</div> -->
+<div *ngIf="isLoaded; else stillLoading">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h5>Universidad Nacional Autonoma de Nicaragua</h5>
+      </div>
+      <div class="col-12 text-center">
+        <h5>UNAN-Le&oacute;n</h5>
+      </div>
+      <div class="col-12 text-center">
+        <h6>Departamento de Computaci&oacute;n - Horarios por A&ntilde;o</h6>
+      </div>
+      <div *ngIf="selectedPlan" class="col-12 text-center">
+        <h6>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
+          {{selectedPlan.planificacion_anyo_lectivo}}</h6>
+      </div>
+    </div>
+    <div class="row center">
+      <div class="col-4">
+        <mat-form-field class="font-size-12" appearance="outline">
+          <mat-label>Planificaci&oacute;n</mat-label>
+          <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getData()">
+            <mat-option *ngFor="let plan of planificaciones" [value]="plan">
+              Semestre {{plan.planificacion_semestre}} año {{plan.planificacion_anyo_lectivo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngFor="let reporte of reportes">
+      <table style="width: 100%" class="table">
+        <tr class="thead-dark row">
+          <th class="col-4">{{reporte.docente.docente_nombre}}</th>
+          <th class="col-2">Carrera</th>
+          <th class="col-2">A&ntilde;o</th>
+          <th class="col-2">No de Grupo</th>
+          <th class="col-2">No de Hora</th>
+        </tr>
+        <tr *ngFor="let grupo of reporte.grupos" class="row">
+          <td class="col-4">{{(grupo.grupo_id | gpComponenteNoData: componentes : grupos).componente_nombre}}</td>
+          <td class="col-2">{{(grupo.grupo_componente |compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}</td>
+          <td class="col-2">{{(grupo.grupo_id | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear}}</td>
+          <td class="col-2">{{grupo.grupo_numero}}</td>
+          <td class="col-2">{{grupo.grupo_horas_clase}}</td>
+        </tr>
+      </table>
+      <!-- <div *ngIf="reporte.suma<reporte.th" class="warning horas">{{reporte.suma}}/{{reporte.th}}</div>
+      <div *ngIf="reporte.suma==reporte.th" class="success horas">{{reporte.suma}}/{{reporte.th}}</div>
+      <div *ngIf="reporte.suma>reporte.th" class="danger horas">{{reporte.suma}}/{{reporte.th}}</div> -->
+      <br>
+    </div>
+  </div>
 </div>
+
+<ng-template #stillLoading>
+  <div class="center col-2">
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+</ng-template>
+<ng-template #stillLoading2>
+  <div class="center col-2">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
+        <div></div>
+        <div></div>
+        <div>
+          <div></div>
+        </div>
+        <div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

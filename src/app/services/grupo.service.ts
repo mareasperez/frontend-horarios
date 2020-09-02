@@ -59,12 +59,12 @@ export class GrupoService extends MainService {
   deleteGrupo(idgrupo: number | string) {
     return this.delete(idgrupo);
   }
-  getGrupoByFilter(filtro: string, id: number): Observable<GrupoModel> {
+  getGrupoByFilter(filtro: string, id: number | string): Observable<GrupoModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
         if (!data.detail) {
           data.grupo.forEach(el => {
-            console.log(el);
+            // console.log(el);
             let grupo = new GrupoModel();
             grupo = Object.assign(grupo, el);
             this.list.push(grupo);
