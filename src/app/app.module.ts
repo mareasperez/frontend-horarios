@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatToolbarModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
@@ -93,6 +93,7 @@ import { HorarioAulaComponent } from './components/reportes/horarios/horario-aul
 import { CompPdeCarreraPipe } from './pipes/comp--pde--carrera.pipe';
 import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
 import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
+import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
 
 @NgModule({
   declarations: [
@@ -160,6 +161,7 @@ import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
     CompPdeCarreraPipe,
     CicloToYearPipe,
     GpRecintoPipe,
+    SumaGruposDocentePipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
@@ -207,7 +209,8 @@ import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
     DocenteHorasService,
     DocenteAreaService,
     GrupoService,
-    DocenteNamePipe
+    DocenteNamePipe,
+    Title
   ],
   bootstrap: [AppComponent]
 })

@@ -15,9 +15,11 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { MatSnackBar } from '@angular/material';
+import { Title } from '@angular/platform-browser';
 class ReporteCargaModel {
   docente: DocenteModel;
   grupos: Array<GrupoModel>;
+  horas: DocenteHorasModel;
 }
 
 @Component({
@@ -55,7 +57,8 @@ export class CargasComponent implements OnInit, OnDestroy {
     private _planificacion: PlanificacionService,
     private _doho: DocenteHorasService,
     private route: ActivatedRoute,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private _title: Title
   ) {
     this.promesas.push(
       new Promise((resolve, reject) => {
@@ -115,7 +118,9 @@ export class CargasComponent implements OnInit, OnDestroy {
       this.isLoaded = true;
     }); // end then
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.query = (params.get('reporte'));
+      this.reportes = []; this.grupos = []; this.doho = [];
+      this.query = params.get('reporte');
+      this._title.setTitle('Carga ' + this.query);
     });
     console.log('init');
   }
@@ -169,7 +174,12 @@ export class CargasComponent implements OnInit, OnDestroy {
     const reporte = new ReporteCargaModel();
     reporte.docente = docente;
     const dh = this.doho.find(doho => doho.dh_docente === docente.docente_id);
-    dh ? null : console.log('docente: ', docente.docente_nombre, ' no planificado');
+    if (dh === undefined) {
+      reporte.horas = new DocenteHorasModel(); reporte.horas.dh_horas_total = 0;
+    }
+    else {
+      reporte.horas = dh;
+    }
     switch (this.query) {
       case 'horario': {
         grupos = this.grupos.filter(grupo => (grupo.grupo_docente === docente.docente_id) && (!grupo.grupo_planta));
