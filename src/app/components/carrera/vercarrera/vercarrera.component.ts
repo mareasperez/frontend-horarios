@@ -6,6 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddcarreraComponent } from '../addcarrera/addcarrera.component';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-vercarrera',
@@ -25,11 +26,13 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'departamento', 'opciones'];
   constructor(
+    private _title: Title,
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
+    this._title.setTitle('Carreras');
     const p1 = new Promise((resolve) => {
       const sub = this.carrera$.getCarrera()
         .subscribe(

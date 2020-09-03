@@ -20,12 +20,14 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-horarios-anyo',
   templateUrl: './horarios-anyo.component.html',
   styleUrls: ['./horarios-anyo.component.scss']
 })
+// tslint:disable: variable-name
 export class HorariosAnyoComponent implements OnInit {
   // muestra la animacion de carga
   public isLoaded = false;
@@ -50,7 +52,6 @@ export class HorariosAnyoComponent implements OnInit {
   public selectedCarr: CarreraModel;
   public selectedAnyo: number = undefined;
   constructor(
-    // tslint:disable: variable-name
     private _planificacion: PlanificacionService,
     private _horario: HorarioService,
     private _docente: DocenteService,
@@ -61,8 +62,10 @@ export class HorariosAnyoComponent implements OnInit {
     private _recinto: RecintoService,
     private _pde: PlanEstudioService,
     private _carrera: CarreraService,
-    private http: HttpClient
+    private http: HttpClient,
+    private _title: Title
   ) {
+    this._title.setTitle('Reporte Horario Año');
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(

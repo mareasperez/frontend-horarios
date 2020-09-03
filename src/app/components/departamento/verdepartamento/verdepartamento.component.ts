@@ -6,19 +6,20 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-verdepartamento',
   templateUrl: './verdepartamento.component.html',
   styleUrls: ['./verdepartamento.component.scss']
 })
-
+// tslint:disable: no-shadowed-variable>
+// tslint:disable: variable-name
 export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
   public facults: FacultadModel[] = [];
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
-  // public resultado = new FacultadModel();
   public visible: boolean;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
@@ -26,14 +27,14 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'facultad', 'opciones'];
   constructor(
-    // tslint:disable: variable-name
+    private _title: Title,
     private _departamento: DepartamentoService,
     private dialog: MatDialog,
     private facultad$: FacultadSerivice,
     private _snack: MatSnackBar
   ) {
-    // tslint:disable: no-shadowed-variable
-    const p1 = new Promise((resolve) => {
+    this._title.setTitle('Departamento');
+    this.promesas.push(new Promise((resolve) => {
       const sub = this._departamento.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
@@ -42,8 +43,8 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
       this.dataSource = this.departamentos;
-    });
-    const p2 = new Promise((resolve) => {
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.facultad$.getFacultad()
         .subscribe(
           res => this.facults.push(res),
@@ -51,8 +52,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-    });
-    this.promesas.push(p1, p2);
+    }));
     this.refDepartamento = this._departamento.getList();
     this.ref = this.facultad$.getList();
   }

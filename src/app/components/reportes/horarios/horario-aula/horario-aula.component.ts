@@ -19,12 +19,14 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-horario-aula',
   templateUrl: './horario-aula.component.html',
   styleUrls: ['./horario-aula.component.scss']
 })
+// tslint:disable: variable-name
 export class HorarioAulaComponent implements OnInit {
   // muestra la animacion de carga
   public isLoaded = false;
@@ -47,7 +49,6 @@ export class HorarioAulaComponent implements OnInit {
   public selectedAula: AulaModel;
   public selectedREc: RecintoModel;
   constructor(
-    // tslint:disable: variable-name
     private _planificacion: PlanificacionService,
     private _horario: HorarioService,
     private _docente: DocenteService,
@@ -57,8 +58,10 @@ export class HorarioAulaComponent implements OnInit {
     private _aula: AulaService,
     private _recinto: RecintoService,
     private _pde: PlanEstudioService,
-    private _carrera: CarreraService
+    private _carrera: CarreraService,
+    private _title: Title
   ) {
+    this._title.setTitle('Reporte Horario Aula');
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(
