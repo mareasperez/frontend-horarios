@@ -14,7 +14,7 @@
     background-image: url(../../../assets/images/wallpaper.jpg);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: auto;
+    background-size: 100% 100%;
 }
 .ima {
     width: 40px;

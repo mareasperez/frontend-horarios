@@ -32,16 +32,16 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
-    const p1 = new Promise((resolve) => {
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.RecintoService.getRecinto()
         .subscribe(
           res => this.recintos.push(res),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
           () => resolve()
         );
-    });
+    }));
 
-    const p2 = new Promise((resolve) => {
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.facultad$.getFacultad()
         .subscribe(
           res => this.facults.push(res),
@@ -49,8 +49,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-    });
-    this.promesas.push(p1, p2);
+    }));
     this.refRecinto = RecintoService.getList();
     this.refFacultades = facultad$.getList();
 

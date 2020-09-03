@@ -4,6 +4,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddareaComponent } from '../addarea/addarea.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-verarea',
@@ -24,8 +25,10 @@ export class VerareaComponent implements OnInit, OnDestroy {
   constructor(
     private _area: AreaService,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private _title: Title
   ) {
+    this._title.setTitle('Areas');
     const p = new Promise<void>((resolve) => {
       const sub = this._area.getAreas()
         .subscribe(
@@ -82,7 +85,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
     } else {
       const dialogRef = this.dialog.open(AddareaComponent, {
         width: '450px',
-        data: { type: tipo, name: nombre, id: id }
+        data: { type: tipo, name: nombre, id }
       });
     }
   }
