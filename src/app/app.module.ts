@@ -48,6 +48,7 @@ import { DocenteHorasService } from './services/docente-horas.service';
 import { DocenteAreaService } from './services/docente-area.service';
 import { GrupoService } from './services/grupo.service';
 import { HomeComponent } from './components/home/home.component';
+import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
@@ -116,6 +117,7 @@ import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
     AddplanestudioComponent,
     VerplanestudioComponent,
     HomeComponent,
+    ComponentesComponent,
     GrupoComponent,
     CargasComponent,
     AddcarreraComponent,

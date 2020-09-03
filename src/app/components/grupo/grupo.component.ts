@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { Observable, Subscription, observable, of } from 'rxjs';
@@ -8,14 +8,12 @@ import { DocenteModel } from 'src/app/models/docente.model';
 import { matErrorsMessage } from 'src/app/utils/errors';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { AddGrupoComponent } from './add-grupo/add-grupo.component';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-grupo',
   templateUrl: './grupo.component.html',
   styleUrls: ['./grupo.component.scss']
 })
-// tslint:disable: variable-name
 export class GrupoComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refComp: Observable<any[]>;
@@ -31,7 +29,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public selected = '0';
   public selected2 = '0';
   public selectedComp = '0';
-  public componente: ComponenteModel = new ComponenteModel();
+  public componente:ComponenteModel = new ComponenteModel();
 
   // validacion de edicion o creacion
   public add = false;
@@ -45,54 +43,54 @@ export class GrupoComponent implements OnInit, OnDestroy {
   constructor(
     private _grupo: GrupoService,
     private _snack: MatSnackBar,
-    private dialog: MatDialog
-  ) {
-    this.componente.componente_chp = '0';
-    this.componente.componente_cht = '0';
+    private dialog: MatDialog,
+    ) {
+      this.componente.componente_chp = '0'
+      this.componente.componente_cht = '0'
+      
+    }
+    get Grupos(): GrupoModel[] {
+      return this.grupos;
+    }
+    @Input() set _grupos(grupos: GrupoModel[]) {
+      console.log(grupos)
+      this.grupos = grupos;
+      
+    }
 
-  }
-  get Grupos(): GrupoModel[] {
-    return this.grupos;
-  }
-  @Input() set _grupos(grupos: GrupoModel[]) {
-    console.log(grupos);
-    this.grupos = grupos;
-
-  }
-
-  get Componente(): ComponenteModel {
-    // console.log(this.componente)
-    return this.componente;
-  }
-  @Input() public set _componente(comp: ComponenteModel) {
-    this.componente = comp;
-  }
+    get Componente(): ComponenteModel {
+     // console.log(this.componente)
+      return this.componente;
+    }
+    @Input()  public set _componente(comp:ComponenteModel){
+      this.componente = comp
+    }
 
   ngOnInit() {
-    console.log('init', this.componente);
-    // this.onGruposChanges().subscribe(res=> console.log(res))
-
+    console.log('init', this.componente)
+   // this.onGruposChanges().subscribe(res=> console.log(res))
+    
   }
 
   ngOnDestroy() {
-    //  this._grupo.list = [];
+  //  this._grupo.list = [];
     this.subs.map(sub => sub.unsubscribe());
-    console.log('destroy', this.componente);
+    console.log('destroy', this.componente)
 
   }
 
   addGroup(e, tipo: string) {
-    if (this.grupos.length > 0) {
-      const r = this.grupos.find(gp => gp.grupo_componente === this.componente.componente_id);
-      console.log(this.grupos, r, this.componente);
-      if (r === undefined) { return; }
+    if(this.grupos.length > 0){
+      let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
+      console.log(this.grupos,r, this.componente)
+     if( r == undefined ) return
     }
 
-    const grupo = new GrupoModel();
-    const gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);
-    const n = Math.max.apply(Math, gruposT.map(gp => {
-      return gp.grupo_numero;
-    })) + 1;
+    let grupo = new GrupoModel();
+    let gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);
+    let n = Math.max.apply(Math, gruposT.map(gp => {
+           return gp.grupo_numero;
+      } )) + 1;
     grupo.grupo_numero = n > 0 ? n : 1;
     grupo.grupo_componente = this.componente.componente_id;
     grupo.grupo_horas_clase = tipo === 'GT' ? Number(this.componente.componente_cht) : Number(this.componente.componente_chp);
@@ -107,28 +105,28 @@ export class GrupoComponent implements OnInit, OnDestroy {
   }
 
   setDocente(idD, idG) {
-    const grupo = new GrupoModel();
-    grupo.grupo_docente = idD === '0' ? null : idD;
-    console.log(grupo);
+    let grupo = new GrupoModel();
+    grupo.grupo_docente = idD == '0' ? null:idD;
+    console.log(grupo)
     this._grupo.updategrupo(grupo, idG).subscribe();
   }
 
   delGrupo(e: number) {
     this._grupo.deleteGrupo(e)
-      .subscribe(
-        res => { },
-        error => this._snack.open(error.message, 'ok', { duration: 3000 }),
-      );
+    .subscribe(
+      res => {},
+      error => this._snack.open(error.message, 'ok' , {duration: 3000}),
+    );
   }
 
   openDialog(tipo: string, id?: any): void {
     if (tipo === 'c') {
-      this.dialog.open(AddGrupoComponent, {
+        this.dialog.open(AddGrupoComponent, {
         width: '450px',
         data: { type: tipo }
       });
     } else {
-      const gp = this.grupos.find(Gp => Gp.grupo_id === id);
+      const gp = this.grupos.find(Gp => Gp.grupo_id  === id);
       this.dialog.open(AddGrupoComponent, {
         width: '450px',
         data: { type: tipo, grupo: gp }
@@ -136,9 +134,9 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
   }
 
-  onGruposChanges() {
-    return of(this.grupos);
-  }
+  onGruposChanges(){
+    return of(this.grupos)
+    }
 
-
+  
 }
