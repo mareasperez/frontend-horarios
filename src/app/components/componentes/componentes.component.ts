@@ -23,8 +23,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   @Input() public componentes: ComponenteModel[] = [];
   @Input() public areas: AreaModel[] = [];
   @Input() public pdes: PlanEstudioModel[] = [];
-  public pde = getItemLocalCache("pde");
-  public ciclo = getItemLocalCache("ciclo");
+  public pde = getItemLocalCache('pde');
+  public ciclo = getItemLocalCache('ciclo');
   public componente: ComponenteModel = null;
   public selected = '0';
   public selected2 = '0';
@@ -51,7 +51,7 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   editHoras(id, ht, hp) {
-    let comp = new ComponenteModel();
+    const comp = new ComponenteModel();
     comp.componente_cht = ht;
     comp.componente_chp = hp;
     this.comService.updateComponente(comp, id).subscribe();
@@ -70,28 +70,28 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
        this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo, areas:this.areas, pdes:this.pdes, pde: this.pde, ciclo: this.ciclo}
+        data: { type: tipo, areas: this.areas, pdes: this.pdes, pde: this.pde, ciclo: this.ciclo}
       });
     } else {
       const comp = this.componentes.find(d => d.componente_id === id);
       this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo, componente: comp, areas:this.areas, pdes:this.pdes }
+        data: { type: tipo, componente: comp, areas: this.areas, pdes: this.pdes }
       });
     }
   }
 
 
-  addG(e,comp: string) {
+  addG(e, comp: string) {
     this.gpComp.emit(comp);
     this.changeColor(e);
   }
 
   changeColor(e){
-    let item = document.getElementsByClassName('bg-color-yellow')[0];
-    if(item){
-      let elr = new ElementRef(item);
-      elr.nativeElement.classList.remove('bg-color-yellow')
+    const item = document.getElementsByClassName('bg-color-yellow')[0];
+    if (item){
+      const elr = new ElementRef(item);
+      elr.nativeElement.classList.remove('bg-color-yellow');
     }
     e.target.parentNode.classList.add('bg-color-yellow');
 
