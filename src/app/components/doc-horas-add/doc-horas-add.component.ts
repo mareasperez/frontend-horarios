@@ -12,6 +12,7 @@ import { matErrorsMessage } from 'src/app/utils/errors';
 
 interface DialogData {
   type: string;
+  plani?: PlanificacionModel;
   dh?: DocenteHorasModel;
 }
 
@@ -59,7 +60,7 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
         dh_horas_hor: new FormControl('',[Validators.required,Validators.min(0)]),
         dh_horas_total: 0,
         dh_docente: new FormControl('',[Validators.required]),
-        dh_planificacion: new FormControl('',[Validators.required])
+        dh_planificacion: new FormControl(this.data.plani.planificacion_id,[Validators.required])
       })
     }else{
         this.form = this.fb.group({

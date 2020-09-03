@@ -9,6 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DocHorasAddComponent } from '../doc-horas-add/doc-horas-add.component';
 import { Title } from '@angular/platform-browser';
+import { setItemLocalCache, getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-doc-horas',
@@ -23,9 +24,11 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   private refPlan: Observable<any>;
   private refDoc: Observable<any>;
   private refDH: Observable<any>;
+  public selectedPlan: PlanificacionModel;
   private subs: Subscription[] = [];
-  dataSource;
-  displayedColumns: string[] = ['docente', 'horas_planta', 'horas_extras', 'total', 'planificacion', 'opciones'];
+  dataSource: DocenteHorasModel[] = [];
+  dataSourceFiltered: DocenteHorasModel[] = [];
+  displayedColumns: string[] = ['docente', 'horas_planta', 'horas_extras', 'total', 'opciones'];
   private promesas: Promise<any>[] = [];
   constructor(
     private _title: Title,
@@ -77,6 +80,12 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(res => {
       this.dataSource = this.dhs;
       this._docente.successObten();
+      this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
+      if (!this.selectedPlan) {
+        console.log('no existe planificacion en localStorage, seteando');
+        setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
+        this.selectedPlan = this.planificaciones[0];
+      }
       this.subs.push(this.refDoc.subscribe(data => {
         this.docentes = [];
         this.docentes = data;
@@ -93,8 +102,9 @@ export class DocHorasComponent implements OnInit, OnDestroy {
         data.map(dh => {
           this.dataSource.push(dh);
         });
+        this.getData();
       }));
-
+      this.getData();
     });
   }
   ngOnDestroy() {
@@ -112,13 +122,13 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
-        data: { type: tipo }
+        data: { type: tipo, plani: this.selectedPlan }
       });
     } else {
       const dh = this.dhs.find(dh => dh.dh_id === Number(id));
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
-        data: { type: tipo, dh }
+        data: { type: tipo, dh: dh }
       });
     }
   }
@@ -133,4 +143,9 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     return `semetre ${plan.planificacion_semestre} | ${plan.planificacion_anyo_lectivo}`;
   }
 
+  getData(){
+    this.dataSourceFiltered = [];
+    this.dataSourceFiltered = this.dataSource.filter(dh => dh.dh_planificacion === this.selectedPlan.planificacion_id);
+    console.log(this.dataSourceFiltered);
+  }
 }
