@@ -22,7 +22,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   public docentes: DocenteModel[] = [];
   public docs: DocenteModel[] = [];
-  public isLoaded: boolean = false;
+  public isLoaded: boolean;
   private refPlan: Observable<any>;
   private refDoc: Observable<any>;
   private refDH: Observable<any>;
@@ -116,7 +116,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     this._doc_hr.deleteDcHora(id).subscribe(res => console.log(res));
   }
 
-  openDialog(tipo,docente?: DocenteModel, id?: string): void {
+  openDialog(tipo, docente?: DocenteModel, id?: string): void {
     if (tipo === 'c') {
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
@@ -125,14 +125,14 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     }else if (tipo === 'a'){
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
-        data: { type: tipo,doc: docente,plani: this.selectedPlan }
+        data: { type: tipo, doc: docente, plani: this.selectedPlan }
       });
     }
      else {
-      const dh = this.dhs.find(dh => dh.dh_id === Number(id));
+      const dho = this.dhs.find(dh => dh.dh_id === Number(id));
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
-        data: { type: tipo, dh: dh }
+        data: { type: tipo, dho }
       });
     }
   }
@@ -143,7 +143,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   }
 
   getPlanificacion(id) {
-    const plan = this.planificaciones.find(plan => plan.planificacion_id === id);
+    const plan = this.planificaciones.find(p => p.planificacion_id === id);
     return `semetre ${plan.planificacion_semestre} | ${plan.planificacion_anyo_lectivo}`;
   }
 
@@ -152,10 +152,8 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     this.docs = [];
     this.dataSourceFiltered = this.dhs.filter(dh => dh.dh_planificacion === this.selectedPlan.planificacion_id);
     console.log(this.dataSourceFiltered);
-    this.docentes.map(doc =>{
-      if (this.dataSourceFiltered.find(d => d.dh_docente === doc.docente_id)) {
-
-      }else{
+    this.docentes.map(doc => {
+      if (!this.dataSourceFiltered.find(d => d.dh_docente === doc.docente_id)) {
         this.docs.push(doc);
       }
     });
