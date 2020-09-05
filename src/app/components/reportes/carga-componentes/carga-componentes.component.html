@@ -1,60 +1,89 @@
-<div class="container-fluid" style="max-height: 200vh; overflow: auto;">
-    <div class="row">
+<mat-card *ngIf="isLoaded; else stillLoading">
+  <mat-card-content>
+    <div class="container-fluid" style="max-height: 200vh; overflow: auto;">
+      <div class="row">
         <div class="col-12 text-center">
-            <h4>Universidad Nacional Autonoma de Nicaragua</h4>
+          <h5>Universidad Nacional Autonoma de Nicaragua</h5>
         </div>
         <div class="col-12 text-center">
-            <h5>UNAN-Le&oacute;n</h5>
+          <h6>UNAN-Le&oacute;n</h6>
         </div>
         <div class="col-12 text-center">
-            <h5>Departamento de cumputaci&oacute;n</h5>
+          <h6>Departamento de cumputaci&oacute;n <br>
+            Reporte de Carga Gen&eacute;rica de Docencia Directa por componente<br>
+            planificacion {{ selected | planName: planificaciones }}
+          </h6>
         </div>
-        <div class="col-12 text-center">
-            <h4>Reporte de Carga Gen&eacute;rica de Docencia Directa por componente planificacion {{ selected | planName: planificaciones }}
-            </h4>
-        </div>
+      </div>
     </div>
-</div>
-<mat-card>
-    <mat-card-content>
-        <mat-form-field *ngIf="show" class="font-size-12" appearance="outline">
-            <mat-label>Seleccionar planificaci&oacute;n</mat-label>
-            <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
-                <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
-                    planificacion semestre {{ plan.planificacion_semestre }} año {{plan.planificacion_anyo_lectivo}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <span *ngFor="let item of dataSource; let i = index">
-      <h4 class=" mt-4">{{item[0].componente.componente_nombre}}</h4>
-      <div class="px-4">
-        <table mat-table   [dataSource]="item" class="w-100 mat-elevation-z8">
+    <mat-form-field class="font-size-12" appearance="outline">
+      <mat-label>Seleccionar planificaci&oacute;n</mat-label>
+      <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
+        <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
+          planificacion semestre {{ plan.planificacion_semestre }} año {{plan.planificacion_anyo_lectivo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="scrollable" *ngIf="dLoaded; else stillLoading2">
+      <span *ngFor="let item of dataSource; let i = index">
+        <h6 class=" mt-4">{{item[0].componente.componente_nombre}} - {{item[0].carrera.carrera_nombre}}</h6>
+        <div class="px-4">
+          <table mat-table [dataSource]="item" class="w-100 mat-elevation-z8">
             <ng-container matColumnDef="docente">
-                <th mat-header-cell *matHeaderCellDef> Docente </th>
-                <td mat-cell *matCellDef="let carga"> 
-                  {{carga.docente !== undefined ? carga.docente.docente_nombre : "No asignado" }} 
-                </td>
-              </ng-container>
-            <ng-container matColumnDef="carrera">carga
-                <th mat-header-cell *matHeaderCellDef> Carrera </th>
-                <td mat-cell *matCellDef="let carga"> {{carga.carrera.carrera_nombre }} </td>
+              <th mat-header-cell *matHeaderCellDef> Docente </th>
+              <td mat-cell *matCellDef="let carga">
+                {{carga.docente !== undefined ? carga.docente.docente_nombre : "No asignado" }}
+              </td>
             </ng-container>
-            <ng-container  matColumnDef="anyo">
-                <th mat-header-cell *matHeaderCellDef> Año </th>
-                <td mat-cell *matCellDef="let carga"> {{carga.componente.componente_ciclo }} </td>
-              </ng-container>
-              <ng-container matColumnDef="grupo">
-                <th mat-header-cell *matHeaderCellDef> Grupo </th>
-                <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_numero }} </td>
-              </ng-container>
-              <ng-container matColumnDef="horas">
-                <th mat-header-cell *matHeaderCellDef> Horas  </th>
-                <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_horas_clase }} </td>
-              </ng-container>
+            <ng-container matColumnDef="carrera">carga
+              <th mat-header-cell *matHeaderCellDef> Carrera </th>
+              <td mat-cell *matCellDef="let carga"> {{carga.carrera.carrera_nombre }} </td>
+            </ng-container>
+            <ng-container matColumnDef="anyo">
+              <th mat-header-cell *matHeaderCellDef> Año </th>
+              <td mat-cell *matCellDef="let carga"> {{carga.componente.componente_ciclo }} </td>
+            </ng-container>
+            <ng-container matColumnDef="grupo">
+              <th mat-header-cell *matHeaderCellDef> Grupo </th>
+              <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_numero }} </td>
+            </ng-container>
+            <ng-container matColumnDef="horas">
+              <th mat-header-cell *matHeaderCellDef> Horas </th>
+              <td mat-cell *matCellDef="let carga"> {{carga.grupo.grupo_horas_clase }} </td>
+            </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </div>
-    </span>
-    </mat-card-content>
+          </table>
+        </div>
+      </span>
+    </div>
+  </mat-card-content>
 </mat-card>
+
+<ng-template #stillLoading>
+  <div class="center col-2">
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+</ng-template>
+<ng-template #stillLoading2>
+  <div class="center col-2">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
+        <div></div>
+        <div></div>
+        <div>
+          <div></div>
+        </div>
+        <div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

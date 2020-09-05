@@ -35,14 +35,15 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   private planes: PlanEstudioModel[] = [];
   private carreras: CarreraModel[] = [];
-  public show = false;
+  public isLoaded = false;
+  public dLoaded = false;
   public selected = getItemLocalCache('planificacion');
   private subs: Subscription[] = [];
   promesas: Promise<any>[] = [];
   public cargas: any[] = [];
   public dataSource;
   arr: cargaComponente[] = [];
-  displayedColumns: string[] = ['docente', 'carrera', 'anyo', 'grupo', 'horas'];
+  displayedColumns: string[] = ['docente', 'anyo', 'grupo', 'horas'];
 
   constructor(
     private _comp: ComponenteService,
@@ -120,7 +121,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.show = true;
+      this.isLoaded = true;
       this._planificacion.successObten();
       console.log(this.planificaciones);
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
@@ -174,7 +175,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
     });
     this.dataSource = this.cargas;
     this.cargas = [];
-
+    this.dLoaded = true;
   }
 
   getPlanName(id) {
