@@ -9,7 +9,6 @@ import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { resolve, reject } from 'q';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
@@ -44,6 +43,7 @@ export class CargaDocenciaComponent implements OnInit {
   private promesas: Promise<any>[] = [];
   public planificaciones: PlanificacionModel[] = [];
   public show = false;
+  public rLoaded = false;
   public selected = getItemLocalCache('planificacion');
   subs: Subscription[] = [];
   cargas: cargaDocencia[] = [];
@@ -128,7 +128,6 @@ export class CargaDocenciaComponent implements OnInit {
 
   ngOnInit() {
     console.log('pacman');
-    //   await this.sleep(5000);
     Promise.all(this.promesas).then(async res => {
       this.show = true;
       this._planificaciones.successObten();
@@ -136,25 +135,15 @@ export class CargaDocenciaComponent implements OnInit {
 
     }); // end then
   }
-  sleep(ms = 0) {
-    return new Promise(r => setTimeout(r, ms));
-  }
 
   groupByPlan(id: string) {
+    this.rLoaded = false;
     const grupos = this.grupos.filter(gp => id === gp.grupo_planificacion);
     this.reporte(grupos);
   }
-  //   getPlanName(id) {
-  //     console.log('hola ');
-
-  //     if (id !== undefined && this.planificaciones !== undefined ) {
-  //       const plan: PlanificacionModel = this.planificaciones.find(pl => id === pl.planificacion_id);
-  //       return `semestre ${plan.planificacion_semestre} del año ${plan.planificacion_anyo_lectivo}`;
-  //     }
-  //     return '';
-  // }
 
   reporte(gruposByPlan: GrupoModel[]) {
+
     const planes = [];
     const grupos = [];
     this.docentes.forEach(dc => {
@@ -164,7 +153,7 @@ export class CargaDocenciaComponent implements OnInit {
         grupos.push(gps);
       }
     });
-    grupos.forEach((pgp: any[], i) => {
+    grupos.forEach((pgp: GrupoModel[]) => {
       const arr = [];
       pgp.forEach((gp: GrupoModel, i) => {
         const carga: cargaDocencia = new cargaDocencia();
@@ -188,6 +177,7 @@ export class CargaDocenciaComponent implements OnInit {
     });
     this.dataSource = this.cargas;
     this.cargas = [];
+    this.rLoaded = true;
   }
 
 
