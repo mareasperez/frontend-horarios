@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { wsModel } from 'src/app/models/ws.model';
 import { Api } from 'src/app/models/api.model';
@@ -44,13 +44,13 @@ export class MainService {
     return this.client.put(`${this.getUrl()}${id}`, body, head);
   }
 
-  delete(id: any): Observable<any> {
+  delete(id: any): Observable<any>{
     const head: any = {};
     if (confirm('¿Esta seguro que desea eliminar?')) {
       head['Content-Type'] = 'application/json';
       return this.client.delete(this.getUrl() + id, head);
     }
-    return;
+    return new Observable();
   }
 
   getList() {
