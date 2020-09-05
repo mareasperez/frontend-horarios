@@ -26,7 +26,7 @@ export class MainService {
     return this.client.get<any>(this.getUrl());
 
   }
-  getByID(id: number|string): Observable<any> {
+  getByID(id: number | string): Observable<any> {
     return this.client.get<any>(`${this.getUrl()}${id}`);
 
   }
@@ -38,7 +38,7 @@ export class MainService {
     return this.client.post(this.getUrl(), body, head);
   }
 
-  update(body: any, id: string|number): Observable<any> {
+  update(body: any, id: string | number): Observable<any> {
     const head: any = {};
     head['Content-Type'] = 'application/json';
     return this.client.put(`${this.getUrl()}${id}`, body, head);
@@ -46,20 +46,23 @@ export class MainService {
 
   delete(id: any): Observable<any> {
     const head: any = {};
-    head['Content-Type'] = 'application/json';
-    return this.client.delete(this.getUrl() + id, head);
+    if (confirm('¿Esta seguro que desea eliminar?')) {
+      head['Content-Type'] = 'application/json';
+      return this.client.delete(this.getUrl() + id, head);
+    }
+    return;
   }
 
   getList() {
     return this.list$.asObservable();
   }
 
-  getByFiltro(filtro: string, id: string|number): Observable<any> {
+  getByFiltro(filtro: string, id: string | number): Observable<any> {
     // console.log(`${this.getUrl()}${filtro}=${id}`);
     return this.client.get<any>(`${this.getUrl()}${filtro}=${id}`);
   }
 
-  getByPlan(query: string, filtro: string | number, id: string|number): Observable<any> {
+  getByPlan(query: string, filtro: string | number, id: string | number): Observable<any> {
     console.log(`${this.getUrl()}${query}=${filtro}/${id}`);
     return this.client.get<any>(`${this.getUrl()}${query}=${filtro}/${id}`);
   }
