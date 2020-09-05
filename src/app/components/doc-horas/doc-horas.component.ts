@@ -21,12 +21,13 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   public dhs: DocenteHorasModel[] = [];
   public planificaciones: PlanificacionModel[] = [];
   public docentes: DocenteModel[] = [];
+  public docs: DocenteModel[] = [];
+  public isLoaded: boolean = false;
   private refPlan: Observable<any>;
   private refDoc: Observable<any>;
   private refDH: Observable<any>;
   public selectedPlan: PlanificacionModel;
   private subs: Subscription[] = [];
-  dataSource: DocenteHorasModel[] = [];
   dataSourceFiltered: DocenteHorasModel[] = [];
   displayedColumns: string[] = ['docente', 'horas_planta', 'horas_extras', 'total', 'opciones'];
   private promesas: Promise<any>[] = [];
@@ -78,7 +79,6 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     Promise.all(this.promesas).then(res => {
-      this.dataSource = this.dhs;
       this._docente.successObten();
       this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
       if (!this.selectedPlan) {
@@ -97,14 +97,12 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       }));
 
       this.subs.push(this.refDH.subscribe(data => {
-        this.dataSource = [];
+        this.dhs = [];
         this.dhs = data;
-        data.map(dh => {
-          this.dataSource.push(dh);
-        });
         this.getData();
       }));
       this.getData();
+      this.isLoaded = true;
     });
   }
   ngOnDestroy() {
@@ -118,13 +116,19 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     this._doc_hr.deleteDcHora(id).subscribe(res => console.log(res));
   }
 
-  openDialog(tipo, id?: string): void {
+  openDialog(tipo,docente?: DocenteModel, id?: string): void {
     if (tipo === 'c') {
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
         data: { type: tipo, plani: this.selectedPlan }
       });
-    } else {
+    }else if (tipo === 'a'){
+      this.dialog.open(DocHorasAddComponent, {
+        width: '450px',
+        data: { type: tipo,doc: docente,plani: this.selectedPlan }
+      });
+    }
+     else {
       const dh = this.dhs.find(dh => dh.dh_id === Number(id));
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
@@ -145,7 +149,15 @@ export class DocHorasComponent implements OnInit, OnDestroy {
 
   getData(){
     this.dataSourceFiltered = [];
-    this.dataSourceFiltered = this.dataSource.filter(dh => dh.dh_planificacion === this.selectedPlan.planificacion_id);
+    this.docs = [];
+    this.dataSourceFiltered = this.dhs.filter(dh => dh.dh_planificacion === this.selectedPlan.planificacion_id);
     console.log(this.dataSourceFiltered);
+    this.docentes.map(doc =>{
+      if (this.dataSourceFiltered.find(d => d.dh_docente === doc.docente_id)) {
+
+      }else{
+        this.docs.push(doc);
+      }
+    });
   }
 }
