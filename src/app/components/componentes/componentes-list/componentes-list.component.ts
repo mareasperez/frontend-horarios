@@ -25,7 +25,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   public pdes: PlanEstudioModel[] = [];
   public areas: AreaModel[] = [];
   private subs: Subscription[] = [];
-  public show: boolean;
+  public isLoaded = false;
   private promesas: Promise<any>[] = [];
   public dataSource = [];
   public pdeSelected =  getItemLocalCache('pde');
@@ -76,7 +76,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.show = true;
+      this.isLoaded = true;
       this._comp.successObten();
       this.subs.push(
         this.refComp.subscribe(data => {

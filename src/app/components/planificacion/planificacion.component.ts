@@ -15,7 +15,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   refPla: Observable<any>;
   subs: Subscription[] = [];
-  public visible: boolean;
+  public isLoaded = false;
   private promesa: Promise<any>;
   public dataSource = [];
   displayedColumns: string[] = ['id', 'nombre', 'opciones'];
@@ -42,7 +42,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.promesa.then(() => {
-      this.visible = true;
+      this.isLoaded = true;
       this._planificacion.successObten();
       this.subs.push(
       );

@@ -308,3 +308,55 @@ body {
   
   //aqui termina el otro loading
   
+  //google loader
+$font: 'Montserrat',
+sans-serif;
+
+$black: rgb(8, 8, 8);
+$red: #DB4437;
+$yellow: #F4B400;
+$green: rgb(15, 25, 157);
+$colors-list: $green $yellow $red;
+
+.google-loader {
+  display: block;
+
+  span {
+    display: inline-block;
+    margin-top: 10px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+
+  @each $current-color in $colors-list {
+    $i: index($colors-list, $current-color);
+    $t: $i * -0.25;
+
+    span:nth-child(#{$i}) {
+      background: $current-color;
+      animation: move 1s ease-in-out (#{$t}s) infinite alternate;
+    }
+  }
+}
+
+@keyframes move {
+  from {
+    transform: translateY(-10px);
+  }
+
+  to {
+    transform: translateY(5px);
+  }
+}
+//Google-Loader termina aqui 
+
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+  }

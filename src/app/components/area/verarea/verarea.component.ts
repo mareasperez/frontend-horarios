@@ -19,6 +19,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
   promesas: Promise<any>[] = [];
   public activartabla: boolean;
   public refArea: Observable<any[]>;
+  public isLoaded = false;
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'opciones'];
   public dataSource = [];
@@ -57,6 +58,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
           this.dataSource.push(element);
         });
       });
+      this.isLoaded = true;
     });
 
   }

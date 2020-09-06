@@ -23,6 +23,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   public activartabla = false;
   public selectedR = getItemLocalCache('recinto');
   public dataSource;
+  public isLoaded = false;
   public refAula: Observable<any[]>;
   public refRecintos: Observable<any[]>;
   public alerts = true;
@@ -70,7 +71,9 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       this.refRecintos.subscribe((data: RecintoModel[]) => {
         this.recintos = data;
       });
+      this.selectedR = this.recintos[0].recinto_id;
       this.getAulas(this.selectedR);
+      this.isLoaded=true;
     });
   }
   ngOnDestroy() {

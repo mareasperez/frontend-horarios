@@ -1,13 +1,13 @@
-<div class="container-fluid">
+<mat-card *ngIf="isLoaded; else stillLoading">
     <div class="row">
-        <h3>Planificaciones semestrales</h3>
+        <mat-card-title style="margin-left: 5%;">Planificaciones semestrales</mat-card-title>
         <span style="flex: 1 1 auto"></span>
-        <button mat-raised-button color="primary" (click)="openDialog('c')">
+        <button mat-raised-button color="primary" style="margin-right: 5%;" (click)="openDialog('c')">
               <mat-icon>add</mat-icon> Agregar
             </button>
     </div>
 
-    <div *ngIf="visible" class="table-scroll">
+    <div class="table-scroll">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
@@ -36,4 +36,31 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
-</div>
+</mat-card>
+
+<ng-template #stillLoading>
+    <div class="center col-2">
+        <div class="google-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #stillLoading2>
+    <div class="center col-2">
+        <div class="loadingio-spinner-double-ring-l8019rag0l">
+            <div class="ldio-c3a0kh417ci">
+                <div></div>
+                <div></div>
+                <div>
+                    <div></div>
+                </div>
+                <div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

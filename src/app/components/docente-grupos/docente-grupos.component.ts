@@ -30,6 +30,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public componentes: ComponenteModel[] = [];
   public docHoras: DocenteHorasModel[] = [];
   subs: Subscription[] = [];
+  public isLoaded = false;
   public Errors: matErrorsMessage = new matErrorsMessage();
   private promesas: Promise<any>[] = [];
   public refDocente: Observable<any>;
@@ -105,6 +106,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     Promise.all(this.promesas).then(() => {
       this.docentesList = this.docentes;
       this._docente.successObten();
+      this.isLoaded = true;
       const sub = this.refDocente.subscribe(res => {
         this.docentes = res;
       });

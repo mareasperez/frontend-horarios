@@ -20,7 +20,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   public facults: FacultadModel[] = [];
   public ref: Observable<any[]>;
   public refDepartamento: Observable<any[]>;
-  public visible: boolean;
+  public isLoaded = false;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
   public dataSource = [];
@@ -59,7 +59,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.visible = true;
+      this.isLoaded = true;
       this._departamento.successObten();
     });
     this.refDepartamento.subscribe(data => {

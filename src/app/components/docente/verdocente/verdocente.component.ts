@@ -20,6 +20,7 @@ export class VerdocenteComponent implements OnInit {
   public refDepartamento: Observable<any>;
   public alerts = true;
   public dataSource;
+  public isLoaded = false;
   public departamentos: DepartamentoModel[] = [];
   subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
@@ -59,6 +60,7 @@ export class VerdocenteComponent implements OnInit {
     Promise.all(this.promesas).then(() => {
       //  this.docentes.forEach(res => console.log(res));
       this.DocenteService.successObten();
+      this.isLoaded = true;
       this.subs.push(
         this.refDocentes.subscribe(data => {
           this.dataSource = [];

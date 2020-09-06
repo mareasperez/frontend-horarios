@@ -20,7 +20,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
   public alerts = true;
   public subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
-  public visible: boolean;
+  public isLoaded = false;
   sub: Subscription;
   refRecinto: Observable<any[]>;
   refFacultades: Observable<any[]>;
@@ -57,7 +57,7 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.visible = true;
+      this.isLoaded = true;
       this.RecintoService.successObten();
     });
     this.refRecinto.subscribe(data => {

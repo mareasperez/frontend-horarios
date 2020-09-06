@@ -20,6 +20,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   public refDep: Observable<any[]>;
   public refCarrera: Observable<any>;
   public visible: boolean;
+  public isLoaded = false;
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
   public dataSource = [];
@@ -60,7 +61,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.visible = true;
+      this.isLoaded = true;
       this.carrera$.successObten();
       this.refCarrera.subscribe(data => {
         console.log(data);

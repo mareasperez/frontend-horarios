@@ -56,7 +56,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   /*Flags y subscripciones */
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
-  public show = false;
+  public isLoaded = false;
   public pdeSelected = getItemLocalCache('pde');
   public cicloSelected = getItemLocalCache('ciclo');
   public planSelected = getItemLocalCache('planificacion');
@@ -90,7 +90,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.show = true;
+      this.isLoaded = true;
       this._grupo.successObten();
       this.subs.push(this.refComp
         .subscribe(

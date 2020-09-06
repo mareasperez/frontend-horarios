@@ -25,7 +25,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'nombre', 'anyo', 'carrera', 'opciones'];
   socket: WebSocket;
   promesas: Promise<any>[] = [];
-  public show = false;
+  public isLoaded = false;
   constructor(
     private _pde: PlanEstudioService,
     private _Carrera: CarreraService,
@@ -59,7 +59,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.show = true;
+      this.isLoaded = true;
       this._pde.successObten();
       this.subs.push(
         this.refPde.subscribe(data => {
