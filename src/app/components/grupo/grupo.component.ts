@@ -26,6 +26,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   @Input() public planificaciones: PlanificacionModel[] = [];
   @Input() public planificacion: string;
   @Input() public docentes: DocenteModel[] = [];
+  public docentesList: DocenteModel[] = [];
   // creacion del formGroup
   public selected = '0';
   public selected2 = '0';
@@ -70,6 +71,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('init', this.componente);
    // this.onGruposChanges().subscribe(res=> console.log(res))
+   this.docentesList = this.docentes;
 
   }
 
@@ -137,6 +139,11 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
   onGruposChanges(){
     return of(this.grupos);
+    }
+
+    docentesDePlanta(checked:boolean){
+      console.log(checked);
+      checked ?      this.docentesList = this.docentes.filter(dc=>dc.docente_tipo_contrato == "P"): this.docentesList = this.docentes
     }
 
 
