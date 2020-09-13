@@ -14,6 +14,7 @@ import { AddGrupoComponent } from './add-grupo/add-grupo.component';
   templateUrl: './grupo.component.html',
   styleUrls: ['./grupo.component.scss']
 })
+// tslint:disable: variable-name
 export class GrupoComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public refComp: Observable<any[]>;
@@ -25,11 +26,12 @@ export class GrupoComponent implements OnInit, OnDestroy {
   @Input() public planificaciones: PlanificacionModel[] = [];
   @Input() public planificacion: string;
   @Input() public docentes: DocenteModel[] = [];
+  public docentesList: DocenteModel[] = [];
   // creacion del formGroup
   public selected = '0';
   public selected2 = '0';
   public selectedComp = '0';
-  public componente:ComponenteModel = new ComponenteModel();
+  public componente: ComponenteModel = new ComponenteModel();
 
   // validacion de edicion o creacion
   public add = false;
@@ -45,50 +47,51 @@ export class GrupoComponent implements OnInit, OnDestroy {
     private _snack: MatSnackBar,
     private dialog: MatDialog,
     ) {
-      this.componente.componente_chp = '0'
-      this.componente.componente_cht = '0'
-      
+      this.componente.componente_chp = '0';
+      this.componente.componente_cht = '0';
+
     }
     get Grupos(): GrupoModel[] {
       return this.grupos;
     }
     @Input() set _grupos(grupos: GrupoModel[]) {
-      console.log(grupos)
+      console.log(grupos);
       this.grupos = grupos;
-      
+
     }
 
     get Componente(): ComponenteModel {
      // console.log(this.componente)
       return this.componente;
     }
-    @Input()  public set _componente(comp:ComponenteModel){
-      this.componente = comp
+    @Input()  public set _componente(comp: ComponenteModel){
+      this.componente = comp;
     }
 
   ngOnInit() {
-    console.log('init', this.componente)
+    console.log('init', this.componente);
    // this.onGruposChanges().subscribe(res=> console.log(res))
-    
+   this.docentesList = this.docentes;
+
   }
 
   ngOnDestroy() {
   //  this._grupo.list = [];
     this.subs.map(sub => sub.unsubscribe());
-    console.log('destroy', this.componente)
+    console.log('destroy', this.componente);
 
   }
 
   addGroup(e, tipo: string) {
-    if(this.grupos.length > 0){
-      let r = this.grupos.find(gp=> gp.grupo_componente == this.componente.componente_id)
-      console.log(this.grupos,r, this.componente)
-     if( r == undefined ) return
+    if (this.grupos.length > 0){
+      const r = this.grupos.find(gp => gp.grupo_componente == this.componente.componente_id);
+      console.log(this.grupos, r, this.componente);
+      if ( r == undefined ) { return; }
     }
 
-    let grupo = new GrupoModel();
-    let gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);
-    let n = Math.max.apply(Math, gruposT.map(gp => {
+    const grupo = new GrupoModel();
+    const gruposT = this.grupos.filter(gp => gp.grupo_tipo === tipo);
+    const n = Math.max.apply(Math, gruposT.map(gp => {
            return gp.grupo_numero;
       } )) + 1;
     grupo.grupo_numero = n > 0 ? n : 1;
@@ -105,9 +108,9 @@ export class GrupoComponent implements OnInit, OnDestroy {
   }
 
   setDocente(idD, idG) {
-    let grupo = new GrupoModel();
-    grupo.grupo_docente = idD == '0' ? null:idD;
-    console.log(grupo)
+    const grupo = new GrupoModel();
+    grupo.grupo_docente = idD == '0' ? null : idD;
+    console.log(grupo);
     this._grupo.updategrupo(grupo, idG).subscribe();
   }
 
@@ -135,8 +138,13 @@ export class GrupoComponent implements OnInit, OnDestroy {
   }
 
   onGruposChanges(){
-    return of(this.grupos)
+    return of(this.grupos);
     }
 
-  
+    docentesDePlanta(checked:boolean){
+      console.log(checked);
+      checked ?      this.docentesList = this.docentes.filter(dc=>dc.docente_tipo_contrato == "P"): this.docentesList = this.docentes
+    }
+
+
 }

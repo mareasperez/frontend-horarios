@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="isLoaded; else stillLoading">
     <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
         <br>
         <div class="row">
@@ -10,13 +10,7 @@
         </button>
             </div>
         </div>
-        <div *ngIf="!visible" class="google-loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <div *ngIf="visible" class="table-scroll">
+        <div class="table-scroll">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
@@ -52,3 +46,30 @@
         </div>
     </mat-card>
 </div>
+
+<ng-template #stillLoading>
+    <div class="center col-2">
+        <div class="google-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #stillLoading2>
+    <div class="center col-2">
+        <div class="loadingio-spinner-double-ring-l8019rag0l">
+            <div class="ldio-c3a0kh417ci">
+                <div></div>
+                <div></div>
+                <div>
+                    <div></div>
+                </div>
+                <div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -6,7 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-import { resolve } from 'dns';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -20,25 +20,28 @@ export class VerdocenteComponent implements OnInit {
   public refDepartamento: Observable<any>;
   public alerts = true;
   public dataSource;
+  public isLoaded = false;
   public departamentos: DepartamentoModel[] = [];
   subs: Subscription[] = [];
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
-  public promesas: Promise<any>[]=[];
+  public promesas: Promise<any>[] = [];
   constructor(
+    private _title: Title,
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
-    const p = new Promise<void>((resolve) => {
+    this._title.setTitle('Docente');
+    this.promesas.push(new Promise<void>((resolve) => {
       this._Departamento.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          ()=> resolve()
+          () => resolve()
         );
-    });
-    const p2 = new Promise<void>((resolve) => {
+    }));
+    this.promesas.push(new Promise<void>((resolve) => {
       this.DocenteService.getDocente()
         .subscribe(
           res => {
@@ -46,18 +49,18 @@ export class VerdocenteComponent implements OnInit {
             this.dataSource = this.docentes;
           },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          ()=> resolve()
+          () => resolve()
         );
-    });
+    }));
     this.refDepartamento = this._Departamento.getList();
     this.refDocentes = this.DocenteService.getList();
-    this.promesas.push(p,p2)
   }
 
   ngOnInit() {
-    Promise.all(this.promesas).then(()=>{
-    //  this.docentes.forEach(res => console.log(res));
-    this.DocenteService.successObten();
+    Promise.all(this.promesas).then(() => {
+      //  this.docentes.forEach(res => console.log(res));
+      this.DocenteService.successObten();
+      this.isLoaded = true;
       this.subs.push(
         this.refDocentes.subscribe(data => {
           this.dataSource = [];
@@ -66,8 +69,8 @@ export class VerdocenteComponent implements OnInit {
             this.dataSource.push(doc);
           });
         })
-        );
-      })
+      );
+    });
   }
 
 

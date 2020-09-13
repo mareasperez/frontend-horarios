@@ -9,15 +9,15 @@ import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { resolve, reject } from 'q';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
-import { async } from '@angular/core/testing';
+import { Title } from '@angular/platform-browser';
 
+// tslint:disable: class-name
 class cargaDocencia {
   grupo: GrupoModel;
   componente: ComponenteModel;
@@ -31,6 +31,7 @@ class cargaDocencia {
   templateUrl: './carga-docencia.component.html',
   styleUrls: ['./carga-docencia.component.scss']
 })
+// tslint:disable: variable-name
 export class CargaDocenciaComponent implements OnInit {
   public dataSource;
   public grupos: GrupoModel[] = [];
@@ -42,149 +43,141 @@ export class CargaDocenciaComponent implements OnInit {
   private promesas: Promise<any>[] = [];
   public planificaciones: PlanificacionModel[] = [];
   public show = false;
+  public rLoaded = false;
   public selected = getItemLocalCache('planificacion');
   subs: Subscription[] = [];
   cargas: cargaDocencia[] = [];
   displayedColumns: string[] = ['departamento', 'docente', 'carrera', 'tgrupo', 'thoras'];
-  constructor(private _dep: DepartamentoService,
-              private _comp: ComponenteService,
-              private _carrera: CarreraService,
-              private _grupo: GrupoService,
-              private _pde: PlanEstudioService,
-              private _docente: DocenteService,
-              private _planificaciones: PlanificacionService
-
-    ) {
-      this.promesas.push(
-        new Promise((resolve) => {
-          this._planificaciones.getPlanificaciones().subscribe(res => {
-            this.planificaciones.push(res);
-            resolve(this.planificaciones);
-           // console.log(this.planificaciones);
-          });
-        })
-      );
-
-      this.promesas.push(
-        new Promise((resolve) => {
-          this._carrera.getCarrera().subscribe(res => {
-            this.carreras.push(res);
-            resolve(this.carreras);
-          });
-        })
-      );
-
-
-      this.promesas.push(
-        new Promise((resolve) => {
-          this._docente.getDocente().subscribe(res => {
-            this.docentes.push(res);
-            resolve(this.docentes);
-          });
-        })
-      );
-      this.promesas.push(
-        new Promise((resolve) => {
-          this._comp.getComponentes().subscribe(res => {
-            this.comp.push(res);
-            resolve(this.comp);
-
-          });
-        })
-      );
-      this.promesas.push(
-        new Promise((resolve) => {
-          this._pde.getPlanEstudio().subscribe(res => {
-            this.pde.push(res);
-            resolve(this.pde);
-
-          });
-        })
-      );
-      this.promesas.push(
-        new Promise((resolve, reject) => {
-          this._grupo.getGrupos().subscribe(res => {
-            this.grupos.push(res);
-            resolve(this.grupos);
+  constructor(
+    private _dep: DepartamentoService,
+    private _comp: ComponenteService,
+    private _carrera: CarreraService,
+    private _grupo: GrupoService,
+    private _pde: PlanEstudioService,
+    private _docente: DocenteService,
+    private _planificaciones: PlanificacionService,
+    private _title: Title
+  ) {
+    this._title.setTitle('Reporte Carga Docente');
+    this.promesas.push(
+      new Promise((resolve) => {
+        this._planificaciones.getPlanificaciones().subscribe(res => {
+          this.planificaciones.push(res);
+          resolve(this.planificaciones);
+          // console.log(this.planificaciones);
         });
-        })
-      );
-
-      this.promesas.push(
-        new Promise((resolve, reject) => {
-      this._dep.getDepartamento().subscribe(res => {
-        this.dep.push(res);
-        resolve(this.dep);
-
-      });
-    })
+      })
     );
 
-    }
+    this.promesas.push(
+      new Promise((resolve) => {
+        this._carrera.getCarrera().subscribe(res => {
+          this.carreras.push(res);
+          resolve(this.carreras);
+        });
+      })
+    );
 
- ngOnInit() {
-    console.log("pacman");
- //   await this.sleep(5000);
-    this.show = true;
+
+    this.promesas.push(
+      new Promise((resolve) => {
+        this._docente.getDocente().subscribe(res => {
+          this.docentes.push(res);
+          resolve(this.docentes);
+        });
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve) => {
+        this._comp.getComponentes().subscribe(res => {
+          this.comp.push(res);
+          resolve(this.comp);
+
+        });
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve) => {
+        this._pde.getPlanEstudio().subscribe(res => {
+          this.pde.push(res);
+          resolve(this.pde);
+
+        });
+      })
+    );
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._grupo.getGrupos().subscribe(res => {
+          this.grupos.push(res);
+          resolve(this.grupos);
+        });
+      })
+    );
+
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._dep.getDepartamento().subscribe(res => {
+          this.dep.push(res);
+          resolve(this.dep);
+
+        });
+      })
+    );
+
+  }
+
+  ngOnInit() {
+    console.log('pacman');
     Promise.all(this.promesas).then(async res => {
       this.show = true;
       this._planificaciones.successObten();
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
 
-      }); // end then
-  }
-  sleep(ms = 0) {
-    return new Promise(r => setTimeout(r, ms));
+    }); // end then
   }
 
   groupByPlan(id: string) {
+    this.rLoaded = false;
     const grupos = this.grupos.filter(gp => id === gp.grupo_planificacion);
     this.reporte(grupos);
   }
-//   getPlanName(id) {
-//     console.log('hola ');
-
-//     if (id !== undefined && this.planificaciones !== undefined ) {
-//       const plan: PlanificacionModel = this.planificaciones.find(pl => id === pl.planificacion_id);
-//       return `semestre ${plan.planificacion_semestre} del año ${plan.planificacion_anyo_lectivo}`;
-//     }
-//     return '';
-// }
 
   reporte(gruposByPlan: GrupoModel[]) {
+
     const planes = [];
     const grupos = [];
     this.docentes.forEach(dc => {
-       const gps = gruposByPlan.filter(gp => dc.docente_id === gp.grupo_docente);
-       if (gps.length > 0) {
+      const gps = gruposByPlan.filter(gp => dc.docente_id === gp.grupo_docente);
+      if (gps.length > 0) {
 
-         grupos.push(gps);
-       }
-     });
-    grupos.forEach((pgp: any[], i) => {
-       const arr = [];
-       pgp.forEach((gp: GrupoModel, i) => {
-         const carga: cargaDocencia = new cargaDocencia();
-         arr.push(this.comp.filter(cp => cp.componente_id === gp.grupo_componente)[0]);
-         carga.grupo = pgp[i];
-         carga.componente = arr[i];
-         this.cargas.push(carga);
-       });
-     });
+        grupos.push(gps);
+      }
+    });
+    grupos.forEach((pgp: GrupoModel[]) => {
+      const arr = [];
+      pgp.forEach((gp: GrupoModel, i) => {
+        const carga: cargaDocencia = new cargaDocencia();
+        arr.push(this.comp.filter(cp => cp.componente_id === gp.grupo_componente)[0]);
+        carga.grupo = pgp[i];
+        carga.componente = arr[i];
+        this.cargas.push(carga);
+      });
+    });
     this.cargas.forEach((cg: cargaDocencia) => {
-       planes.push((this.pde.filter(plan => plan.pde_id === cg.componente.componente_pde)[0]));
-     });
+      planes.push((this.pde.filter(plan => plan.pde_id === cg.componente.componente_pde)[0]));
+    });
 
     planes.forEach((plan: PlanEstudioModel, i) => {
-       this.cargas[i].carrera = this.carreras.filter(cr => cr.carrera_id === plan.pde_carrera)[0];
-     });
+      this.cargas[i].carrera = this.carreras.filter(cr => cr.carrera_id === plan.pde_carrera)[0];
+    });
 
     this.cargas.forEach((carga: cargaDocencia, i) => {
-       this.cargas[i].departamento = this.dep.filter(dp => dp.departamento_id === carga.carrera.carrera_departamento)[0];
-       //
-     });
+      this.cargas[i].departamento = this.dep.filter(dp => dp.departamento_id === carga.carrera.carrera_departamento)[0];
+      //
+    });
     this.dataSource = this.cargas;
     this.cargas = [];
+    this.rLoaded = true;
   }
 
 

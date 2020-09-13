@@ -4,8 +4,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { Observable, Subscription } from 'rxjs';
 import { AddPlanificacionComponent } from './add-planificacion/add-planificacion.component';
-
-
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-planificacion',
   templateUrl: './planificacion.component.html',
@@ -16,17 +15,18 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   refPla: Observable<any>;
   subs: Subscription[] = [];
-  public visible: boolean;
-  private p1: Promise<any>;
+  public isLoaded = false;
+  private promesa: Promise<any>;
   public dataSource = [];
   displayedColumns: string[] = ['id', 'nombre', 'opciones'];
   constructor(
     private _planificacion: PlanificacionService,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private _title: Title
   ) {
-
-    this.p1 = new Promise((resolve, reject) => {
+    this._title.setTitle('Planificaciones');
+    this.promesa = new Promise((resolve, reject) => {
       const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
@@ -41,8 +41,8 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.p1.then(() => {
-      this.visible = true;
+    this.promesa.then(() => {
+      this.isLoaded = true;
       this._planificacion.successObten();
       this.subs.push(
       );

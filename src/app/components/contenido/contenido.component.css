@@ -9,3 +9,6 @@
     border: 1px solid blue;    
     background-color: yellow; 
   }
+  i, mat-icon {
+      margin-right: 5px;
+  }

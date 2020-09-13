@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatToolbarModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,10 +26,10 @@ import { VerareaComponent } from './components/area/verarea/verarea.component';
 import { AddareaComponent } from './components/area/addarea/addarea.component';
 import { VerdocenteComponent } from './components/docente/verdocente/verdocente.component';
 import { AdddocenteComponent } from './components/docente/adddocente/adddocente.component';
-import {AuthGuardService} from './services/auth-guard.service';
+import { AuthGuardService } from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
-import { VerplanestudioComponent} from './components/planestudio/verplanestudio/verplanestudio.component';
+import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { JWTtokenGetter } from './token.getter';
@@ -47,18 +47,15 @@ import { DepartamentoService } from './services/departamento.service';
 import { DocenteHorasService } from './services/docente-horas.service';
 import { DocenteAreaService } from './services/docente-area.service';
 import { GrupoService } from './services/grupo.service';
-import { HorariosComponent } from './components/reportes/horarios/horarios.component';
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/componentes/componentes.component';
 import { GrupoComponent } from './components/grupo/grupo.component';
-import { CargaComponent } from './components/reportes/carga/carga.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
 import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
-import { HorariosAnyoComponent } from './components/reportes/horarios-anyo/horarios-anyo.component';
-// import { getNombreFacultadPipe } from './components/departamento/verdepartamento/get-nombre-facultad.pipe';
+import { HorariosAnyoComponent } from './components/reportes/horarios/horarios-anyo/horarios-anyo.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
@@ -78,7 +75,7 @@ import { AddGrupoComponent } from './components/grupo/add-grupo/add-grupo.compon
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
 import { ComponenteGrupoPipe } from './pipes/componente-grupo.pipe';
 import { NombreGrupoPipe } from './pipes/nombre-grupo.pipe';
-import { HorariosCrudComponent } from './components/horarios/horarios.component'
+import { HorariosCrudComponent } from './components/horarios/horarios.component';
 import { AddHorarioComponent } from './components/horarios/add-horario/add-horario.component';
 import { RecintoNombrePipe } from './pipes/recinto-nombre.pipe';
 import { ComponenteNameSimplePipe } from './pipes/componente-name-simple.pipe';
@@ -88,6 +85,15 @@ import { DocAreasPipe } from './pipes/doc-areas.pipe';
 import { LogHorarioComponent } from './components/horarios/log-horario/log-horario.component';
 import { PlanificacionPipePipe } from './pipes/planificacion-pipe.pipe';
 import { AulaNamePipe } from './pipes/aula-name.pipe';
+import { DocenteByGrupoPipe } from './pipes/docente-by-grupo.pipe';
+import { HorarioDocenteComponent } from './components/reportes/horarios/horario-docente/horario-docente.component';
+import { GpComponenteNoDataPipe } from './pipes/gp-componente-no-data.pipe';
+import { GpDocentePipe } from './pipes/gp-docente.pipe';
+import { HorarioAulaComponent } from './components/reportes/horarios/horario-aula/horario-aula.component';
+import { CompPdeCarreraPipe } from './pipes/comp--pde--carrera.pipe';
+import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
+import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
+import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
 
 @NgModule({
   declarations: [
@@ -110,17 +116,14 @@ import { AulaNamePipe } from './pipes/aula-name.pipe';
     AdddocenteComponent,
     AddplanestudioComponent,
     VerplanestudioComponent,
-    HorariosComponent,
     HomeComponent,
     ComponentesComponent,
     GrupoComponent,
-    CargaComponent,
     CargasComponent,
     AddcarreraComponent,
     VercarreraComponent,
     AddPlanificacionComponent,
     HorariosAnyoComponent,
-    // getNombreFacultadPipe,
     DocHorasComponent,
     DocHorasAddComponent,
     CargaDocenciaComponent,
@@ -150,6 +153,15 @@ import { AulaNamePipe } from './pipes/aula-name.pipe';
     LogHorarioComponent,
     PlanificacionPipePipe,
     AulaNamePipe,
+    DocenteByGrupoPipe,
+    HorarioDocenteComponent,
+    GpComponenteNoDataPipe,
+    GpDocentePipe,
+    HorarioAulaComponent,
+    CompPdeCarreraPipe,
+    CicloToYearPipe,
+    GpRecintoPipe,
+    SumaGruposDocentePipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,
@@ -170,10 +182,11 @@ import { AulaNamePipe } from './pipes/aula-name.pipe';
     FormsModule,
     ReactiveFormsModule,
     JwtModule.forRoot({
-      config: {tokenGetter: JWTtokenGetter,
-      whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/',
-       'localhost:4200', '192.168.10.9:8000'],
-      blacklistedRoutes: ['http://localhost:3000/api/auth/'],
+      config: {
+        tokenGetter: JWTtokenGetter,
+        whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/',
+          'localhost:4200', '192.168.10.9:8000'],
+        blacklistedRoutes: ['http://localhost:3000/api/auth/'],
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
@@ -196,7 +209,8 @@ import { AulaNamePipe } from './pipes/aula-name.pipe';
     DocenteHorasService,
     DocenteAreaService,
     GrupoService,
-    DocenteNamePipe
+    DocenteNamePipe,
+    Title
   ],
   bootstrap: [AppComponent]
 })

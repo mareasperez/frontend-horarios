@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="isLoaded; else stillLoading">
     <mat-card style="height: 80vh; overflow: auto;">
         <br>
         <div class="row">
@@ -6,8 +6,8 @@
             <span style="flex: 1 1 auto"></span>
             <div style="margin-right: 5%">
                 <button mat-raised-button color="primary" (click)="openDialog('c')" style="width: 100px">
-          <mat-icon>add</mat-icon>Agregar
-        </button>
+                    <mat-icon>add</mat-icon>Agregar
+                </button>
             </div>
         </div>
         <div class="table-scroll">
@@ -27,11 +27,12 @@
                     <td mat-cell *matCellDef="let area">
                         <div class="opciones">
                             <button mat-raised-button class="btnBorrar" (click)="delArea(area.area_id)">
-                            <mat-icon>delete</mat-icon>
-                          </button>
-                            <button mat-raised-button class="btnEditar" (click)="openDialog('u', area.area_nombre, area.area_id)">
-                            <mat-icon>edit</mat-icon>
-                          </button>
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <button mat-raised-button class="btnEditar"
+                                (click)="openDialog('u', area.area_nombre, area.area_id)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
                         </div>
                     </td>
                 </ng-container>
@@ -41,3 +42,30 @@
         </div>
     </mat-card>
 </div>
+
+<ng-template #stillLoading>
+    <div class="center col-2">
+        <div class="google-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #stillLoading2>
+    <div class="center col-2">
+        <div class="loadingio-spinner-double-ring-l8019rag0l">
+            <div class="ldio-c3a0kh417ci">
+                <div></div>
+                <div></div>
+                <div>
+                    <div></div>
+                </div>
+                <div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

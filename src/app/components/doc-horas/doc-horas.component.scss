@@ -1,4 +1,26 @@
 .btnlogin {
-    width: 30%;
-    margin: 1px;
+  width: 30%;
+  margin: 1px;
 }
+
+.center {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+
+.table-scrollable {
+  overflow: auto;
+  height: 350px;
+}
+
+.scrollable {
+  overflow: auto;
+  height: 250px;
+}
+
+.docente-list-el:hover {
+  border: 1px solid palevioletred;
+}
+
+// termina aqui

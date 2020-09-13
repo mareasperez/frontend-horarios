@@ -11,19 +11,20 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { getItemLocalCache } from 'src/app/utils/utils';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+// tslint:disable: variable-name
 export class HomeComponent implements OnInit, OnDestroy {
-
   private subs: Subscription[] = [];
   public departamentos: DepartamentoModel[] = [];
   public carreras: CarreraModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public planificaciones: PlanificacionModel[] = [];
-
+  //  obserbables
   public refDep: Observable<any>;
   public refPla: Observable<any>;
   public refPde: Observable<any>;
@@ -39,13 +40,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _pde: PlanEstudioService,
     private _plan: PlanificacionService,
     private fb: FormBuilder,
-    private _snack: MatSnackBar
-
-
-
+    private _snack: MatSnackBar,
+    private _title: Title
   ) {
-
-    const p1 = new Promise((resolve) => {
+    this._title.setTitle('Inicio');
+    this.promesas.push(new Promise((resolve) => {
       const sub = this._carrera.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
@@ -53,8 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-    });
-    const p2 = new Promise((resolve) => {
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this._dep.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
@@ -62,8 +61,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-    });
-    const p3 = new Promise((resolve) => {
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this._plan.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
@@ -71,8 +70,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-    });
-    const p4 = new Promise((resolve) => {
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
           res => this.pdes.push(res),
@@ -80,14 +79,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           () => resolve()
         );
       this.subs.push(sub);
-    });
+    }));
 
     this.refDep = this._dep.getList();
     this.refPde = this._pde.getList();
     this.refPla = this._plan.getList();
     this.refCarrera = this._carrera.getList();
-
-    this.promesas.push(p4, p3, p2, p1);
 
   }
 
@@ -119,10 +116,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       carrera: new FormControl(getItemLocalCache('carrera')),
       // departamento: new FormControl(getItemLocalCache("departamento")),
-      departamento: new FormControl('4'),
+      departamento: new FormControl({ value: this._dep.list[0].departamento_id, disabled: true }),
       pde: new FormControl(getItemLocalCache('pde')),
       planificacion: new FormControl(getItemLocalCache('planificacion')),
-      ciclo: new FormControl(getItemLocalCache('ciclo'))
+      ciclo: new FormControl({ value: getItemLocalCache('ciclo'), disabled: this.planSelected !== '-1' ? false : true })
     });
   }
 

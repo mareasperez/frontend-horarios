@@ -7,6 +7,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddaulaComponent } from '../addaula/addaula.component';
 import { getItemLocalCache } from 'src/app/utils/utils';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-veraula',
@@ -20,8 +21,9 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   private promesas: Promise<any>[] = [];
   public activartabla = false;
-  public selectedR = getItemLocalCache("recinto") ;
-  public dataSource ;
+  public selectedR = getItemLocalCache('recinto');
+  public dataSource;
+  public isLoaded = false;
   public refAula: Observable<any[]>;
   public refRecintos: Observable<any[]>;
   public alerts = true;
@@ -29,12 +31,14 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'nombre', 'capacidad', 'tipo', 'opciones'];
   socket: WebSocket;
   constructor(
+    private _title: Title,
     private AulaService: AulaService,
     private _recinto: RecintoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
-    const p = new Promise<void>((resolve) => {
+    this._title.setTitle('Aulas');
+    this.promesas.push(new Promise<void>((resolve) => {
       this.AulaService.getAula()
         .subscribe(
           res => { this.aulas.push(res); },
@@ -42,18 +46,17 @@ export class VeraulaComponent implements OnInit, OnDestroy {
           () => resolve()
 
         );
-    });
-    const p1 = new Promise<void>((resolve) => {
+    }));
+    this.promesas.push(new Promise<void>((resolve) => {
       this._recinto.getRecinto()
         .subscribe(
           res => this.recintos.push(res),
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
-    });
+    }));
     this.refRecintos = this._recinto.getList();
     this.refAula = this.AulaService.getList();
-    this.promesas.push(p, p1);
   }
 
   ngOnInit() {
@@ -68,7 +71,9 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       this.refRecintos.subscribe((data: RecintoModel[]) => {
         this.recintos = data;
       });
+      this.selectedR = this.recintos[0].recinto_id;
       this.getAulas(this.selectedR);
+      this.isLoaded=true;
     });
   }
   ngOnDestroy() {
@@ -81,7 +86,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
 
   getAulas(id: string) {
     this.dataSource = this.aulas.filter(aula => aula.aula_recinto === id);
-    console.log(this.dataSource)
+    console.log(this.dataSource);
     this.alerts = false;
     this.activartabla = true;
   }

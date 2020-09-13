@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WsService } from './services/ws.service';
 import { JwtService } from './services/jwt.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private wSocket: WsService,
-    private JwtService: JwtService
+    private JwtService: JwtService,
+    private titleService: Title
   ) {
   }
 
@@ -27,5 +29,8 @@ export class AppComponent implements OnInit {
     const aux2 = this.JwtService.isAuthenticated();
     return aux && aux2;
 
+  }
+  public setTitle( newTitle: string) {
+    this.titleService.setTitle( newTitle );
   }
 }

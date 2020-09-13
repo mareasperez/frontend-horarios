@@ -34,7 +34,7 @@
             </div>
             <div class="col-4">
                 <div class="container">
-                    <button mat-raised-button *ngIf="dataSource.length == '0'" (click)="showAdd(null)" color="primary" ><mat-icon>add</mat-icon>Agregar</button>
+                    <button mat-raised-button *ngIf="dataSource.length == 0" (click)="showAdd(null)" color="primary" ><mat-icon>add</mat-icon>Agregar</button>
                 </div>
                 <span *ngIf="!hide">
             <app-addfacult [hidden]="hide" [(facultad)]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>

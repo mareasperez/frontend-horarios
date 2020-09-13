@@ -14,6 +14,8 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { MatTableDataSource, MatSnackBar } from '@angular/material';
 import { getItemLocalCache } from 'src/app/utils/utils';
+import { Title } from '@angular/platform-browser';
+// tslint:disable-next-line: class-name
 class cargaComponente {
   componente: ComponenteModel;
   grupo: GrupoModel;
@@ -25,6 +27,7 @@ class cargaComponente {
   templateUrl: './carga-componentes.component.html',
   styleUrls: ['./carga-componentes.component.scss']
 })
+// tslint:disable: variable-name
 export class CargaComponentesComponent implements OnInit, OnDestroy {
   public docentes: DocenteModel[] = [];
   public grupos: GrupoModel[] = [];
@@ -32,92 +35,93 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   private planes: PlanEstudioModel[] = [];
   private carreras: CarreraModel[] = [];
-  public show = false;
+  public isLoaded = false;
+  public dLoaded = false;
   public selected = getItemLocalCache('planificacion');
   private subs: Subscription[] = [];
   promesas: Promise<any>[] = [];
   public cargas: any[] = [];
   public dataSource;
   arr: cargaComponente[] = [];
-  displayedColumns: string[] = ['docente', 'carrera', 'anyo', 'grupo', 'horas'];
+  displayedColumns: string[] = ['docente', 'anyo', 'grupo', 'horas'];
 
-  // tslint:disable: variable-name
-  constructor(private _comp: ComponenteService,
-              private _grupo: GrupoService,
-              private _docente: DocenteService,
-              private _planificacion: PlanificacionService,
-              private _plan: PlanEstudioService,
-              private _carrera: CarreraService,
-              private _snack: MatSnackBar
-    ) {
-    const p1 =  new Promise((resolve, reject) => {
-        const sub =  this._grupo.getGrupos()
+  constructor(
+    private _comp: ComponenteService,
+    private _grupo: GrupoService,
+    private _docente: DocenteService,
+    private _planificacion: PlanificacionService,
+    private _plan: PlanEstudioService,
+    private _carrera: CarreraService,
+    private _snack: MatSnackBar,
+    private _title: Title
+  ) {
+    this._title.setTitle('Reporte Carga por Componente');
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._grupo.getGrupos()
         .subscribe(
           grupo => this.grupos.push(grupo),
-          error => this._snack.open(error.message, 'OK', {duration: 3000}),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
-          );
-        this.subs.push(sub);
-        });
-
-    const p2 =  new Promise((resolve, reject) => {
-        const sub =  this._docente.getDocente()
-        .subscribe(
-          docente =>
-          this.docentes.push(docente),
-          error => this._snack.open(error.message, 'OK', {duration: 3000}),
-          () => resolve()
-        );
-        this.subs.push(sub);
-        });
-
-    const p3 =  new Promise((resolve, reject) => {
-        const sub =  this._comp.getComponentes()
-        .subscribe(comp =>
-          this.comps.push(comp),
-          error => this._snack.open(error.message, 'OK', {duration: 3000}),
-          () => resolve()
-        );
-        this.subs.push(sub);
-        });
-
-    const p4 =  new Promise((resolve, reject) => {
-          const sub = this._planificacion.getPlanificaciones()
-          .subscribe(
-            pl => this.planificaciones.push(pl),
-            error => this._snack.open(error.message, 'OK', {duration: 3000}),
-            () => resolve()
-          );
-          console.log(this.planificaciones);
-          this.subs.push(sub);
-        });
-
-    const p5 =  new Promise((resolve, reject) => {
-      const sub =  this._plan.getPlanEstudio()
-      .subscribe(
-        plan => this.planes.push(plan),
-        error => reject(error),
-        () => resolve()
         );
       this.subs.push(sub);
-      });
+    }));
 
-    const p6 =  new Promise((resolve, reject) => {
-        const sub =  this._carrera.getCarrera()
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._docente.getDocente()
+        .subscribe(
+          docente =>
+            this.docentes.push(docente),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    }));
+
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._comp.getComponentes()
+        .subscribe(comp =>
+          this.comps.push(comp),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    }));
+
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._planificacion.getPlanificaciones()
+        .subscribe(
+          pl => this.planificaciones.push(pl),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      console.log(this.planificaciones);
+      this.subs.push(sub);
+    }));
+
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._plan.getPlanEstudio()
+        .subscribe(
+          plan => this.planes.push(plan),
+          error => reject(error),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    }));
+
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._carrera.getCarrera()
         .subscribe(
           carrera => this.carreras.push(carrera),
-          error => this._snack.open(error.message, 'OK', {duration: 3000}),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
-          );
-        this.subs.push(sub);
-        });
-
-    this.promesas.push(p1, p2, p3, p4, p5, p6);
+        );
+      this.subs.push(sub);
+    }));
   }
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.show = true;
+      this.isLoaded = true;
       this._planificacion.successObten();
       console.log(this.planificaciones);
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
@@ -143,12 +147,12 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
     const planes = [];
     const grupos = [];
     this.comps.forEach((cp, i) => {
-       const gps = gruposByPlan.filter(gp => cp.componente_id === gp.grupo_componente);
-       if (gps.length > 0) {
-         grupos.push(gps);
-       }
-     });
-     // console.log(this.cargas)
+      const gps = gruposByPlan.filter(gp => cp.componente_id === gp.grupo_componente);
+      if (gps.length > 0) {
+        grupos.push(gps);
+      }
+    });
+    // console.log(this.cargas)
     grupos.forEach((gpc: GrupoModel[], i) => {
       this.arr = [];
       gpc.forEach((gp: GrupoModel, j) => {
@@ -159,25 +163,25 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
         this.arr.push(carga);
       });
       this.cargas[i] = this.arr;
-     });
+    });
 
     this.cargas.forEach((cgs: cargaComponente[], i) => {
-       cgs.forEach((cg: cargaComponente, j) => {
-         const plan = this.planes.filter(plan => plan.pde_id === cg.componente.componente_pde)[0];
-         planes.push(plan);
-         const c = this.carreras.filter(cr => cr.carrera_id === plan.pde_carrera)[0];
-         this.cargas[i][j].carrera = c;
-       });
+      cgs.forEach((cg: cargaComponente, j) => {
+        const plan = this.planes.filter(plan => plan.pde_id === cg.componente.componente_pde)[0];
+        planes.push(plan);
+        const c = this.carreras.filter(cr => cr.carrera_id === plan.pde_carrera)[0];
+        this.cargas[i][j].carrera = c;
       });
+    });
     this.dataSource = this.cargas;
     this.cargas = [];
-
+    this.dLoaded = true;
   }
 
   getPlanName(id) {
     console.log('me llamaste culo');
-    
-    if (id !== undefined && this.planificaciones !== undefined ) {
+
+    if (id !== undefined && this.planificaciones !== undefined) {
       const plan: PlanificacionModel = this.planificaciones.find(pl => id === pl.planificacion_id);
       return `semestre ${plan.planificacion_semestre} del año ${plan.planificacion_anyo_lectivo}`;
     }

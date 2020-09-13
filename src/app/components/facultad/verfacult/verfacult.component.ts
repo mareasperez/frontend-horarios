@@ -4,21 +4,20 @@ import { FacultadModel } from 'src/app/models/facultad.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
-import { reject } from 'q';
-import { element } from 'protractor';
-
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
   styleUrls: ['./verfacult.component.css']
 })
+// tslint:disable: variable-name
 export class VerfacultComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
   public facultades: FacultadModel[] = [];
   public alerts = true;
   public facultad: FacultadModel;
   public a: Observable<any[]>;
-  @ViewChild('userMenu', { static: false }) userMenu: TemplateRef<any>;
+  @ViewChild('userMenu') userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
   sub: Subscription;
   subs: Subscription[] = [];
@@ -27,12 +26,12 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   public hide = true;
   editing = false;
   promesa: Promise<any>;
-  // tslint:disable: variable-name
   constructor(
     private facultadService: FacultadSerivice,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private _title: Title,
   ) {
-
+    this._title.setTitle('Facultad');
     this.promesa = new Promise((resolve, reject) => {
       const sub = this.facultadService.getFacultad()
         .subscribe(res => {
@@ -56,7 +55,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
             this.dataSource = [];
             this.facultades = [];
             this.facultades = res;
-            this.facultades.forEach( elemen => {
+            this.facultades.forEach(elemen => {
               this.dataSource.push(elemen);
             });
           },

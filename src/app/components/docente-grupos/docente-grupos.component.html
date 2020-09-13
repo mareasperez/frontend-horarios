@@ -1,10 +1,10 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="isLoaded; else stillLoading">
     <mat-card style="height: 80vh;">
         <h4>Docentes</h4>
         <button mat-raised-button [disabled]="docentesList.length === 0" class="btnEditar" (click)="verTodos()">
                 <mat-icon>group</mat-icon>
             </button>
-        <button mat-raised-button class="ml-1 btnBorrar" [disabled]="!docGrupos.length === 0" (click)="cerrarTodos()">
+        <button mat-raised-button class="ml-1 btnBorrar" [disabled]="!(docGrupos.length === 0)" (click)="cerrarTodos()">
             <mat-icon>highlight_off</mat-icon>
         </button>
         <mat-form-field class="ml-5 font-size-12" appearance="outline">
@@ -59,3 +59,30 @@
         </div>
     </mat-card>
 </div>
+
+<ng-template #stillLoading>
+    <div class="center col-2">
+        <div class="google-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #stillLoading2>
+    <div class="center col-2">
+        <div class="loadingio-spinner-double-ring-l8019rag0l">
+            <div class="ldio-c3a0kh417ci">
+                <div></div>
+                <div></div>
+                <div>
+                    <div></div>
+                </div>
+                <div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

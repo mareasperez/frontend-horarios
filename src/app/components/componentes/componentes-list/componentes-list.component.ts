@@ -9,6 +9,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { getItemLocalCache } from 'src/app/utils/utils';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-componentes-list',
@@ -24,18 +25,20 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   public pdes: PlanEstudioModel[] = [];
   public areas: AreaModel[] = [];
   private subs: Subscription[] = [];
-  public show: boolean;
+  public isLoaded = false;
   private promesas: Promise<any>[] = [];
   public dataSource = [];
-  public pdeSelected =  getItemLocalCache("pde") ;;
+  public pdeSelected =  getItemLocalCache('pde');
   displayedColumns: string[] = ['nombre', 'ciclo', 'area', 'thoras', 'phoras', 'creditos', 'opciones'];
   constructor(
+    private _title: Title,
     private _comp: ComponenteService,
     private _pde: PlanEstudioService,
     private _area: AreaService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
+    this._title.setTitle('Componentes');
     const p1 = new Promise((resolve) => {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
@@ -73,7 +76,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.show = true;
+      this.isLoaded = true;
       this._comp.successObten();
       this.subs.push(
         this.refComp.subscribe(data => {
