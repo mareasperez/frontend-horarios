@@ -2,6 +2,11 @@
     width: 100%;
     background-color: #3f51b5;
 }
+.table-scroll {
+    overflow: auto;
+    height: 60vh;
+}
+
 
 .btnlogin {
     width: 30%;

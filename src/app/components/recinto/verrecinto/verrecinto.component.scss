@@ -1,6 +1,10 @@
 table {
     width: 100%;
 }
+.table-scroll {
+    overflow: auto;
+    height: 70vh;
+}
 
 .boton {
     width: 30%;

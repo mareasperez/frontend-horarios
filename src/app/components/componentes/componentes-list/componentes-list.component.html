@@ -12,7 +12,7 @@
 
         <mat-icon>add</mat-icon> Agregar
     </button>
-    <div style="height: 340px; overflow: auto;">
+    <div class="table-scroll">
         <table mat-table *ngIf="dataSource.length>0; else stillLoading2" [dataSource]="dataSource"
             class="w-100  mat-elevation-z7">
             <!-- Position Column -->
