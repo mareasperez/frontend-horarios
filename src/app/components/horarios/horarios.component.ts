@@ -31,7 +31,7 @@ import { LogHorarioComponent } from './log-horario/log-horario.component';
   styleUrls: ['./horarios.component.scss']
 })
 export class HorariosCrudComponent implements OnInit, OnDestroy {
-  public grupos: GrupoModel[] = [];
+  public grupos: GrupoModel[] = [];3
   public componentes: ComponenteModel[] = [];
   public aulas: AulaModel[] = [];
   public horarios: HorarioModel[] = [];
@@ -41,6 +41,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public docentes: DocenteModel[] = [];
 
   public gruposByComp: GrupoModel[] = [];
+  public gruposList: GrupoModel[] = [];
   public compsByPde: ComponenteModel[] = [];
   public compsByCiclo: ComponenteModel[] = [];
   public pdeByCarrera: PlanEstudioModel[] = [];
@@ -53,6 +54,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public planSelected = getItemLocalCache("planificacion");
   public cicloSelected = getItemLocalCache("ciclo");
   public carreraSelected = getItemLocalCache("carrera");
+  public anyoSelected = getItemLocalCache('anyo');
   public planID = '0';
   public HorarioID = '0';
   public gpID = '0';
@@ -123,17 +125,17 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         this.refRecintos.subscribe((data: RecintoModel[]) => {
           this.recintos = data;
         });
-        this.componentesByCiclo(Number(this.cicloSelected));
+        this.componentesByCiclo();
       }));
       this.subs.push(this.refGP.subscribe(data => {
         this.grupos = this.onComponente[1] = data;
-        this.pdesByCarrera(this.carreraSelected);
+        // this.pdesByCarrera(this.carreraSelected);
       })
       );
       this.subs.push(this.refDocentes.subscribe(data => this.docentes = data));
-      if (this.carreraSelected !== '0') { this.pdesByCarrera(this.carreraSelected); }
-      if (this.planSelected !== '0') { this.groupsByPlan(this.planSelected); }
-      if (this.aulaSelected != '0') this.horarioByAula(this.aulaSelected);
+      // if (this.carreraSelected !== '0') { this.pdesByCarrera(this.carreraSelected); }
+      // if (this.planSelected !== '0') { this.groupsByPlan(this.planSelected); }
+      // if (this.aulaSelected != '0') this.horarioByAula(this.aulaSelected);
       this.show = true;
     });
   }
@@ -155,53 +157,40 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     localStorage.setItem('planificacion', this.planSelected);
     localStorage.setItem('recinto', this.selectedR);
     localStorage.setItem('aula', this.aulaSelected);
+    localStorage.setItem('anyo', this.anyoSelected);
 
   }
 
-
-  pdesByCarrera(id: string) {
-    //  if(this.cicloSelected == '0') this.cicloSelected = '0';
-    this.gruposByPlan = [];
-    //if(this.pdeSelected == '0') this.pdeSelected = '0'
-    this.pdeByCarrera = this.pdes.filter(pde => pde.pde_carrera === id);
-    this.componentesByCiclo(Number(this.cicloSelected));
-
+  pdesByCarrera() {
+    return this.pdes.filter(pde => pde.pde_carrera == this.carreraSelected);
   }
 
-  componentesByCiclo(ciclo: number) {
-    this.grupoSelected = null;
-
-    // console.log(this.cicloSelected, this.pdeSelected);
-    if (String(this.carreraSelected) !== "0") {
-      this.compsByCiclo = [];
-      this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
-      if (ciclo !== 0) this.componentesByPde(this.pdeSelected);
-    }
+  componentesByPde() {
+   return this.componentes.filter(comp => comp.componente_pde == this.pdeSelected);
+  }
+  componentesByCiclo() {
+      return this.compsByPde.filter(comp => comp.componente_ciclo.toString() == this.cicloSelected);
   }
 
-  componentesByPde(id: string) {
-    this.compsByPde = this.compsByCiclo.filter(comp => comp.componente_pde === id);
-    this.gruposByComp = [];
-    this.compsByPde.forEach(comp => {
-      let res = this.grupos.filter(gp => gp.grupo_componente === comp.componente_id);
-      res.forEach(gp => this.gruposByComp.push(gp));
-    });
-    if (id !== "0") this.groupsByPlan(this.planSelected);
-  }
 
-  groupsByPlan(id: string, Assign?: boolean) {
+  getGrupos(Assign:boolean):GrupoModel[] {
+    let grupos:GrupoModel[] ;
     if(Assign == true){
-      this.assign = true; this.noassign = false;
-      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-      this.gruposByPlan = grupos.filter(gp => gp.grupo_asignado === true && gp.grupo_horas_clase == 0);
+      this.assign = true;
+      this.noassign = false;
+      grupos = this.compsByCiclo.reduce((acc, cur)=>{
+        let gps = this.grupos.filter(gp=> gp.grupo_componente == cur.componente_id && gp.grupo_asignado)
+        return acc = [...acc, ...gps];
+      }, []);
     }else{
-      this.assign = false; this.noassign = true;
-      let grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion );
-      this.gruposByPlan = grupos.filter(gp => gp.grupo_horas_clase > 0);
+      this.assign = false;
+      this.noassign = true;
+       grupos = this.compsByCiclo.reduce((acc, cur)=>{
+        let gps = this.grupos.filter(gp=> gp.grupo_componente == cur.componente_id && gp.grupo_asignado == false)
+        return acc = [...acc, ...gps];
+      }, []);
     }
-    this.planID = id;
-    // console.log(this.gruposByPlan)
-    this.horarioByAula(this.aulaSelected);
+    return grupos;
   }
 
 
@@ -227,7 +216,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     console.log(this.horarioSelected);
     if (this.grupoSelected == null) return;
     this.save();
-    
+
   }
 
   selectGP(e, gp: GrupoModel) {
@@ -255,10 +244,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       let sub = this._horario.updateHorario(this.horarioSelected, this.horarioSelected.horario_id).subscribe(
         res => {
           this.fun();
-          this.groupsByPlan(this.planSelected);
-          let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
-          this.horarioSelected = this.grupoSelected = null;
-          this.subs.push(sub);
+          // this.groupsByPlan(this.planSelected);
+          // let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
+          // this.horarioSelected = this.grupoSelected = null;
+          // this.subs.push(sub);
         },
         error => { this._snack.open(error.message, "OK", { duration: 3000 }); this.horarioSelected = this.grupoSelected = null; }
       );
@@ -268,10 +257,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       let sub = this._horario.crearHorario(this.horarioSelected).subscribe(
         res => {
           this.fun();
-          this.groupsByPlan(this.planSelected);
-          let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
-          this.horarioSelected = this.grupoSelected = null;
-          this.subs.push(sub);
+          // this.groupsByPlan(this.planSelected);
+          // let sub = this._grupo.updategrupo(this.grupoSelected, this.grupoSelected.grupo_id).subscribe();
+          // this.horarioSelected = this.grupoSelected = null;
+          // this.subs.push(sub);
         },
         error => { this._snack.open(error.message, "OK", { duration: 3000 }); this.horarioSelected = this.grupoSelected = null; }
       );
@@ -287,7 +276,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       let sub = this._horario.deleteHorario(hr.horario_id).subscribe(
         res => {
           this.fun();
-          this.groupsByPlan(this.planSelected);
+          // this.groupsByPlan(this.planSelected);
           gp.grupo_horas_clase += 2;
           gp.grupo_asignado = false;
           let sub = this._grupo.updategrupo(gp, gp.grupo_id).subscribe();
@@ -327,7 +316,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     let gp = this.grupos.find(gp => gp.grupo_id == idGp);
     if (gp != undefined) {
       if(gp.grupo_docente != null)
-      {return this.docenteName.transform(gp.grupo_docente, this.docentes);}   
+      {return this.docenteName.transform(gp.grupo_docente, this.docentes);}
     } else return 'sin docente';
   }
 
@@ -447,28 +436,19 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.choque()
   }
   servicos() {
-    let p1 = new Promise((resolve, reject) => {
-      let sub = this._grupo.getGrupos()
-        .subscribe(
-          res => this.grupos.push(res),
-          error => this._snack.open(error.message, "OK", { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    });
+    // let p1 = new Promise((resolve, reject) => {
+    //   let sub = this._grupo.getGrupos()
+    //     .subscribe(
+    //       res => this.grupos.push(res),
+    //       error => this._snack.open(error.message, "OK", { duration: 3000 }),
+    //       () => resolve()
+    //     );
+    //   this.subs.push(sub);
+    // });
     let p2 = new Promise((resolve, reject) => {
       let sub = this._aula.getAula()
         .subscribe(
           res => this.aulas.push(res),
-          error => this._snack.open(error.message, "OK", { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    });
-    let p3 = new Promise((resolve, reject) => {
-      let sub = this._horario.getHorarios()
-        .subscribe(
-          res => this.horarios.push(res),
           error => this._snack.open(error.message, "OK", { duration: 3000 }),
           () => resolve()
         );
@@ -534,7 +514,68 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
     });
-    this.promesas.push(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+    this.promesas.push( p2, p4, p5, p6, p7, p8, p9);
+      this.getHorariosByPlanificacion()
+
+      this.getGruposByCarreraPlanCiclo()
+
+  }
+
+  setHorariosTable(gpsAssig = false){
+    // this.pdeByCarrera = this.pdesByCarrera();
+    // this.compsByPde = this.componentesByPde();
+    // this.compsByCiclo = this.componentesByCiclo()
+    // this.gruposList = this.getGrupos(gpsAssig);
+    // console.log(this.gruposList);
+
+  }
+
+  getHorariosByPlanificacion(){
+    if(!this.planSelected)return
+
+      let sub = this._horario.getByFiltro("horario_planid",this.planSelected)
+        .subscribe(
+          res => this.horarios.push(res),
+          error => this._snack.open(error.message, "OK", { duration: 3000 }),
+        );
+      this.subs.push(sub);
+
+  }
+
+  getGruposByCarreraPlanCiclo(){
+    if(!(this.carreraSelected && this.planSelected && this.cicloSelected))return
+    let busqueda = {carrera:this.carreraSelected, planificacion:this.planSelected, ciclo:this.cicloSelected}
+    let sub = this._grupo.getByCarreraPlanCiclo(busqueda)
+    .subscribe(
+      res => {this.horarios = res.grupos},
+      error => this._snack.open(error.message, "OK", { duration: 3000 }),
+    );
+  this.subs.push(sub);
+  }
+
+  chageAnyo(){
+    let planificacion = this.planificaciones.find(pl => pl.planificacion_id ==this.planSelected)
+    if(planificacion){
+      switch (this.anyoSelected) {
+        case '1':
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '1': '2'
+          break;
+        case '2':
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '3': '4'
+            break;
+        case '3':
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '5': '6'
+            break;
+        case '4':
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '7': '8'
+                break;
+        case '5':
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '9': '10'
+                  break;
+
+      }
+      this.getGruposByCarreraPlanCiclo();
+    }
   }
 
 }
