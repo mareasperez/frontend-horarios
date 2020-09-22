@@ -62,9 +62,9 @@ export class MainService {
     return this.client.get<any>(`${this.getUrl()}${filtro}=${id}`);
   }
 
-  getByPlan(query: string, filtro: string | number, id: string | number): Observable<any> {
-    console.log(`${this.getUrl()}${query}=${filtro}/${id}`);
-    return this.client.get<any>(`${this.getUrl()}${query}=${filtro}/${id}`);
+  getByPlan(query: string, filtro: string | number): Observable<any> {
+    // console.log(`${this.getUrl()}${query}=${filtro}`);
+    return this.client.get<any>(`${this.getUrl()}${query}=${filtro}`);
   }
 
   updateList(data: wsModel) {
