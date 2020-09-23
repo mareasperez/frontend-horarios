@@ -187,8 +187,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
 
   getGrupos() {
+    this.gruposBycarreraAnyo = [];
     if(!this.carreraSelected)return;
-    let grupos:GrupoModel[] =[];
+    let grupos:GrupoModel[] = [];
     let pdesByCarrera = this.pdes.filter(pde=>pde.pde_carrera == this.carreraSelected);
 
     // let componentes = this.componentes.reduce((acc,cur)=>{
@@ -558,7 +559,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   getGruposByCarreraPlanCiclo(){
       return new Promise((resolve, reject) => {
-
       let sub = this._grupo.getByFiltro("grupo_planificacion",this.planSelected )
       .subscribe(
         res => {
