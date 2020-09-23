@@ -9,13 +9,13 @@
 </mat-form-field>
     <mat-form-field class="font-size-12" appearance="outline">
         <mat-label>Carrera</mat-label>
-        <mat-select [(value)]="carreraSelected" (selectionChange)="setHorariosTable()">
+        <mat-select [(value)]="carreraSelected" (selectionChange)="getGrupos()">
             <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">{{carrera.carrera_nombre}}</mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field class="font-size-12 ml-1 " appearance="outline">
       <mat-label>Año</mat-label>
-      <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="anyoSelected" (selectionChange)="chageAnyo()">
+      <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="anyoSelected" (selectionChange)="setCiclo()">
               <mat-option  *ngFor="let i of [1,2,3,4,5]" [value]="i">{{i}}</mat-option>
       </mat-select>
   </mat-form-field>
@@ -104,7 +104,7 @@
             <td class="col-2">11am-01pm</td>
             <td class="col-2" *ngFor="let hora of array[2]"  [ngClass]="{'bg-color-green': hora.horario_choque == '' && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}" >
                 {{hora.horario_grupo | nombreGrupo : grupos}}
-                {{hora.horario_grupo | componenteGrupo : onComponente}} <br> -->
+                {{hora.horario_grupo | componenteGrupo : onComponente}} <br>
                <span style="min-height: 25px;" class="h-50 d-block" (click)="selectH($event, hora)" >
                     <div *ngIf="hora.horario_grupo != null" >
                         {{docenteNombre(hora.horario_grupo)}} <br>
@@ -196,7 +196,7 @@
                 <button mat-raised-button class="ml-1" [disabled]="noassign" color="primary">ver no asignados</button>
             </div>
             <mat-list class="max-h overflow-auto mt-2">
-                <mat-list-item class="font-size-10 " *ngFor="let gp of gruposList; let i = index;"
+                <mat-list-item class="font-size-10 " *ngFor="let gp of gruposBycarreraAnyo; let i = index;"
                 [class.bg-color-ligth]="i % 2 === 1" (click)="selectGP($event, gp)">
                 {{gp.grupo_id |  nombreGrupo : grupos}} {{gp.grupo_id | componenteGrupo : onComponente}}<br>
                 {{gp.grupo_docente | docenteName : docentes}} <br>

@@ -210,7 +210,8 @@ import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
     DocenteAreaService,
     GrupoService,
     DocenteNamePipe,
-    Title
+    Title,
+    CompPdeCarreraPipe
   ],
   bootstrap: [AppComponent]
 })

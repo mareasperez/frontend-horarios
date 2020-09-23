@@ -14,6 +14,9 @@ export class CompPdeCarreraPipe implements PipeTransform {
     if (componentes.length > 0 && pdes.length > 0 && carreras.length > 0 && id != undefined) {
       const componente = componentes.find(cp => cp.componente_id === id);
       const pde = pdes.find(pd => pd.pde_id == componente.componente_pde);
+      if (!pde) {
+        return new CarreraModel();
+      }
       const carrera = carreras.find(carr => carr.carrera_id == pde.pde_carrera)
       return carrera;
     }

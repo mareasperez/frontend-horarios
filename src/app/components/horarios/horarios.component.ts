@@ -25,6 +25,8 @@ import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
 import { HttpClient } from '@angular/common/http';
 import { LogHorarioComponent } from './log-horario/log-horario.component';
+import { CompPdeCarreraPipe } from 'src/app/pipes/comp--pde--carrera.pipe';
+
 @Component({
   selector: 'app-horarios',
   templateUrl: './horarios.component.html',
@@ -42,7 +44,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public docentes: DocenteModel[] = [];
 
   public gruposByComp: GrupoModel[] = [];
-  public gruposList: GrupoModel[] = [];
+  public gruposBycarreraAnyo: GrupoModel[] = [];
   public compsByPde: ComponenteModel[] = [];
   public compsByCiclo: ComponenteModel[] = [];
   public pdeByCarrera: PlanEstudioModel[] = [];
@@ -94,12 +96,12 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private _snack: MatSnackBar,
     private docenteName: DocenteNamePipe,
-    private http: HttpClient
+    private http: HttpClient,
+    private compPdeCarreraPipe: CompPdeCarreraPipe
   ) {
     if (!this.anyoSelected) {
       this.anyoSelected = '1';
     }
-    this.servicos();
     this.refPde = this._pde.getList();
     this.refCarrera = this._carrera.getList();
     this.refComp = this._componente.getList();
@@ -112,16 +114,18 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.anyoSelected);
-
+    // console.log(this.anyoSelected);
+    this.servicos();
+    this.setCiclo()
+    this.setHorariosTable()
     Promise.all(this.promesas).then((res) => {
-      console.log(res);
+      // console.log(res);
 
-      console.log(this.array)
-      this.onComponente[0] = this.componentes;
-      this.onComponente[1] = this.grupos;
-      this._horario.successObten();
-      this.horarioByAula()
+      // console.log(this.array)
+      // this.onComponente[0] = this.componentes;
+      // this.onComponente[1] = this.grupos;
+      // this._horario.successObten();
+      // this.horarioByAula()
       this.subs.push(this.refPde.subscribe(data => this.pdes = data));
       this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
       this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
@@ -182,24 +186,26 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
 
-  getGrupos(Assign:boolean):GrupoModel[] {
-    let grupos:GrupoModel[] ;
-    if(Assign == true){
-      this.assign = true;
-      this.noassign = false;
-      grupos = this.compsByCiclo.reduce((acc, cur)=>{
-        let gps = this.grupos.filter(gp=> gp.grupo_componente == cur.componente_id && gp.grupo_asignado)
-        return acc = [...acc, ...gps];
-      }, []);
-    }else{
-      this.assign = false;
-      this.noassign = true;
-       grupos = this.compsByCiclo.reduce((acc, cur)=>{
-        let gps = this.grupos.filter(gp=> gp.grupo_componente == cur.componente_id && gp.grupo_asignado == false)
-        return acc = [...acc, ...gps];
-      }, []);
+  getGrupos() {
+    let grupos:GrupoModel[] =[];
+    let pdesByCarrera = this.pdes.filter(pde=>pde.pde_carrera == this.carreraSelected);
+
+    // let componentes = this.componentes.reduce((acc,cur)=>{
+    //   if(pdesByCarrera.includes(cur.componente_pde))
+    //   return acc
+    // },[]=[])
+    let carrera = this.carreras.find(cr=>cr.carrera_id == this.carreraSelected)
+    this.grupos.forEach(gp=>{
+        let car = this.compPdeCarreraPipe.transform(gp.grupo_componente, this.componentes, pdesByCarrera, [carrera])
+        if(car.carrera_id){
+          grupos.push(gp)
+        }
     }
-    return grupos;
+    )
+    console.log(grupos);
+
+    this.gruposBycarreraAnyo   = grupos;
+
   }
 
 
@@ -449,9 +455,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.choque()
   }
   servicos() {
-   let p3 = this.getHorariosByPlanificacion()
+  //  let p3 = this.getHorariosByPlanificacion()
 
-   let p1 = this.getGruposByCarreraPlanCiclo()
+  //  let p1 = this.getGruposByCarreraPlanCiclo()
 
     let p2 = new Promise((resolve, reject) => {
       let sub = this._aula.getAula()
@@ -522,8 +528,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
     });
-    this.promesas.push( p1, p2, p3,p4, p5, p6, p7, p8, p9);
-    // this.promesas.push( p1, p2, p4, p5, p6, p7, p8, p9);
+    // this.promesas.push( p1, p2, p3,p4, p5, p6, p7, p8, p9);
+    this.promesas.push(  p2, p4, p5, p6, p7, p8, p9);
 
 
       // this.horarioByAula()
@@ -541,6 +547,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.onComponente[1] = this.grupos;
       this._horario.successObten();
       this.horarioByAula()
+      this.getGrupos()
+
     })
 
   }
@@ -564,28 +572,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   getGruposByCarreraPlanCiclo(){
-    // console.log("getGruposByCarreraPlanCiclo");
-
-    if(!(this.carreraSelected && this.planSelected && this.cicloSelected))return new Promise((resolve, reject) =>resolve())
-
-  //   let busqueda = {carrera:this.carreraSelected, planificacion:this.planSelected, ciclo:this.cicloSelected}
-  //   let sub = this._grupo.getByCarreraPlanCiclo(busqueda)
-  //   .subscribe(
-
-  //     res => {this.grupos = res.grupos;
-  //       // console.log(res.grupos);
-  //     // this.onComponente[1]= res.grupos
-  //   },
-  //     error => this._snack.open(error.message, "OK", { duration: 3000 }),
-  //     ()=>resolve()
-
-
-  //   );
-  // this.subs.push(sub);
-      //#region codigo provicional
       return new Promise((resolve, reject) => {
 
-      let sub = this._grupo.getByPlan("grupo_planificacion",this.planSelected)
+      let sub = this._grupo.getByFiltro("grupo_planificacion",this.planSelected )
       .subscribe(
         res => {
           // console.log(res);
@@ -599,7 +588,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   }
 
-  chageAnyo(){
+  setCiclo(){
     let planificacion = this.planificaciones.find(pl => pl.planificacion_id ==this.planSelected)
     if(planificacion){
       switch (this.anyoSelected) {
@@ -620,7 +609,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
                   break;
 
       }
-      this.setHorariosTable()
     }
   }
 
