@@ -21,7 +21,7 @@ export class CompPdeCarreraPipe implements PipeTransform {
       return carrera;
     }
     else {
-      console.log('error de busqueda  de carrera con id: ' + id);
+      // console.log('error de busqueda  de carrera con id: ' + id);
       const carrera: CarreraModel = new CarreraModel();
       carrera.carrera_nombre = 'error de busqueda';
       return carrera;

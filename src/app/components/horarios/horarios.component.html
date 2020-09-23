@@ -9,13 +9,13 @@
 </mat-form-field>
     <mat-form-field class="font-size-12" appearance="outline">
         <mat-label>Carrera</mat-label>
-        <mat-select [(value)]="carreraSelected" (selectionChange)="getGrupos()">
+        <mat-select [disabled]="planSelected != 'null' ? false:true" [(value)]="carreraSelected" (selectionChange)="getGrupos()">
             <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">{{carrera.carrera_nombre}}</mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field class="font-size-12 ml-1 " appearance="outline">
       <mat-label>Año</mat-label>
-      <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="anyoSelected" (selectionChange)="setCiclo()">
+      <mat-select [disabled]="carreraSelected != 'null' ? false:true" [(value)]="anyoSelected" (selectionChange)="setCiclo()">
               <mat-option  *ngFor="let i of [1,2,3,4,5]" [value]="i">{{i}}</mat-option>
       </mat-select>
   </mat-form-field>
@@ -47,7 +47,7 @@
     <!-- <span *ngIf="planSelected">{{planSelected}}</span> -->
 <div class="row">
     <h5 class="col-12" *ngIf="aulaLabel != null" >{{aulaLabel.aula_nombre}} {{aulaLabel.aula_recinto | recintoNombre : recintos}} </h5>
-    <table class="col-8 font-size-10 mt-2 table table-striped table-bordered w-100" *ngIf="array.length>0">
+    <table class="col-8 font-size-10 mt-2 table table-striped table-bordered w-100" *ngIf="array.length && aulaSelected">
        <thead>
            <tr class="row mx-0">
                <th class="col-2">Hora</th>
@@ -183,7 +183,7 @@
 
     </table>
     <div class="col-4 ">
-        <mat-card>
+        <mat-card *ngIf="gruposBycarreraAnyo.length">
             <div class="row">
                 <div class="col-6 leyenda bg-color-green">no choque</div>
                 <div class="col-6 leyenda bg-red-ligth">choque docente</div>

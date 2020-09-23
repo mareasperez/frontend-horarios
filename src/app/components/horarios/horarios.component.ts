@@ -114,7 +114,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // console.log(this.anyoSelected);
+    console.log(this.planSelected);
     this.servicos();
     this.setCiclo()
     this.setHorariosTable()
@@ -187,6 +187,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
 
   getGrupos() {
+    if(!this.carreraSelected)return;
     let grupos:GrupoModel[] =[];
     let pdesByCarrera = this.pdes.filter(pde=>pde.pde_carrera == this.carreraSelected);
 
@@ -305,24 +306,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   }
   horarioByAula() {
+    if(!this.planSelected || !this.aulaSelected)return
     this.horarioSelected = null;
-    // this._horario.getHorarioByFilter("horario_aula", id)
-    // .subscribe((res :HorarioModel[])=> {
-    //   // console.log( res);
-    //   this.horarios = res.map(hr =>{
-    //     let gpByplan = this.gruposByComp.filter(gp => this.planSelected == gp.grupo_planificacion);
-    //     let ghp = gpByplan.find(gp => gp.grupo_id == hr.horario_grupo );
-    //     // console.log(hr, ghp);
-    //     if(ghp != undefined){
-    //       return hr;
-    //     }
-    //   });
-      // this.horarios = res;
-      // console.log(this.horarios.l)
-      // if(this.horarios.length > 0) this.HorarioID = this.horarios[0].horario_id;
-      // console.log(this.HorarioID)
-      console.log(this.horarios);
-
       this.horariosByAula = this.horarios.filter(hr=>hr.horario_aula==this.aulaSelected);
       this.fun();
       this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
@@ -379,7 +364,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
           .toPromise()
           .then((res: any) => {
             if (res.detail) return
-            console.log('choques', res);
+            // console.log('choques', res);
             if (res.horario.length > 1) {
               switch (res.tipo) {
                 case 'd':
@@ -537,6 +522,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   setHorariosTable(gpsAssig = false){
+    if(!this.planSelected) return
     let p3 = this.getHorariosByPlanificacion()
 
     let p1 = this.getGruposByCarreraPlanCiclo()
@@ -556,7 +542,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   getHorariosByPlanificacion(){
     // console.log("getHorariosByPlanificacion");
 
-    if(!this.planSelected)return new Promise((resolve, reject) =>resolve())
     return new Promise((resolve, reject) => {
       let sub = this._horario.getByFiltro("horario_planid",this.planSelected)
         .subscribe(
