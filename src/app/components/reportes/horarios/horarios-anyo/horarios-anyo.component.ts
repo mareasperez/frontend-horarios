@@ -21,6 +21,7 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
+import { Api } from 'src/app/models/api.model';
 
 @Component({
   selector: 'app-horarios-anyo',
@@ -156,7 +157,7 @@ export class HorariosAnyoComponent implements OnInit {
     head['Content-Type'] = 'application/json';
     if (this.selectedPlan && this.selectedCarr && this.selectedAnyo) {
       const ciclo = Number(this.selectedPlan.planificacion_semestre) === 2 ? this.selectedAnyo * 2 : (this.selectedAnyo * 2) - 1;
-      this.http.post('http://localhost:8000/api/grupo/busqueda',
+      this.http.post(`${Api}/grupo/busqueda`,
         {
           busqueda: {
             carrera: Number(this.selectedCarr.carrera_id),

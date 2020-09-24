@@ -1,3 +1,3 @@
-// export const Api: string = "http://localhost:8000/api";
-export const ip = 'localhost';
-export const Api = `http://${ip}:8000/api`;
+import { environment } from 'src/environments/environment';
+export const ip = environment.API_Domain;
+export const Api = environment.API_URI;

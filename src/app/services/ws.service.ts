@@ -44,7 +44,7 @@ export class WsService {
   private contador = 0;
 
   setsock() {
-    this.socket = new WebSocket(`ws://${ip}:8000/ws/?token=${this.jwt.Token}`);
+    this.socket = new WebSocket(`ws://${ip}/ws/?token=${this.jwt.Token}`);
     // console.log((`ws://${ip}:8000/ws/?token=${this.jwt.Token}`));
 
     this.socket.onopen = () => {

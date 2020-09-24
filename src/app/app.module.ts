@@ -184,9 +184,8 @@ import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
     JwtModule.forRoot({
       config: {
         tokenGetter: JWTtokenGetter,
-        whitelistedDomains: ['localhost:8000', 'http://localhost:8000/api/facultad/',
-          'localhost:4200', '192.168.10.9:8000'],
-        blacklistedRoutes: ['http://localhost:3000/api/auth/'],
+        whitelistedDomains: [environment.API_Domain],
+        blacklistedRoutes: [environment.API_Auth],
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
