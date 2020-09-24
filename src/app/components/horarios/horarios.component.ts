@@ -114,7 +114,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.planSelected);
+    // console.log(this.planSelected);
     this.servicos();
     this.setCiclo()
     this.setHorariosTable()
@@ -124,6 +124,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
       this.subs.push(this.refHorario.subscribe(data => {
         this.horarios = data;
+        console.log(this.horarios);
+
         this.horarioByAula();
 
       }));
@@ -218,7 +220,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     // if(e.target.localName != 'td') return
     this.changeColor(e);
     this.horarioSelected = hr;
-    console.log(this.horarioSelected);
+    // console.log(this.horarioSelected);
     if (this.grupoSelected == null) return;
     this.save();
 
@@ -240,7 +242,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     e.target.classList.add('bg-color-yellow');
   }
   save() {
-    console.log(this.grupoSelected, this.horarioSelected);
+    // console.log(this.grupoSelected, this.horarioSelected);
     this.horarioSelected.horario_grupo = this.grupoSelected.grupo_id;
     this.horarioSelected.horario_vacio = false;
     this.grupoSelected.grupo_asignado = true;
@@ -287,6 +289,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   }
   horarioByAula() {
+
     if(!this.planSelected || !this.aulaSelected)return
     this.horarioSelected = null;
       this.horariosByAula = this.horarios.filter(hr=>hr.horario_aula==this.aulaSelected);
@@ -528,6 +531,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         .subscribe(
           res =>{
            this.horarios= res.horario
+           this._horario.list = res.horario
         },
 
           error => this._snack.open(error.message, "OK", { duration: 3000 }),
