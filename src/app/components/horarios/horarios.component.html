@@ -183,7 +183,7 @@
 
     </table>
     <div class="col-4 ">
-        <mat-card *ngIf="gruposBycarreraAnyo.length">
+        <mat-card *ngIf="gruposBycarreraAnyo.length && aulaSelected">
             <div class="row">
                 <div class="col-6 leyenda bg-color-green">no choque</div>
                 <div class="col-6 leyenda bg-red-ligth">choque docente</div>
@@ -192,16 +192,18 @@
             </div>
             <strong>Componetes</strong>
             <div>
-                <button mat-raised-button [disabled]="assign" color="primary" #ass >ver asignados</button>
-                <button mat-raised-button class="ml-1" [disabled]="noassign" color="primary">ver no asignados</button>
+                <button mat-raised-button [disabled]="assign" color="primary" (click)="assign = true; noassign = false;" >ver asignados</button>
+                <button mat-raised-button class="ml-1" [disabled]="noassign" (click)="assign = false; noassign = true;" color="primary">ver no asignados</button>
             </div>
             <mat-list class="max-h overflow-auto mt-2">
-                <mat-list-item class="font-size-10 " *ngFor="let gp of gruposBycarreraAnyo; let i = index;"
+              <ng-container *ngFor="let gp of gruposBycarreraAnyo; let i = index;">
+                <mat-list-item class="font-size-10"  *ngIf="gp.grupo_asignado == assign"
                 [class.bg-color-ligth]="i % 2 === 1" (click)="selectGP($event, gp)">
                 {{gp.grupo_id |  nombreGrupo : grupos}} {{gp.grupo_id | componenteGrupo : onComponente}}<br>
                 {{gp.grupo_docente | docenteName : docentes}} <br>
                 hrs: {{gp.grupo_horas_clase}}
-            </mat-list-item>
+              </mat-list-item>
+            </ng-container>
         </mat-list>
     </mat-card>
     </div>
