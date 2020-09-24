@@ -2,8 +2,16 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { Api } from 'src/app/models/api.model';
+
 export const environment = {
-  production: false
+  production: false,
+  API_Domain: 'localhost:8000',
+  API_Port: 8000,
+  API_EndPoint: 'api',
+  API_URI: 'http://localhost:8000/api',
+  API_Auth: 'http://localhost:8000/api/auth/',
+  Api_Auth_Verify: 'http://localhost:8000/api/auth/verify/'
 };
 
 /*
