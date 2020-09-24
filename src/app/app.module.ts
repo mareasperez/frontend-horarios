@@ -185,7 +185,7 @@ import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
       config: {
         tokenGetter: JWTtokenGetter,
         whitelistedDomains: [environment.API_Domain],
-        blacklistedRoutes: [environment.API_Auth],
+        blacklistedRoutes: [environment.API_Auth, environment.Api_Auth_Verify],
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
