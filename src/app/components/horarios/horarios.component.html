@@ -1,4 +1,4 @@
-<mat-card style="height: 80vh;  overflow: auto;" *ngIf="show">
+<mat-card style="height: 80vh;  overflow: auto;" *ngIf="show; else stillLoading">
   <mat-form-field class="font-size-12 ml-1" appearance="outline">
     <mat-label>Planificaci&oacute;n</mat-label>
     <mat-select  [(value)]="planSelected" (selectionChange)="setHorariosTable()">
@@ -15,7 +15,7 @@
     </mat-form-field>
     <mat-form-field class="font-size-12 ml-1 " appearance="outline">
       <mat-label>Año</mat-label>
-      <mat-select [disabled]="carreraSelected != 'null' ? false:true" [(value)]="anyoSelected" (selectionChange)="setCiclo()">
+      <mat-select [disabled]="carreraSelected != 'null' ? false:true" [(value)]="anyoSelected" (selectionChange)="getGrupos()">
               <mat-option  *ngFor="let i of [1,2,3,4,5]" [value]="i">{{i}}</mat-option>
       </mat-select>
   </mat-form-field>
@@ -209,3 +209,14 @@
     </div>
 </div>
 </mat-card>
+
+<ng-template #stillLoading>
+  <div class="center col-2">
+      <div class="google-loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+      </div>
+  </div>
+</ng-template>

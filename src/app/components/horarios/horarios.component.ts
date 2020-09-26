@@ -116,7 +116,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // console.log(this.planSelected);
     this.servicos();
-    this.setCiclo()
     this.setHorariosTable()
     Promise.all(this.promesas).then((res) => {
       this.subs.push(this.refPde.subscribe(data => this.pdes = data));
@@ -124,7 +123,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
       this.subs.push(this.refHorario.subscribe(data => {
         this.horarios = data;
-        console.log(this.horarios);
+        // console.log(this.horarios);
 
         this.horarioByAula();
 
@@ -177,16 +176,21 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
    return this.componentes.filter(comp => comp.componente_pde == this.pdeSelected);
   }
   componentesByCiclo() {
-      return this.compsByPde.filter(comp => comp.componente_ciclo.toString() == this.cicloSelected);
+    console.log(this.cicloSelected);
+
+      return this.componentes.filter(comp => comp.componente_ciclo.toString() == this.cicloSelected);
   }
 
 
   getGrupos() {
+    this.setCiclo();
     this.gruposBycarreraAnyo = [];
     if(!this.carreraSelected)return;
     let grupos:GrupoModel[] = [];
     let pdesByCarrera = this.pdes.filter(pde=>pde.pde_carrera == this.carreraSelected);
     let carrera = this.carreras.find(cr=>cr.carrera_id == this.carreraSelected)
+    let componenteByciclo = this.componentesByCiclo().map(cp=>cp.componente_id+"");
+
     this.grupos.forEach(gp=>{
         let car = this.compPdeCarreraPipe.transform(gp.grupo_componente, this.componentes, pdesByCarrera, [carrera])
         if(car.carrera_id){
@@ -194,7 +198,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         }
     }
     )
-    console.log(grupos);
+    // console.log(grupos.map(gp=>gp.grupo_componente));
+
+    grupos = grupos.filter(gp=>componenteByciclo.includes(gp.grupo_componente.toString()))
+    // console.log(componenteByciclo,grupos);
 
     this.gruposBycarreraAnyo   = grupos;
 
@@ -561,19 +568,19 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     let planificacion = this.planificaciones.find(pl => pl.planificacion_id ==this.planSelected)
     if(planificacion){
       switch (this.anyoSelected) {
-        case '1':
+        case 1:
          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '1': '2'
           break;
-        case '2':
+        case 2:
          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '3': '4'
             break;
-        case '3':
+        case 3:
          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '5': '6'
             break;
-        case '4':
+        case 4:
          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '7': '8'
                 break;
-        case '5':
+        case 5:
          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '9': '10'
                   break;
 
