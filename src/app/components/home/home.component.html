@@ -1,5 +1,5 @@
 <mat-card style="height: 80vh;">
-  <form [formGroup]="form" *ngIf="show" class="font-size-12 d-flex">
+  <form [formGroup]="form" *ngIf="isLoaded; else stillLoading" class="font-size-12 d-flex">
     <mat-form-field appearance="outline">
       <mat-label>Carrera</mat-label>
       <mat-select formControlName="carrera">
@@ -47,3 +47,14 @@
     </button>
   </form>
 </mat-card>
+
+<ng-template #stillLoading>
+  <div class="center col-2">
+      <div class="google-loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+      </div>
+  </div>
+</ng-template>

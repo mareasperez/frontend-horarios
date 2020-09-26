@@ -15,6 +15,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'row';
   public facultades: FacultadModel[] = [];
   public alerts = true;
+  public isLoaded = false;
   public facultad: FacultadModel;
   public a: Observable<any[]>;
   @ViewChild('userMenu') userMenu: TemplateRef<any>;
@@ -49,6 +50,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.promesa.then(() => {
+      this.isLoaded = true;
       this.subs.push(this.a
         .subscribe(
           res => {

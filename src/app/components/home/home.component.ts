@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public refPla: Observable<any>;
   public refPde: Observable<any>;
   public refCarrera: Observable<any>;
-  public show = false;
+  public isLoaded = false;
   private promesas: Promise<any>[] = [];
   public planSelected = getItemLocalCache('planificacion') ? getItemLocalCache('planificacion') : '-1';
 
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.show = true;
+      this.isLoaded = true;
       this.createForm();
       this._carrera.successObten();
       this.subs.push(this.refPde.subscribe(data => this.pdes = data));
