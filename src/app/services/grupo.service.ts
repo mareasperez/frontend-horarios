@@ -104,5 +104,10 @@ export class GrupoService extends MainService {
     }
 
   }
+  getByCarreraPlanCiclo(busqueda:{carrera:string, planificacion:string, ciclo:string}){
+    const head: any = {};
+    head['Content-Type'] = 'application/json';
+     return this.client.post<any>(`${this.getUrl()}busqueda`,{busqueda: busqueda});
 
+  }
 }
