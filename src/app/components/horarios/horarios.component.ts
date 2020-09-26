@@ -508,7 +508,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     });
     // this.promesas.push( p1, p2, p3,p4, p5, p6, p7, p8, p9);
-    this.promesas.push(  p2, p4, p5, p6, p7, p8, p9);
+    this.promesas.push(  p6, p2, p4, p5, p7, p8, p9);
 
 
       // this.horarioByAula()
