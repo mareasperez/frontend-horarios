@@ -75,6 +75,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public refDocentes: Observable<any>;
   public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
   public show = false;
+  public filtering = false
   private subs: Subscription[] = [];
   private promesas: Promise<any>[] = [];
   public array: any[][] = [];
@@ -296,7 +297,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   }
   horarioByAula() {
-
     if(!this.planSelected || !this.aulaSelected)return
     this.horarioSelected = null;
       this.horariosByAula = this.horarios.filter(hr=>hr.horario_aula==this.aulaSelected);
@@ -304,6 +304,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.aulaLabel = this.aulas.find(aula => aula.aula_id == this.aulaSelected);
       // });
     //mocos
+
   }
 
   docenteNombre(idGp) {
@@ -386,6 +387,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   fun() {
+    // this.filteringSpinnerToogle()
     const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
     const horas = [7, 9, 11, 13, 15, 17];
     let i = 0; let j = 0;
@@ -404,7 +406,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         this.array[aux2][aux] = vacio;
       }
     }
-    console.log(this.horariosByAula);
+    // console.log(this.horariosByAula);
     for (const dia of this.horariosByAula) {
       if(dia == undefined) return;
       switch (dia.horario_dia) {
@@ -428,6 +430,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       i = 0;
       j = 0;
     }
+    // this.filteringSpinnerToogle()
     this.choque()
   }
   servicos() {
@@ -528,6 +531,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
     })
 
+
   }
 
   getHorariosByPlanificacion(){
@@ -590,5 +594,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   getGruposAsignadoState(){
     return this.gruposBycarreraAnyo.filter(gp=>gp.grupo_asignado == this.assign)
+  }
+
+  filteringSpinnerToogle(){
+    console.log("filteringSpinnerToogle");
+
+setTimeout(() => {
+
+  this.filtering = !this.filtering
+}, 2000);
   }
 }
