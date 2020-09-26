@@ -1,6 +1,6 @@
 <div class="container-fluid mt-3">
     <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
-        <div class="row">
+        <div class="row" *ngIf="isLoaded; else stillLoading">
             <div class="col-12">
                 <h5>Facultades</h5>
             </div>
@@ -43,3 +43,14 @@
         </div>
     </mat-card>
 </div>
+
+<ng-template #stillLoading>
+    <div class="center col-2">
+        <div class="google-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</ng-template>
