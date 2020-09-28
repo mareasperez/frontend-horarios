@@ -45,7 +45,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public refPla: Observable<any>;
 
   public depSelected = getItemLocalCache('departamento');
-  public planSelected = getItemLocalCache("planificacion");
+  public planSelected = getItemLocalCache('planificacion');
 
   constructor(
     private _title: Title,
@@ -60,7 +60,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   ) {
     // console.log(this.depSelected);
     if (!this.depSelected) {
-      this.depSelected = "0"
+      this.depSelected = '0';
     }
 
     this._title.setTitle('Grupos de los Docentes');
@@ -110,11 +110,11 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     }));
 
-    this.promesas.push( new Promise((resolve, reject) => {
-      let sub = this._planificacion.getPlanificaciones()
+    this.promesas.push(new Promise((resolve, reject) => {
+      const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
-          error => this._snack.open(error.message, "OK", { duration: 3000 }),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -132,7 +132,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this.getHorarios();
     Promise.all(this.promesas).then(() => {
       // this.docentesList = this.docentes;
-      this.docByDep(this.depSelected)
+      this.docByDep(this.depSelected);
       this._docente.successObten();
       this.isLoaded = true;
       const sub = this.refDocente.subscribe(res => {
@@ -231,28 +231,29 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this.depSelected = '0';
   }
 
-getHorarios(){
-  if(!this.planSelected) return
- let p = this.getGruposByPlanificacion();
- Promise.all([p])
-}
+  getHorarios() {
+    if (!this.planSelected) { return }
+    const p = this.getGruposByPlanificacion();
+    Promise.all([p]);
+  }
 
-  getGruposByPlanificacion(){
+  getGruposByPlanificacion() {
 
     return new Promise((resolve, reject) => {
-    let sub = this._grupo.getByFiltro("grupo_planificacion",this.planSelected )
-    .subscribe(
-      res => {
-        // console.log(res);
-        this.grupos = res.grupo
-        this._grupo.list = res.grupo
-      },
-      error => this._snack.open(error.message, "OK", { duration: 3000 }),
-      () => resolve()
-    );
-    this.subs.push(sub);
-})
+      const sub = this._grupo.getByFiltro('grupo_planificacion', this.planSelected)
+        .subscribe(
+          res => {
+            if (res.grupo) {
+              this.grupos = res.grupo;
+              this._grupo.list = res.grupo;
+            }
+          },
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    });
 
-}
+  }
 
 }
