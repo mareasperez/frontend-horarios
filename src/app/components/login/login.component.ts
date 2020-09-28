@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   public error = false;
   public hide = true;
+  public loading = false;
   public Errors: matErrorsMessage = new matErrorsMessage();
 
   constructor(
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
-  });
+    });
     if (this._JwtService.isAuthenticated()) {
       this.router.navigate(['/home']);
     }
@@ -37,13 +38,15 @@ export class LoginComponent implements OnInit {
   get Form() { return this.loginForm.controls; }
 
   login() {
+    this.loading = true;
     this._JwtService.login(this.Form.username.value, this.Form.password.value)
       .subscribe(
         res => {
           console.log(res);
           window.location.reload();
+          this.loading = false;
         },
-        err => console.error(err.error.non_field_errors)
-      );
+        err => { alert(err.error.non_field_errors); this.loading = false; }
+    );
   }
 }
