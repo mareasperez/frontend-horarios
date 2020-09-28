@@ -28,7 +28,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public docentesList: DocenteModel[] = [];
   public docGrupos: DocenteModel[] = [];
   public grupos: GrupoModel[] = [];
-  public departamentos: DepartamentoModel[] = [];
   public componentes: ComponenteModel[] = [];
   public docHoras: DocenteHorasModel[] = [];
   public planificaciones: PlanificacionModel[] = [];
@@ -51,7 +50,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     private _title: Title,
     private _grupo: GrupoService,
     private _docente: DocenteService,
-    private _dep: DepartamentoService,
     private _dohr: DocenteHorasService,
     private _componete: ComponenteService,
     private _planificacion: PlanificacionService,
@@ -73,15 +71,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
     }));
-    // this.promesas.push(new Promise((resolve) => {
-    //   const sub = this._grupo.getGrupos()
-    //     .subscribe(
-    //       res => this.grupos.push(res),
-    //       error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-    //       () => resolve()
-    //     );
-    //   this.subs.push(sub);
-    // }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._componete.getComponentes()
         .subscribe(
@@ -95,15 +84,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       const sub = this._dohr.getDcHoras()
         .subscribe(
           res => this.docHoras.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    }));
-    this.promesas.push(new Promise((resolve) => {
-      const sub = this._dep.getDepartamento()
-        .subscribe(
-          res => this.departamentos.push(res),
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -123,7 +103,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this.refDocente = this._docente.getList();
     this.refComp = this._componete.getList();
     this.refDcHr = this._dohr.getList();
-    this.refDep = this._dep.getList();
     this.refPla = this._planificacion.getList();
 
   }
@@ -144,13 +123,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       const sub3 = this.refComp.subscribe(res => {
         this.componentes = res;
       });
-      const sub4 = this.refDep.subscribe(res => {
-        this.departamentos = res;
-      });
-      const sub5 = this.refDep.subscribe(res => {
-        this.departamentos = res;
-      });
-      this.subs.push(sub, sub2, sub3, sub4, sub5);
+      this.subs.push(sub, sub2, sub3);
     });
   }
 
@@ -158,7 +131,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this._grupo.list = [];
     this._docente.list = [];
     this._componete.list = [];
-    this._dep.list = [];
     this._dohr.list = [];
     localStorage.setItem('departamento', this.depSelected);
     localStorage.setItem('planificacion', this.planSelected);
@@ -218,17 +190,8 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
 
   docByDep(id: string) {
 
-    // console.log(id);
-    if (id === '0') {
-      this.delFiltro();
-    } else {
-      this.docentesList = this.docentes.filter(dc => dc.docente_departamento === id);
-    }
-  }
+    this.docentesList = this.docentes.filter(dc => dc.docente_departamento === id);
 
-  delFiltro() {
-    this.docentesList = this.docentes;
-    this.depSelected = '0';
   }
 
   getHorarios() {

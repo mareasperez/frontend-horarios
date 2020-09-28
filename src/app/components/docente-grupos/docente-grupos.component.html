@@ -4,18 +4,9 @@
     <button mat-raised-button [disabled]="docentesList.length === 0" class="btnEditar" (click)="verTodos()">
       <mat-icon>group</mat-icon>
     </button>
-    <button mat-raised-button class="ml-1 btnBorrar" [disabled]="!(docGrupos.length === 0)" (click)="cerrarTodos()">
+    <button mat-raised-button class="ml-1 btnBorrar" [disabled]="(docGrupos.length === 0)" (click)="cerrarTodos()">
       <mat-icon>highlight_off</mat-icon>
     </button>
-    <mat-form-field class="ml-5 font-size-12" appearance="outline">
-      <mat-label>Departamento</mat-label>
-      <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
-        <mat-option value="0">Ninguno</mat-option>
-        <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos ">
-          {{dep.departamento_nombre}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
     <mat-form-field class="font-size-12 ml-1" appearance="outline">
       <mat-label>Planificaci&oacute;n</mat-label>
       <mat-select [(value)]="planSelected" (selectionChange)="getGruposByPlanificacion()">
@@ -24,9 +15,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button (click)="delFiltro()" class="ml-1" [disabled]="depSelected === '0'">
-      <mat-icon>highlight_off</mat-icon>
-    </button>
     <div class="row">
       <div class="col-3" style="height: 60vh;overflow: auto;">
         <mat-list>
