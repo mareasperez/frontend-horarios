@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/services/jwt.service';
-import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { matErrorsMessage } from 'src/app/utils/errors';
 
 @Component({
   selector: 'app-login',
@@ -11,29 +12,38 @@ import { Title } from '@angular/platform-browser';
 })
 // tslint:disable: variable-name
 export class LoginComponent implements OnInit {
+  public loginForm: FormGroup;
+  public error = false;
+  public hide = true;
+  public Errors: matErrorsMessage = new matErrorsMessage();
 
   constructor(
     private _JwtService: JwtService,
     private router: Router,
-    private _title: Title
+    private _title: Title,
+    private formBuilder: FormBuilder,
   ) {
     this._title.setTitle('Log In');
   }
-  user = new User();
   ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+  });
     if (this._JwtService.isAuthenticated()) {
       this.router.navigate(['/home']);
     }
   }
+  get Form() { return this.loginForm.controls; }
 
   login() {
-    this._JwtService.login(this.user.username, this.user.password)
+    this._JwtService.login(this.Form.username.value, this.Form.password.value)
       .subscribe(
         res => {
-          // this.router.navigate(['/home']);
+          console.log(res);
           window.location.reload();
         },
-        err => console.error(err)
+        err => console.error(err.error.non_field_errors)
       );
   }
 }
