@@ -42,8 +42,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public refDcHr: Observable<any>;
   public refDep: Observable<any>;
   public refPla: Observable<any>;
-
-  public depSelected = getItemLocalCache('departamento');
   public planSelected = getItemLocalCache('planificacion');
 
   constructor(
@@ -57,10 +55,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     private _snack: MatSnackBar
   ) {
     // console.log(this.depSelected);
-    if (!this.depSelected) {
-      this.depSelected = '0';
-    }
-
     this._title.setTitle('Grupos de los Docentes');
     this.promesas.push(new Promise((resolve) => {
       const sub = this._docente.getDocente()
@@ -110,8 +104,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getHorarios();
     Promise.all(this.promesas).then(() => {
-      // this.docentesList = this.docentes;
-      this.docByDep(this.depSelected);
+      this.docentesList = this.docentes;
       this._docente.successObten();
       this.isLoaded = true;
       const sub = this.refDocente.subscribe(res => {
@@ -132,7 +125,6 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this._docente.list = [];
     this._componete.list = [];
     this._dohr.list = [];
-    localStorage.setItem('departamento', this.depSelected);
     localStorage.setItem('planificacion', this.planSelected);
     this.subs.forEach(sub => sub.unsubscribe());
   }
