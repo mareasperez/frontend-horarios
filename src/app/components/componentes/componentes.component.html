@@ -10,8 +10,8 @@
     <div class="row components">
         <div class="col-12 list-components">
             <mat-list *ngIf="componentes.length>0">
-                <mat-list-item *ngFor="let comp of componentes; let i = index" class="border-radius-50 font-size-12 " [class.bg-color-ligth]="i % 2 === 1">
-                    <mat-label (click)="addG($event, comp.componente_id)">
+                <mat-list-item *ngFor="let comp of componentes; let i = index" class="border-radius-50 font-size-12 " (click)="addG($event, comp.componente_id)" [class.bg-color-ligth]="i % 2 === 1">
+                    <mat-label >
                         {{comp.componente_nombre}}
                     </mat-label>
                     <span style="flex: 1 1 auto"></span>

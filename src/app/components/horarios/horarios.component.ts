@@ -507,7 +507,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     if(!this.planSelected) return
     let p3 = this.getHorariosByPlanificacion()
 
-    let p1 = this.getGruposByCarreraPlanCiclo()
+    let p1 = this.getGruposByPlanificacion()
 
     Promise.all([p1,p3]).then((res) => {
       // console.log(this.array)
@@ -540,7 +540,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     });
   }
 
-  getGruposByCarreraPlanCiclo(){
+  getGruposByPlanificacion(){
       return new Promise((resolve, reject) => {
       let sub = this._grupo.getByFiltro("grupo_planificacion",this.planSelected )
       .subscribe(

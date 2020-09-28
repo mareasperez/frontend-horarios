@@ -60,6 +60,14 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
     }
 
+  @Input() set _docentes(docentes: DocenteModel[]) {
+    console.log(docentes);
+    this.docentes = docentes;
+    this.docentesList = docentes
+
+  }
+
+
     get Componente(): ComponenteModel {
      // console.log(this.componente)
       return this.componente;
