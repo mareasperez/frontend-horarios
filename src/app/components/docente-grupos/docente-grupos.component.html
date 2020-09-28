@@ -1,98 +1,91 @@
 <div class="container-fluid" *ngIf="isLoaded; else stillLoading">
-    <mat-card style="height: 80vh;">
-        <h4>Docentes</h4>
-        <button mat-raised-button [disabled]="docentesList.length === 0" class="btnEditar" (click)="verTodos()">
-                <mat-icon>group</mat-icon>
-            </button>
-        <button mat-raised-button class="ml-1 btnBorrar" [disabled]="!(docGrupos.length === 0)" (click)="cerrarTodos()">
-            <mat-icon>highlight_off</mat-icon>
-        </button>
-        <mat-form-field class="ml-5 font-size-12" appearance="outline">
-            <mat-label>Departamento</mat-label>
-            <mat-select [(value)]="depSelected" (selectionChange)="docByDep($event.value)">
-                <mat-option value="0">Ninguno</mat-option>
-                <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos ">
-                    {{dep.departamento_nombre}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="font-size-12 ml-1" appearance="outline">
-          <mat-label>Planificaci&oacute;n</mat-label>
-          <mat-select  [(value)]="planSelected" (selectionChange)="getGruposByPlanificacion()">
-              <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
-                  Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-              </mat-option>
-          </mat-select>
-          </mat-form-field>
-        <button mat-raised-button (click)="delFiltro()" class="ml-1" [disabled]="depSelected === '0'">
-            <mat-icon>highlight_off</mat-icon>
-        </button>
-        <div class="row">
-            <div class="col-3" style="height: 60vh;overflow: auto;">
-                <mat-list>
-                    <mat-list-item class="border-radius-50 font-size-12 " *ngFor="let docente of docentesList; let i = index"
-                    [class.bg-color-ligth]="i % 2 === 1"
-                    (click)="verGruposDoc(docente.docente_id)">
-                        {{docente.docente_nombre}}
-                    </mat-list-item>
-                </mat-list>
-            </div>
-            <div class="col-9" style="height: 60vh; overflow: auto;">
-                <div class="row grupos " style="max-height: 60vh;overflow: auto;">
-                    <mat-card class="card col-4 mx-1 mt-1 " *ngFor="let docente of docGrupos">
-                        <mat-card-header>
-                            <mat-card-title>{{docente.docente_nombre}}</mat-card-title>
-                            <span style="flex: 1 1 auto;"></span>
-                            <button mat-icon-button color="warn" (click)="close(docente.docente_id)">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <mat-list class="list-grupos">
-                                <mat-list-item class="font-size-12" *ngFor="let grupo of gruposDoc(docente.docente_id) let i = index;" [class.bg-color-ligth]="i % 2 === 1">
-                                    <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </strong> {{grupo.grupo_componente | componenteNameSimple: componentes}} <strong>Hrs: </strong> {{grupo.grupo_horas_clase}}
-                                    <span style="flex: 1 1 auto;"></span>
-                                    <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
-                                        <mat-icon>delete</mat-icon>
-                                        </button>
-                                </mat-list-item>
-                            </mat-list>
-                        </mat-card-content>
-                        <mat-card-footer class="mb-1" [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
+  <mat-card style="height: 80vh;">
+    <h4>Docentes</h4>
+    <button mat-raised-button [disabled]="docentesList.length === 0" class="btnEditar" (click)="verTodos()">
+      <mat-icon>group</mat-icon>
+    </button>
+    <button mat-raised-button class="ml-1 btnBorrar" [disabled]="(docGrupos.length === 0)" (click)="cerrarTodos()">
+      <mat-icon>highlight_off</mat-icon>
+    </button>
+    <mat-form-field class="font-size-12 ml-1" appearance="outline">
+      <mat-label>Planificaci&oacute;n</mat-label>
+      <mat-select [(value)]="planSelected" (selectionChange)="getGruposByPlanificacion()">
+        <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
+          Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="row">
+      <div class="col-3" style="height: 60vh;overflow: auto;">
+        <mat-list>
+          <mat-list-item class="border-radius-50 font-size-12 " *ngFor="let docente of docentesList; let i = index"
+            [class.bg-color-ligth]="i % 2 === 1" (click)="verGruposDoc(docente.docente_id)">
+            {{docente.docente_nombre}}
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="col-9" style="height: 60vh; overflow: auto;">
+        <div class="row grupos " style="max-height: 60vh;overflow: auto;">
+          <mat-card class="card col-4 mx-1 mt-1 " *ngFor="let docente of docGrupos">
+            <mat-card-header>
+              <mat-card-title>{{docente.docente_nombre}}</mat-card-title>
+              <span style="flex: 1 1 auto;"></span>
+              <button mat-icon-button color="warn" (click)="close(docente.docente_id)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-list class="list-grupos" *ngIf="gruposDoc(docente.docente_id).length>0; else gpVacio">
+                <mat-list-item class="font-size-12" *ngFor="let grupo of gruposDoc(docente.docente_id) let i = index;"
+                  [class.bg-color-ligth]="i % 2 === 1">
+                  <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </strong>
+                  {{grupo.grupo_componente | componenteNameSimple: componentes}} <strong>Hrs: </strong>
+                  {{grupo.grupo_horas_clase}}
+                  <span style="flex: 1 1 auto;"></span>
+                  <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+            <mat-card-footer class="mb-1" [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
                                                  'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id)
                                                 }">
-                            {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
-                        </mat-card-footer>
-                    </mat-card>
-                </div>
-            </div>
+              {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
+            </mat-card-footer>
+          </mat-card>
         </div>
-    </mat-card>
+      </div>
+    </div>
+  </mat-card>
 </div>
 
 <ng-template #stillLoading>
-    <div class="center col-2">
-        <div class="google-loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+  <div class="center col-2">
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </div>
 </ng-template>
 <ng-template #stillLoading2>
-    <div class="center col-2">
-        <div class="loadingio-spinner-double-ring-l8019rag0l">
-            <div class="ldio-c3a0kh417ci">
-                <div></div>
-                <div></div>
-                <div>
-                    <div></div>
-                </div>
-                <div>
-                    <div></div>
-                </div>
-            </div>
+  <div class="center col-2">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
+        <div></div>
+        <div></div>
+        <div>
+          <div></div>
         </div>
+        <div>
+          <div></div>
+        </div>
+      </div>
     </div>
+  </div>
+</ng-template>
+<ng-template #gpVacio>
+    <h2>vacio</h2>
 </ng-template>

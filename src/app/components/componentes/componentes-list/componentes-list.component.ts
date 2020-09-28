@@ -10,6 +10,8 @@ import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { Title } from '@angular/platform-browser';
+import { CarreraModel } from 'src/app/models/carrera.model';
+import { CarreraService } from 'src/app/services/carrera.service';
 
 @Component({
   selector: 'app-componentes-list',
@@ -21,6 +23,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   public refComp: Observable<any>;
   public refPde: Observable<PlanEstudioModel[]>;
   public refArea: Observable<AreaModel[]>;
+  public refCarrera:Observable<CarreraModel[]>;
   public componentes: ComponenteModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public areas: AreaModel[] = [];
@@ -28,13 +31,20 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   public isLoaded = false;
   private promesas: Promise<any>[] = [];
   public dataSource = [];
-  public pdeSelected =  getItemLocalCache('pde');
+  public ciclos: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  public cicloSelected: number = 1;
+  public dataIsLoaded = false;
+  public pdeFiltered: PlanEstudioModel[] = [];
+  public carreraSelected: string;
+  public carreras: CarreraModel[] = [];
+  public pdeSelected: string;
   displayedColumns: string[] = ['nombre', 'ciclo', 'area', 'thoras', 'phoras', 'creditos', 'opciones'];
   constructor(
     private _title: Title,
     private _comp: ComponenteService,
     private _pde: PlanEstudioService,
     private _area: AreaService,
+    private _carrera: CarreraService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
@@ -67,8 +77,16 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
     });
-
-    this.promesas.push(p1, p2, p3);
+    const p4 = new Promise((resolve) => {
+      const sub = this._carrera.getCarrera()
+      .subscribe(
+        res => this.carreras.push(res),
+        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        () => resolve()
+      );
+    this.subs.push(sub);
+    });
+    this.promesas.push(p1, p2, p3, p4);
     this.refPde = this._pde.getList();
     this.refComp = this._comp.getList();
     this.refArea = this._area.getList();
@@ -76,18 +94,20 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
+      this.carreraSelected = this.carreras[0].carrera_id;
+      this.pdeByCarrera(this.carreraSelected);
+      this.pdeSelected = this.pdeFiltered[0].pde_id;
+      this.componentesByPde(this.cicloSelected);
       this.isLoaded = true;
       this._comp.successObten();
       this.subs.push(
         this.refComp.subscribe(data => {
           this.componentes = [];
           this.componentes = data;
-          this.componentesByPde(this.pdeSelected);
         }),
         this.refPde.subscribe(data => this.pdes = data),
         this.refArea.subscribe(data => this.areas = data)
       );
-      this.componentesByPde(this.pdeSelected);
     });
   }
 
@@ -98,10 +118,25 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  componentesByPde(id?: string) {
-    if (id !== '0' && id !== undefined) {
-      const compsByPde = this.componentes.filter(comp => comp.componente_pde === id);
-      this.dataSource = compsByPde;
+  pdeByCarrera(id?: string) {
+    if (id !== null && id !== undefined) {
+      const pdebyCar = this.pdes.filter(comp => comp.pde_carrera === id);
+      this.pdeFiltered = pdebyCar;
+      this.pdeSelected = this.pdeFiltered[0].pde_id;
+    }
+  }
+
+  llamarACiclo(){
+    this.cicloSelected = this.ciclos[0];
+  }
+
+  componentesByPde(id?: number) {
+    if (id !== null && id !== undefined) {
+      this.dataIsLoaded = false;
+      const compsByPde = this.componentes.filter(comp => comp.componente_pde === this.pdeSelected);
+      const compsByCiclo = compsByPde.filter( comp => comp.componente_ciclo === id);
+      this.dataSource = compsByCiclo;
+      this.dataIsLoaded = true;
     }
 
   }
