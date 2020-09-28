@@ -202,6 +202,10 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
               this.grupos = res.grupo;
               this._grupo.list = res.grupo;
             }
+            else{
+              this.grupos = Array<GrupoModel>();
+              this._grupo.list = Array<GrupoModel>();
+            }
           },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
