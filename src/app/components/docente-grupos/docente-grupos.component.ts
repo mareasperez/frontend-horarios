@@ -14,6 +14,8 @@ import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { Title } from '@angular/platform-browser';
+import { PlanificacionService } from 'src/app/services/planificacion.service';
+import { PlanificacionModel } from 'src/app/models/planificacion.model';
 
 @Component({
   selector: 'app-docente-grupos',
@@ -29,6 +31,8 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public departamentos: DepartamentoModel[] = [];
   public componentes: ComponenteModel[] = [];
   public docHoras: DocenteHorasModel[] = [];
+  public planificaciones: PlanificacionModel[] = [];
+
   subs: Subscription[] = [];
   public isLoaded = false;
   public Errors: matErrorsMessage = new matErrorsMessage();
@@ -38,7 +42,11 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public refComp: Observable<any>;
   public refDcHr: Observable<any>;
   public refDep: Observable<any>;
+  public refPla: Observable<any>;
+
   public depSelected = getItemLocalCache('departamento');
+  public planSelected = getItemLocalCache("planificacion");
+
   constructor(
     private _title: Title,
     private _grupo: GrupoService,
@@ -46,8 +54,15 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     private _dep: DepartamentoService,
     private _dohr: DocenteHorasService,
     private _componete: ComponenteService,
+    private _planificacion: PlanificacionService,
+
     private _snack: MatSnackBar
   ) {
+    // console.log(this.depSelected);
+    if (!this.depSelected) {
+      this.depSelected = "0"
+    }
+
     this._title.setTitle('Grupos de los Docentes');
     this.promesas.push(new Promise((resolve) => {
       const sub = this._docente.getDocente()
@@ -58,15 +73,15 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
     }));
-    this.promesas.push(new Promise((resolve) => {
-      const sub = this._grupo.getGrupos()
-        .subscribe(
-          res => this.grupos.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    }));
+    // this.promesas.push(new Promise((resolve) => {
+    //   const sub = this._grupo.getGrupos()
+    //     .subscribe(
+    //       res => this.grupos.push(res),
+    //       error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+    //       () => resolve()
+    //     );
+    //   this.subs.push(sub);
+    // }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._componete.getComponentes()
         .subscribe(
@@ -94,17 +109,30 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
     }));
+
+    this.promesas.push( new Promise((resolve, reject) => {
+      let sub = this._planificacion.getPlanificaciones()
+        .subscribe(
+          res => this.planificaciones.push(res),
+          error => this._snack.open(error.message, "OK", { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    }));
     this.refGrupo = this._grupo.getList();
     this.refDocente = this._docente.getList();
     this.refComp = this._componete.getList();
     this.refDcHr = this._dohr.getList();
     this.refDep = this._dep.getList();
+    this.refPla = this._planificacion.getList();
 
   }
 
   ngOnInit() {
+    this.getHorarios();
     Promise.all(this.promesas).then(() => {
-      this.docentesList = this.docentes;
+      // this.docentesList = this.docentes;
+      this.docByDep(this.depSelected)
       this._docente.successObten();
       this.isLoaded = true;
       const sub = this.refDocente.subscribe(res => {
@@ -133,6 +161,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this._dep.list = [];
     this._dohr.list = [];
     localStorage.setItem('departamento', this.depSelected);
+    localStorage.setItem('planificacion', this.planSelected);
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
@@ -188,7 +217,8 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   }
 
   docByDep(id: string) {
-    console.log(id);
+
+    // console.log(id);
     if (id === '0') {
       this.delFiltro();
     } else {
@@ -200,5 +230,29 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     this.docentesList = this.docentes;
     this.depSelected = '0';
   }
+
+getHorarios(){
+  if(!this.planSelected) return
+ let p = this.getGruposByPlanificacion();
+ Promise.all([p])
+}
+
+  getGruposByPlanificacion(){
+
+    return new Promise((resolve, reject) => {
+    let sub = this._grupo.getByFiltro("grupo_planificacion",this.planSelected )
+    .subscribe(
+      res => {
+        // console.log(res);
+        this.grupos = res.grupo
+        this._grupo.list = res.grupo
+      },
+      error => this._snack.open(error.message, "OK", { duration: 3000 }),
+      () => resolve()
+    );
+    this.subs.push(sub);
+})
+
+}
 
 }
