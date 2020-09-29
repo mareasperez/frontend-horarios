@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { CarreraService } from 'src/app/services/carrera.service';
@@ -32,7 +32,7 @@ class cargaDocencia {
   styleUrls: ['./carga-docencia.component.scss']
 })
 // tslint:disable: variable-name
-export class CargaDocenciaComponent implements OnInit {
+export class CargaDocenciaComponent implements OnInit, OnDestroy {
   public dataSource;
   public grupos: GrupoModel[] = [];
   private dep: DepartamentoModel[] = [];
@@ -134,6 +134,19 @@ export class CargaDocenciaComponent implements OnInit {
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
 
     }); // end then
+  }
+
+  ngOnDestroy(){
+  this.grupos = [];
+  this.dep = [];
+  this.comp = [];
+  this.pde = [];
+  this.carreras = [];
+  this.docentes = [];
+  this.planificaciones = [];
+  this.subs.forEach(sub => {
+    sub.unsubscribe();
+  });
   }
 
   groupByPlan(id: string) {

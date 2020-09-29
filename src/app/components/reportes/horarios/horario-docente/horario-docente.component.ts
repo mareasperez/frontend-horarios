@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -25,7 +25,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './horario-docente.component.html',
   styleUrls: ['./horario-docente.component.scss']
 })
-export class HorarioDocenteComponent implements OnInit {
+export class HorarioDocenteComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
   public isLoaded = false;
   // listas de datos llenadas por el api
@@ -144,6 +144,19 @@ export class HorarioDocenteComponent implements OnInit {
       this.isLoaded = true;
     }); // end then
   }
+
+  ngOnDestroy(): void {
+    this.docentes = [];
+    this.planificaciones = [];
+    this.horarios = [];
+    this.grupos = [];
+    this.componentes = [];
+    this.aulas = [];
+    this.recintos = [];
+    this.pdes = [];
+    this.carreras = [];
+  }
+  
   getData() {
     if (this.selectedDoc && this.selectedPlan) {
       new Promise<any>((resolve, reject) => {

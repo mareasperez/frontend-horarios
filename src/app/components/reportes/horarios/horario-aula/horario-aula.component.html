@@ -29,7 +29,7 @@
       <div class="col-4">
         <mat-form-field class="font-size-12" appearance="outline">
           <mat-label>Recintos</mat-label>
-          <mat-select [(ngModel)]="selectedRec" name="recinto" (selectionChange)="getAulas($event.value.recinto_id)">
+          <mat-select [(ngModel)]="selectedRec" name="recinto" (selectionChange)="getAulas($event.value.recinto_id); getData()">
             <mat-option *ngFor="let recinto of recintos" [value]="recinto">
               {{recinto.recinto_nombre}}
             </mat-option>
@@ -40,7 +40,7 @@
         <mat-form-field class="font-size-12" appearance="outline">
           <mat-label>Aulas</mat-label>
           <mat-select [(ngModel)]="selectedAula" name="aula" (selectionChange)="getData()">
-            <mat-option *ngFor="let aula of aulas" [value]="aula">
+            <mat-option *ngFor="let aula of aulasFiltered" [value]="aula">
               {{aula.aula_nombre}}
             </mat-option>
           </mat-select>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -29,7 +29,7 @@ import { Api } from 'src/app/models/api.model';
   styleUrls: ['./horarios-anyo.component.scss']
 })
 // tslint:disable: variable-name
-export class HorariosAnyoComponent implements OnInit {
+export class HorariosAnyoComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
   public isLoaded = false;
   public hLoaded = false;
@@ -149,6 +149,18 @@ export class HorariosAnyoComponent implements OnInit {
     Promise.all(this.promesas).then(async res => {
       this.isLoaded = true;
     }); // end then
+  }
+
+  ngOnDestroy(): void {
+    this.docentes = [];
+    this.planificaciones = [];
+    this.horarios = [];
+    this.grupos = [];
+    this.componentes = [];
+    this.aulas = [];
+    this.recintos = [];
+    this.pdes = [];
+    this.carreras = [];
   }
 
   getGrupos() {
