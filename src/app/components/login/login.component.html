@@ -26,7 +26,7 @@
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-error *ngIf="Form.password.invalid">{{Errors.getError(Form.password)}}</mat-error>
           </mat-form-field>
-          <button mat-raised-button [disabled]="loginForm.invalid"
+          <button mat-raised-button [class.btnDisabled]="loginForm.invalid"
             class="btn btn-primary btn-block btnlogin material-icons text-light" (click)="login()">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Iniciar Sesión
