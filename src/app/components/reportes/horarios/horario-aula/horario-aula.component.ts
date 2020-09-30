@@ -45,8 +45,7 @@ export class HorarioAulaComponent implements OnInit, OnDestroy {
   // temporales
   public array: any[][] = new Array();
   // valores seteados por el usuario
-  public aulasFiltered: AulaModel [] = [];
-  public sinFiltro: RecintoModel = { recinto_id: '-1', recinto_facultad: 0, recinto_nombre: 'Sin Filtro', recinto_ubicacion: '' };
+  public aulasFiltered: AulaModel[] = [];
   public selectedPlan: PlanificacionModel;
   public selectedAula: AulaModel;
   public selectedREc: RecintoModel;
@@ -109,7 +108,6 @@ export class HorarioAulaComponent implements OnInit, OnDestroy {
     );
     this.promesas.push(
       new Promise((resolve, reject) => {
-        this.recintos.push(this.sinFiltro);
         this._recinto.getRecinto().subscribe(
           recinto => this.recintos.push(recinto),
           error => this._snack.open(error, 'OK', { duration: 3000 }),
@@ -168,12 +166,8 @@ export class HorarioAulaComponent implements OnInit, OnDestroy {
   getAulas(recinto: string) {
     this.cleanGrid();
     this.aulasFiltered = [];
-    if (recinto === '-1') {
-      this.aulasFiltered = this.aulas;
-    }
-    else {
-      this.aulasFiltered = this.aulas.filter(au => au.aula_recinto === recinto);
-    }
+    console.log('llamada get aulas con recinto: ', recinto);
+    (recinto === '-1') ? this.aulasFiltered = this.aulas : this.aulasFiltered = this.aulas.filter(au => au.aula_recinto === recinto);
     this.selectedAula = this.aulasFiltered[0];
   }
 
