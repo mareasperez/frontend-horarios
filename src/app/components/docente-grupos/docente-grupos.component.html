@@ -48,8 +48,9 @@
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
-            <mat-card-footer class="mb-1" [ngClass]="{'bg-color-green': dohrs(docente.docente_id) >= docenteHoras(docente.docente_id),
-                                                 'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id)
+            <mat-card-footer class="mb-1" [ngClass]="{'bg-color-green': dohrs(docente.docente_id) == docenteHoras(docente.docente_id),
+                                                 'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id),
+                                                 'bg-color-yellow': docenteHoras(docente.docente_id)< dohrs(docente.docente_id)
                                                 }">
               {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
             </mat-card-footer>
@@ -87,5 +88,5 @@
   </div>
 </ng-template>
 <ng-template #gpVacio>
-    <h2>vacio</h2>
+  <h2>vacio</h2>
 </ng-template>
