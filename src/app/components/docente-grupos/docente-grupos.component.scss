@@ -1,15 +1,23 @@
 .card{
-    min-width: 300px;
-    max-width: 300px;
+  position: relative;
+  min-width: 230px;
+  max-width: 230px;
+  height: 330px;
 }
 
 
 .list-grupos{
-    height: 28vh;
-    max-height: 200px;
+    height: 200px;
     overflow: auto;
   }
   
   .grupos{
     height: 80%;
   }
+
+.footer{
+  margin-bottom: 1px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

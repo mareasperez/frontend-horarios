@@ -21,11 +21,12 @@
                 <mat-option *ngFor="let ciclo of ciclos" [value]="ciclo">{{ciclo}}</mat-option>
             </mat-select>
         </mat-form-field>
+        <div class="col-6">
+            <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')" [disabled]="pdeSelected === '0'">
+                <mat-icon>add</mat-icon> Agregar
+            </button>
+        </div>
     </div>
-    <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')"
-        [disabled]="pdeSelected === '0'">
-        <mat-icon>add</mat-icon> Agregar
-    </button>
     <div class="table-scroll">
         <table mat-table *ngIf="dataIsLoaded; else stillLoading2" [dataSource]="dataSource"
             class="w-100  mat-elevation-z7">
