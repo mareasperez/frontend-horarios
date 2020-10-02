@@ -6,7 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -26,7 +26,7 @@ export class VerdocenteComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nombre', 'contrato', 'inss', 'departamento', 'opciones'];
   public promesas: Promise<any>[] = [];
   constructor(
-    private _title: Title,
+    private _title: TitleService,
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
     private dialog: MatDialog,

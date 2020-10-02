@@ -11,7 +11,7 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { getItemLocalCache } from 'src/app/utils/utils';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _plan: PlanificacionService,
     private fb: FormBuilder,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Inicio');
     this.promesas.push(new Promise((resolve) => {
