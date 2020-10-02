@@ -34,7 +34,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     private _snack: MatSnackBar
   ) {
     this._title.setTitle('Carreras');
-    const p1 = new Promise((resolve) => {
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.carrera$.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
@@ -43,8 +43,8 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
       this.dataSource = this.carreras;
-    });
-    const p2 = new Promise((resolve) => {
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.departamento$.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
@@ -53,8 +53,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
 
-    });
-    this.promesas.push(p1, p2);
+    }));
     this.refCarrera = this.carrera$.getList();
     this.refDep = this.departamento$.getList();
   }
