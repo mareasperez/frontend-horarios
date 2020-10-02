@@ -19,7 +19,7 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-horario-docente',
   templateUrl: './horario-docente.component.html',
@@ -56,7 +56,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
     private _recinto: RecintoService,
     private _pde: PlanEstudioService,
     private _carrera: CarreraService,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Horario Docente');
     this.promesas.push(

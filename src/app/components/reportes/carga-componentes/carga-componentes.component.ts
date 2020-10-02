@@ -14,7 +14,7 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { MatTableDataSource, MatSnackBar } from '@angular/material';
 import { getItemLocalCache } from 'src/app/utils/utils';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 // tslint:disable-next-line: class-name
 class cargaComponente {
   componente: ComponenteModel;
@@ -53,7 +53,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
     private _plan: PlanEstudioService,
     private _carrera: CarreraService,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Carga por Componente');
     this.promesas.push(new Promise((resolve, reject) => {

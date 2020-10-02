@@ -15,7 +15,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { MatSnackBar } from '@angular/material';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 class ReporteCargaModel {
   docente: DocenteModel;
   grupos: Array<GrupoModel>;
@@ -58,7 +58,7 @@ export class CargasComponent implements OnInit, OnDestroy {
     private _doho: DocenteHorasService,
     private route: ActivatedRoute,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this.promesas.push(
       new Promise((resolve, reject) => {

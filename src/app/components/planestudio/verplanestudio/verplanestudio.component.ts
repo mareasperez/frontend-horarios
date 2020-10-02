@@ -6,7 +6,7 @@ import { AddplanestudioComponent } from '../addplanestudio/addplanestudio.compon
 import { Observable, Subscription } from 'rxjs';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-verplanestudio',
@@ -31,7 +31,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     private _Carrera: CarreraService,
     private dialog: MatDialog,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Planes de Estudio');
     this.promesas.push(new Promise<void>((resolve) => {

@@ -20,7 +20,7 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 import { Api } from 'src/app/models/api.model';
 
 @Component({
@@ -64,7 +64,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
     private _pde: PlanEstudioService,
     private _carrera: CarreraService,
     private http: HttpClient,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Horario Año');
     this.promesas.push(
@@ -181,9 +181,13 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
         .then((res: any) => {
           if (!res.detail) {
             this.grupos = Object.assign(this.grupos, res.grupos);
+            this.grupos = this.grupos.filter(gp => gp.grupo_asignado === true);
             this.getData();
           }
-          else { alert('no hay grupos en el año seleccionado'); console.log(res.detail); }
+          else {
+            alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
+            console.log(res.detail); this.rellenar();
+          }
         });
     }
   }
