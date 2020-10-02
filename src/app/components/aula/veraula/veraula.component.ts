@@ -73,7 +73,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       });
       this.selectedR = this.recintos[0].recinto_id;
       this.getAulas(this.selectedR);
-      this.isLoaded=true;
+      this.isLoaded = true;
     });
   }
   ngOnDestroy() {

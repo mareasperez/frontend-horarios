@@ -187,7 +187,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   }
 
   getHorarios() {
-    if (!this.planSelected) { return }
+    if (!this.planSelected) { return; }
     const p = this.getGruposByPlanificacion();
     Promise.all([p]);
   }
@@ -202,7 +202,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
               this.grupos = res.grupo;
               this._grupo.list = res.grupo;
             }
-            else{
+            else {
               this.grupos = Array<GrupoModel>();
               this._grupo.list = Array<GrupoModel>();
             }

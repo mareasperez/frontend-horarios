@@ -1,75 +1,76 @@
 <div class="container-fluid" *ngIf="isLoaded; else stillLoading">
-    <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
-        <br>
-        <div class="row">
-            <h4 style="margin-left: 5%">Carreras</h4>
-            <span style="flex: 1 1 auto"></span>
-            <div style="margin-right: 5%">
-                <button mat-raised-button onfocus="this.blur()" color="primary" (click)="openDialog('c')" style="width: 100px">
+  <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
+    <br>
+    <div class="row">
+      <h4 style="margin-left: 5%">Carreras</h4>
+      <span style="flex: 1 1 auto"></span>
+      <div style="margin-right: 5%">
+        <button mat-raised-button onfocus="this.blur()" color="primary" (click)="openDialog('c')" style="width: 100px">
           <mat-icon>add</mat-icon>Agregar
         </button>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
+          <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let carrera"> {{carrera.carrera_nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="departamento">
+          <th mat-header-cell *matHeaderCellDef> Departamento </th>
+          <td mat-cell *matCellDef="let carrera"> {{carrera.carrera_departamento | departamentoName:departamentos}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="opciones">
+          <th mat-header-cell *matHeaderCellDef> opciones </th>
+          <td mat-cell *matCellDef="let carrera">
+            <div class="opciones">
+              <button class="btnBorrar" mat-raised-button (click)="delCarrera(carrera.carrera_id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button class="btnEditar" mat-raised-button (click)="openDialog('u', carrera.carrera_id)">
+                <mat-icon>edit</mat-icon>
+              </button>
             </div>
-        </div>
-        <div class="table-scroll">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
-                    <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="nombre">
-                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                    <td mat-cell *matCellDef="let carrera"> {{carrera.carrera_nombre}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="departamento">
-                    <th mat-header-cell *matHeaderCellDef> Departamento </th>
-                    <td mat-cell *matCellDef="let carrera"> {{carrera.carrera_departamento | departamentoName:departamentos}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="opciones">
-                    <th mat-header-cell *matHeaderCellDef> opciones </th>
-                    <td mat-cell *matCellDef="let carrera">
-                        <div class="opciones">
-                            <button class="btnBorrar" mat-raised-button (click)="delCarrera(carrera.carrera_id)">
-                                                            <mat-icon>delete</mat-icon>
-                                                  </button>
-                            <button class="btnEditar" mat-raised-button (click)="openDialog('u', carrera.carrera_id)">
-                                                            <mat-icon>edit</mat-icon>
-                                                  </button>
-                        </div>
-                    </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </div>
-    </mat-card>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card>
 </div>
 
 <ng-template #stillLoading>
-    <div class="center col-2">
-        <div class="google-loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+  <div class="center col-2">
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </div>
 </ng-template>
 <ng-template #stillLoading2>
-    <div class="center col-2">
-        <div class="loadingio-spinner-double-ring-l8019rag0l">
-            <div class="ldio-c3a0kh417ci">
-                <div></div>
-                <div></div>
-                <div>
-                    <div></div>
-                </div>
-                <div>
-                    <div></div>
-                </div>
-            </div>
+  <div class="center col-2">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
+        <div></div>
+        <div></div>
+        <div>
+          <div></div>
         </div>
+        <div>
+          <div></div>
+        </div>
+      </div>
     </div>
+  </div>
 </ng-template>

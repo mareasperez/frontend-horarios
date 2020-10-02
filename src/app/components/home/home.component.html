@@ -33,12 +33,12 @@
       <!-- <mat-select formControlName="ciclo">
         <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
       </mat-select> -->
-      <mat-select formControlName="ciclo" >
+      <mat-select formControlName="ciclo">
         <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '1'">
-            <mat-option  *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
+          <mat-option *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
         </span>
         <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '2'">
-           <mat-option *ngFor="let i of [2,4,6,8,10]" [value]="i">{{i}}</mat-option>
+          <mat-option *ngFor="let i of [2,4,6,8,10]" [value]="i">{{i}}</mat-option>
         </span>
       </mat-select>
     </mat-form-field>
@@ -50,11 +50,11 @@
 
 <ng-template #stillLoading>
   <div class="center col-2">
-      <div class="google-loader">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-      </div>
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
 </ng-template>
