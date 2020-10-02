@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.JwtService.isAuthenticated && this.JwtService.loggedIn && this.token() ? this.wSocket.setsock() : false
     this.token();
   }
   verificar(): boolean {
@@ -32,9 +31,8 @@ export class AppComponent implements OnInit {
   }
   token() {
     console.log();
-    if(this.JwtService.Token){
+    if (this.JwtService.Token) {
       this.JwtService.tokenVerify().subscribe(
-        // res => res === this.JwtService.Token ? this.verified = true : this.verified = false,
         res => {
           if (this.JwtService.isAuthenticated && this.JwtService.loggedIn) {
             this.wSocket.setsock();
