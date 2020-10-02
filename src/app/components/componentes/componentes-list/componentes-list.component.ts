@@ -8,7 +8,7 @@ import { AddComponenteComponent } from '../add-componente/add-componente.compone
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 
@@ -39,7 +39,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   public pdeSelected: string;
   displayedColumns: string[] = ['nombre', 'ciclo', 'area', 'thoras', 'phoras', 'creditos', 'opciones'];
   constructor(
-    private _title: Title,
+    private _title: TitleService,
     private _comp: ComponenteService,
     private _pde: PlanEstudioService,
     private _area: AreaService,

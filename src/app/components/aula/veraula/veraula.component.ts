@@ -7,7 +7,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddaulaComponent } from '../addaula/addaula.component';
 import { getItemLocalCache } from 'src/app/utils/utils';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-veraula',
@@ -31,7 +31,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'nombre', 'capacidad', 'tipo', 'opciones'];
   socket: WebSocket;
   constructor(
-    private _title: Title,
+    private _title: TitleService,
     private AulaService: AulaService,
     private _recinto: RecintoService,
     private dialog: MatDialog,
