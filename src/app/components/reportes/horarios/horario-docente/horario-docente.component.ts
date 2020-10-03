@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -19,13 +19,13 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-horario-docente',
   templateUrl: './horario-docente.component.html',
   styleUrls: ['./horario-docente.component.scss']
 })
-export class HorarioDocenteComponent implements OnInit {
+export class HorarioDocenteComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
   public isLoaded = false;
   // listas de datos llenadas por el api
@@ -56,7 +56,7 @@ export class HorarioDocenteComponent implements OnInit {
     private _recinto: RecintoService,
     private _pde: PlanEstudioService,
     private _carrera: CarreraService,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Horario Docente');
     this.promesas.push(
@@ -144,6 +144,19 @@ export class HorarioDocenteComponent implements OnInit {
       this.isLoaded = true;
     }); // end then
   }
+
+  ngOnDestroy(): void {
+    this.docentes = [];
+    this.planificaciones = [];
+    this.horarios = [];
+    this.grupos = [];
+    this.componentes = [];
+    this.aulas = [];
+    this.recintos = [];
+    this.pdes = [];
+    this.carreras = [];
+  }
+  
   getData() {
     if (this.selectedDoc && this.selectedPlan) {
       new Promise<any>((resolve, reject) => {

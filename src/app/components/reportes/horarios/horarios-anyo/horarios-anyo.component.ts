@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -20,7 +20,7 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 import { Api } from 'src/app/models/api.model';
 
 @Component({
@@ -29,7 +29,7 @@ import { Api } from 'src/app/models/api.model';
   styleUrls: ['./horarios-anyo.component.scss']
 })
 // tslint:disable: variable-name
-export class HorariosAnyoComponent implements OnInit {
+export class HorariosAnyoComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
   public isLoaded = false;
   public hLoaded = false;
@@ -64,7 +64,7 @@ export class HorariosAnyoComponent implements OnInit {
     private _pde: PlanEstudioService,
     private _carrera: CarreraService,
     private http: HttpClient,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Horario Año');
     this.promesas.push(
@@ -151,6 +151,18 @@ export class HorariosAnyoComponent implements OnInit {
     }); // end then
   }
 
+  ngOnDestroy(): void {
+    this.docentes = [];
+    this.planificaciones = [];
+    this.horarios = [];
+    this.grupos = [];
+    this.componentes = [];
+    this.aulas = [];
+    this.recintos = [];
+    this.pdes = [];
+    this.carreras = [];
+  }
+
   getGrupos() {
     this.inicializar();
     const head: any = {};
@@ -169,9 +181,13 @@ export class HorariosAnyoComponent implements OnInit {
         .then((res: any) => {
           if (!res.detail) {
             this.grupos = Object.assign(this.grupos, res.grupos);
+            this.grupos = this.grupos.filter(gp => gp.grupo_asignado === true);
             this.getData();
           }
-          else { alert('no hay grupos en el año seleccionado'); console.log(res.detail); }
+          else {
+            alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
+            console.log(res.detail); this.rellenar();
+          }
         });
     }
   }

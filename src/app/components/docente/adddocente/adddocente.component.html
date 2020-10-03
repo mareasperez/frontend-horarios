@@ -39,7 +39,8 @@
       </div>
       <mat-label>Areas</mat-label>
       <mat-selection-list #horas *ngIf="areas.length > 0" style="height: 200px; overflow: auto">
-        <mat-list-option *ngFor="let area of areas" [value]="area.area_id" [selected]="([area.area_id,data.type === 'c' ? null : data.doc.docente_id  ]| docAreas:doc_areas)"
+        <mat-list-option *ngFor="let area of areas" [value]="area.area_id"
+          [selected]="([area.area_id,data.type === 'c' ? null : data.doc.docente_id  ]| docAreas:doc_areas)"
           (click)="add_area(horas)">
           {{area.area_nombre}}
         </mat-list-option>

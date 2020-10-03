@@ -1,25 +1,28 @@
 <div class="container-fluid">
-    <mat-card>
-        <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
-            <mat-form-field appearance="outline">
-                <mat-label>Nombre</mat-label>
-                <input formControlName="departamento_nombre" matInput>
-                <mat-error *ngIf="Form.departamento_nombre.invalid">{{Errors.getError(Form.departamento_nombre)}}</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Facultad</mat-label>
-                <mat-select formControlName="departamento_facultad" [(ngModel)]="selected">
-                    <mat-option *ngFor="let facultad of facultades" [value]="facultad.facultad_id">
-                        {{facultad.facultad_nombre}}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="Form.departamento_facultad.invalid">{{Errors.getError(Form.departamento_facultad)}}</mat-error>
-            </mat-form-field>
-            <button mat-raised-button class="bg-color-green" [disabled]="form.invalid"
-             (click)="data.type === 'c' ? saveDepartamento():updateDepartamento()">
-               <mat-icon>save</mat-icon> Guardar
-            </button>
-             <button mat-raised-button color="warn" (click)="dialogRef.close()" ><mat-icon>cancel</mat-icon>Cancelar</button>
-        </form>
-    </mat-card>
+  <mat-card>
+    <form [formGroup]="form" *ngIf="form" class="d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input formControlName="departamento_nombre" matInput>
+        <mat-error *ngIf="Form.departamento_nombre.invalid">{{Errors.getError(Form.departamento_nombre)}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Facultad</mat-label>
+        <mat-select formControlName="departamento_facultad" [(ngModel)]="selected">
+          <mat-option *ngFor="let facultad of facultades" [value]="facultad.facultad_id">
+            {{facultad.facultad_nombre}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="Form.departamento_facultad.invalid">{{Errors.getError(Form.departamento_facultad)}}
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button class="bg-color-green" [disabled]="form.invalid"
+        (click)="data.type === 'c' ? saveDepartamento():updateDepartamento()">
+        <mat-icon>save</mat-icon> Guardar
+      </button>
+      <button mat-raised-button color="warn" (click)="dialogRef.close()">
+        <mat-icon>cancel</mat-icon>Cancelar
+      </button>
+    </form>
+  </mat-card>
 </div>

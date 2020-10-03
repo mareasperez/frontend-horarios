@@ -1,56 +1,59 @@
 <div class="container-fluid mt-3">
-    <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
-        <div class="row" *ngIf="isLoaded; else stillLoading">
-            <div class="col-12">
-                <h5>Facultades</h5>
-            </div>
-            <div class="col-8 table-scroll">
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col">
-                    <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
-                        <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
-                    </ng-container>
+  <mat-card class="mat-elevation-z8" style="height: 80vh; overflow: auto;">
+    <div class="row" *ngIf="isLoaded; else stillLoading">
+      <div class="col-12">
+        <h5>Facultades</h5>
+      </div>
+      <div class="col-8 table-scroll">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
+            <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
+          </ng-container>
 
-                    <ng-container matColumnDef="nombre">
-                        <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                        <td mat-cell *matCellDef="let facultad"> {{facultad.facultad_nombre}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="opciones">
-                        <th mat-header-cell *matHeaderCellDef> opciones </th>
-                        <td mat-cell *matCellDef="let facultad">
-                            <div class="opciones">
-                                <button class="btnBorrar" mat-raised-button (click)="deleteFaculta(facultad.facultad_id)">
-                                <mat-icon>delete</mat-icon>
-                              </button>
-                                <button class="btnEditar" mat-raised-button (click)="showAdd(facultad)">
-                                <mat-icon>edit</mat-icon>
-                              </button>
-                            </div>
-                        </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-            </div>
-            <div class="col-4">
-                <div class="container">
-                    <button mat-raised-button *ngIf="dataSource.length == 0" (click)="showAdd(null)" color="primary" ><mat-icon>add</mat-icon>Agregar</button>
-                </div>
-                <span *ngIf="!hide">
-            <app-addfacult [hidden]="hide" [(facultad)]="facultad" (dataFacultad)="filterAction($event)" (hideAdd)="hideform($event)" ></app-addfacult>
-          </span>
-            </div>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let facultad"> {{facultad.facultad_nombre}} </td>
+          </ng-container>
+          <ng-container matColumnDef="opciones">
+            <th mat-header-cell *matHeaderCellDef> opciones </th>
+            <td mat-cell *matCellDef="let facultad">
+              <div class="opciones">
+                <button class="btnBorrar" mat-raised-button (click)="deleteFaculta(facultad.facultad_id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button class="btnEditar" mat-raised-button (click)="showAdd(facultad)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <div class="col-4">
+        <div class="container">
+          <button mat-raised-button *ngIf="dataSource.length == 0" (click)="showAdd(null)" color="primary">
+            <mat-icon>add</mat-icon>Agregar
+          </button>
         </div>
-    </mat-card>
+        <span *ngIf="!hide">
+          <app-addfacult [hidden]="hide" [(facultad)]="facultad" (dataFacultad)="filterAction($event)"
+            (hideAdd)="hideform($event)"></app-addfacult>
+        </span>
+      </div>
+    </div>
+  </mat-card>
 </div>
 
 <ng-template #stillLoading>
-    <div class="center col-2">
-        <div class="google-loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+  <div class="center col-2">
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </div>
 </ng-template>

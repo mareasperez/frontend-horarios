@@ -4,7 +4,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddareaComponent } from '../addarea/addarea.component';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-verarea',
@@ -27,7 +27,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
     private _area: AreaService,
     private dialog: MatDialog,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Areas');
     const p = new Promise<void>((resolve) => {

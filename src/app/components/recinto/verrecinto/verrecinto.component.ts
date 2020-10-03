@@ -6,6 +6,7 @@ import { AddrecintoComponent } from '../addrecinto/addrecinto.component';
 import { Subscription, Observable } from 'rxjs';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-verrecinto',
@@ -30,8 +31,10 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
     private RecintoService: RecintoService,
     private facultad$: FacultadSerivice,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private _title: TitleService
   ) {
+    this._title.setTitle('Recintos');
     this.promesas.push(new Promise((resolve) => {
       const sub = this.RecintoService.getRecinto()
         .subscribe(

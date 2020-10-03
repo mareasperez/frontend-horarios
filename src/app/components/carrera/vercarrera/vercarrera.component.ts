@@ -6,7 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddcarreraComponent } from '../addcarrera/addcarrera.component';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-vercarrera',
@@ -27,14 +27,14 @@ export class VercarreraComponent implements OnInit, OnDestroy {
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'departamento', 'opciones'];
   constructor(
-    private _title: Title,
+    private _title: TitleService,
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
     private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
     this._title.setTitle('Carreras');
-    const p1 = new Promise((resolve) => {
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.carrera$.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
@@ -43,8 +43,8 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
       this.dataSource = this.carreras;
-    });
-    const p2 = new Promise((resolve) => {
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this.departamento$.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
@@ -53,8 +53,7 @@ export class VercarreraComponent implements OnInit, OnDestroy {
         );
       this.subs.push(sub);
 
-    });
-    this.promesas.push(p1, p2);
+    }));
     this.refCarrera = this.carrera$.getList();
     this.refDep = this.departamento$.getList();
   }

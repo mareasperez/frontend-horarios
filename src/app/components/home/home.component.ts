@@ -10,8 +10,9 @@ import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { getItemLocalCache } from 'src/app/utils/utils';
-import { Title } from '@angular/platform-browser';
+import { getItemLocalCache, setItemLocalCache } from 'src/app/utils/utils';
+import { TitleService } from 'src/app/services/title.service';
+import { JwtService } from 'src/app/services/jwt.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -41,7 +42,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _plan: PlanificacionService,
     private fb: FormBuilder,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService,
+    private _JwtService: JwtService
   ) {
     this._title.setTitle('Inicio');
     this.promesas.push(new Promise((resolve) => {
@@ -145,6 +147,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  clear() {
+    const access = this._JwtService.Token;
+    localStorage.clear();
+    setItemLocalCache('access', access);
+  }
 
 }

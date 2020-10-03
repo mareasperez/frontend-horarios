@@ -1,20 +1,28 @@
 <div class="papa">
   <div class="col-md-4 offset-md-4 hijo">
     <div class="card">
-            <h1>Iniciar Sesión</h1>
+      <h1>Iniciar Sesión</h1>
       <div class="card-body">
-        <form>
-          <div class="form-group">
-            <input type="text" name="username" placeholder="Usuario" class="form-control" [(ngModel)]="user.username">
-          </div>
-          <div class="form-group">
-            <input type="password" name="pass" placeholder="Password" class="form-control" [(ngModel)]="user.password"> 
-        </div>
-          <button class="btn btn-primary btn-block btnlogin" (click)="login()">
-            Ingresar
+        <form [formGroup]="loginForm" *ngIf="loginForm" class="d-flex flex-column">
+          <mat-form-field appearance="outline">
+            <mat-label>Usuario</mat-label>
+            <input formControlName="username" matInput>
+            <mat-error *ngIf="Form.username.invalid">{{Errors.getError(Form.username)}}</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input formControlName="password" [type]="hide ? 'password' : 'text'" matInput>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error *ngIf="Form.password.invalid">{{Errors.getError(Form.password)}}</mat-error>
+          </mat-form-field>
+          <button mat-raised-button [class.btnDisabled]="loginForm.invalid"
+            class="btn btn-primary btn-block btnlogin material-icons text-light" (click)="login()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Iniciar Sesión
+            <mat-icon>login</mat-icon>
           </button>
         </form>
       </div>
     </div>
   </div>
-  </div>
+</div>

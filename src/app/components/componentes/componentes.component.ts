@@ -38,7 +38,7 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     private comService: ComponenteService,
     private _snack: MatSnackBar,
     private dialog: MatDialog,
-    ) {  }
+  ) { }
 
   ngOnInit() {
 
@@ -59,8 +59,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   delComponente(e) {
     this.subs.push(this.comService.deleteComponente(e).subscribe(
-      res => {},
-      error => this._snack.open(error.message, 'OK', {duration: 3000})
+      res => { },
+      error => this._snack.open(error.message, 'OK', { duration: 3000 })
     ));
   }
 
@@ -68,9 +68,9 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
   openDialog(tipo: string, id?: any): void {
     if (tipo === 'c') {
-       this.dialog.open(AddComponenteComponent, {
+      this.dialog.open(AddComponenteComponent, {
         width: '450px',
-        data: { type: tipo, areas: this.areas, pdes: this.pdes, pde: this.pde, ciclo: this.ciclo}
+        data: { type: tipo, areas: this.areas, pdes: this.pdes, pde: this.pde, ciclo: this.ciclo }
       });
     } else {
       const comp = this.componentes.find(d => d.componente_id === id);
@@ -87,9 +87,9 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     this.changeColor(e);
   }
 
-  changeColor(e){
+  changeColor(e) {
     const item = document.getElementsByClassName('bg-color-yellow')[0];
-    if (item){
+    if (item) {
       const elr = new ElementRef(item);
       elr.nativeElement.classList.remove('bg-color-yellow');
     }

@@ -1,9 +1,8 @@
 <mat-card style="height: 80vh; overflow: auto;" *ngIf="isLoaded; else stillLoading">
     <div class="row">
-        <mat-card-title style="margin-left: 5%;">Recintos</mat-card-title>
-        <span style="flex: 1 1 auto"></span>
-        <div style="margin-right: 5%">
-            <button mat-raised-button color="primary" (click)="openDialog('c')" style="width: 100px">
+        <mat-card-title class=" col-10">Recintos</mat-card-title>
+        <div class="col-2">
+            <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')" style="width: 100px">
                 <mat-icon>add</mat-icon>Agregar
             </button>
         </div>

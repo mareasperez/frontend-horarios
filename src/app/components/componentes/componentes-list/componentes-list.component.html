@@ -3,15 +3,15 @@
     <div class="row">
         <mat-form-field class="font-size-12 col-2" appearance="outline">
             <mat-label>Carreras</mat-label>
-            <mat-select [(value)]="carreraSelected" (selectionChange)="pdeByCarrera($event.value); llamarACiclo(); componentesByPde(cicloSelected)">
-                <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">{{carrera.carrera_nombre}}</mat-option>
+            <mat-select [(ngModel)]="carreraSelected" (selectionChange)="pdeByCarrera($event.value.carrera_id); llamarACiclo(); componentesByPde(cicloSelected)">
+                <mat-option *ngFor="let carrera of carreras" [value]="carrera">{{carrera.carrera_nombre}}</mat-option>
             </mat-select>
         </mat-form-field>
     
         <mat-form-field class="font-size-12 col-2" appearance="outline">
             <mat-label>Plan de estudios</mat-label>
-            <mat-select [(value)]="pdeSelected" (selectionChange)="llamarACiclo()">
-                <mat-option *ngFor="let pde of pdeFiltered" [value]="pde.pde_id">{{pde.pde_nombre}}</mat-option>
+            <mat-select [(ngModel)]="pdeSelected" (selectionChange)="llamarACiclo()">
+                <mat-option *ngFor="let pde of pdeFiltered" [value]="pde">{{pde.pde_nombre}}</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -21,11 +21,12 @@
                 <mat-option *ngFor="let ciclo of ciclos" [value]="ciclo">{{ciclo}}</mat-option>
             </mat-select>
         </mat-form-field>
+        <div class="col-6">
+            <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')" [disabled]="pdeSelected === '0'">
+                <mat-icon>add</mat-icon> Agregar
+            </button>
+        </div>
     </div>
-    <button mat-raised-button class="float-right" color="primary" (click)="openDialog('c')"
-        [disabled]="pdeSelected === '0'">
-        <mat-icon>add</mat-icon> Agregar
-    </button>
     <div class="table-scroll">
         <table mat-table *ngIf="dataIsLoaded; else stillLoading2" [dataSource]="dataSource"
             class="w-100  mat-elevation-z7">

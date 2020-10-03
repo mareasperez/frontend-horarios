@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { DocenteModel } from 'src/app/models/docente.model';
@@ -19,7 +19,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-horario-aula',
@@ -27,7 +27,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./horario-aula.component.scss']
 })
 // tslint:disable: variable-name
-export class HorarioAulaComponent implements OnInit {
+export class HorarioAulaComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
   public isLoaded = false;
   public hloaded = false;
@@ -45,6 +45,7 @@ export class HorarioAulaComponent implements OnInit {
   // temporales
   public array: any[][] = new Array();
   // valores seteados por el usuario
+  public aulasFiltered: AulaModel[] = [];
   public selectedPlan: PlanificacionModel;
   public selectedAula: AulaModel;
   public selectedREc: RecintoModel;
@@ -59,7 +60,7 @@ export class HorarioAulaComponent implements OnInit {
     private _recinto: RecintoService,
     private _pde: PlanEstudioService,
     private _carrera: CarreraService,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Horario Aula');
     this.promesas.push(
@@ -132,7 +133,15 @@ export class HorarioAulaComponent implements OnInit {
         );
       })
     );
-
+    this.promesas.push(
+      new Promise((resolve, reject) => {
+        this._aula.getAula().subscribe(
+          aula => this.aulas.push(aula),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      })
+    );
 
   }
   ngOnInit(): void {
@@ -141,18 +150,27 @@ export class HorarioAulaComponent implements OnInit {
       this.isLoaded = true;
     }); // end then
   }
-  getAulas(recinto: number | string) {
-    this.inicializar();
-    this.promesas.push(
-      new Promise((resolve, reject) => {
-        this._aula.getAulaByFilter('aula_recinto', recinto).subscribe(
-          aula => this.aulas.push(aula),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      })
-    );
+
+  ngOnDestroy(): void {
+    this.docentes = [];
+    this.planificaciones = [];
+    this.horarios = [];
+    this.grupos = [];
+    this.componentes = [];
+    this.aulas = [];
+    this.recintos = [];
+    this.pdes = [];
+    this.carreras = [];
   }
+
+  getAulas(recinto: string) {
+    this.cleanGrid();
+    this.aulasFiltered = [];
+    console.log('llamada get aulas con recinto: ', recinto);
+    (recinto === '-1') ? this.aulasFiltered = this.aulas : this.aulasFiltered = this.aulas.filter(au => au.aula_recinto === recinto);
+    this.selectedAula = this.aulasFiltered[0];
+  }
+
   getData() {
     if (this.selectedAula && this.selectedPlan) {
       this.array = []; this.hloaded = false;
@@ -201,10 +219,8 @@ export class HorarioAulaComponent implements OnInit {
     }
     this.hloaded = true;
   }
-  inicializar() {
-    this.aulas = [];
+  cleanGrid() {
     this.horarios = [];
     this.array = [];
-    this.selectedAula = undefined;
   }
 }

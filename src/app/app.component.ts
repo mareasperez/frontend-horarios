@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.JwtService.isAuthenticated && this.JwtService.loggedIn && this.token() ? this.wSocket.setsock() : false
     this.token();
   }
   verificar(): boolean {
@@ -32,15 +31,16 @@ export class AppComponent implements OnInit {
   }
   token() {
     console.log();
-    this.JwtService.tokenVerify().subscribe(
-      // res => res === this.JwtService.Token ? this.verified = true : this.verified = false,
-      res => {
-        if (this.JwtService.isAuthenticated && this.JwtService.loggedIn) {
-          this.wSocket.setsock();
-        }
-      },
-      err => this.JwtService.logout(),
-    );
+    if (this.JwtService.Token) {
+      this.JwtService.tokenVerify().subscribe(
+        res => {
+          if (this.JwtService.isAuthenticated && this.JwtService.loggedIn) {
+            this.wSocket.setsock();
+          }
+        },
+        err => this.JwtService.logout(),
+      );
+    }
   }
   public setTitle(newTitle: string) {
     this.titleService.setTitle(newTitle);
