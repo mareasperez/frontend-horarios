@@ -10,7 +10,7 @@ import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { getItemLocalCache } from 'src/app/utils/utils';
+import { getItemLocalCache, setItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-home',
@@ -145,6 +145,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  clear() {
+    const access = getItemLocalCache('access');
+    localStorage.clear();
+    setItemLocalCache('access', access);
+  }
 
 }
