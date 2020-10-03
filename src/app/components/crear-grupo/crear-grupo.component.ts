@@ -63,7 +63,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   public planSelected = getItemLocalCache('planificacion');
   public carreraSelected = getItemLocalCache('carrera');
   public anyoSelected = getItemLocalCache("anyo");
-
+  public componeteSelected = null;
 
   constructor(
     private _componente: ComponenteService,
@@ -172,7 +172,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     }
   }
 
-  componentesByPdeCiclo() {
+  componentesByPdeCiclo(setGrupos = false) {
     this.setCiclo();
     return new Promise((resolve, reject) => {
       let sub = this._componente.getComponetesByPdeCiclo({pde: this.pdeSelected, ciclo:this.cicloSelected})
@@ -190,22 +190,22 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     });
   }
 
-  getGruposByComponentePlan(id: string, f?: string) {
-    return new Promise((resolve, reject) => {
-      let sub = this._grupo.getByComponentePlan({componente:id, planificacion:this.planSelected} )
+  getGruposByComponentePlan(id?: string, f?: string) {
+    if (id || this.componeteSelected) {
+      this.componeteSelected = id;
+    }else return
+      let sub = this._grupo.getByComponentePlan({componente:this.componeteSelected, planificacion:this.planSelected} )
       .subscribe(
         res => {
           this.grupos = res.grupos
           this._grupo.list = res.grupos
-          let cp = this.componentes.find(cp=>cp.componente_id == id)
+          let cp = this.componentes.find(cp=>cp.componente_id == this.componeteSelected)
             this.docenteByArea(cp.componente_area);
 
         },
         error => this._snack.open(error.message, "OK", { duration: 3000 }),
-        () => resolve()
       );
       this.subs.push(sub);
-  })
 
   }
 
