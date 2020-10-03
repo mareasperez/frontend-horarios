@@ -110,7 +110,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
           this.componentes = [];
           this.componentes = data;
           if (this.pdeSelected && this.cicloSelected) {
-            this.componentesByPde(Number(this.pdeSelected));
+            this.componentesByPde(Number(this.pdeSelected.pde_id));
           }
         }),
         this.refPde.subscribe(data => this.pdes = data),
