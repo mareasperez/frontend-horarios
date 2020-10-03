@@ -95,15 +95,15 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     // this.getGrupos()
 
     Promise.all(this.promesas).then(() => {
-      console.log(this.pdeSelected);
+      console.log(this.planificaciones);
 
       if (!this.planSelected) {
-        this.planSelected = this.planificaciones[this.planificaciones.values.length - 1].planificacion_id
+        this.planSelected = this.planificaciones[this.planificaciones.length - 1].planificacion_id
 
       }
 
       if (!this.carreraSelected) {
-        this.carreraSelected = this.carreras[this.carreras.values.length - 1].carrera_id
+        this.carreraSelected = this.carreras[this.carreras.length - 1].carrera_id
       }
 
       if (!this.anyoSelected) {
@@ -111,9 +111,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       }
 
       this.pdesByCarrera(this.carreraSelected)
-      if (!this.pdeSelected) {
-        this.planSelected = this.pdeByCarrera[this.pdeByCarrera.length-1]
-      }
+
 
       this.componentesByPdeCiclo()
 
@@ -123,6 +121,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       this.subs.push(this.refComp
         .subscribe(
           data => {
+            this.componentesByPdeCiclo()
             this.componentes = data;
           },
           error => this._snack.open(error.message, 'ok', { duration: 3000 }),
@@ -131,6 +130,8 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       this.subs.push(this.refGP
         .subscribe(
           data => {
+            console.log(data);
+
             this.grupos = data;
           },
           error => this._snack.open(error.message, 'ok', { duration: 3000 }),
@@ -142,11 +143,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
       this.subs.push(this.refDocente.subscribe(data => this.docentes = data));
       this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
-      this.subs.push(
-        this.refComp.subscribe(data => {
-          this.componentes = data;
-        })
-      );
+
       this.subs.push(
         this.refGP.subscribe(data => {
           this.grupos = data;
@@ -166,13 +163,14 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-
-
-  pdesByCarrera(id: string) {
+  pdesByCarrera(id: string, loadComponentes = false) {
     this.pdeByCarrera = this.pdes.filter(pde => pde.pde_carrera === id);
+    this.pdeSelected = this.pdeByCarrera[this.pdeByCarrera.length-1].pde_id
+    if (loadComponentes) {
+      this.componentesByPdeCiclo()
 
+    }
   }
-
 
   componentesByPdeCiclo() {
     this.setCiclo();
@@ -180,6 +178,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       let sub = this._componente.getComponetesByPdeCiclo({pde: this.pdeSelected, ciclo:this.cicloSelected})
         .subscribe(
           res => {
+            this.grupos = []
             this.componentes = res.componente;
             this._componente.list = res.componente
           },
@@ -191,15 +190,13 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  getGruposByComponente(id: string, f?: string) {
-
+  getGruposByComponentePlan(id: string, f?: string) {
     return new Promise((resolve, reject) => {
-      let sub = this._grupo.getByFiltro("grupo_componente",id )
+      let sub = this._grupo.getByComponentePlan({componente:id, planificacion:this.planSelected} )
       .subscribe(
         res => {
-          this.grupos = res.grupo
-          this._grupo.list = res.grupo
+          this.grupos = res.grupos
+          this._grupo.list = res.grupos
           let cp = this.componentes.find(cp=>cp.componente_id == id)
             this.docenteByArea(cp.componente_area);
 
@@ -222,7 +219,6 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
 
     this.docFiltroArea = res;
   }
-
 
   servicios() {
 
@@ -316,12 +312,10 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     }
   }
 
-
   getGrupos(id: string, f?: string){
     if(!this.planSelected) return
   //  let p = this.getGruposByComponente(id: string, f?: string);
   //  Promise.all([p])
   }
-
 
 }
