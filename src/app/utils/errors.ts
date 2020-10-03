@@ -1,27 +1,28 @@
-import {FormControl} from '@angular/forms'
+import { FormControl } from '@angular/forms';
 
-export class matErrorsMessage{
+// tslint:disable: class-name
+export class matErrorsMessage {
 
- public getError(control: FormControl){
-    if(control.invalid){
-      for(let error in control.errors){
-        if(error) return this._errors(error);
+  public getError(control: FormControl) {
+    if (control.invalid) {
+      for (const error in control.errors) {
+        if (error) { return this._errors(error); }
       }
     }
   }
 
-  public _errors(err){
-    switch(err){
+  public _errors(err) {
+    switch (err) {
       case 'required':
-        return "Este campo es requerido";
+        return 'Este campo es requerido';
       case 'minlength':
-        return "Valor del campo muy corto";
+        return 'Valor del campo muy corto';
       case 'pattern':
-        return "Patron no valido";
+        return 'Patron no valido';
       case 'maxlength':
-      return 'Valor del campo demasiado largo';
+        return 'Valor del campo demasiado largo';
       case 'max':
-        return "Ha superado el valor maximo"
+        return 'Ha superado el valor maximo';
     }
   }
 }

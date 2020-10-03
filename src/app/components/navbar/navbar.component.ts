@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {JwtService} from '../../services/jwt.service';
+import { JwtService } from '../../services/jwt.service';
 import { variable } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-navbar',

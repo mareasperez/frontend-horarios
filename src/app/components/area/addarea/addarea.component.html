@@ -1,12 +1,12 @@
 <div class="col-12">
-    <mat-card>
-        <mat-form-field appearance="outline">
-            <mat-label>Nombre del Area</mat-label>
-            <input type="text" matInput [(ngModel)]="area.area_nombre" autofocus>
-        </mat-form-field>
-        <br>
-        <button mat-raised-button class="btnEditar" (click)="data.type !== 'c' ? updateArea() : saveArea()">
+  <mat-card>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del Area</mat-label>
+      <input type="text" matInput [(ngModel)]="area.area_nombre" autofocus>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button class="btnEditar" (click)="data.type !== 'c' ? updateArea() : saveArea()">
       <mat-icon>add_circle</mat-icon>
     </button>
-    </mat-card>
+  </mat-card>
 </div>

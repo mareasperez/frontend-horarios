@@ -4,7 +4,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { Observable, Subscription } from 'rxjs';
 import { AddPlanificacionComponent } from './add-planificacion/add-planificacion.component';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-planificacion',
   templateUrl: './planificacion.component.html',
@@ -23,7 +23,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
     private _planificacion: PlanificacionService,
     private dialog: MatDialog,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Planificaciones');
     this.promesa = new Promise((resolve, reject) => {

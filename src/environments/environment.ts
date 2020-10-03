@@ -11,7 +11,8 @@ export const environment = {
   API_EndPoint: 'api',
   API_URI: 'http://localhost:8000/api',
   API_Auth: 'http://localhost:8000/api/auth/',
-  Api_Auth_Verify: 'http://localhost:8000/api/auth/verify/'
+  Api_Auth_Verify: 'http://localhost:8000/api/auth/verify/',
+  APP_name: 'SPA'
 };
 
 /*

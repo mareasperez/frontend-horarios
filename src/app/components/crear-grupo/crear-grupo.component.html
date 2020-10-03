@@ -1,80 +1,80 @@
 <div class="container-fluid px-0" *ngIf="isLoaded; else stillLoading">
-    <mat-card class="d-flex w-100 " style="height: 82vh; overflow: auto;">
+  <mat-card class="d-flex w-100 " style="height: 82vh; overflow: auto;">
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field class="font-size-12" appearance="outline">
+          <mat-label>Carrera</mat-label>
+          <mat-select [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value)">
+            <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">
+              {{carrera.carrera_nombre}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+          <mat-label>Ciclo</mat-label>
+          <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected"
+            (selectionChange)="componentesByCiclo($event.value, '1')">
+            <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="font-size-12 ml-1" appearance="outline">
+          <mat-label>Plan de estudios</mat-label>
+          <mat-select [disabled]="cicloSelected != '0' ? false:true" [(value)]="pdeSelected"
+            (selectionChange)="componentesByPde($event.value)">
+            <mat-option *ngFor="let pde of pdeByCarrera" [value]="pde.pde_id">{{pde.pde_nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="font-size-12 ml-1" appearance="outline">
+          <mat-label>Planificaci&oacute;n</mat-label>
+          <mat-select [disabled]="pdeSelected != '0' ? false:true" [(value)]="planSelected"
+            (selectionChange)="groupsByPlan($event.value)">
+            <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
+              Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
         <div class="row">
-            <div class="col-12">
-                <mat-form-field class="font-size-12" appearance="outline">
-                    <mat-label>Carrera</mat-label>
-                    <mat-select [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value)">
-                        <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">
-                            {{carrera.carrera_nombre}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="font-size-12 ml-1 " appearance="outline">
-                    <mat-label>Ciclo</mat-label>
-                    <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected"
-                        (selectionChange)="componentesByCiclo($event.value, '1')">
-                        <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="font-size-12 ml-1" appearance="outline">
-                    <mat-label>Plan de estudios</mat-label>
-                    <mat-select [disabled]="cicloSelected != '0' ? false:true" [(value)]="pdeSelected"
-                        (selectionChange)="componentesByPde($event.value)">
-                        <mat-option *ngFor="let pde of pdeByCarrera" [value]="pde.pde_id">{{pde.pde_nombre}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="font-size-12 ml-1" appearance="outline">
-                    <mat-label>Planificaci&oacute;n</mat-label>
-                    <mat-select [disabled]="pdeSelected != '0' ? false:true" [(value)]="planSelected"
-                        (selectionChange)="groupsByPlan($event.value)">
-                        <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
-                            Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-12">
-                <div class="row">
-                    <span class="col-6">
-                        <app-componentes [componentes]="compsByPde" [areas]="areas" [pdes]="pdes"
-                            (gpComp)="groupsByComp($event, 'c')"></app-componentes>
-                    </span>
-                    <span class="col-6" *ngIf="componente != null ">
-                        <app-grupo *ngIf="planSelected !== '0'" [componentes]="componentes"
-                            [planificacion]="planSelected" [_grupos]="gruposFiltrados"
-                            [planificaciones]="planificaciones" [docentes]="docFiltroArea" [_componente]="componente">
-                        </app-grupo>
-                    </span>
-                </div>
-            </div>
+          <span class="col-6">
+            <app-componentes [componentes]="compsByPde" [areas]="areas" [pdes]="pdes"
+              (gpComp)="groupsByComp($event, 'c')"></app-componentes>
+          </span>
+          <span class="col-6" *ngIf="componente != null ">
+            <app-grupo *ngIf="planSelected !== '0'" [componentes]="componentes" [planificacion]="planSelected"
+              [_grupos]="gruposFiltrados" [planificaciones]="planificaciones" [docentes]="docFiltroArea"
+              [_componente]="componente">
+            </app-grupo>
+          </span>
         </div>
-    </mat-card>
+      </div>
+    </div>
+  </mat-card>
 </div>
 
 <ng-template #stillLoading>
-    <div class="center col-2">
-        <div class="google-loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+  <div class="center col-2">
+    <div class="google-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </div>
 </ng-template>
 <ng-template #stillLoading2>
-    <div class="center col-2">
-        <div class="loadingio-spinner-double-ring-l8019rag0l">
-            <div class="ldio-c3a0kh417ci">
-                <div></div>
-                <div></div>
-                <div>
-                    <div></div>
-                </div>
-                <div>
-                    <div></div>
-                </div>
-            </div>
+  <div class="center col-2">
+    <div class="loadingio-spinner-double-ring-l8019rag0l">
+      <div class="ldio-c3a0kh417ci">
+        <div></div>
+        <div></div>
+        <div>
+          <div></div>
         </div>
+        <div>
+          <div></div>
+        </div>
+      </div>
     </div>
+  </div>
 </ng-template>

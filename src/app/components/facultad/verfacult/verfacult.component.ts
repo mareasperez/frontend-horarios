@@ -4,7 +4,7 @@ import { FacultadModel } from 'src/app/models/facultad.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-verfacult',
   templateUrl: './verfacult.component.html',
@@ -30,7 +30,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   constructor(
     private facultadService: FacultadSerivice,
     private _snack: MatSnackBar,
-    private _title: Title,
+    private _title: TitleService,
   ) {
     this._title.setTitle('Facultad');
     this.promesa = new Promise((resolve, reject) => {

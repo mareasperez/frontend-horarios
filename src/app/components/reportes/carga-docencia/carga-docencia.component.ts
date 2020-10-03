@@ -15,7 +15,7 @@ import { DocenteService } from 'src/app/services/docente.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 // tslint:disable: class-name
 class cargaDocencia {
@@ -56,7 +56,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
     private _pde: PlanEstudioService,
     private _docente: DocenteService,
     private _planificaciones: PlanificacionService,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Reporte Carga Docente');
     this.promesas.push(

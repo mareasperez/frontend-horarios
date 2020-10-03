@@ -2,7 +2,7 @@ export function getItemLocalCache(item: string) {
   //  console.log( localStorage.getItem(item))
   return JSON.parse(localStorage.getItem(item));
 }
-export function setItemLocalCache(item: string, value: string|number) {
+export function setItemLocalCache(item: string, value: string | number) {
   value = String(value);
   localStorage.setItem(item, value);
 }

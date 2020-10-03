@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/services/jwt.service';
 import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
 
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private _JwtService: JwtService,
     private router: Router,
-    private _title: Title,
+    private _title: TitleService,
     private formBuilder: FormBuilder,
   ) {
     this._title.setTitle('Log In');
@@ -47,6 +47,6 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         },
         err => { alert(err.error.non_field_errors); this.loading = false; }
-    );
+      );
   }
 }

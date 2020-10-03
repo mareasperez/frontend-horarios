@@ -11,7 +11,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { Subscription, Observable } from 'rxjs';
 interface DialogData {
   type: string;
-  pde?: string;
+  pde?: PlanEstudioModel;
   componente?: ComponenteModel;
   ciclo?: string;
   areas: AreaModel[];
@@ -68,6 +68,7 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
   }
 
   createForm(id?: string) {
+    console.log(this.data.pde);
     if (this.data.type === 'c') {
       this.form = this.fb.group({
         componente_id: null,
@@ -77,7 +78,7 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
         componente_ciclo: new FormControl(this.data.ciclo ? this.data.ciclo : '0', [Validators.required, Validators.min(1)]),
         componente_credito: new FormControl('1', [Validators.required, Validators.min(1), Validators.max(10)]),
         componente_area: new FormControl('', [Validators.required]),
-        componente_pde: new FormControl(this.data.pde, [Validators.required])
+        componente_pde: new FormControl(this.data.pde.pde_id, [Validators.required])
 
       });
     } else {

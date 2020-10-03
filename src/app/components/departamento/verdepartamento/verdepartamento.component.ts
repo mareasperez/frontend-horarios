@@ -6,7 +6,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-verdepartamento',
@@ -27,7 +27,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
   sub: Subscription;
   displayedColumns: string[] = ['id', 'nombre', 'facultad', 'opciones'];
   constructor(
-    private _title: Title,
+    private _title: TitleService,
     private _departamento: DepartamentoService,
     private dialog: MatDialog,
     private facultad$: FacultadSerivice,

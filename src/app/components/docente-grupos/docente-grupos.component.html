@@ -35,7 +35,8 @@
             </mat-card-header>
             <mat-card-content>
               <mat-list class="list-grupos" *ngIf="gruposDoc(docente.docente_id).length>0; else gpVacio">
-                <mat-list-item class="font-size-12 border-radius-50" *ngFor="let grupo of gruposDoc(docente.docente_id) let i = index;"
+                <mat-list-item class="font-size-12 border-radius-50"
+                  *ngFor="let grupo of gruposDoc(docente.docente_id) let i = index;"
                   [class.bg-color-ligth]="i % 2 === 0">
                   <b>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </b>
                   {{grupo.grupo_componente | componenteNameSimple: componentes}} <b>Hrs: </b>

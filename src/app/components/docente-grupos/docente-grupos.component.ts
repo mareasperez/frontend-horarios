@@ -13,7 +13,7 @@ import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
-import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 
@@ -45,7 +45,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   public planSelected = getItemLocalCache('planificacion');
 
   constructor(
-    private _title: Title,
+    private _title: TitleService,
     private _grupo: GrupoService,
     private _docente: DocenteService,
     private _dohr: DocenteHorasService,
@@ -187,7 +187,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
   }
 
   getHorarios() {
-    if (!this.planSelected) { return }
+    if (!this.planSelected) { return; }
     const p = this.getGruposByPlanificacion();
     Promise.all([p]);
   }
@@ -202,7 +202,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
               this.grupos = res.grupo;
               this._grupo.list = res.grupo;
             }
-            else{
+            else {
               this.grupos = Array<GrupoModel>();
               this._grupo.list = Array<GrupoModel>();
             }
