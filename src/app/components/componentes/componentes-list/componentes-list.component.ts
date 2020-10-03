@@ -11,6 +11,7 @@ import { AreaModel } from 'src/app/models/area.model';
 import { TitleService } from 'src/app/services/title.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
+import { getItemLocalCache } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-componentes-list',
@@ -31,12 +32,12 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   private promesas: Promise<any>[] = [];
   public dataSource = [];
   public ciclos: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  public cicloSelected = 1;
+  public cicloSelected = getItemLocalCache('ciclo') ? getItemLocalCache('ciclo') : 1;
   public dataIsLoaded = false;
   public pdeFiltered: PlanEstudioModel[] = [];
-  public carreraSelected: string;
+  public carreraSelected: CarreraModel;
   public carreras: CarreraModel[] = [];
-  public pdeSelected: string;
+  public pdeSelected: PlanEstudioModel;
   displayedColumns: string[] = ['nombre', 'ciclo', 'area', 'thoras', 'phoras', 'creditos', 'opciones'];
   constructor(
     private _title: TitleService,
@@ -92,9 +93,15 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.carreraSelected = this.carreras[0].carrera_id;
-      this.pdeByCarrera(this.carreraSelected);
-      this.pdeSelected = this.pdeFiltered[0].pde_id;
+      this.carreraSelected = this.carreras.find(carrera => carrera.carrera_id === getItemLocalCache('carrera'));
+      if (!this.carreraSelected) {
+        this.carreraSelected = this.carreras[0];
+      }
+      this.pdeByCarrera(this.carreraSelected.carrera_id);
+      this.pdeSelected = this.pdeFiltered.find(pde => pde.pde_id === getItemLocalCache('pde'));
+      if (!this.pdeSelected) {
+        this.pdeSelected = this.pdeFiltered[0];
+      }
       this.componentesByPde(this.cicloSelected);
       this.isLoaded = true;
       this._comp.successObten();
@@ -123,7 +130,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
     if (id !== null && id !== undefined) {
       const pdebyCar = this.pdes.filter(comp => comp.pde_carrera === id);
       this.pdeFiltered = pdebyCar;
-      this.pdeSelected = this.pdeFiltered[0].pde_id;
+      this.pdeSelected = this.pdeFiltered[0];
     }
   }
 
@@ -134,7 +141,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
   componentesByPde(id: number) {
     if (id !== null && id !== undefined) {
       this.dataIsLoaded = false;
-      const compsByPde = this.componentes.filter(comp => comp.componente_pde === this.pdeSelected);
+      const compsByPde = this.componentes.filter(comp => comp.componente_pde === this.pdeSelected.pde_id);
       const compsByCiclo = compsByPde.filter(comp => comp.componente_ciclo === id);
       this.dataSource = compsByCiclo;
       this.dataIsLoaded = true;
