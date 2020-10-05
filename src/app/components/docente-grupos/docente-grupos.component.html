@@ -45,11 +45,11 @@
                   <b>Hrs: </b>{{grupo.grupo_horas_clase}}
                   <!-- <span style="flex: 1 1 auto;"></span> -->
                   <div class="btnGroup">
+                    <button mat-icon-button class="btnEdit" (click)="openDialog(grupo.grupo_id)">
+                      <mat-icon>create</mat-icon>
+                    </button>
                     <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
                       <mat-icon>delete</mat-icon>
-                    </button>
-                    <button mat-icon-button color="green" (click)="openDialog(grupo.grupo_id)">
-                      <mat-icon>create</mat-icon>
                     </button>
                   </div>
                 </mat-list-item>
@@ -97,7 +97,7 @@
 <ng-template #gpVacio>
   <h4 class="vacio">
     El Docente no tienen grupos asigandos<br><br>
-    <mat-icon>rounded_corner</mat-icon><br>
+    <mat-icon>work_off</mat-icon><br>
     ...
   </h4>
 </ng-template>
