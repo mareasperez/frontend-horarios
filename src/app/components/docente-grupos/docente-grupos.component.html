@@ -26,10 +26,10 @@
       </div>
       <div class="col-10" style="height: 70vh; overflow: auto;">
         <div class="row grupos" style="max-height: 60vh;overflow: auto;">
-          <mat-card class="card col-3 mx-1 mt-1" *ngFor="let docente of docGrupos">
+          <mat-card class="card col-4 mx-1 mt-1" *ngFor="let docente of docGrupos">
             <mat-card-header>
-              <mat-card-title style="height: 50px;">{{docente.docente_nombre}}</mat-card-title>
-              <button mat-icon-button color="warn" (click)="close(docente.docente_id)">
+              <mat-card-title style="height: 25px;">{{docente.docente_nombre}}</mat-card-title>
+              <button mat-icon-button color="warn" (click)="close(docente.docente_id)" class="btnCloseCard">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-card-header>
@@ -37,17 +37,21 @@
               <mat-list class="list-grupos" *ngIf="gruposDoc(docente.docente_id).length>0; else gpVacio">
                 <mat-list-item class="font-size-12 border-radius-50"
                   *ngFor="let grupo of gruposDoc(docente.docente_id) let i = index;"
-                  [class.bg-color-ligth]="i % 2 === 0">
+                  [class.bg-color-ligth]="i % 2 === 0" title="{{grupo.grupo_componente | componenteNameSimple: componentes}}">
                   <b>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </b>
-                  {{grupo.grupo_componente | componenteNameSimple: componentes}} <b>Hrs: </b>
-                  {{grupo.grupo_horas_clase}}
-                  <span style="flex: 1 1 auto;"></span>
-                  <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                  <button mat-icon-button color="success" (click)="openDialog(grupo.grupo_id)">
-                    <mat-icon>create</mat-icon>
-                  </button>
+                  <div class="trunk">
+                    {{grupo.grupo_componente | componenteNameSimple: componentes}}
+                  </div>
+                  <b>Hrs: </b>{{grupo.grupo_horas_clase}}
+                  <!-- <span style="flex: 1 1 auto;"></span> -->
+                  <div class="btnGroup">
+                    <button mat-icon-button color="warn" (click)="removerDoc(grupo.grupo_id)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="green" (click)="openDialog(grupo.grupo_id)">
+                      <mat-icon>create</mat-icon>
+                    </button>
+                  </div>
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
@@ -91,5 +95,9 @@
   </div>
 </ng-template>
 <ng-template #gpVacio>
-  <h2>vacio</h2>
+  <h4 class="vacio">
+    El Docente no tienen grupos asigandos<br><br>
+    <mat-icon>rounded_corner</mat-icon><br>
+    ...
+  </h4>
 </ng-template>
