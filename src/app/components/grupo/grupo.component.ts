@@ -60,6 +60,14 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
     }
 
+  @Input() set _docentes(docentes: DocenteModel[]) {
+    console.log(docentes);
+    this.docentes = docentes;
+    this.docentesList = docentes
+
+  }
+
+
     get Componente(): ComponenteModel {
      // console.log(this.componente)
       return this.componente;
@@ -107,10 +115,12 @@ export class GrupoComponent implements OnInit, OnDestroy {
     this._grupo.crearGrupo(grupo).subscribe();
   }
 
-  setDocente(idD, idG) {
+  setDocente(idD, idG:string) {
     const grupo = new GrupoModel();
     grupo.grupo_docente = idD == '0' ? null : idD;
-    console.log(grupo);
+    let g = this.grupos.find(gp=> gp.grupo_id == idG)
+    if(g)grupo.grupo_planta = g.grupo_planta
+    else grupo.grupo_planta = false
     this._grupo.updategrupo(grupo, idG).subscribe();
   }
 
@@ -142,7 +152,6 @@ export class GrupoComponent implements OnInit, OnDestroy {
     }
 
     docentesDePlanta(checked:boolean){
-      console.log(checked);
       checked ?      this.docentesList = this.docentes.filter(dc=>dc.docente_tipo_contrato == "P"): this.docentesList = this.docentes
     }
 

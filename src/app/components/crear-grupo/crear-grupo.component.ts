@@ -31,6 +31,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   public componentes: ComponenteModel[] = [];
   public compsByPde: ComponenteModel[] = [];
   public compsByCiclo: ComponenteModel[] = [];
+  public componenteList: ComponenteModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public pdeByCarrera: PlanEstudioModel[] = [];
   public carreras: CarreraModel[] = [];
@@ -61,6 +62,8 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   public cicloSelected = getItemLocalCache('ciclo');
   public planSelected = getItemLocalCache('planificacion');
   public carreraSelected = getItemLocalCache('carrera');
+  public anyoSelected = getItemLocalCache("anyo");
+  public componeteSelected = null;
 
   constructor(
     private _componente: ComponenteService,
@@ -76,7 +79,6 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   ) {
     this._title.setTitle('Creacion de Grupos');
     this.componente.componente_id = '0';
-    this.servicios();
     this.refComp = this._componente.getList();
     this.refGP = this._grupo.getList();
     this.refPde = this._pde.getList();
@@ -89,14 +91,38 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.servicios();
+    // this.getGrupos()
+
     Promise.all(this.promesas).then(() => {
+      console.log(this.planificaciones);
+
+      if (!this.planSelected) {
+        this.planSelected = this.planificaciones[this.planificaciones.length - 1].planificacion_id
+
+      }
+
+      if (!this.carreraSelected) {
+        this.carreraSelected = this.carreras[this.carreras.length - 1].carrera_id
+      }
+
+      if (!this.anyoSelected) {
+        this.anyoSelected = 1
+      }
+
+      this.pdesByCarrera(this.carreraSelected)
+
+
+      this.componentesByPdeCiclo()
+
+
       this.isLoaded = true;
       this._grupo.successObten();
       this.subs.push(this.refComp
         .subscribe(
           data => {
+            this.componentesByPdeCiclo()
             this.componentes = data;
-            this.componentesByPde(this.pdeSelected);
           },
           error => this._snack.open(error.message, 'ok', { duration: 3000 }),
         )
@@ -104,8 +130,9 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       this.subs.push(this.refGP
         .subscribe(
           data => {
+            console.log(data);
+
             this.grupos = data;
-            this.componentesByPde(this.pdeSelected);
           },
           error => this._snack.open(error.message, 'ok', { duration: 3000 }),
         )
@@ -116,19 +143,12 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
       this.subs.push(this.refDocente.subscribe(data => this.docentes = data));
       this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
-      this.subs.push(
-        this.refComp.subscribe(data => {
-          this.componentes = data;
-          this.componentesByCiclo(Number(this.cicloSelected));
-        })
-      );
+
       this.subs.push(
         this.refGP.subscribe(data => {
           this.grupos = data;
-          this.pdesByCarrera(this.carreraSelected);
         })
       );
-      if (this.carreraSelected !== '0') { this.pdesByCarrera(this.carreraSelected); }
     });
   }
 
@@ -143,54 +163,50 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-
-
-  pdesByCarrera(id: string) {
+  pdesByCarrera(id: string, loadComponentes = false) {
     this.pdeByCarrera = this.pdes.filter(pde => pde.pde_carrera === id);
-    this.componentesByCiclo(Number(this.cicloSelected));
+    this.pdeSelected = this.pdeByCarrera[this.pdeByCarrera.length-1].pde_id
+    if (loadComponentes) {
+      this.componentesByPdeCiclo()
 
-  }
-
-  componentesByCiclo(ciclo: number, f?: string) {
-    localStorage.setItem('ciclo', ciclo + '');
-    if (f) { this.componente = null; }
-    if (String(this.carreraSelected) !== '0') {
-      this.compsByCiclo = [];
-      this.compsByCiclo = this.componentes.filter(comp => comp.componente_ciclo === ciclo);
-      if (String(ciclo) !== '0') { this.componentesByPde(this.pdeSelected); }
     }
-
   }
 
-  componentesByPde(id: string) {
-    localStorage.setItem('pde', id);
-    this.compsByPde = this.compsByCiclo.filter(comp => comp.componente_pde === id);
-    this.gruposByComp = [];
-    //  this.compsByPde.length == 0 ? this.componente.componente_id = '0': this.compsByPde;
-    this.compsByPde.forEach(comp => {
-      const res = this.grupos.filter(gp => gp.grupo_componente === comp.componente_id);
-      res.forEach(gp => this.gruposByComp.push(gp));
+  componentesByPdeCiclo(setGrupos = false) {
+    this.setCiclo();
+    return new Promise((resolve, reject) => {
+      let sub = this._componente.getComponetesByPdeCiclo({pde: this.pdeSelected, ciclo:this.cicloSelected})
+        .subscribe(
+          res => {
+            this.grupos = []
+            this.componentes = res.componente;
+            this._componente.list = res.componente
+          },
+          error => this._snack.open(error.message, "OK", { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+
     });
-
-    if (id !== '0') { this.groupsByPlan(this.planSelected); }
   }
 
-  groupsByPlan(id: string) {
-    localStorage.setItem('planificacion', id);
-    const grupos = this.gruposByComp.filter(gp => id === gp.grupo_planificacion);
-    this.gruposByPlan = grupos;
-    // if (this.componente.componente_id !== '0') { this.groupsByComp(this.componente.componente_id); }
-    if (this.componente != null) { this.groupsByComp(this.componente.componente_id); }
+  getGruposByComponentePlan(id?: string, f?: string) {
+    if (id || this.componeteSelected) {
+      this.componeteSelected = id;
+    }else return
+      let sub = this._grupo.getByComponentePlan({componente:this.componeteSelected, planificacion:this.planSelected} )
+      .subscribe(
+        res => {
+          this.grupos = res.grupos
+          this._grupo.list = res.grupos
+          let cp = this.componentes.find(cp=>cp.componente_id == this.componeteSelected)
+            this.docenteByArea(cp.componente_area);
 
-  }
+        },
+        error => this._snack.open(error.message, "OK", { duration: 3000 }),
+      );
+      this.subs.push(sub);
 
-  groupsByComp(id: string, f?: string) {
-    const com = this.componentes.find(comp => comp.componente_id === id);
-    this.componente = com;
-    if (this.componente) {
-      this.docenteByArea(this.componente.componente_area);
-      this.gruposFiltrados = this.gruposByPlan.filter(gp => gp.grupo_componente === id);
-    }
   }
 
   docenteByArea(area) {
@@ -199,30 +215,13 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       const docentes = this.docentes.filter(doc => doc.docente_id === da.da_docente);
       return docentes[0];
     });
+    console.log(res);
+
     this.docFiltroArea = res;
   }
 
   servicios() {
-    const p1 = new Promise((resolve, reject) => {
-      const sub = this._grupo.getGrupos()
-        .subscribe(
-          res => this.grupos.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-    });
 
-    const p2 = new Promise((resolve, reject) => {
-      const sub = this._componente.getComponentes()
-        .subscribe(
-          res => this.componentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
-        );
-      this.subs.push(sub);
-
-    });
 
     const p3 = new Promise((resolve, reject) => {
       const sub = this._planificacion.getPlanificaciones()
@@ -286,6 +285,37 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     });
 
-    this.promesas.push(p9, p8, p7, p5, p4, p3, p2, p1);
+    this.promesas.push(p9, p8, p7, p5, p4, p3, );
   }
+
+  setCiclo(){
+    let planificacion = this.planificaciones.find(pl => pl.planificacion_id ==this.planSelected)
+    if(planificacion){
+      switch (this.anyoSelected) {
+        case 1:
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '1': '2'
+          break;
+        case 2:
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '3': '4'
+            break;
+        case 3:
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '5': '6'
+            break;
+        case 4:
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '7': '8'
+                break;
+        case 5:
+         this.cicloSelected = planificacion.planificacion_semestre == '1' ? '9': '10'
+                  break;
+
+      }
+    }
+  }
+
+  getGrupos(id: string, f?: string){
+    if(!this.planSelected) return
+  //  let p = this.getGruposByComponente(id: string, f?: string);
+  //  Promise.all([p])
+  }
+
 }

@@ -8,6 +8,8 @@ import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddaulaComponent } from '../addaula/addaula.component';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
+import { Router } from '@angular/router';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
 
 @Component({
   selector: 'app-veraula',
@@ -35,7 +37,8 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     private AulaService: AulaService,
     private _recinto: RecintoService,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private router: Router
   ) {
     this._title.setTitle('Aulas');
     this.promesas.push(new Promise<void>((resolve) => {
@@ -61,19 +64,22 @@ export class VeraulaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.AulaService.successObten();
-      this.refAula.subscribe((data: AulaModel[]) => {
-        console.log('se ejecuto el subs de aula');
-        this.aulas = data;
-        this.getAulas(this.selectedR);
+      if (new RedirIfFailPipe().transform('/recinto/ver', this.recintos, this.router)) {
 
-      });
-      this.refRecintos.subscribe((data: RecintoModel[]) => {
-        this.recintos = data;
-      });
-      this.selectedR = this.recintos[0].recinto_id;
-      this.getAulas(this.selectedR);
-      this.isLoaded = true;
+        this.AulaService.successObten();
+        this.refAula.subscribe((data: AulaModel[]) => {
+          console.log('se ejecuto el subs de aula');
+          this.aulas = data;
+          this.getAulas(this.selectedR);
+          
+        });
+        this.refRecintos.subscribe((data: RecintoModel[]) => {
+          this.recintos = data;
+        });
+        this.selectedR = this.recintos[0].recinto_id;
+        this.getAulas(this.selectedR);
+        this.isLoaded = true;
+      }
     });
   }
   ngOnDestroy() {

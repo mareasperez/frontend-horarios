@@ -40,6 +40,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
   public pdes: PlanEstudioModel[] = [];
   public carreras: CarreraModel[] = [];
   // temporales
+  public showMessage = false;
   public array: any[][] = new Array();
   // valores seteados por el usuario
   public selectedPlan: PlanificacionModel;
@@ -69,7 +70,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       })
         .then(res => {
           this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
-          if (!this.selectedPlan) {
+          if (!this.selectedPlan && this.planificaciones.length > 0) {
             console.log('no existe planificacion en localStorage, seteando');
             setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
             this.selectedPlan = this.planificaciones[0];
@@ -141,7 +142,11 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
-      this.isLoaded = true;
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.recintos.length > 0){
+        this.isLoaded = true;
+      } else {
+        this.showMessage = true;
+      }
     }); // end then
   }
 

@@ -94,6 +94,7 @@ import { CompPdeCarreraPipe } from './pipes/comp--pde--carrera.pipe';
 import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
 import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
 import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
+import { RedirIfFailPipe } from './pipes/redir-if-fail.pipe';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
     CicloToYearPipe,
     GpRecintoPipe,
     SumaGruposDocentePipe,
+    RedirIfFailPipe,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

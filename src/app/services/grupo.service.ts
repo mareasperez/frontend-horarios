@@ -108,6 +108,11 @@ export class GrupoService extends MainService {
     const head: any = {};
     head['Content-Type'] = 'application/json';
      return this.client.post<any>(`${this.getUrl()}busqueda`,{busqueda: busqueda});
+  }
 
+  getByComponentePlan(busqueda:{componente:string, planificacion:string}){
+    const head: any = {};
+    head['Content-Type'] = 'application/json';
+     return this.client.post<any>(`${this.getUrl()}gruposcp`,{busqueda: busqueda});
   }
 }

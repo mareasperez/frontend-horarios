@@ -83,4 +83,9 @@ export class ComponenteService extends MainService {
     }
 
   }
+
+  getComponetesByPdeCiclo(busqueda:{pde:string, ciclo:string}){
+    return this.client.post<{componente:ComponenteModel[]}>(`${this.getUrl()}busqueda`,{busqueda: busqueda});
+
+  }
 }

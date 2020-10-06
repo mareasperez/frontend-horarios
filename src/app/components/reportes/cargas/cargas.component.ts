@@ -31,6 +31,7 @@ export class CargasComponent implements OnInit, OnDestroy {
   // view bools
   public rLoaded = false;
   public isLoaded = false;
+  public showMessage = false;
   // otros
   public query: string;
   displayedColumns: string[] = ['id'];
@@ -115,7 +116,11 @@ export class CargasComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     Promise.all(this.promesas).then(async res => {
-      this.isLoaded = true;
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.docentes.length > 0){
+        this.isLoaded = true;
+      } else {
+        this.showMessage = true;
+      }
     }); // end then
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.reportes = []; this.grupos = []; this.doho = [];

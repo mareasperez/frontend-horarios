@@ -12,6 +12,8 @@ import { TitleService } from 'src/app/services/title.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
+import { Router } from '@angular/router';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
 
 @Component({
   selector: 'app-componentes-list',
@@ -46,6 +48,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
     private _area: AreaService,
     private _carrera: CarreraService,
     private dialog: MatDialog,
+    private router: Router,
     private _snack: MatSnackBar
   ) {
     this._title.setTitle('Componentes');
@@ -93,29 +96,35 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.carreraSelected = this.carreras.find(carrera => carrera.carrera_id === getItemLocalCache('carrera'));
-      if (!this.carreraSelected) {
-        this.carreraSelected = this.carreras[0];
+      if (
+        (new RedirIfFailPipe().transform('carrera/list', this.carreras, this.router))
+        &&
+        (new RedirIfFailPipe().transform('/planestudio/ver', this.pdes, this.router))
+      ) {
+        this.carreraSelected = this.carreras.find(carrera => carrera.carrera_id === getItemLocalCache('carrera'));
+        if (!this.carreraSelected) {
+          this.carreraSelected = this.carreras[0];
+        }
+        this.pdeByCarrera(this.carreraSelected.carrera_id);
+        this.pdeSelected = this.pdeFiltered.find(pde => pde.pde_id === getItemLocalCache('pde'));
+        if (!this.pdeSelected) {
+          this.pdeSelected = this.pdeFiltered[0];
+        }
+        this.componentesByPde(this.cicloSelected);
+        this.isLoaded = true;
+        this._comp.successObten();
+        this.subs.push(
+          this.refComp.subscribe(data => {
+            this.componentes = [];
+            this.componentes = data;
+            if (this.pdeSelected && this.cicloSelected) {
+              this.componentesByPde(Number(this.cicloSelected));
+            }
+          }),
+          this.refPde.subscribe(data => this.pdes = data),
+          this.refArea.subscribe(data => this.areas = data)
+        );
       }
-      this.pdeByCarrera(this.carreraSelected.carrera_id);
-      this.pdeSelected = this.pdeFiltered.find(pde => pde.pde_id === getItemLocalCache('pde'));
-      if (!this.pdeSelected) {
-        this.pdeSelected = this.pdeFiltered[0];
-      }
-      this.componentesByPde(this.cicloSelected);
-      this.isLoaded = true;
-      this._comp.successObten();
-      this.subs.push(
-        this.refComp.subscribe(data => {
-          this.componentes = [];
-          this.componentes = data;
-          if (this.pdeSelected && this.cicloSelected) {
-            this.componentesByPde(Number(this.cicloSelected));
-          }
-        }),
-        this.refPde.subscribe(data => this.pdes = data),
-        this.refArea.subscribe(data => this.areas = data)
-      );
     });
   }
 
