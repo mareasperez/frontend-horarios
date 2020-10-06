@@ -1,14 +1,20 @@
 .card {
   position: relative;
-  min-width: 230px;
-  max-width: 230px;
+  min-width: 320px;
+  max-width: 320px;
   height: 330px;
 }
 
+.btnCloseCard {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 
 .list-grupos {
-  height: 200px;
+  height: 220px;
   overflow: auto;
+  white-space: pre;
 }
 
 .grupos {
@@ -20,4 +26,27 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+
+.trunk {
+  width: 110px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btnGroup {
+  width: 60px;
+}
+
+.vacio {
+  background-color: lightgoldenrodyellow;
+  border-radius: 5px;
+  text-align: center;
+  width: 70%;
+  margin: auto;
+}
+
+.btnEdit {
+  color: green;
 }
