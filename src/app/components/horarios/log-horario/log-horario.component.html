@@ -1,25 +1,27 @@
 <div class="container-fluid">
-<ul class="font-size-12" [ngSwitch]="data.hr.horario_choque">
-   <div  *ngSwitchCase="'d'">
-        <h4>Choque de docente</h4>
-        <p class="bg-red-ligth">el docente esta asiganado a mas de un grupo en el mismo dia y hora</p>
+  <div class="font-size-12" [ngSwitch]="data.hr.horario_choque">
+    <div *ngSwitchCase="'d'">
+      <h4>Choque de docente</h4>
+      <p class="br-3px bg-red-ligth">el docente esta asiganado a mas de un grupo en el mismo dia y hora</p>
     </div>
-   <div *ngSwitchCase="'c'"> 
-       <h4 >Choque de componente</h4>
-       <p class="bg-warning">Hay mas de un grupo del mismo componente en el mismo dia y hora</p>
-</div>
-   <div *ngSwitchCase="'a'"> 
-       <h4 >Choque de ciclo</h4>
-       <p class="bg-purple-ligth">Hay mas de un grupo del mismo ciclo con hora y dia igual</p>
+    <div *ngSwitchCase="'c'">
+      <h4>Choque de componente</h4>
+      <p class="br-3px bg-warning">Hay mas de un grupo del mismo componente en el mismo dia y hora</p>
     </div>
-</ul>
+    <div *ngSwitchCase="'a'">
+      <h4>Choque de ciclo</h4>
+      <p class="br-3px bg-purple-ligth">Hay mas de un grupo del mismo ciclo con hora y dia igual</p>
+    </div>
+  </div>
 
-<h5>grupos involucrados</h5>
+  <h5>grupos involucrados</h5>
 
-<mat-list style="height: auto; max-height: 300px; overflow: auto;">
-    <mat-list-item class="font-size-12" *ngFor="let grupo of grupos">
-        <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}}</strong>: {{grupo.grupo_componente | componenteNameSimple : data.cps}} 
-        {{grupo.aula}} - {{getRecinto()}}
+  <mat-list style="height: auto; max-height: 300px; overflow: auto;">
+    <mat-list-item class="font-size-12 br-3px" *ngFor="let grupo of grupos; let i = index;"
+      [class.bg-color-ligth]="i % 2 === 1">
+      <strong>{{grupo.grupo_tipo}}{{grupo.grupo_numero}}</strong>:
+      {{grupo.grupo_componente | componenteNameSimple : data.cps}}
+      {{grupo.aula}} - {{getRecinto()}}
     </mat-list-item>
-</mat-list>
+  </mat-list>
 </div>
