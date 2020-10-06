@@ -7,6 +7,8 @@ import { Subscription, Observable } from 'rxjs';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { TitleService } from 'src/app/services/title.service';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verrecinto',
@@ -32,7 +34,8 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
     private facultad$: FacultadSerivice,
     private dialog: MatDialog,
     private _snack: MatSnackBar,
-    private _title: TitleService
+    private _title: TitleService,
+    private router: Router
   ) {
     this._title.setTitle('Recintos');
     this.promesas.push(new Promise((resolve) => {
@@ -60,15 +63,17 @@ export class VerrecintoComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.isLoaded = true;
-      this.RecintoService.successObten();
-    });
-    this.refRecinto.subscribe(data => {
-      console.log(data);
-      this.recintos = [];
-      data.forEach(element => {
-        this.recintos.push(element);
-      });
+      if (new RedirIfFailPipe().transform('/facultad/list', this.facults, this.router)) {
+        this.isLoaded = true;
+        this.RecintoService.successObten();
+        this.refRecinto.subscribe(data => {
+          console.log(data);
+          this.recintos = [];
+          data.forEach(element => {
+            this.recintos.push(element);
+          });
+        });
+      }
     });
   }
 

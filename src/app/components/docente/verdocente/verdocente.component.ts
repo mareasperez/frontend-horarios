@@ -7,6 +7,8 @@ import { Observable, Subscription } from 'rxjs';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { TitleService } from 'src/app/services/title.service';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-verdocente',
   templateUrl: './verdocente.component.html',
@@ -30,7 +32,8 @@ export class VerdocenteComponent implements OnInit {
     private DocenteService: DocenteService,
     private _Departamento: DepartamentoService,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private router: Router
   ) {
     this._title.setTitle('Docente');
     this.promesas.push(new Promise<void>((resolve) => {
@@ -58,18 +61,19 @@ export class VerdocenteComponent implements OnInit {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      //  this.docentes.forEach(res => console.log(res));
-      this.DocenteService.successObten();
-      this.isLoaded = true;
-      this.subs.push(
-        this.refDocentes.subscribe(data => {
-          this.dataSource = [];
-          this.docentes = data;
-          data.map(doc => {
-            this.dataSource.push(doc);
-          });
-        })
-      );
+      if (new RedirIfFailPipe().transform('/departamento/ver', this.departamentos, this.router)) {
+        this.DocenteService.successObten();
+        this.isLoaded = true;
+        this.subs.push(
+          this.refDocentes.subscribe(data => {
+            this.dataSource = [];
+            this.docentes = data;
+            data.map(doc => {
+              this.dataSource.push(doc);
+            });
+          })
+          );
+        }
     });
   }
 
