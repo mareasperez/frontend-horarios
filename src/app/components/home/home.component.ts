@@ -21,6 +21,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 // tslint:disable: variable-name
 export class HomeComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
+  public showMessage = false;
   public departamentos: DepartamentoModel[] = [];
   public carreras: CarreraModel[] = [];
   public pdes: PlanEstudioModel[] = [];
@@ -92,14 +93,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.isLoaded = true;
-      this.createForm();
-      this._carrera.successObten();
-      this.subs.push(this.refPde.subscribe(data => this.pdes = data));
-      this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
-      this.subs.push(this.refDep.subscribe(data => this.departamentos = data));
-      this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
-
+      if (this.carreras.length > 0 && this.planificaciones.length > 0 && this.pdes.length > 0) {
+        this.isLoaded = true;
+        this.createForm();
+        this._carrera.successObten();
+        this.subs.push(this.refPde.subscribe(data => this.pdes = data));
+        this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
+        this.subs.push(this.refDep.subscribe(data => this.departamentos = data));
+        this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
+      } else {
+        this.showMessage = true;
+      }
     });
 
   }
