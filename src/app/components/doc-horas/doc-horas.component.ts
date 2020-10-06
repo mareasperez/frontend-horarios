@@ -10,6 +10,8 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { DocHorasAddComponent } from '../doc-horas-add/doc-horas-add.component';
 import { Title } from '@angular/platform-browser';
 import { setItemLocalCache, getItemLocalCache } from 'src/app/utils/utils';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-doc-horas',
@@ -37,7 +39,8 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     private _docente: DocenteService,
     private _planificacion: PlanificacionService,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private router: Router
 
   ) {
     this._title.setTitle('Docente Horas');
@@ -79,30 +82,33 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     Promise.all(this.promesas).then(res => {
-      this._docente.successObten();
-      this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
-      if (!this.selectedPlan) {
-        console.log('no existe planificacion en localStorage, seteando');
-        setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
-        this.selectedPlan = this.planificaciones[0];
-      }
-      this.subs.push(this.refDoc.subscribe(data => {
-        this.docentes = [];
-        this.docentes = data;
-      }));
+      if (new RedirIfFailPipe().transform('/planificacion/ver', this.planificaciones, this.router)) {
 
-      this.subs.push(this.refPlan.subscribe(data => {
-        this.planificaciones = [];
-        this.planificaciones = data;
-      }));
-
-      this.subs.push(this.refDH.subscribe(data => {
-        this.dhs = [];
-        this.dhs = data;
+        this._docente.successObten();
+        this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
+        if (!this.selectedPlan) {
+          console.log('no existe planificacion en localStorage, seteando');
+          setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
+          this.selectedPlan = this.planificaciones[0];
+        }
+        this.subs.push(this.refDoc.subscribe(data => {
+          this.docentes = [];
+          this.docentes = data;
+        }));
+        
+        this.subs.push(this.refPlan.subscribe(data => {
+          this.planificaciones = [];
+          this.planificaciones = data;
+        }));
+        
+        this.subs.push(this.refDH.subscribe(data => {
+          this.dhs = [];
+          this.dhs = data;
+          this.getData();
+        }));
         this.getData();
-      }));
-      this.getData();
-      this.isLoaded = true;
+        this.isLoaded = true;
+      }
     });
   }
   ngOnDestroy() {

@@ -7,6 +7,9 @@ import { AddcarreraComponent } from '../addcarrera/addcarrera.component';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { TitleService } from 'src/app/services/title.service';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-vercarrera',
@@ -31,7 +34,8 @@ export class VercarreraComponent implements OnInit, OnDestroy {
     private carrera$: CarreraService,
     private departamento$: DepartamentoService,
     private dialog: MatDialog,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private router: Router
   ) {
     this._title.setTitle('Carreras');
     this.promesas.push(new Promise((resolve) => {
@@ -60,19 +64,21 @@ export class VercarreraComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.isLoaded = true;
-      this.carrera$.successObten();
-      this.refCarrera.subscribe(data => {
-        console.log(data);
-        this.carreras = data;
-        this.dataSource = [];
-        this.carreras.forEach(car => this.dataSource.push(car));
+      if (new RedirIfFailPipe().transform('/departamento/ver', this.departamentos, this.router)){
+        this.isLoaded = true;
+        this.carrera$.successObten();
+        this.refCarrera.subscribe(data => {
+          console.log(data);
+          this.carreras = data;
+          this.dataSource = [];
+          this.carreras.forEach(car => this.dataSource.push(car));
+        });
+        this.refDep.subscribe(data => {
+          this.departamentos = data;
+        });
+      }
       });
-      this.refDep.subscribe(data => {
-        this.departamentos = data;
-      });
-    });
-  }
+    }
   ngOnDestroy() {
     this.carrera$.list = [];
     if (this.sub !== undefined) {
