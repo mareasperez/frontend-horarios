@@ -16,6 +16,7 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
+import { MatSnackBar } from '@angular/material';
 
 // tslint:disable: class-name
 class cargaDocencia {
@@ -44,6 +45,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   public show = false;
   public rLoaded = false;
+  public showMessage = false;
   public selected = getItemLocalCache('planificacion');
   subs: Subscription[] = [];
   cargas: cargaDocencia[] = [];
@@ -56,83 +58,89 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
     private _pde: PlanEstudioService,
     private _docente: DocenteService,
     private _planificaciones: PlanificacionService,
-    private _title: TitleService
+    private _title: TitleService,
+    private _snack: MatSnackBar
   ) {
     this._title.setTitle('Reporte Carga Docente');
     this.promesas.push(
       new Promise((resolve) => {
-        this._planificaciones.getPlanificaciones().subscribe(res => {
-          this.planificaciones.push(res);
-          resolve(this.planificaciones);
-          // console.log(this.planificaciones);
-        });
+        this._planificaciones.getPlanificaciones().subscribe(
+          res => this.planificaciones.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve());
       })
     );
 
     this.promesas.push(
       new Promise((resolve) => {
-        this._carrera.getCarrera().subscribe(res => {
-          this.carreras.push(res);
-          resolve(this.carreras);
-        });
+        this._carrera.getCarrera().subscribe(
+          res => this.carreras.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve());
       })
     );
 
 
     this.promesas.push(
       new Promise((resolve) => {
-        this._docente.getDocente().subscribe(res => {
-          this.docentes.push(res);
-          resolve(this.docentes);
-        });
+        this._docente.getDocente().subscribe(
+          res => this.docentes.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve());
       })
     );
     this.promesas.push(
       new Promise((resolve) => {
-        this._comp.getComponentes().subscribe(res => {
-          this.comp.push(res);
-          resolve(this.comp);
-
-        });
+        this._comp.getComponentes().subscribe(
+          res => this.comp.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
       })
     );
     this.promesas.push(
       new Promise((resolve) => {
-        this._pde.getPlanEstudio().subscribe(res => {
-          this.pde.push(res);
-          resolve(this.pde);
-
-        });
+        this._pde.getPlanEstudio().subscribe(
+          res => this.pde.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
       })
     );
     this.promesas.push(
       new Promise((resolve, reject) => {
-        this._grupo.getGrupos().subscribe(res => {
-          this.grupos.push(res);
-          resolve(this.grupos);
-        });
+        this._grupo.getGrupos().subscribe(
+          res => this.grupos.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
       })
     );
 
     this.promesas.push(
       new Promise((resolve, reject) => {
-        this._dep.getDepartamento().subscribe(res => {
-          this.dep.push(res);
-          resolve(this.dep);
-
-        });
+        this._dep.getDepartamento().subscribe(
+          res => this.dep.push(res),
+          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          () => resolve()
+          );
       })
     );
 
   }
 
   ngOnInit() {
-    console.log('pacman');
     Promise.all(this.promesas).then(async res => {
-      this.show = true;
-      this._planificaciones.successObten();
-      if (this.selected !== '0') { this.groupByPlan(this.selected); }
-
+      console.log('pacman');
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.docentes.length > 0){
+        this.show = true;
+        this._planificaciones.successObten();
+        if (this.selected !== '0') { this.groupByPlan(this.selected); }
+      } else {
+        console.log('else');
+        this.showMessage = true;
+      }
+      
     }); // end then
   }
 

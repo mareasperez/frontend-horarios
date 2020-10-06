@@ -37,6 +37,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
   private carreras: CarreraModel[] = [];
   public isLoaded = false;
   public dLoaded = false;
+  public showMessage = false;
   public selected = getItemLocalCache('planificacion');
   private subs: Subscription[] = [];
   promesas: Promise<any>[] = [];
@@ -121,10 +122,14 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.isLoaded = true;
-      this._planificacion.successObten();
-      console.log(this.planificaciones);
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.comps.length > 0){
+        this.isLoaded = true;
+        this._planificacion.successObten();
+        console.log(this.planificaciones);
       if (this.selected !== '0') { this.groupByPlan(this.selected); }
+      } else {
+        this.showMessage = true;
+      }
 
     });
   }

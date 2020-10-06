@@ -33,6 +33,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
   public isLoaded = false;
   public hLoaded = false;
+  public showMessage = false;
   // años aceptados
   anyos = [1, 2, 3, 4, 5];
   // listas de datos llenadas por el api
@@ -75,7 +76,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
           () => resolve());
       }).then(res => {
         this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
-        if (!this.selectedPlan) {
+        if (!this.selectedPlan && this.planificaciones.length > 0) {
           console.log('no existe planificacion en localStorage, seteando');
           setItemLocalCache('planificacion', this.planificaciones[0].planificacion_id);
           this.selectedPlan = this.planificaciones[0];
@@ -147,7 +148,11 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
-      this.isLoaded = true;
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.recintos.length > 0){
+        this.isLoaded = true;
+      } else {
+        this.showMessage = true;
+      }
     }); // end then
   }
 
