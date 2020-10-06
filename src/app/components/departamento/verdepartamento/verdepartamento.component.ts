@@ -7,6 +7,8 @@ import { AdddepartamentoComponent } from 'src/app/components/departamento/adddep
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { TitleService } from 'src/app/services/title.service';
+import { Router } from '@angular/router';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
 
 @Component({
   selector: 'app-verdepartamento',
@@ -31,7 +33,8 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     private _departamento: DepartamentoService,
     private dialog: MatDialog,
     private facultad$: FacultadSerivice,
-    private _snack: MatSnackBar
+    private _snack: MatSnackBar,
+    private router: Router
   ) {
     this._title.setTitle('Departamento');
     this.promesas.push(new Promise((resolve) => {
@@ -59,16 +62,18 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(res => {
-      this.isLoaded = true;
-      this._departamento.successObten();
-    });
-    this.refDepartamento.subscribe(data => {
-      console.log(data);
-      this.departamentos = data;
-      this.dataSource = [];
-      this.departamentos.forEach(dep => {
-        this.dataSource.push(dep);
-      });
+      if (new RedirIfFailPipe().transform('/facultad/list', this.facults, this.router)) {
+        this.isLoaded = true;
+        this._departamento.successObten();
+        this.refDepartamento.subscribe(data => {
+          console.log(data);
+          this.departamentos = data;
+          this.dataSource = [];
+          this.departamentos.forEach(dep => {
+            this.dataSource.push(dep);
+          });
+        });
+      }
     });
   }
 

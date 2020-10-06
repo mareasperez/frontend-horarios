@@ -7,6 +7,8 @@ import { Observable, Subscription } from 'rxjs';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { TitleService } from 'src/app/services/title.service';
+import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verplanestudio',
@@ -31,7 +33,8 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     private _Carrera: CarreraService,
     private dialog: MatDialog,
     private _snack: MatSnackBar,
-    private _title: TitleService
+    private _title: TitleService,
+    private router: Router
   ) {
     this._title.setTitle('Planes de Estudio');
     this.promesas.push(new Promise<void>((resolve) => {
@@ -59,17 +62,19 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      this.isLoaded = true;
-      this._pde.successObten();
-      this.subs.push(
-        this.refPde.subscribe(data => {
-          this.dataSource = [];
-          this.pde = data;
-          data.map(p => {
-            this.dataSource.push(p);
-          });
-        })
-      );
+      if (new RedirIfFailPipe().transform('carrera/list', this.carreras, this.router)) {
+        this.isLoaded = true;
+        this._pde.successObten();
+        this.subs.push(
+          this.refPde.subscribe(data => {
+            this.dataSource = [];
+            this.pde = data;
+            data.map(p => {
+              this.dataSource.push(p);
+            });
+          })
+          );
+        }
     });
   }
 
