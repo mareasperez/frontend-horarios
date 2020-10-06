@@ -5,17 +5,16 @@ import { matErrorsMessage } from 'src/app/utils/errors';
 import { Subscription, Observable } from 'rxjs';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { DocenteService } from 'src/app/services/docente.service';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
-import { DepartamentoModel } from 'src/app/models/departamento.model';
-import { DepartamentoService } from 'src/app/services/departamento.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
+import { AddGrupoComponent } from '../grupo/add-grupo/add-grupo.component';
 
 @Component({
   selector: 'app-docente-grupos',
@@ -51,7 +50,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     private _dohr: DocenteHorasService,
     private _componete: ComponenteService,
     private _planificacion: PlanificacionService,
-
+    private dialog: MatDialog,
     private _snack: MatSnackBar
   ) {
     // console.log(this.depSelected);
@@ -214,5 +213,13 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
     });
 
   }
+  openDialog(id: string): void {
+      const gp = this.grupos.find(Gp => Gp.grupo_id  === id);
+      this.dialog.open(AddGrupoComponent, {
+        width: '450px',
+        data: { type: 'u', grupo: gp }
+      });
+  }
+
 
 }
