@@ -148,7 +148,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
-      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.recintos.length > 0){
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.recintos.length > 0) {
         this.isLoaded = true;
       } else {
         this.showMessage = true;
@@ -206,6 +206,10 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
         })
           .then((horario: HorarioModel[]) => {
             this.fun(horario);
+          })
+          .finally(() => {
+            console.log(this.array);
+            this.hLoaded = true;
           });
       });
     }
@@ -214,11 +218,11 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
   rellenar() {
     const vacio = new HorarioModel();
     vacio.horario_vacio = true;
-    for (let aux = 0; aux < 6; aux++) {
+    for (let aux = 0; aux < 12; aux++) {
       this.array[aux] = [];
     }
     for (let aux = 0; aux < 5; aux++) {
-      for (let aux2 = 0; aux2 < 6; aux2++) {
+      for (let aux2 = 0; aux2 < 12; aux2++) {
         this.array[aux2][aux] = new Array();
         this.array[aux2][aux].push(vacio);
       }
@@ -237,15 +241,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
         case 'Viernes': { i = 4; break; }
         default: { console.log('No such day exists!', dia); break; }
       }
-      switch (dia.horario_hora) {
-        case 7: { j = 0; break; }
-        case 9: { j = 1; break; }
-        case 11: { j = 2; break; }
-        case 13: { j = 3; break; }
-        case 15: { j = 4; break; }
-        case 17: { j = 5; break; }
-        default: { console.log('No such Hour exists!', dia); break; }
-      }
+      j = dia.horario_hora - 7;
       if (!dia.horario_vacio) {
         if (this.array[j][i][0].horario_vacio) {
           this.array[j][i].pop();
@@ -256,7 +252,6 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
         i = 0; j = 0;
       }
     }
-    this.hLoaded = true;
   }
 
   inicializar() {
