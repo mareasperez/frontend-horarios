@@ -1,4 +1,4 @@
-<div *ngIf="showMessage; else messageTemplate">
+<div *ngIf="!showMessage; else messageTemplate">
   <mat-card style="height: 80vh;">
     <form [formGroup]="form" *ngIf="isLoaded; else stillLoading" class="font-size-12 d-flex">
       <mat-form-field appearance="outline">
