@@ -26,7 +26,7 @@
       </div>
       <div class="col-10" style="height: 70vh; overflow: auto;">
         <div class="row grupos" style="max-height: 60vh;overflow: auto;">
-          <mat-card class="card col-4 mx-1 mt-1" *ngFor="let docente of docGrupos">
+          <mat-card class="card col-4 mx-1 mt-1 mat-elevation-z8" *ngFor="let docente of docGrupos">
             <mat-card-header>
               <mat-card-title style="height: 25px;">{{docente.docente_nombre}}</mat-card-title>
               <button mat-icon-button color="warn" (click)="close(docente.docente_id)" class="btnCloseCard">
@@ -57,9 +57,11 @@
             </mat-card-content>
             <mat-card-footer class="footer" [ngClass]="{'bg-color-green': dohrs(docente.docente_id) == docenteHoras(docente.docente_id),
                                                  'bg-color-red': docenteHoras(docente.docente_id) > dohrs(docente.docente_id),
-                                                 'bg-color-yellow': docenteHoras(docente.docente_id) < dohrs(docente.docente_id)
+                                                 'bg-color-blue': docenteHoras(docente.docente_id) < dohrs(docente.docente_id)
                                                 }">
-              {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
+              <b>
+                {{docenteHoras(docente.docente_id)}}/{{dohrs(docente.docente_id)}}
+              </b>
             </mat-card-footer>
           </mat-card>
         </div>
