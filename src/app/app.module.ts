@@ -95,6 +95,7 @@ import { CicloToYearPipe } from './pipes/ciclo-to-year.pipe';
 import { GpRecintoPipe } from './pipes/gp-recinto.pipe';
 import { SumaGruposDocentePipe } from './pipes/suma-grupos-docente.pipe';
 import { RedirIfFailPipe } from './pipes/redir-if-fail.pipe';
+import { GridHorarioComponent } from './components/reportes/horarios/grid-horario/grid-horario.component';
 
 @NgModule({
   declarations: [
@@ -164,6 +165,7 @@ import { RedirIfFailPipe } from './pipes/redir-if-fail.pipe';
     GpRecintoPipe,
     SumaGruposDocentePipe,
     RedirIfFailPipe,
+    GridHorarioComponent,
   ], entryComponents: [
     AddPlanificacionComponent,
     DocHorasAddComponent,

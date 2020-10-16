@@ -56,7 +56,7 @@
   </div>
   <div *ngIf="selectedAnyo && selectedCarr && selectedPlan">
     <div *ngIf="hLoaded; else stillLoading2">
-      <table class="table" style="width: 80%;">
+      <!-- <table class="table" style="width: 80%;">
         <thead>
           <tr class="row">
             <th class="col-2">Hora</th>
@@ -212,13 +212,14 @@
             </tr>
           </div>
         </tbody>
-      </table>
+      </table> -->
+      <app-grid-horario [horarios]="horarios" [grupos]="grupos" [docentes]="docentes" [componentes]="componentes" [recintos]="recintos" [aulas]="aulas"></app-grid-horario>
     </div>
   </div>
 </div>
 
 
-<ng-template #stillLoading>
+ <ng-template #stillLoading>
   <div class="center col-2">
     <div class="google-loader">
       <span></span>
@@ -247,7 +248,7 @@
 </ng-template>
 
 
-<ng-template #simpleLink let-horas='horas'>
+<!-- <ng-template #simpleLink let-horas='horas'>
   <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
     <div *ngFor="let hora of horas">
       <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
@@ -260,4 +261,4 @@
 
 <ng-template #complexLink let-hora='hora'>
   <b>-</b>
-</ng-template>
+</ng-template> --> 
