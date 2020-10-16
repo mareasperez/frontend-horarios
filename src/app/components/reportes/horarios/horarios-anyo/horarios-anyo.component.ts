@@ -21,7 +21,6 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
 import { TitleService } from 'src/app/services/title.service';
-import { Api } from 'src/app/models/api.model';
 
 @Component({
   selector: 'app-horarios-anyo',
@@ -175,26 +174,21 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
     head['Content-Type'] = 'application/json';
     if (this.selectedPlan && this.selectedCarr && this.selectedAnyo) {
       const ciclo = Number(this.selectedPlan.planificacion_semestre) === 2 ? this.selectedAnyo * 2 : (this.selectedAnyo * 2) - 1;
-      this.http.post(`${Api}/grupo/busqueda`,
-        {
-          busqueda: {
-            carrera: Number(this.selectedCarr.carrera_id),
-            ciclo,
-            planificacion: Number(this.selectedPlan.planificacion_id)
-          }
-        }, head)
-        .toPromise()
-        .then((res: any) => {
-          if (!res.detail) {
-            this.grupos = Object.assign(this.grupos, res.grupos);
-            this.grupos = this.grupos.filter(gp => gp.grupo_asignado === true);
-            this.getData();
-          }
-          else {
-            alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
-            console.log(res.detail);
-          }
-        });
+      this._grupo.getByCarreraPlanCiclo({
+        carrera: this.selectedCarr.carrera_id,
+        planificacion: this.selectedPlan.planificacion_id,
+        ciclo: ciclo.toString()
+      }).subscribe((res: any) => {
+        if (!res.detail) {
+          this.grupos = Object.assign(this.grupos, res.grupos);
+          this.grupos = this.grupos.filter(gp => gp.grupo_asignado === true);
+          this.getData();
+        }
+        else {
+          alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
+          console.log(res.detail);
+        }
+      });
     }
   }
 
@@ -206,60 +200,18 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       this.grupos.map((grupo) => {
         new Promise<any>((resolve, reject) => {
           this._horario.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe(res => { resolve(res); i++; });
-        })
-          .then((horario: HorarioModel[]) => {
-            // console.log(horario);
-            horario.forEach((h: HorarioModel) => this.horarios.push(h));
-            if (i === lastIndex) {
-              // verifico si es el ultimo grupo para ya permitir que se muestre el grid
-              this.hLoaded = true;
-              // console.log(this.horarios);
-            }
-          });
+        }).then((horario: HorarioModel[]) => {
+          horario.forEach((h: HorarioModel) => this.horarios.push(h));
+          if (i === lastIndex) {
+            // verifico si es el ultimo grupo para ya permitir que se muestre el grid
+            this.hLoaded = true;
+          }
+        });
 
       });
 
     }
   }
-
-  // rellenar() {
-  //   const vacio = new HorarioModel();
-  //   vacio.horario_vacio = true;
-  //   for (let aux = 0; aux < 12; aux++) {
-  //     this.array[aux] = [];
-  //   }
-  //   for (let aux = 0; aux < 5; aux++) {
-  //     for (let aux2 = 0; aux2 < 12; aux2++) {
-  //       this.array[aux2][aux] = new Array();
-  //       this.array[aux2][aux].push(vacio);
-  //     }
-  //   }
-  // }
-
-  // async fun(horarios: HorarioModel[]) {
-  //   let i = 0;
-  //   let j = 0;
-  //   for (const dia of horarios) {
-  //     switch (dia.horario_dia) {
-  //       case 'Lunes': { i = 0; break; }
-  //       case 'Martes': { i = 1; break; }
-  //       case 'Miercoles': { i = 2; break; }
-  //       case 'Jueves': { i = 3; break; }
-  //       case 'Viernes': { i = 4; break; }
-  //       default: { console.log('No such day exists!', dia); break; }
-  //     }
-  //     j = dia.horario_hora - 7;
-  //     if (!dia.horario_vacio) {
-  //       if (this.array[j][i][0].horario_vacio) {
-  //         this.array[j][i].pop();
-  //         this.array[j][i].push(dia);
-  //       } else {
-  //         this.array[j][i].push(dia);
-  //       }
-  //       i = 0; j = 0;
-  //     }
-  //   }
-  // }
 
   inicializar() {
     this.array = [];

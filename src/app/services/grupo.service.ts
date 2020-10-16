@@ -104,15 +104,15 @@ export class GrupoService extends MainService {
     }
 
   }
-  getByCarreraPlanCiclo(busqueda:{carrera:string, planificacion:string, ciclo:string}){
+  getByCarreraPlanCiclo(busqueda: { carrera: string, planificacion: string, ciclo: string }) {
     const head: any = {};
     head['Content-Type'] = 'application/json';
-     return this.client.post<any>(`${this.getUrl()}busqueda`,{busqueda: busqueda});
+    return this.client.post<any>(`${this.getUrl()}busqueda`, { busqueda });
   }
 
-  getByComponentePlan(busqueda:{componente:string, planificacion:string}){
+  getByComponentePlan(busqueda: { componente: string, planificacion: string }) {
     const head: any = {};
     head['Content-Type'] = 'application/json';
-     return this.client.post<any>(`${this.getUrl()}gruposcp`,{busqueda: busqueda});
+    return this.client.post<any>(`${this.getUrl()}gruposcp`, { busqueda });
   }
 }
