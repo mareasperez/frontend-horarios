@@ -27,6 +27,7 @@ import { TitleService } from 'src/app/services/title.service';
 })
 export class HorarioDocenteComponent implements OnInit, OnDestroy {
   // muestra la animacion de carga
+  public hLoaded = false;
   public isLoaded = false;
   // listas de datos llenadas por el api
   private promesas: Promise<any>[] = [];
@@ -142,7 +143,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     Promise.all(this.promesas).then(async res => {
-      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.recintos.length > 0){
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.recintos.length > 0) {
         this.isLoaded = true;
       } else {
         this.showMessage = true;
@@ -161,53 +162,55 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
     this.pdes = [];
     this.carreras = [];
   }
-  
+
   getData() {
+    this.hLoaded = false;
     if (this.selectedDoc && this.selectedPlan) {
       new Promise<any>((resolve, reject) => {
         this._horario.getHorarioByPlan('docente', this.selectedDoc.docente_id, this.selectedPlan.planificacion_id)
           .subscribe(res => resolve(res));
       })
         .then((horarios: HorarioModel[]) => {
-          this.fun(horarios);
+          this.horarios = horarios;
+          this.hLoaded = true;
         });
     }
   }
-  async fun(horarios: HorarioModel[]) {
-    let i = 0; let j = 0;
-    const vacio = new HorarioModel();
-    vacio.horario_vacio = true;
-    for (let aux = 0; aux < 6; aux++) {
-      this.array[aux] = [];
-    }
-    for (let aux = 0; aux < 5; aux++) {
-      for (let aux2 = 0; aux2 < 6; aux2++) {
-        this.array[aux2][aux] = vacio;
-      }
-    }
-    for (const dia of horarios) {
-      switch (dia.horario_dia) {
-        case 'Lunes': i = 0; break;
-        case 'Martes': i = 1; break;
-        case 'Miercoles': i = 2; break;
-        case 'Jueves': i = 3; break;
-        case 'Viernes': i = 4; break;
-        default: console.log('No such day exists!', dia); break;
-      }
-      switch (dia.horario_hora) {
-        case 7: j = 0; break;
-        case 9: j = 1; break;
-        case 11: j = 2; break;
-        case 13: j = 3; break;
-        case 15: j = 4; break;
-        case 17: j = 5; break;
-        default: console.log('No such hour exists!', dia); break;
-      }
-      console.log(dia);
-      this.array[j][i] = dia;
-      i = 0;
-      j = 0;
-    }
-  }
+  // async fun(horarios: HorarioModel[]) {
+  //   let i = 0; let j = 0;
+  //   const vacio = new HorarioModel();
+  //   vacio.horario_vacio = true;
+  //   for (let aux = 0; aux < 6; aux++) {
+  //     this.array[aux] = [];
+  //   }
+  //   for (let aux = 0; aux < 5; aux++) {
+  //     for (let aux2 = 0; aux2 < 6; aux2++) {
+  //       this.array[aux2][aux] = vacio;
+  //     }
+  //   }
+  //   for (const dia of horarios) {
+  //     switch (dia.horario_dia) {
+  //       case 'Lunes': i = 0; break;
+  //       case 'Martes': i = 1; break;
+  //       case 'Miercoles': i = 2; break;
+  //       case 'Jueves': i = 3; break;
+  //       case 'Viernes': i = 4; break;
+  //       default: console.log('No such day exists!', dia); break;
+  //     }
+  //     switch (dia.horario_hora) {
+  //       case 7: j = 0; break;
+  //       case 9: j = 1; break;
+  //       case 11: j = 2; break;
+  //       case 13: j = 3; break;
+  //       case 15: j = 4; break;
+  //       case 17: j = 5; break;
+  //       default: console.log('No such hour exists!', dia); break;
+  //     }
+  //     console.log(dia);
+  //     this.array[j][i] = dia;
+  //     i = 0;
+  //     j = 0;
+  //   }
+  // }
 
 }
