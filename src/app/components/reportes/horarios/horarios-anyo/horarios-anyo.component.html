@@ -213,13 +213,14 @@
           </div>
         </tbody>
       </table> -->
-      <app-grid-horario [horarios]="horarios" [grupos]="grupos" [docentes]="docentes" [componentes]="componentes" [recintos]="recintos" [aulas]="aulas"></app-grid-horario>
+      <app-grid-horario [TYPE]="TYPE" [horarios]="horarios" [grupos]="grupos" [docentes]="docentes"
+        [componentes]="componentes" [recintos]="recintos" [aulas]="aulas"></app-grid-horario>
     </div>
   </div>
 </div>
 
 
- <ng-template #stillLoading>
+<ng-template #stillLoading>
   <div class="center col-2">
     <div class="google-loader">
       <span></span>
@@ -261,4 +262,4 @@
 
 <ng-template #complexLink let-hora='hora'>
   <b>-</b>
-</ng-template> --> 
+</ng-template> -->

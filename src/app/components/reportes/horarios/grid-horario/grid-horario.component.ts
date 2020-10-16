@@ -1,12 +1,13 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
+import { CarreraModel } from 'src/app/models/carrera.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { HorarioModel } from 'src/app/models/horario.model';
+import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { RecintoModel } from 'src/app/models/recinto.model';
-import { HorarioService } from 'src/app/services/horario.service';
 
 @Component({
   selector: 'app-grid-horario',
@@ -16,23 +17,24 @@ import { HorarioService } from 'src/app/services/horario.service';
 export class GridHorarioComponent implements OnInit {
   public hLoaded = false;
   public array: Array<HorarioModel[]>[] = [];
-  @Input() public horarios: HorarioModel[] = [];
-  @Input() public grupos: GrupoModel[] = [];
-  @Input() public componentes: ComponenteModel[] = [];
-  @Input() public docentes: DocenteModel[] = [];
-  @Input() public recintos: RecintoModel[] = [];
-  @Input() public aulas: AulaModel[] = [];
-  constructor(
-    // tslint:disable-next-line: variable-name
-    private _horario: HorarioService
-  ) { }
+  @Input() public horarios: HorarioModel[];
+  @Input() public grupos: GrupoModel[];
+  @Input() public componentes: ComponenteModel[];
+  @Input() public docentes: DocenteModel[];
+  @Input() public recintos: RecintoModel[];
+  @Input() public aulas: AulaModel[];
+  @Input() public TYPE: string;
+  @Input() public carreras: CarreraModel[];
+  @Input() public pdes: PlanEstudioModel[];
+
+  constructor() { }
 
   ngOnInit(): void {
-    console.log(this.horarios);
+    console.log(this.TYPE);
     if (this.horarios) {
-      this.fun(this.horarios)
+      this.fun(this.horarios);
     } else {
-      alert('No horarios')
+      alert('No horarios');
     }
   }
   rellenar() {

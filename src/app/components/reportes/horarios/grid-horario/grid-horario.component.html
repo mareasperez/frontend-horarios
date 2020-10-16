@@ -19,7 +19,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[0]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -32,7 +32,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[1]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -44,7 +44,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[2]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -56,7 +56,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[3]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -68,7 +68,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[4]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -80,7 +80,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[5]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -92,7 +92,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[6]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -104,7 +104,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[7]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -116,7 +116,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[8]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -128,7 +128,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[9]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -140,7 +140,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[10]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -152,7 +152,7 @@
           <div class="col-10">
             <td *ngFor="let horas of array[11]" class="elemento">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
-                [ngTemplateOutletContext]="{horas:horas}">
+                [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
           </div>
@@ -190,13 +190,31 @@
 </ng-template>
 
 
-<ng-template #simpleLink let-horas='horas'>
+<ng-template #simpleLink let-horas='horas' let-TYPE='TYPE'>
   <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
     <div *ngFor="let hora of horas">
-      <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
-      Docente: {{(hora.horario_grupo | gpDocente: docentes : grupos).docente_nombre}}<br>
-      {{hora.horario_aula | aulaName: aulas}} - {{(hora.horario_aula | gpRecinto: recintos : aulas).recinto_nombre}}
-      <br>
+      <ng-container [ngSwitch]="TYPE">
+        <ng-container *ngSwitchCase="'Anyo'">
+          <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
+          Docente: {{(hora.horario_grupo | gpDocente: docentes : grupos).docente_nombre}}<br>
+          {{hora.horario_aula | aulaName: aulas}} - {{(hora.horario_aula | gpRecinto: recintos : aulas).recinto_nombre}}
+          <br>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Docente'">
+          <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear)}}<br>
+          {{hora.horario_aula | aulaName:aulas}} -
+          {{(hora.horario_aula | gpRecinto: recintos : aulas).recinto_nombre}}<br>
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
+        </ng-container>
+        <ng-container *ngSwitchCase="'Aula'">
+          <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear)}}<br>
+          {{(hora.horario_grupo | gpDocente: docentes : grupos).docente_nombre}}<br>
+          {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_id|compPdeCarrera: componentes: pdes: carreras).carrera_nombre}}
+        </ng-container>
+        <ng-container *ngSwitchDefault>No existe ese tipo de reporte</ng-container>
+      </ng-container>
     </div>
   </div>
 </ng-template>

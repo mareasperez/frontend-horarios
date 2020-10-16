@@ -55,8 +55,8 @@
   </div>
   <div *ngIf="selectedPlan && selectedRec">
     <div *ngIf="hLoaded;else stillLoading2">
-      <app-grid-horario [horarios]="horarios" [grupos]="grupos" [docentes]="docentes" [componentes]="componentes"
-        [recintos]="recintos" [aulas]="aulas"></app-grid-horario>
+      <app-grid-horario [TYPE]="TYPE" [horarios]="horarios" [grupos]="grupos" [docentes]="docentes"
+        [componentes]="componentes" [recintos]="recintos" [carreras]="carreras" [pdes]="pdes"></app-grid-horario>
 
       <!-- <table class="table" style="width: 80%;">
         <thead>

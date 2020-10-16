@@ -50,6 +50,7 @@ export class HorarioAulaComponent implements OnInit, OnDestroy {
   public selectedPlan: PlanificacionModel;
   public selectedAula: AulaModel;
   public selectedREc: RecintoModel;
+  public TYPE = 'Aula';
   constructor(
     private _planificacion: PlanificacionService,
     private _horario: HorarioService,
@@ -63,7 +64,7 @@ export class HorarioAulaComponent implements OnInit, OnDestroy {
     private _carrera: CarreraService,
     private _title: TitleService
   ) {
-    this._title.setTitle('Reporte Horario Aula');
+    this._title.setTitle('Reporte Horario ' + this.TYPE);
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(

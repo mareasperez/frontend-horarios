@@ -40,6 +40,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public carreras: CarreraModel[] = [];
+  public TYPE = 'Docente';
   // temporales
   public showMessage = false;
   public array: any[][] = new Array();
@@ -60,7 +61,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
     private _carrera: CarreraService,
     private _title: TitleService
   ) {
-    this._title.setTitle('Reporte Horario Docente');
+    this._title.setTitle('Reporte Horario ' + this.TYPE);
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(
