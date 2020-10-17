@@ -10,13 +10,20 @@ export class GpDocentePipe implements PipeTransform {
   transform(id: string, docentes: DocenteModel[], grupos: GrupoModel[]): DocenteModel {
     if (id !== undefined && id !== null && docentes.length > 0 && grupos.length > 0) {
       const grupo: GrupoModel = grupos.find(gp => id === gp.grupo_id);
-      const docente: DocenteModel = docentes.find((a: DocenteModel) => grupo.grupo_docente === a.docente_id);
-      return docente;
+      let docente: DocenteModel = docentes.find((a: DocenteModel) => grupo.grupo_docente === a.docente_id);
+      if (docente) {
+        return docente;
+      } else {
+        console.log('error de busqueda de docente con id: ' + id);
+        docente = new DocenteModel();
+        docente.docente_nombre = 'Docente no Asignado';
+        return docente;
+      }
     }
     else {
-      console.log('error de busqueda de Docente con id: ' + id);
+      console.log('error de busqueda de Grupo con id: ' + id);
       const docente = new DocenteModel();
-      docente.docente_nombre = 'No Asignado';
+      docente.docente_nombre = 'Grupo No Asignado';
       return docente;
     }
   }

@@ -1,36 +1,36 @@
-import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
-import { AulaService } from "src/app/services/aula.service";
-import { GrupoService } from "src/app/services/grupo.service";
-import { GrupoModel } from "src/app/models/grupo.model";
-import { Observable, Subscription } from "rxjs";
-import { HorarioService } from "src/app/services/horario.service";
-import { MatSnackBar, MatDialog } from "@angular/material";
-import { AulaModel } from "src/app/models/aula.model";
-import { HorarioModel } from "src/app/models/horario.model";
-import { ComponenteModel } from "src/app/models/componente.model";
-import { ComponenteService } from "src/app/services/componente.service";
-import { getItemLocalCache, Horas } from "src/app/utils/utils";
-import { PlanEstudioModel } from "src/app/models/planEstudio";
-import { PlanEstudioService } from "src/app/services/plan-estudio.service";
-import { CarreraService } from "src/app/services/carrera.service";
-import { CarreraModel } from "src/app/models/carrera.model";
-import { PlanificacionService } from "src/app/services/planificacion.service";
-import { PlanificacionModel } from "src/app/models/planificacion.model";
-import { RecintoModel } from "src/app/models/recinto.model";
-import { RecintoService } from "src/app/services/recinto.service";
-import { HorarioViewModel } from "src/app/models/reportes/horarioView.model";
-import { AddHorarioComponent } from "./add-horario/add-horario.component";
-import { DocenteService } from "src/app/services/docente.service";
-import { DocenteModel } from "src/app/models/docente.model";
-import { DocenteNamePipe } from "src/app/pipes/docente-name.pipe";
-import { HttpClient } from "@angular/common/http";
-import { LogHorarioComponent } from "./log-horario/log-horario.component";
-import { CompPdeCarreraPipe } from "src/app/pipes/comp--pde--carrera.pipe";
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { AulaService } from 'src/app/services/aula.service';
+import { GrupoService } from 'src/app/services/grupo.service';
+import { GrupoModel } from 'src/app/models/grupo.model';
+import { Observable, Subscription } from 'rxjs';
+import { HorarioService } from 'src/app/services/horario.service';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { AulaModel } from 'src/app/models/aula.model';
+import { HorarioModel } from 'src/app/models/horario.model';
+import { ComponenteModel } from 'src/app/models/componente.model';
+import { ComponenteService } from 'src/app/services/componente.service';
+import { getItemLocalCache, Horas } from 'src/app/utils/utils';
+import { PlanEstudioModel } from 'src/app/models/planEstudio';
+import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
+import { CarreraService } from 'src/app/services/carrera.service';
+import { CarreraModel } from 'src/app/models/carrera.model';
+import { PlanificacionService } from 'src/app/services/planificacion.service';
+import { PlanificacionModel } from 'src/app/models/planificacion.model';
+import { RecintoModel } from 'src/app/models/recinto.model';
+import { RecintoService } from 'src/app/services/recinto.service';
+import { HorarioViewModel } from 'src/app/models/reportes/horarioView.model';
+import { AddHorarioComponent } from './add-horario/add-horario.component';
+import { DocenteService } from 'src/app/services/docente.service';
+import { DocenteModel } from 'src/app/models/docente.model';
+import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
+import { HttpClient } from '@angular/common/http';
+import { LogHorarioComponent } from './log-horario/log-horario.component';
+import { CompPdeCarreraPipe } from 'src/app/pipes/comp--pde--carrera.pipe';
 
 @Component({
-  selector: "app-horarios",
-  templateUrl: "./horarios.component.html",
-  styleUrls: ["./horarios.component.scss"],
+  selector: 'app-horarios',
+  templateUrl: './horarios.component.html',
+  styleUrls: ['./horarios.component.scss'],
 })
 export class HorariosCrudComponent implements OnInit, OnDestroy {
   public grupos: GrupoModel[] = [];
@@ -53,18 +53,18 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public gruposFiltrados: GrupoModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public horas = Horas;
-  public selectedR = getItemLocalCache("recinto");
-  public pdeSelected = getItemLocalCache("pde");
-  public planSelected = getItemLocalCache("planificacion");
-  public cicloSelected = getItemLocalCache("ciclo");
-  public carreraSelected = getItemLocalCache("carrera");
-  public anyoSelected = getItemLocalCache("anyo");
-  public planID = "0";
-  public HorarioID = "0";
-  public gpID = "0";
+  public selectedR = getItemLocalCache('recinto');
+  public pdeSelected = getItemLocalCache('pde');
+  public planSelected = getItemLocalCache('planificacion');
+  public cicloSelected = getItemLocalCache('ciclo');
+  public carreraSelected = getItemLocalCache('carrera');
+  public anyoSelected = getItemLocalCache('anyo');
+  public planID = '0';
+  public HorarioID = '0';
+  public gpID = '0';
   public grupoSelected: GrupoModel = null;
   public horarioSelected: HorarioModel = null;
-  public aulaSelected = getItemLocalCache("aula");
+  public aulaSelected = getItemLocalCache('aula');
   public refGP: Observable<any>;
   public refComp: Observable<any>;
   public refAula: Observable<any>;
@@ -74,7 +74,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public refHorario: Observable<any>;
   public refRecintos: Observable<any>;
   public refDocentes: Observable<any>;
-  public dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+  public dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
   public show = false;
   public filtering = false;
   private subs: Subscription[] = [];
@@ -163,13 +163,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this._recinto.list = [];
     this._docente.list = [];
     this.subs.forEach((sub) => sub.unsubscribe());
-    localStorage.setItem("ciclo", this.cicloSelected);
-    localStorage.setItem("carrera", this.carreraSelected);
-    localStorage.setItem("pde", this.pdeSelected);
-    localStorage.setItem("planificacion", this.planSelected);
-    localStorage.setItem("recinto", this.selectedR);
-    localStorage.setItem("aula", this.aulaSelected);
-    localStorage.setItem("anyo", this.anyoSelected);
+    localStorage.setItem('ciclo', this.cicloSelected);
+    localStorage.setItem('carrera', this.carreraSelected);
+    localStorage.setItem('pde', this.pdeSelected);
+    localStorage.setItem('planificacion', this.planSelected);
+    localStorage.setItem('recinto', this.selectedR);
+    localStorage.setItem('aula', this.aulaSelected);
+    localStorage.setItem('anyo', this.anyoSelected);
   }
 
   pdesByCarrera() {
@@ -188,14 +188,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   getGrupos() {
     this.setCiclo();
     this.gruposBycarreraAnyo = [];
-    if (!this.carreraSelected) return;
+    if (!this.carreraSelected) { return; }
     let grupos: GrupoModel[] = [];
-    let pdesByCarrera = this.pdes.filter((pde) => pde.pde_carrera == this.carreraSelected);
-    let carrera = this.carreras.find((cr) => cr.carrera_id == this.carreraSelected);
-    let componenteByciclo = this.componentesByCiclo().map((cp) => cp.componente_id + "");
+    const pdesByCarrera = this.pdes.filter((pde) => pde.pde_carrera == this.carreraSelected);
+    const carrera = this.carreras.find((cr) => cr.carrera_id == this.carreraSelected);
+    const componenteByciclo = this.componentesByCiclo().map((cp) => cp.componente_id + '');
 
     this.grupos.forEach((gp) => {
-      let car = this.compPdeCarreraPipe.transform(gp.grupo_componente, this.componentes, pdesByCarrera, [carrera]);
+      const car = this.compPdeCarreraPipe.transform(gp.grupo_componente, this.componentes, pdesByCarrera, [carrera]);
       if (car.carrera_id) {
         grupos.push(gp);
       }
@@ -209,7 +209,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   getAulas(id: string) {
-    if (id != "0") {
+    if (id != '0') {
       this.aulas = [];
       this.aulas = this._aula.list.filter((aula) => aula.aula_recinto === id);
     } else {
@@ -218,16 +218,17 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
   openDialog(horario: HorarioModel, grupos: GrupoModel[]): void {
     this.dialog.open(AddHorarioComponent, {
-      width: "850px",
-      maxHeight: "600px",
+      width: '850px',
+      maxHeight: '600px',
       data: { hr: horario, gps: grupos, cps: this.onComponente },
     });
   }
   selectH(e, hr: HorarioModel) {
     // if(e.target.localName != 'td') return
+    console.log(hr);
     this.changeColor(e);
     this.horarioSelected = hr;
-    if (this.grupoSelected == null) return;
+    if (this.grupoSelected == null) { return; }
     // console.log(this.horarioSelected);
     this.save();
   }
@@ -235,27 +236,27 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   selectGP(e, gp: GrupoModel) {
     this.changeColor(e);
     this.grupoSelected = gp;
-    if (this.horarioSelected == null) return;
+    if (this.horarioSelected == null) { return; }
     this.save();
   }
 
   changeColor(e) {
-    let item = document.getElementsByClassName("bg-color-yellow")[0];
+    const item = document.getElementsByClassName('bg-color-yellow')[0];
     if (item) {
-      let elr = new ElementRef(item);
-      elr.nativeElement.classList.remove("bg-color-yellow");
+      const elr = new ElementRef(item);
+      elr.nativeElement.classList.remove('bg-color-yellow');
     }
-    e.target.classList.add("bg-color-yellow");
+    e.target.classList.add('bg-color-yellow');
   }
   save() {
-    let hr = { ...this.horarioSelected };
+    const hr = { ...this.horarioSelected };
     hr.horario_grupo = this.grupoSelected.grupo_id;
     if (hr.horario_id) {
       // console.log("update H");
-      let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
-        (res) => {},
+      const sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
+        (res) => { },
         (error) => {
-          this._snack.open(error.message, "OK", { duration: 3000 });
+          this._snack.open(error.message, 'OK', { duration: 3000 });
           this.horarioSelected = this.grupoSelected = null;
         }
       );
@@ -263,10 +264,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     if (!hr.horario_id) {
       // console.log("crete H");
-      let sub = this._horario.crearHorario(hr).subscribe(
-        (res) => {},
+      const sub = this._horario.crearHorario(hr).subscribe(
+        (res) => { },
         (error) => {
-          this._snack.open(error.message, "OK", { duration: 3000 });
+          this._snack.open(error.message, 'OK', { duration: 3000 });
           this.horarioSelected = this.grupoSelected = null;
         }
       );
@@ -275,64 +276,64 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   rmHorario(hr: HorarioModel) {
-    let sub = this._horario.deleteHorario(hr.horario_id).subscribe(
-      (res) => {},
-      (error) => this._snack.open(error.message, "OK", { duration: 3000 })
+    const sub = this._horario.deleteHorario(hr.horario_id).subscribe(
+      (res) => { },
+      (error) => this._snack.open(error.message, 'OK', { duration: 3000 })
     );
     this.subs.push(sub);
   }
   horarioByAula() {
-    if (!this.planSelected || !this.aulaSelected) return;
+    if (!this.planSelected || !this.aulaSelected) { return; }
     this.horarioSelected = null;
     this.grupoSelected = null;
     this.horariosByAula = this.horarios.filter((hr) => hr.horario_aula == this.aulaSelected);
     this.fun();
     this.aulaLabel = this.aulas.find((aula) => aula.aula_id == this.aulaSelected);
     // });
-    //mocos
+    // mocos
   }
 
   docenteNombre(idGp) {
-    let gp = this.grupos.find((gp) => gp.grupo_id == idGp);
+    const gp = this.grupos.find((gp) => gp.grupo_id == idGp);
     if (gp != undefined) {
       if (gp.grupo_docente != null) {
         return this.docenteName.transform(gp.grupo_docente, this.docentes);
       }
-    } else return "sin docente";
+    } else { return 'sin docente'; }
   }
 
   getGrupo(id) {
-    let gp = this.grupos.find((gp) => gp.grupo_id == id);
+    const gp = this.grupos.find((gp) => gp.grupo_id == id);
     if (gp != undefined) {
       return this.docenteNombre(gp.grupo_docente);
-    } else return "sin docente";
+    } else { return 'sin docente'; }
   }
 
   getCarrera(idGp) {
     // console.log(idGp);
 
-    let gp = this.grupos.find((gp) => gp.grupo_id == idGp);
-    let comp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
-    let pde = this.pdes.find((pde) => pde.pde_id == comp.componente_pde);
+    const gp = this.grupos.find((gp) => gp.grupo_id == idGp);
+    const comp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
+    const pde = this.pdes.find((pde) => pde.pde_id == comp.componente_pde);
     return this.carreras.find((cr) => cr.carrera_id == pde.pde_carrera).carrera_nombre;
   }
 
   choque(hr?: HorarioModel) {
     // console.log('dibujar')
-    let head: any = {};
-    head["Content-Type"] = "application/json";
+    const head: any = {};
+    head['Content-Type'] = 'application/json';
     this.horarios.forEach((hr) => {
       if (hr.horario_grupo != null) {
         //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
-        let gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
-        let cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
-        hr.horario_ciclo = cp.componente_ciclo + "";
+        const gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
+        const cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
+        hr.horario_ciclo = cp.componente_ciclo + '';
         this.http
           .post(
-            "http://localhost:8000/api/horario/choques",
+            'http://localhost:8000/api/horario/choques',
             {
               busqueda: {
-                choque: "Docente",
+                choque: 'Docente',
                 horario_hora: hr.horario_hora,
                 horario_dia: hr.horario_dia,
                 horario_planificacion: gp.grupo_planificacion,
@@ -346,34 +347,34 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
           )
           .toPromise()
           .then((res: any) => {
-            if (res.detail) return;
+            if (res.detail) { return; }
             // console.log('choques', res);
             if (res.horario.length > 1) {
               switch (res.tipo) {
-                case "d":
-                  hr.horario_choque = "d";
+                case 'd':
+                  hr.horario_choque = 'd';
                   hr.horario_infochoque = res.horario;
                   break;
-                case "c":
-                  hr.horario_choque = "c";
+                case 'c':
+                  hr.horario_choque = 'c';
                   hr.horario_infochoque = res.horario;
                   break;
-                case "a":
-                  hr.horario_choque = "a";
+                case 'a':
+                  hr.horario_choque = 'a';
                   hr.horario_infochoque = res.horario;
                   break;
               }
             }
           });
       }
-    }); //forEach
+    }); // forEach
   }
 
   infoChoque(hr: HorarioModel) {
     this.dialog.open(LogHorarioComponent, {
-      width: "450px",
+      width: '450px',
       data: {
-        hr: hr,
+        hr,
         gps: this.grupos,
         cps: this.componentes,
         aulas: this.aulas,
@@ -384,16 +385,16 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   fun() {
     // this.filteringSpinnerToogle()
-    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
-    const horas = [7, 9, 11, 13, 15, 17];
+    const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+    const horas = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
     let i = 0;
     let j = 0;
 
-    for (let aux = 0; aux < 6; aux++) {
+    for (let aux = 0; aux < 12; aux++) {
       this.array[aux] = [];
     }
     for (let aux = 0; aux < 5; aux++) {
-      for (let aux2 = 0; aux2 < 6; aux2++) {
+      for (let aux2 = 0; aux2 < 12; aux2++) {
         const vacio = new HorarioModel();
         vacio.horario_aula = this.aulaSelected;
         // vacio.horario_vacio = true;
@@ -406,50 +407,28 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     console.log(this.horariosByAula);
     for (const dia of this.horariosByAula) {
-      if (dia == undefined) return;
+      // if (dia == undefined) { return; }
       switch (dia.horario_dia) {
-        case "Lunes":
+        case 'Lunes':
           i = 0;
           break;
-        case "Martes":
+        case 'Martes':
           i = 1;
           break;
-        case "Miercoles":
+        case 'Miercoles':
           i = 2;
           break;
-        case "Jueves":
+        case 'Jueves':
           i = 3;
           break;
-        case "Viernes":
+        case 'Viernes':
           i = 4;
           break;
         default:
-          console.log("No such day exists!", dia);
+          console.log('No such day exists!', dia);
           break;
       }
-      switch (dia.horario_hora) {
-        case 7:
-          j = 0;
-          break;
-        case 9:
-          j = 1;
-          break;
-        case 11:
-          j = 2;
-          break;
-        case 13:
-          j = 3;
-          break;
-        case 15:
-          j = 4;
-          break;
-        case 17:
-          j = 5;
-          break;
-        default:
-          console.log("No such hour exists!", dia);
-          break;
-      }
+      j = dia.horario_hora - 7;
       this.array[j][i] = dia;
       i = 0;
       j = 0;
@@ -462,46 +441,46 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
     //  let p1 = this.getGruposByCarreraPlanCiclo()
 
-    let p2 = new Promise((resolve, reject) => {
-      let sub = this._aula.getAula().subscribe(
+    const p2 = new Promise((resolve, reject) => {
+      const sub = this._aula.getAula().subscribe(
         (res) => this.aulas.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
     });
 
-    let p4 = new Promise((resolve, reject) => {
-      let sub = this._componente.getComponentes().subscribe(
+    const p4 = new Promise((resolve, reject) => {
+      const sub = this._componente.getComponentes().subscribe(
         (res) => this.componentes.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
     });
 
-    let p5 = new Promise((resolve, reject) => {
-      let sub = this._pde.getPlanEstudio().subscribe(
+    const p5 = new Promise((resolve, reject) => {
+      const sub = this._pde.getPlanEstudio().subscribe(
         (res) => this.pdes.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
     });
 
-    let p6 = new Promise((resolve, reject) => {
-      let sub = this._carrera.getCarrera().subscribe(
+    const p6 = new Promise((resolve, reject) => {
+      const sub = this._carrera.getCarrera().subscribe(
         (res) => this.carreras.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
     });
 
-    let p7 = new Promise((resolve, reject) => {
-      let sub = this._planificacion.getPlanificaciones().subscribe(
+    const p7 = new Promise((resolve, reject) => {
+      const sub = this._planificacion.getPlanificaciones().subscribe(
         (res) => this.planificaciones.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -509,14 +488,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     const p8 = new Promise((resolve) => {
       this._recinto.getRecinto().subscribe(
         (res) => this.recintos.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
     });
     const p9 = new Promise((resolve, reject) => {
       const sub = this._docente.getDocente().subscribe(
         (res) => this.docentes.push(res),
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -528,10 +507,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   setHorariosTable(gpsAssig = false) {
-    if (!this.planSelected) return;
-    let p3 = this.getHorariosByPlanificacion();
+    if (!this.planSelected) { return; }
+    const p3 = this.getHorariosByPlanificacion();
 
-    let p1 = this.getGruposByPlanificacion();
+    const p1 = this.getGruposByPlanificacion();
 
     Promise.all([p1, p3]).then((res) => {
       // console.log(this.array)
@@ -547,13 +526,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     // console.log("getHorariosByPlanificacion");
 
     return new Promise((resolve, reject) => {
-      let sub = this._horario.getByFiltro("horario_planid", this.planSelected).subscribe(
+      const sub = this._horario.getByFiltro('horario_planid', this.planSelected).subscribe(
         (res) => {
           this.horarios = res.horario;
           this._horario.list = res.horario;
         },
 
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -562,13 +541,13 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   getGruposByPlanificacion() {
     return new Promise((resolve, reject) => {
-      let sub = this._grupo.getByFiltro("grupo_planificacion", this.planSelected).subscribe(
+      const sub = this._grupo.getByFiltro('grupo_planificacion', this.planSelected).subscribe(
         (res) => {
           // console.log(res);
           this.grupos = res.grupo;
           this._grupo.list = res.grupo;
         },
-        (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
+        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -576,23 +555,23 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   setCiclo() {
-    let planificacion = this.planificaciones.find((pl) => pl.planificacion_id == this.planSelected);
+    const planificacion = this.planificaciones.find((pl) => pl.planificacion_id == this.planSelected);
     if (planificacion) {
       switch (this.anyoSelected) {
         case 1:
-          this.cicloSelected = planificacion.planificacion_semestre == "1" ? "1" : "2";
+          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '1' : '2';
           break;
         case 2:
-          this.cicloSelected = planificacion.planificacion_semestre == "1" ? "3" : "4";
+          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '3' : '4';
           break;
         case 3:
-          this.cicloSelected = planificacion.planificacion_semestre == "1" ? "5" : "6";
+          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '5' : '6';
           break;
         case 4:
-          this.cicloSelected = planificacion.planificacion_semestre == "1" ? "7" : "8";
+          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '7' : '8';
           break;
         case 5:
-          this.cicloSelected = planificacion.planificacion_semestre == "1" ? "9" : "10";
+          this.cicloSelected = planificacion.planificacion_semestre == '1' ? '9' : '10';
           break;
       }
     }
