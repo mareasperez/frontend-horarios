@@ -50,12 +50,12 @@ export class GrupoComponent implements OnInit, OnDestroy {
     return this.grupos;
   }
   @Input() set _grupos(grupos: GrupoModel[]) {
-    console.log(grupos);
+    // console.log(grupos);
     this.grupos = grupos;
   }
 
   @Input() set _docentes(docentes: DocenteModel[]) {
-    console.log(docentes);
+    // console.log(docentes);
     this.docentes = docentes;
     this.docentesList = docentes;
   }
@@ -69,7 +69,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("init", this.componente);
+    // console.log("init", this.componente);
     // this.onGruposChanges().subscribe(res=> console.log(res))
     this.docentesList = this.docentes;
   }
@@ -77,7 +77,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     //  this._grupo.list = [];
     this.subs.map((sub) => sub.unsubscribe());
-    console.log("destroy", this.componente);
+    // console.log("destroy", this.componente);
   }
 
   addGroup(e, tipo: string) {
