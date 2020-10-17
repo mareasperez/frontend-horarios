@@ -320,52 +320,33 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   choque(hr?: HorarioModel) {
     // console.log('dibujar')
-    const head: any = {};
-    head['Content-Type'] = 'application/json';
+
     this.horarios.forEach((hr) => {
       if (hr.horario_grupo != null) {
         //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
         const gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
         const cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
-        hr.horario_ciclo = cp.componente_ciclo + '';
-        this.http
-          .post(
-            'http://localhost:8000/api/horario/choques',
-            {
-              busqueda: {
-                choque: 'Docente',
-                horario_hora: hr.horario_hora,
-                horario_dia: hr.horario_dia,
-                horario_planificacion: gp.grupo_planificacion,
-                horario_docente: gp.grupo_docente,
-                horario_componente: cp.componente_id,
-                horario_ciclo: cp.componente_ciclo,
-                horario_pde: cp.componente_pde,
-              },
-            },
-            head
-          )
-          .toPromise()
-          .then((res: any) => {
-            if (res.detail) { return; }
-            // console.log('choques', res);
-            if (res.horario.length > 1) {
-              switch (res.tipo) {
-                case 'd':
-                  hr.horario_choque = 'd';
-                  hr.horario_infochoque = res.horario;
-                  break;
-                case 'c':
-                  hr.horario_choque = 'c';
-                  hr.horario_infochoque = res.horario;
-                  break;
-                case 'a':
-                  hr.horario_choque = 'a';
-                  hr.horario_infochoque = res.horario;
-                  break;
-              }
+        hr.horario_ciclo = String(cp.componente_ciclo);
+        this._horario.getChoques(hr, gp, cp).subscribe((res: any) => {
+          if (res.detail) { return; }
+          // console.log('choques', res);
+          if (res.horario.length > 1) {
+            switch (res.tipo) {
+              case 'd':
+                hr.horario_choque = 'd';
+                hr.horario_infochoque = res.horario;
+                break;
+              case 'c':
+                hr.horario_choque = 'c';
+                hr.horario_infochoque = res.horario;
+                break;
+              case 'a':
+                hr.horario_choque = 'a';
+                hr.horario_infochoque = res.horario;
+                break;
             }
-          });
+          }
+        });
       }
     }); // forEach
   }
@@ -407,7 +388,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     console.log(this.horariosByAula);
     for (const dia of this.horariosByAula) {
-      // if (dia == undefined) { return; }
+      if (dia == undefined) { return; }
       switch (dia.horario_dia) {
         case 'Lunes':
           i = 0;
