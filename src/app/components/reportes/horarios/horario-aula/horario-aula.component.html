@@ -54,8 +54,11 @@
     </div>
   </div>
   <div *ngIf="selectedPlan && selectedRec">
-    <div *ngIf="array.length===6;else stillLoading2">
-      <table class="table" style="width: 80%;">
+    <div *ngIf="hLoaded;else stillLoading2">
+      <app-grid-horario [TYPE]="TYPE" [horarios]="horarios" [grupos]="grupos" [docentes]="docentes"
+        [componentes]="componentes" [recintos]="recintos" [carreras]="carreras" [pdes]="pdes"></app-grid-horario>
+
+      <!-- <table class="table" style="width: 80%;">
         <thead>
           <tr class="row">
             <th class="col-2">Hora</th>
@@ -144,13 +147,13 @@
           </div>
 
         </tbody>
-      </table>
+      </table> -->
     </div>
   </div>
 
 </div>
 
-<ng-template #simpleLink let-hora='hora'>
+<!-- <ng-template #simpleLink let-hora='hora'>
   <b>{{hora.horario_grupo| nombreGrupo: grupos}}-{{(hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_nombre}}</b><br>
   {{((hora.horario_grupo | gpComponenteNoData: componentes : grupos).componente_ciclo|cicloToYear)}}<br>
   {{(hora.horario_grupo | gpDocente: docentes : grupos).docente_nombre}}<br>
@@ -159,7 +162,7 @@
 
 <ng-template #complexLink let-hora='hora'>
   <b>-</b>
-</ng-template>
+</ng-template> -->
 <ng-template #stillLoading>
   <div class="center col-2">
     <div class="google-loader">

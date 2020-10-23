@@ -1,64 +1,64 @@
 <div class="container-fluid px-0" *ngIf="isLoaded; else stillLoading">
   <mat-card class="d-flex w-100 " style="height: 82vh; overflow: auto;">
-      <div class="col-12">
-        <div class="row">
-            <div class="col-12">
-                <mat-form-field class="font-size-12 ml-1" appearance="outline">
-                  <mat-label>Planificaci&oacute;n</mat-label>
-                  <mat-select [disabled]="pdeSelected != '0' ? false:true" [(value)]="planSelected"
-                  (selectionChange)="getGruposByComponentePlan()">
-                      <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
-                          Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-              <mat-form-field class="font-size-12" appearance="outline">
-                <mat-label>Carrera</mat-label>
-                <mat-select [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value, true)">
-                    <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">
-                        {{carrera.carrera_nombre}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-              <mat-form-field class="font-size-12 ml-1" appearance="outline">
-                <mat-label>Plan de estudios</mat-label>
-                <mat-select [(value)]="pdeSelected" (selectionChange)="componentesByPdeCiclo()">
-                    <mat-option *ngFor="let pde of pdeByCarrera" [value]="pde.pde_id">{{pde.pde_nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-                <!-- <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <mat-form-field class="font-size-12 ml-1" appearance="outline">
+            <mat-label>Planificaci&oacute;n</mat-label>
+            <mat-select [disabled]="pdeSelected != '0' ? false:true" [(value)]="planSelected"
+              (selectionChange)="componentesByPdeCiclo()">
+              <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
+                Semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="font-size-12" appearance="outline">
+            <mat-label>Carrera</mat-label>
+            <mat-select [(value)]="carreraSelected" (selectionChange)="pdesByCarrera($event.value, true)">
+              <mat-option *ngFor="let carrera of carreras" [value]="carrera.carrera_id">
+                {{carrera.carrera_nombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="font-size-12 ml-1" appearance="outline">
+            <mat-label>Plan de estudios</mat-label>
+            <mat-select [(value)]="pdeSelected" (selectionChange)="componentesByPdeCiclo()">
+              <mat-option *ngFor="let pde of pdeByCarrera" [value]="pde.pde_id">{{pde.pde_nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- <mat-form-field class="font-size-12 ml-1 " appearance="outline">
                     <mat-label>Ciclo</mat-label>
                     <mat-select [disabled]="carreraSelected != '0' ? false:true" [(value)]="cicloSelected"
                         (selectionChange)="componentesByCiclo($event.value, '1')">
                         <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
                     </mat-select>
                 </mat-form-field> -->
-                <mat-form-field class="font-size-12 ml-1 " appearance="outline">
-                  <mat-label>Año</mat-label>
-                  <mat-select [disabled]="carreraSelected != 'null' ? false:true"
-                  [(value)]="anyoSelected"  (selectionChange)="componentesByPdeCiclo()">
-                          <mat-option  *ngFor="let i of [1,2,3,4,5]" [value]="i">{{i}}</mat-option>
-                  </mat-select>
-              </mat-form-field>
+          <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+            <mat-label>Año</mat-label>
+            <mat-select [disabled]="carreraSelected != 'null' ? false:true" [(value)]="anyoSelected"
+              (selectionChange)="componentesByPdeCiclo()">
+              <mat-option *ngFor="let i of [1,2,3,4,5]" [value]="i">{{i}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
 
-            </div>
-            <div class="col-12">
-                <div class="row">
-                    <span class="col-6">
-                        <app-componentes [componentes]="componentes" [areas]="areas" [pdes]="pdes"
-                            (gpComp)="getGruposByComponentePlan($event, 'c')"></app-componentes>
-                    </span>
-                    <span class="col-6" *ngIf="componente != null ">
-                        <app-grupo *ngIf="planSelected !== '0'" [componentes]="componentes"
-                            [planificacion]="planSelected" [_grupos]="grupos"
-                            [planificaciones]="planificaciones" [_docentes]="docFiltroArea" [_componente]="componente">
-                        </app-grupo>
-                    </span>
-                </div>
-            </div>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <span class="col-6">
+              <app-componentes [componentes]="componentes" [areas]="areas" [pdes]="pdes"
+                (gpComp)="getGruposByComponentePlan($event, 'c')"></app-componentes>
+            </span>
+            <span class="col-6" *ngIf="componente != null ">
+              <app-grupo *ngIf="planSelected !== '0'" [componentes]="componentes" [planificacion]="planSelected"
+                [_grupos]="grupos" [planificaciones]="planificaciones" [_docentes]="docFiltroArea"
+                [_componente]="componente">
+              </app-grupo>
+            </span>
+          </div>
         </div>
       </div>
+    </div>
   </mat-card>
 </div>
 
@@ -86,5 +86,5 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </ng-template>

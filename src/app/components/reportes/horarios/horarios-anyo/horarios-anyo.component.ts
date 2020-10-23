@@ -21,7 +21,6 @@ import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { HttpClient } from '@angular/common/http';
 import { TitleService } from 'src/app/services/title.service';
-import { Api } from 'src/app/models/api.model';
 
 @Component({
   selector: 'app-horarios-anyo',
@@ -35,7 +34,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
   public hLoaded = false;
   public showMessage = false;
   // años aceptados
-  anyos = [1, 2, 3, 4, 5];
+  public anyos = [1, 2, 3, 4, 5];
   // listas de datos llenadas por el api
   private promesas: Promise<any>[] = [];
   public docentes: DocenteModel[] = [];
@@ -53,6 +52,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
   public selectedPlan: PlanificacionModel;
   public selectedCarr: CarreraModel;
   public selectedAnyo: number = undefined;
+  public TYPE = 'Anyo';
   constructor(
     private _planificacion: PlanificacionService,
     private _horario: HorarioService,
@@ -174,83 +174,42 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
     head['Content-Type'] = 'application/json';
     if (this.selectedPlan && this.selectedCarr && this.selectedAnyo) {
       const ciclo = Number(this.selectedPlan.planificacion_semestre) === 2 ? this.selectedAnyo * 2 : (this.selectedAnyo * 2) - 1;
-      this.http.post(`${Api}/grupo/busqueda`,
-        {
-          busqueda: {
-            carrera: Number(this.selectedCarr.carrera_id),
-            ciclo,
-            planificacion: Number(this.selectedPlan.planificacion_id)
-          }
-        }, head)
-        .toPromise()
-        .then((res: any) => {
-          if (!res.detail) {
-            this.grupos = Object.assign(this.grupos, res.grupos);
-            this.grupos = this.grupos.filter(gp => gp.grupo_asignado === true);
-            this.getData();
-          }
-          else {
-            alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
-            console.log(res.detail); this.rellenar();
-          }
-        });
-    }
-  }
-
-  getData() {
-    this.rellenar();
-    if (this.grupos) {
-      this.grupos.map(grupo => {
-        new Promise<any>((resolve, reject) => {
-          this._horario.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe(res => resolve(res));
-        })
-          .then((horario: HorarioModel[]) => {
-            this.fun(horario);
-          })
-          .finally(() => {
-            console.log(this.array);
-            this.hLoaded = true;
-          });
+      this._grupo.getByCarreraPlanCiclo({
+        carrera: this.selectedCarr.carrera_id,
+        planificacion: this.selectedPlan.planificacion_id,
+        ciclo: ciclo.toString()
+      }).subscribe((res: any) => {
+        if (!res.detail) {
+          this.grupos = Object.assign(this.grupos, res.grupos);
+          this.grupos = this.grupos.filter(gp => gp.grupo_asignado === true);
+          this.getData();
+        }
+        else {
+          alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
+          console.log(res.detail);
+        }
       });
     }
   }
 
-  rellenar() {
-    const vacio = new HorarioModel();
-    vacio.horario_vacio = true;
-    for (let aux = 0; aux < 12; aux++) {
-      this.array[aux] = [];
-    }
-    for (let aux = 0; aux < 5; aux++) {
-      for (let aux2 = 0; aux2 < 12; aux2++) {
-        this.array[aux2][aux] = new Array();
-        this.array[aux2][aux].push(vacio);
-      }
-    }
-  }
+  getData() {
+    this.horarios = []; this.hLoaded = false;
+    if (this.grupos) {
+      const lastIndex = this.grupos.length - 1;
+      let i = 0;
+      this.grupos.map((grupo) => {
+        new Promise<any>((resolve, reject) => {
+          this._horario.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe(res => { resolve(res); i++; });
+        }).then((horario: HorarioModel[]) => {
+          horario.forEach((h: HorarioModel) => this.horarios.push(h));
+          if (i === lastIndex) {
+            // verifico si es el ultimo grupo para ya permitir que se muestre el grid
+            this.hLoaded = true;
+          }
+        });
 
-  async fun(horarios: HorarioModel[]) {
-    let i = 0;
-    let j = 0;
-    for (const dia of horarios) {
-      switch (dia.horario_dia) {
-        case 'Lunes': { i = 0; break; }
-        case 'Martes': { i = 1; break; }
-        case 'Miercoles': { i = 2; break; }
-        case 'Jueves': { i = 3; break; }
-        case 'Viernes': { i = 4; break; }
-        default: { console.log('No such day exists!', dia); break; }
-      }
-      j = dia.horario_hora - 7;
-      if (!dia.horario_vacio) {
-        if (this.array[j][i][0].horario_vacio) {
-          this.array[j][i].pop();
-          this.array[j][i].push(dia);
-        } else {
-          this.array[j][i].push(dia);
-        }
-        i = 0; j = 0;
-      }
+      });
+
     }
   }
 

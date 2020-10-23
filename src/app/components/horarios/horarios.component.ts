@@ -33,8 +33,8 @@ import { CompPdeCarreraPipe } from "src/app/pipes/comp--pde--carrera.pipe";
   styleUrls: ["./horarios.component.scss"],
 })
 export class HorariosCrudComponent implements OnInit, OnDestroy {
+  //#region propiedades
   public grupos: GrupoModel[] = [];
-  3;
   public componentes: ComponenteModel[] = [];
   public aulas: AulaModel[] = [];
   public horarios: HorarioModel[] = [];
@@ -85,7 +85,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public aulaLabel: AulaModel = null;
   public noassign = true;
   public assign = false;
-
+  //#endregion
   constructor(
     private _grupo: GrupoService,
     private _aula: AulaService,
@@ -188,14 +188,16 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   getGrupos() {
     this.setCiclo();
     this.gruposBycarreraAnyo = [];
-    if (!this.carreraSelected) return;
+    if (!this.carreraSelected) {
+      return;
+    }
     let grupos: GrupoModel[] = [];
-    let pdesByCarrera = this.pdes.filter((pde) => pde.pde_carrera == this.carreraSelected);
-    let carrera = this.carreras.find((cr) => cr.carrera_id == this.carreraSelected);
-    let componenteByciclo = this.componentesByCiclo().map((cp) => cp.componente_id + "");
+    const pdesByCarrera = this.pdes.filter((pde) => pde.pde_carrera == this.carreraSelected);
+    const carrera = this.carreras.find((cr) => cr.carrera_id == this.carreraSelected);
+    const componenteByciclo = this.componentesByCiclo().map((cp) => cp.componente_id + "");
 
     this.grupos.forEach((gp) => {
-      let car = this.compPdeCarreraPipe.transform(gp.grupo_componente, this.componentes, pdesByCarrera, [carrera]);
+      const car = this.compPdeCarreraPipe.transform(gp.grupo_componente, this.componentes, pdesByCarrera, [carrera]);
       if (car.carrera_id) {
         grupos.push(gp);
       }
@@ -225,34 +227,40 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
   selectH(e, hr: HorarioModel) {
     // if(e.target.localName != 'td') return
+    console.log(hr);
     this.changeColor(e);
     this.horarioSelected = hr;
-    if (this.grupoSelected == null) return;
+    if (this.grupoSelected == null) {
+      return;
+    }
     // console.log(this.horarioSelected);
     this.save();
   }
 
   selectGP(e, gp: GrupoModel) {
+    if (gp.grupo_asignado) return;
     this.changeColor(e);
     this.grupoSelected = gp;
-    if (this.horarioSelected == null) return;
+    if (this.horarioSelected == null) {
+      return;
+    }
     this.save();
   }
 
   changeColor(e) {
-    let item = document.getElementsByClassName("bg-color-yellow")[0];
+    const item = document.getElementsByClassName("bg-color-yellow")[0];
     if (item) {
-      let elr = new ElementRef(item);
+      const elr = new ElementRef(item);
       elr.nativeElement.classList.remove("bg-color-yellow");
     }
     e.target.classList.add("bg-color-yellow");
   }
   save() {
-    let hr = { ...this.horarioSelected };
+    const hr = { ...this.horarioSelected };
     hr.horario_grupo = this.grupoSelected.grupo_id;
     if (hr.horario_id) {
       // console.log("update H");
-      let sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
+      const sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
         (res) => {},
         (error) => {
           this._snack.open(error.message, "OK", { duration: 3000 });
@@ -263,7 +271,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     if (!hr.horario_id) {
       // console.log("crete H");
-      let sub = this._horario.crearHorario(hr).subscribe(
+      const sub = this._horario.crearHorario(hr).subscribe(
         (res) => {},
         (error) => {
           this._snack.open(error.message, "OK", { duration: 3000 });
@@ -275,105 +283,94 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   rmHorario(hr: HorarioModel) {
-    let sub = this._horario.deleteHorario(hr.horario_id).subscribe(
+    const sub = this._horario.deleteHorario(hr.horario_id).subscribe(
       (res) => {},
       (error) => this._snack.open(error.message, "OK", { duration: 3000 })
     );
     this.subs.push(sub);
   }
   horarioByAula() {
-    if (!this.planSelected || !this.aulaSelected) return;
+    if (!this.planSelected || !this.aulaSelected) {
+      return;
+    }
     this.horarioSelected = null;
     this.grupoSelected = null;
     this.horariosByAula = this.horarios.filter((hr) => hr.horario_aula == this.aulaSelected);
     this.fun();
     this.aulaLabel = this.aulas.find((aula) => aula.aula_id == this.aulaSelected);
     // });
-    //mocos
+    // mocos
   }
 
   docenteNombre(idGp) {
-    let gp = this.grupos.find((gp) => gp.grupo_id == idGp);
+    const gp = this.grupos.find((gp) => gp.grupo_id == idGp);
     if (gp != undefined) {
       if (gp.grupo_docente != null) {
         return this.docenteName.transform(gp.grupo_docente, this.docentes);
       }
-    } else return "sin docente";
+    } else {
+      return "sin docente";
+    }
   }
 
   getGrupo(id) {
-    let gp = this.grupos.find((gp) => gp.grupo_id == id);
+    const gp = this.grupos.find((gp) => gp.grupo_id == id);
     if (gp != undefined) {
       return this.docenteNombre(gp.grupo_docente);
-    } else return "sin docente";
+    } else {
+      return "sin docente";
+    }
   }
 
   getCarrera(idGp) {
     // console.log(idGp);
 
-    let gp = this.grupos.find((gp) => gp.grupo_id == idGp);
-    let comp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
-    let pde = this.pdes.find((pde) => pde.pde_id == comp.componente_pde);
+    const gp = this.grupos.find((gp) => gp.grupo_id == idGp);
+    const comp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
+    const pde = this.pdes.find((pde) => pde.pde_id == comp.componente_pde);
     return this.carreras.find((cr) => cr.carrera_id == pde.pde_carrera).carrera_nombre;
   }
 
   choque(hr?: HorarioModel) {
     // console.log('dibujar')
-    let head: any = {};
-    head["Content-Type"] = "application/json";
+
     this.horarios.forEach((hr) => {
       if (hr.horario_grupo != null) {
         //  if( this.grupos.find(gp=> gp.grupo_id == hr.horario_grupo).grupo_docente == null) return;
-        let gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
-        let cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
-        hr.horario_ciclo = cp.componente_ciclo + "";
-        this.http
-          .post(
-            "http://localhost:8000/api/horario/choques",
-            {
-              busqueda: {
-                choque: "Docente",
-                horario_hora: hr.horario_hora,
-                horario_dia: hr.horario_dia,
-                horario_planificacion: gp.grupo_planificacion,
-                horario_docente: gp.grupo_docente,
-                horario_componente: cp.componente_id,
-                horario_ciclo: cp.componente_ciclo,
-                horario_pde: cp.componente_pde,
-              },
-            },
-            head
-          )
-          .toPromise()
-          .then((res: any) => {
-            if (res.detail) return;
-            // console.log('choques', res);
-            if (res.horario.length > 1) {
-              switch (res.tipo) {
-                case "d":
-                  hr.horario_choque = "d";
-                  hr.horario_infochoque = res.horario;
-                  break;
-                case "c":
-                  hr.horario_choque = "c";
-                  hr.horario_infochoque = res.horario;
-                  break;
-                case "a":
-                  hr.horario_choque = "a";
-                  hr.horario_infochoque = res.horario;
-                  break;
-              }
+        const gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
+        const cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
+        hr.horario_ciclo = String(cp.componente_ciclo);
+        this._horario.getChoques(hr, gp, cp).subscribe((res: any) => {
+          if (res.detail) {
+            return;
+          }
+          // console.log('choques', res);
+          if (res.horario.length > 1) {
+            switch (res.tipo) {
+              case "d":
+                hr.horario_choque = "d";
+                hr.horario_infochoque = res.horario;
+                break;
+              case "c":
+                hr.horario_choque = "c";
+                hr.horario_infochoque = res.horario;
+                break;
+              case "a":
+                hr.horario_choque = "a";
+                hr.horario_infochoque = res.horario;
+                break;
             }
-          });
+          }
+        });
       }
-    }); //forEach
+    }); // forEach
   }
 
   infoChoque(hr: HorarioModel) {
     this.dialog.open(LogHorarioComponent, {
       width: "450px",
       data: {
-        hr: hr,
+        hr,
         gps: this.grupos,
         cps: this.componentes,
         aulas: this.aulas,
@@ -385,15 +382,15 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   fun() {
     // this.filteringSpinnerToogle()
     const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
-    const horas = [7, 9, 11, 13, 15, 17];
+    const horas = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
     let i = 0;
     let j = 0;
 
-    for (let aux = 0; aux < 6; aux++) {
+    for (let aux = 0; aux < 12; aux++) {
       this.array[aux] = [];
     }
     for (let aux = 0; aux < 5; aux++) {
-      for (let aux2 = 0; aux2 < 6; aux2++) {
+      for (let aux2 = 0; aux2 < 12; aux2++) {
         const vacio = new HorarioModel();
         vacio.horario_aula = this.aulaSelected;
         // vacio.horario_vacio = true;
@@ -406,7 +403,9 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     console.log(this.horariosByAula);
     for (const dia of this.horariosByAula) {
-      if (dia == undefined) return;
+      if (dia == undefined) {
+        return;
+      }
       switch (dia.horario_dia) {
         case "Lunes":
           i = 0;
@@ -427,29 +426,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
           console.log("No such day exists!", dia);
           break;
       }
-      switch (dia.horario_hora) {
-        case 7:
-          j = 0;
-          break;
-        case 9:
-          j = 1;
-          break;
-        case 11:
-          j = 2;
-          break;
-        case 13:
-          j = 3;
-          break;
-        case 15:
-          j = 4;
-          break;
-        case 17:
-          j = 5;
-          break;
-        default:
-          console.log("No such hour exists!", dia);
-          break;
-      }
+      j = dia.horario_hora - 7;
       this.array[j][i] = dia;
       i = 0;
       j = 0;
@@ -462,8 +439,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
     //  let p1 = this.getGruposByCarreraPlanCiclo()
 
-    let p2 = new Promise((resolve, reject) => {
-      let sub = this._aula.getAula().subscribe(
+    const p2 = new Promise((resolve, reject) => {
+      const sub = this._aula.getAula().subscribe(
         (res) => this.aulas.push(res),
         (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
         () => resolve()
@@ -471,8 +448,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     });
 
-    let p4 = new Promise((resolve, reject) => {
-      let sub = this._componente.getComponentes().subscribe(
+    const p4 = new Promise((resolve, reject) => {
+      const sub = this._componente.getComponentes().subscribe(
         (res) => this.componentes.push(res),
         (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
         () => resolve()
@@ -480,8 +457,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     });
 
-    let p5 = new Promise((resolve, reject) => {
-      let sub = this._pde.getPlanEstudio().subscribe(
+    const p5 = new Promise((resolve, reject) => {
+      const sub = this._pde.getPlanEstudio().subscribe(
         (res) => this.pdes.push(res),
         (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
         () => resolve()
@@ -489,8 +466,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     });
 
-    let p6 = new Promise((resolve, reject) => {
-      let sub = this._carrera.getCarrera().subscribe(
+    const p6 = new Promise((resolve, reject) => {
+      const sub = this._carrera.getCarrera().subscribe(
         (res) => this.carreras.push(res),
         (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
         () => resolve()
@@ -498,8 +475,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     });
 
-    let p7 = new Promise((resolve, reject) => {
-      let sub = this._planificacion.getPlanificaciones().subscribe(
+    const p7 = new Promise((resolve, reject) => {
+      const sub = this._planificacion.getPlanificaciones().subscribe(
         (res) => this.planificaciones.push(res),
         (error) => this._snack.open(error.message, "OK", { duration: 3000 }),
         () => resolve()
@@ -528,10 +505,12 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   setHorariosTable(gpsAssig = false) {
-    if (!this.planSelected) return;
-    let p3 = this.getHorariosByPlanificacion();
+    if (!this.planSelected) {
+      return;
+    }
+    const p3 = this.getHorariosByPlanificacion();
 
-    let p1 = this.getGruposByPlanificacion();
+    const p1 = this.getGruposByPlanificacion();
 
     Promise.all([p1, p3]).then((res) => {
       // console.log(this.array)
@@ -547,7 +526,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     // console.log("getHorariosByPlanificacion");
 
     return new Promise((resolve, reject) => {
-      let sub = this._horario.getByFiltro("horario_planid", this.planSelected).subscribe(
+      const sub = this._horario.getByFiltro("horario_planid", this.planSelected).subscribe(
         (res) => {
           this.horarios = res.horario;
           this._horario.list = res.horario;
@@ -562,7 +541,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   getGruposByPlanificacion() {
     return new Promise((resolve, reject) => {
-      let sub = this._grupo.getByFiltro("grupo_planificacion", this.planSelected).subscribe(
+      const sub = this._grupo.getByFiltro("grupo_planificacion", this.planSelected).subscribe(
         (res) => {
           // console.log(res);
           this.grupos = res.grupo;
@@ -576,7 +555,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   setCiclo() {
-    let planificacion = this.planificaciones.find((pl) => pl.planificacion_id == this.planSelected);
+    const planificacion = this.planificaciones.find((pl) => pl.planificacion_id == this.planSelected);
     if (planificacion) {
       switch (this.anyoSelected) {
         case 1:

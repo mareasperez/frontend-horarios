@@ -79,6 +79,7 @@ export class HorarioService extends MainService {
           this.errorObten(data.detail);
           observer.next(horarios);
         }
+        observer.complete();
       });
     });
   }
@@ -100,6 +101,24 @@ export class HorarioService extends MainService {
         }
       });
     });
+  }
+  getChoques(hr, gp, cp) {
+    const head: any = {};
+    head['Content-Type'] = 'application/json';
+    return this.client.post<any>(
+      `${this.getUrl()}choques`,
+      {
+        busqueda: {
+          choque: 'Docente',
+          horario_hora: hr.horario_hora,
+          horario_dia: hr.horario_dia,
+          horario_planificacion: gp.grupo_planificacion,
+          horario_docente: gp.grupo_docente,
+          horario_componente: cp.componente_id,
+          horario_ciclo: cp.componente_ciclo,
+          horario_pde: cp.componente_pde,
+        },
+      }, head);
   }
 
   updateList(data: wsModel) {
