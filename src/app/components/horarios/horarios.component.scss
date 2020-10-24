@@ -11,9 +11,17 @@ td {
 }
 
 .leyenda {
-  width: 10px;
+  width: 95px;
   height: 25px;
   border-radius: 5px;
+}
+.sticky {
+  position: fixed;
+  width: auto;
+}
+.groupsList {
+  overflow: auto;
+  height: 250px;
 }
 
 .loading-indicator {
