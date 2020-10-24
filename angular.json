@@ -41,6 +41,16 @@
             ]
           },
           "configurations": {
+            "dev2": {
+
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "serviceWorker": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -78,6 +88,9 @@
             "browserTarget": "Frontend:build"
           },
           "configurations": {
+            "dev2": {
+              "browserTarget": "Frontend:build:dev2"
+            },
             "production": {
               "browserTarget": "Frontend:build:production"
             }
