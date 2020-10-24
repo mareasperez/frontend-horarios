@@ -13,10 +13,10 @@ export class NombreGrupoPipe implements PipeTransform {
         const grupo = grupos.find(g => id === g.grupo_id);
         return grupo.grupo_tipo + grupo.grupo_numero;
       } else {
-        return 'Sin Asignar Grupo';
+        return '';
       }
     } else {
-      return 'Sin Asignar Grupo';
+      return '';
     }
   }
 
