@@ -26,7 +26,8 @@ export class GridHorarioComponent implements OnInit {
   @Input() public TYPE: string;
   @Input() public carreras: CarreraModel[];
   @Input() public pdes: PlanEstudioModel[];
-
+  public horasLabels = ['7-8', '8-9', '9-10', '10-11', '11-12', '12-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7'];
+  public diasLabels = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
   constructor() { }
 
   ngOnInit(): void {
