@@ -262,7 +262,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       console.log(item);
       elr.nativeElement.classList.remove('bg-color-yellow');
     }
-    if (this.horarioSelected) {
+    if (this.horarioSelected || this.grupoSelected) {
       e.target.classList.add('bg-color-yellow');
     }
   }
