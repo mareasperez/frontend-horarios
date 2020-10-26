@@ -246,8 +246,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   selectGP(e, gp: GrupoModel) {
     if (gp.grupo_asignado) { return; }
-    this.changeColor(e);
     this.grupoSelected = gp;
+    this.changeColor(e);
     if (this.horarioSelected == null) {
       return;
     }
@@ -282,6 +282,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     }
     if (!hr.horario_id) {
       // console.log("crete H");
+      hr.horario_vacio = false;
       const sub = this._horario.crearHorario(hr).subscribe(
         (res) => { },
         (error) => {
