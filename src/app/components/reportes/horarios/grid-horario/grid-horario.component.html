@@ -6,20 +6,17 @@
         <th *ngFor="let dia of diasLabels" class="col-2">{{dia}}</th>
       </tr>
     </thead>
-    <tbody class="row">
+    <tbody>
       <div class="mat-figure">
-
         <tr *ngFor="let label of horasLabels;let i = index" class="row">
-          <td class="col-2">
+          <td class="col-2 horasLabel">
             {{label}}
           </td>
-          <div class="col-10">
-            <td *ngFor="let horas of array[i]" class="elemento">
+            <td *ngFor="let horas of array[i]" class="elemento col-2">
               <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
                 [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
-          </div>
 
         </tr>
       </div>
