@@ -15,3 +15,7 @@ i,
 mat-icon {
   margin-right: 5px;
 }
+
+mat-list-item {
+  cursor: pointer;
+}

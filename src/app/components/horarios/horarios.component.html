@@ -67,17 +67,17 @@
     <div class="col-4">
       <mat-card *ngIf="gruposBycarreraAnyo.length && aulaSelected" class="sticky">
         <div class="row px-2">
-          <div class="col-6 leyenda bg-color-green">no choque</div>
-          <div class="col-6 leyenda bg-red-ligth">choque docente</div>
-          <div class="col-6 leyenda bg-warning">choque componente</div>
-          <div class="col-6 leyenda bg-purple-ligth">choque ciclo</div>
+          <div class="col-6 leyenda bg-color-green">Sin choque</div>
+          <div class="col-6 leyenda bg-red-ligth">Choque docente</div>
+          <div class="col-6 leyenda bg-warning">Choque componente</div>
+          <div class="col-6 leyenda bg-purple-ligth">Choque ciclo</div>
         </div>
         <strong>Componetes</strong>
         <div>
-          <button mat-raised-button [disabled]="assign" color="primary" (click)="assign = true; noassign = false;">ver
-            asignados</button>
+          <button mat-raised-button [disabled]="assign" color="primary" (click)="assign = true; noassign = false;">
+            Asignados</button>
           <button mat-raised-button class="ml-1" [disabled]="noassign" (click)="assign = false; noassign = true;"
-            color="primary">ver no asignados</button>
+            color="primary">No asignados</button>
         </div>
         <mat-list class="max-h groupsList mt-2">
           <ng-container *ngFor="let gp of gruposBycarreraAnyo; let i = index;">

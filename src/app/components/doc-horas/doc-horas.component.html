@@ -26,12 +26,12 @@
         </ng-container>
 
         <ng-container matColumnDef="horas_planta">
-          <th mat-header-cell *matHeaderCellDef> Horas de Planta </th>
+          <th mat-header-cell *matHeaderCellDef> Horas planta </th>
           <td mat-cell *matCellDef="let dh"> {{dh.dh_horas_planta}} </td>
         </ng-container>
 
         <ng-container matColumnDef="horas_extras">
-          <th mat-header-cell *matHeaderCellDef> Horas extras </th>
+          <th mat-header-cell *matHeaderCellDef> Horas parciales </th>
           <td mat-cell *matCellDef="let dh"> {{dh.dh_horas_hor}} </td>
         </ng-container>
 
@@ -45,7 +45,7 @@
           <td mat-cell *matCellDef="let dh"> {{getPlanificacion(dh.dh_planificacion)}} </td>
         </ng-container>
         <ng-container matColumnDef="opciones">
-          <th mat-header-cell *matHeaderCellDef> opciones </th>
+          <th mat-header-cell *matHeaderCellDef> Opciones </th>
           <td mat-cell *matCellDef="let dh">
             <div class="opciones">
               <button class="btnBorrar" mat-raised-button (click)="delDH(dh.dh_id)">
@@ -66,7 +66,7 @@
         <div class="encabezado">
           <mat-card-title>Docentes sin asignar</mat-card-title>
           <mat-card-subtitle>
-            Semestre {{selectedPlan.planificacion_semestre}} año {{selectedPlan.planificacion_anyo_lectivo}}
+            Semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o {{selectedPlan.planificacion_anyo_lectivo}}
           </mat-card-subtitle>
         </div>
         <div>
