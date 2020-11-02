@@ -39,8 +39,6 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
-  <!-- <span *ngIf="planSelected">{{planSelected}}</span> -->
   <div class="row">
     <h5 class="col-12" *ngIf="aulaLabel != null">{{aulaLabel.aula_nombre}}
       {{aulaLabel.aula_recinto | recintoNombre : recintos}} </h5>
@@ -49,161 +47,22 @@
       <thead>
         <tr class="row mx-0">
           <th class="col-2">Hora</th>
-          <th class="col-2">Lunes</th>
-          <th class="col-2">Martes</th>
-          <th class="col-2">Miercoles</th>
-          <th class="col-2">Jueves</th>
-          <th class="col-2">Viernes</th>
+          <th class="col-2" *ngFor="let dia of dias">{{dia}}</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="row mx-0">
-          <td class="col-2">07am - 08am</td>
-          <td class="col-2" *ngFor="let hora of array[0]" [ngClass]="{
+        <tr class="row mx-0" *ngFor="let a of horasLabel; let i = index">
+          <td class="col-2">{{a}}</td>
+          <td class="col-2" *ngFor="let hora of array[i]" [ngClass]="{
               'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
               'bg-red-ligth': hora.horario_choque == 'd',
               'bg-warning': hora.horario_choque == 'c',
               'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-                [ngTemplateOutletContext]="{hora:hora}">
-              </ng-container>
-            
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">08am - 09am</td>
-          <td class="col-2" *ngFor="let hora of array[1]" [ngClass]="{
-            'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-            'bg-red-ligth': hora.horario_choque == 'd',
-            'bg-warning': hora.horario_choque == 'c',
-            'bg-purple-ligth': hora.horario_choque == 'a'}">
-            <ng-container [ngTemplateOutlet]="horarioContainer"
-                [ngTemplateOutletContext]="{hora:hora}">
-              </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">09am - 10am</td>
-          <td class="col-2" *ngFor="let hora of array[2]"
-            [ngClass]="{'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}">
-            <ng-container [ngTemplateOutlet]="horarioContainer"
-                [ngTemplateOutletContext]="{hora:hora}">
-              </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">10am - 11am</td>
-          <td class="col-2" *ngFor="let hora of array[3]"
-            [ngClass]="{'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}">
-            <ng-container [ngTemplateOutlet]="horarioContainer"
-                [ngTemplateOutletContext]="{hora:hora}">
-              </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">11am - 12pm</td>
-          <td class="col-2" *ngFor="let hora of array[4]"
-            [ngClass]="{'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}">
-            <ng-container [ngTemplateOutlet]="horarioContainer"
-                [ngTemplateOutletContext]="{hora:hora}">
-              </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">12m - 1pm</td>
-          <td class="col-2" *ngFor="let hora of array[5]"
-            [ngClass]="{'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,'bg-red-ligth': hora.horario_choque == 'd', 'bg-warning': hora.horario_choque == 'c', 'bg-purple-ligth': hora.horario_choque == 'a'}">
-            <ng-container [ngTemplateOutlet]="horarioContainer"
-                [ngTemplateOutletContext]="{hora:hora}">
-              </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">1pm - 2pm</td>
-          <td class="col-2" *ngFor="let hora of array[6]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
-            </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">1pm - 2pm</td>
-          <td class="col-2" *ngFor="let hora of array[7]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
-            </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">2pm - 3pm</td>
-          <td class="col-2" *ngFor="let hora of array[8]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
-            </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">3pm - 4pm</td>
-          <td class="col-2" *ngFor="let hora of array[9]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
-            </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">4pm - 5pm</td>
-          <td class="col-2" *ngFor="let hora of array[9]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
-            </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">5pm - 6pm</td>
-          <td class="col-2" *ngFor="let hora of array[10]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
-            </ng-container>
-          </td>
-        </tr>
-        <tr class="row mx-0">
-          <td class="col-2">6pm - 7pm</td>
-          <td class="col-2" *ngFor="let hora of array[11]" [ngClass]="{
-              'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
-              'bg-red-ligth': hora.horario_choque == 'd',
-              'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
-              <ng-container [ngTemplateOutlet]="horarioContainer"
-              [ngTemplateOutletContext]="{hora:hora}">
+            <ng-container [ngTemplateOutlet]="horarioContainer" [ngTemplateOutletContext]="{hora:hora}">
             </ng-container>
           </td>
         </tr>
       </tbody>
-
     </table>
     <div class="col-4">
       <mat-card *ngIf="gruposBycarreraAnyo.length && aulaSelected" class="sticky">
@@ -252,15 +111,14 @@
       {{hora.horario_grupo | nombreGrupo : grupos}}
       {{hora.horario_grupo | componenteGrupo : onComponente}}
     </span>
-    <span style="min-height: 40px; border-radius: 5px" class="h-100  w-100"
-     (click)="selectH($event, hora)">
+    <span style="min-height: 40px; border-radius: 5px" class="h-100  w-100" (click)="selectH($event, hora)">
       <div *ngIf="hora.horario_grupo != null">
         {{docenteNombre(hora.horario_grupo)}} <br>
         {{getCarrera(hora.horario_grupo)}} <br>
         Ciclo:{{ hora.horario_ciclo}}
       </div>
       <div *ngIf="hora.horario_grupo == null" class="w-50 mx-auto text-center icon-style color-green">
-        <mat-icon>add_box</mat-icon>
+        <mat-icon class="point">add_box</mat-icon>
       </div>
     </span>
     <span *ngIf="hora.horario_grupo != null">
@@ -268,8 +126,7 @@
         <button mat-icon-button color="warn" (click)="rmHorario(hora)">
           <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''"
-          (click)="infoChoque(hora)">
+        <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)">
           <mat-icon>info</mat-icon>
         </button>
       </span>

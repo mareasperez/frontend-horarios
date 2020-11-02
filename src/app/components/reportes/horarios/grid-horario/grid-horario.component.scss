@@ -6,14 +6,23 @@
     background-color: gray;
   }
   
-  td {
+ th , td {
+    border-collapse: collapse;
+    padding: 5px;
     vertical-align: middle;
     text-align: center;
     font-size: 12px;
+    width: 230px;
+    border: 1px solid #5c5c5c;
   }
+
+  th {
+    color: white;
+    background-color: #5c5c5c;
+  }
+
   
   td.elemento {
-    width: 250px;
     text-transform: capitalize;
   }
   
@@ -21,6 +30,7 @@
     margin: auto;
     align-content: center;
     text-align: center;
+    
   }
   
   .center {
