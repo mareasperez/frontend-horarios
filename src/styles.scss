@@ -1,11 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@media print {
-  .barrita{
-    visibility: hidden;
-  }
-}
+
 button:focus {
   outline: none;
 }
@@ -93,10 +89,17 @@ button:focus {
 }
 
 .join {
-  display: flex;
+  display: flex;@media print {
+    .barrita{
+      visibility: hidden;
+    }
+    
+  }
   flex-direction: row;
 }
-
+html{
+  height: 100%;
+}
 
 body {
   height: 100%;
@@ -424,4 +427,13 @@ $colors-list: $green $yellow $red;
   margin: auto;
   width: 60%;
   padding: 10px;
+}
+@media print {
+  // @page {size: landscape}
+  .barrita{
+    visibility: hidden;
+  }
+  html {
+    height: auto;
+  }
 }
