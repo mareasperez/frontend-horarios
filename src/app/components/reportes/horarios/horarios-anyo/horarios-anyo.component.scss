@@ -1,18 +1,3 @@
-.pdf {
-  visibility: hidden;
-}
-
-@media print {
-  .pdf {
-    visibility: visible;
-  }
-
-  .noPdf {
-    visibility: hidden;
-  }
-
-}
-
 .false {
   background-color: lightgreen;
 }

@@ -49,7 +49,7 @@ export class HorarioAulaComponent implements OnInit, OnDestroy {
   public aulasFiltered: AulaModel[] = [];
   public selectedPlan: PlanificacionModel;
   public selectedAula: AulaModel;
-  public selectedREc: RecintoModel;
+  public selectedRec: RecintoModel;
   public TYPE = 'Aula';
   constructor(
     private _planificacion: PlanificacionService,

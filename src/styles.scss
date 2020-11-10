@@ -10,6 +10,10 @@ button:focus {
   outline: none;
 }
 
+.pdf {
+  visibility: hidden;
+}
+
 .float-right {
   float: right !important;
   line-height: 1.2;
@@ -435,5 +439,17 @@ $colors-list: $green $yellow $red;
   }
   html {
     height: auto;
+  }
+  @page {
+    margin: 0 !important;
+  }
+  .pdf {
+    visibility: visible;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .noPdf {
+    display: none;
   }
 }

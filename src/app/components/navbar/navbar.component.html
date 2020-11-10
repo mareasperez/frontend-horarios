@@ -6,7 +6,8 @@
   <a class="col-1 docs-button mat-button elemento" routerLink="/" mat-button disabled>JKM</a>
   <div class="col-8"></div>
   <div class="col-1 float-right">
-    <button type="button" class="btn btn-danger btn-sm" (click)="logout()" *ngIf="okay()">Cerrar Sesi&oacute;n</button>
+    <button onclick="window.print()" class="btn btn-primary btn-md" style="margin-right: 10px"><mat-icon>print</mat-icon></button>
+    <button type="button" class="btn btn-danger btn-md" (click)="logout()" *ngIf="okay()"><mat-icon>input</mat-icon></button>
   </div>
 </mat-toolbar>
 <mat-drawer-container class="example-container contenidos">
