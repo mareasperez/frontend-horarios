@@ -452,4 +452,8 @@ $colors-list: $green $yellow $red;
   .noPdf {
     display: none;
   }
+
+  .scrollable {
+    height: unset;
+  }
 }

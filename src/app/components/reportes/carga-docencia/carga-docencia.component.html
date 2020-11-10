@@ -21,14 +21,16 @@
       </div>
     </div>
   </div>
-  <mat-form-field class="font-size-12" appearance="outline">
-    <mat-label>Seleccionar planificaci&oacute;n</mat-label>
-    <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
-      <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
-        planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div  class="noPdf">
+    <mat-form-field class="font-size-12" appearance="outline">
+      <mat-label>Seleccionar planificaci&oacute;n</mat-label>
+      <mat-select [(value)]="selected" (selectionChange)="groupByPlan($event.value)">
+        <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
+          planificacion semestre {{ plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
 
 <div *ngIf="rLoaded && dataSource.length>0; else stillLoading2">
