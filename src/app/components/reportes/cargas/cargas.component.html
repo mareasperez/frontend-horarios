@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="row center">
-        <div class="col-4">
+        <div class="col-4 noPdf">
           <mat-form-field class="font-size-12" appearance="outline">
             <mat-label>Planificaci&oacute;n</mat-label>
             <mat-select [(ngModel)]="selectedPlan" name="planificacion" (selectionChange)="getData()">
@@ -39,8 +39,8 @@
                 <th class="col-4">{{reporte.docente.docente_nombre}}</th>
                 <th class="col-2">Carrera</th>
                 <th class="col-2">A&ntilde;o</th>
-                <th class="col-2">No de Grupo</th>
-                <th class="col-2">No de Hora</th>
+                <th class="col-2">N<sup>o</sup> de Grupo</th>
+                <th class="col-2">N<sup>o</sup> de Hora</th>
               </tr>
               <tr *ngFor="let grupo of reporte.grupos" class="row">
                 <td class="col-4">{{(grupo.grupo_id | gpComponenteNoData: componentes : grupos).componente_nombre}}</td>
@@ -53,14 +53,17 @@
                 <td class="col-2">{{grupo.grupo_numero}}</td>
                 <td class="col-2">{{grupo.grupo_horas_clase}}</td>
               </tr>
+              <tr class="row">
+                  <td [ngClass]="{'primary': reporte.horas.dh_horas_total > (reporte.grupos | sumaGruposDocente), 
+                  'danger': reporte.horas.dh_horas_total < (reporte.grupos | sumaGruposDocente),
+                  'success': reporte.horas.dh_horas_total == (reporte.grupos | sumaGruposDocente)}" class="footerText col-12">
+                    <b>
+                      {{(reporte.grupos | sumaGruposDocente)}}/{{reporte.horas.dh_horas_total}}
+                    </b>
+                  </td>
+              </tr>
             </table>
-            <div [ngClass]="{'primary': reporte.horas.dh_horas_total > (reporte.grupos | sumaGruposDocente), 
-                'danger': reporte.horas.dh_horas_total < (reporte.grupos | sumaGruposDocente),
-                'success': reporte.horas.dh_horas_total == (reporte.grupos | sumaGruposDocente)}" class="footerText">
-              <b>
-                {{(reporte.grupos | sumaGruposDocente)}}/{{reporte.horas.dh_horas_total}}
-              </b>
-            </div>
+
             <br>
           </div>
         </div>

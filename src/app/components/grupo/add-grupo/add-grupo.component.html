@@ -10,7 +10,7 @@
   </div>
   <div class="join">
     <mat-form-field class="w-50" appearance="outline">
-      <mat-label>numero</mat-label>
+      <mat-label>N<sup>o</sup></mat-label>
       <input matInput formControlName="grupo_numero">
       <mat-error *ngIf="Form.grupo_numero.invalid">{{Errors.getError(Form.grupo_numero)}}</mat-error>
     </mat-form-field>
@@ -65,7 +65,7 @@
 
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Planificacion</mat-label>
+    <mat-label>Planificaci&oacute;n</mat-label>
     <mat-select disabled formControlName="grupo_planificacion">
       <mat-option *ngFor="let planificacion of planificaciones" [value]="planificacion.planificacion_id">
         Semestre {{planificacion.planificacion_semestre}} | año {{planificacion.planificacion_anyo_lectivo}}
