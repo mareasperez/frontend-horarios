@@ -10,7 +10,7 @@
 
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Planificacion</mat-label>
+    <mat-label>Planificaci&oacute;n</mat-label>
     <mat-select formControlName="dh_planificacion">
       <mat-option *ngFor="let plan of planificaciones" [value]="plan.planificacion_id">
         Semestre {{plan.planificacion_semestre}} | {{plan.planificacion_anyo_lectivo}}
@@ -23,7 +23,7 @@
   <div class="row">
     <h5 class="col-12"><strong>Horas asignadas</strong></h5>
     <mat-form-field class="col-6" appearance="outline">
-      <mat-label>de planta</mat-label>
+      <mat-label>Planta</mat-label>
       <input #hp type="numer" formControlName="dh_horas_planta" matInput>
       <mat-error *ngIf="Form.dh_horas_planta.invalid">{{Errors.getError(Form.dh_horas_planta)}}</mat-error>
 

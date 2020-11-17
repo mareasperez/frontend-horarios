@@ -25,11 +25,11 @@
         <mat-error *ngIf="Form.pde_carrera.invalid">{{Errors.getError(Form.pde_carrera)}}</mat-error>
 
       </mat-form-field>
-      <button mat-raised-button [disabled]="form.invalid" color="primary"
+      <button mat-raised-button [disabled]="form.invalid" class="bg-color-green mb-1"
         (click)="data.type === 'c' ? createPlan():updatePlan()">
         <mat-icon>save</mat-icon>Guardar
       </button>
-      <button mat-raised-button (click)="dialogRef.close()" color="warn" class="mt-1">
+      <button mat-raised-button (click)="dialogRef.close()" color="warn">
         <mat-icon>cancel</mat-icon>Cancelar
       </button>
     </form>

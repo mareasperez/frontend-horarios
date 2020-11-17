@@ -16,7 +16,7 @@
         <mat-error *ngIf="Form.departamento_facultad.invalid">{{Errors.getError(Form.departamento_facultad)}}
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button class="bg-color-green" [disabled]="form.invalid"
+      <button mat-raised-button class="bg-color-green mb-1" [disabled]="form.invalid"
         (click)="data.type === 'c' ? saveDepartamento():updateDepartamento()">
         <mat-icon>save</mat-icon> Guardar
       </button>

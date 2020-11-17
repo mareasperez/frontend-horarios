@@ -51,7 +51,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
   // valores seteados por el usuario
   public selectedPlan: PlanificacionModel;
   public selectedCarr: CarreraModel;
-  public selectedAnyo: number = undefined;
+  public selectedAnyo: number = 0;
   public TYPE = 'Anyo';
   constructor(
     private _planificacion: PlanificacionService,

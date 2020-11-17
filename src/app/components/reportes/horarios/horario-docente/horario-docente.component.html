@@ -22,7 +22,7 @@
         <h5>Horarios del semestre {{selectedPlan.planificacion_semestre}} a&ntilde;o
           {{selectedPlan.planificacion_anyo_lectivo}}</h5>
       </div>
-      <div class="center row">
+      <div class="center row noPdf">
         <div class="col-6">
           <mat-form-field class="font-size-12" appearance="outline">
             <mat-label>Planificaci&oacute;n</mat-label>
@@ -44,7 +44,11 @@
           </mat-form-field>
         </div>
       </div>
-
+      <div *ngIf="(selectedPlan) && (selectedDoc!=undefined)" class="pdf col-12 text-center">
+        <span>
+          Docente: {{selectedDoc.docente_nombre}}
+        </span>
+      </div>
     </div>
 
   </div>

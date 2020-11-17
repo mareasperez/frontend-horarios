@@ -74,7 +74,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public refHorario: Observable<any>;
   public refRecintos: Observable<any>;
   public refDocentes: Observable<any>;
-  public dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+  public dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
   public horasLabel = ['7-8', '8-9', '9-10', '10-11', '11-12', '12-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7'];
   public show = false;
   public filtering = false;

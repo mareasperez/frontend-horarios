@@ -94,21 +94,22 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     // this.getGrupos()
 
     Promise.all(this.promesas).then(() => {
-      console.log(this.planificaciones);
+      // console.log(this.planificaciones);
 
-      if (!this.planSelected) {
+      if (!this.planSelected && this.planificaciones.length) {
         this.planSelected = this.planificaciones[this.planificaciones.length - 1].planificacion_id;
       }
 
-      if (!this.carreraSelected) {
+      if (!this.carreraSelected && this.carreras.length) {
         this.carreraSelected = this.carreras[this.carreras.length - 1].carrera_id;
       }
 
       if (!this.anyoSelected) {
         this.anyoSelected = 1;
       }
-
-      this.pdesByCarrera(this.carreraSelected);
+      if (this.carreraSelected) {
+        this.pdesByCarrera(this.carreraSelected);
+      }
 
       this.componentesByPdeCiclo();
 
@@ -160,6 +161,9 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   }
 
   pdesByCarrera(id: string, loadComponentes = false) {
+    // console.log(this.pdes);
+    if (!this.pdes.length) return;
+
     this.pdeByCarrera = this.pdes.filter((pde) => pde.pde_carrera === id);
     this.pdeSelected = this.pdeByCarrera[this.pdeByCarrera.length - 1].pde_id;
     if (loadComponentes) {
@@ -170,7 +174,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   componentesByPdeCiclo(setGrupos = false) {
     this.setCiclo();
     return new Promise((resolve, reject) => {
-      let sub = this._componente
+      const sub = this._componente
         .getComponetesByPdeCiclo({ pde: this.pdeSelected, ciclo: this.cicloSelected })
         .subscribe(
           (res) => {
@@ -190,14 +194,17 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   getGruposByComponentePlan(id?: string, f?: string) {
     if (id || this.componeteSelected) {
       this.componeteSelected = id;
-    } else return;
-    let sub = this._grupo
+    } else {
+      return;
+    }
+    const sub = this._grupo
       .getByComponentePlan({ componente: this.componeteSelected, planificacion: this.planSelected })
       .subscribe(
         (res) => {
           this.grupos = res.grupos;
           this._grupo.list = res.grupos;
-          let cp = this.componentes.find((cp) => cp.componente_id == this.componeteSelected);
+          const cp = this.componentes.find((cp) => cp.componente_id == this.componeteSelected);
+          this.componente = cp;
           this.docenteByArea(cp.componente_area);
         },
         (error) => this._snack.open(error.message, "OK", { duration: 3000 })
@@ -275,7 +282,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   }
 
   setCiclo() {
-    let planificacion = this.planificaciones.find((pl) => pl.planificacion_id == this.planSelected);
+    const planificacion = this.planificaciones.find((pl) => pl.planificacion_id == this.planSelected);
     if (planificacion) {
       switch (this.anyoSelected) {
         case 1:
@@ -298,7 +305,9 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
   }
 
   getGrupos(id: string, f?: string) {
-    if (!this.planSelected) return;
+    if (!this.planSelected) {
+      return;
+    }
     //  let p = this.getGruposByComponente(id: string, f?: string);
     //  Promise.all([p])
   }

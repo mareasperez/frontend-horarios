@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
-import { ComponenteService } from 'src/app/services/componente.service';
-import { Observable, Subscription } from 'rxjs';
-import { ComponenteModel } from 'src/app/models/componente.model';
-import { AreaModel } from 'src/app/models/area.model';
-import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { matErrorsMessage } from 'src/app/utils/errors';
-import { MatSnackBar, MatDialog } from '@angular/material';
-import { AddComponenteComponent } from './add-componente/add-componente.component';
-import { getItemLocalCache } from 'src/app/utils/utils';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef } from "@angular/core";
+import { ComponenteService } from "src/app/services/componente.service";
+import { Observable, Subscription } from "rxjs";
+import { ComponenteModel } from "src/app/models/componente.model";
+import { AreaModel } from "src/app/models/area.model";
+import { PlanEstudioModel } from "src/app/models/planEstudio";
+import { matErrorsMessage } from "src/app/utils/errors";
+import { MatSnackBar, MatDialog } from "@angular/material";
+import { AddComponenteComponent } from "./add-componente/add-componente.component";
+import { getItemLocalCache } from "src/app/utils/utils";
 
 @Component({
-  selector: 'app-componentes',
-  templateUrl: './componentes.component.html',
-  styleUrls: ['./componentes.component.scss']
+  selector: "app-componentes",
+  templateUrl: "./componentes.component.html",
+  styleUrls: ["./componentes.component.scss"],
 })
 export class ComponentesComponent implements OnInit, OnDestroy {
   // tslint:disable: variable-name
@@ -23,31 +23,24 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   @Input() public componentes: ComponenteModel[] = [];
   @Input() public areas: AreaModel[] = [];
   @Input() public pdes: PlanEstudioModel[] = [];
-  public pde = getItemLocalCache('pde');
-  public ciclo = getItemLocalCache('ciclo');
+  public pde = getItemLocalCache("pde");
+  public ciclo = getItemLocalCache("ciclo");
   public componente: ComponenteModel = null;
-  public selected = '0';
-  public selected2 = '0';
+  public selected = "0";
+  public selected2 = "0";
   public add = false;
   public editing = false;
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
   public gpadd = true;
 
-  constructor(
-    private comService: ComponenteService,
-    private _snack: MatSnackBar,
-    private dialog: MatDialog,
-  ) { }
+  constructor(private comService: ComponenteService, private _snack: MatSnackBar, private dialog: MatDialog) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.comService.list = [];
-    this.subs.map(sub => sub.unsubscribe());
-
+    this.subs.map((sub) => sub.unsubscribe());
   }
 
   editHoras(id, ht, hp) {
@@ -58,29 +51,33 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   delComponente(e) {
-    this.subs.push(this.comService.deleteComponente(e).subscribe(
-      res => { },
-      error => this._snack.open(error.message, 'OK', { duration: 3000 })
-    ));
+    this.subs.push(
+      this.comService.deleteComponente(e).subscribe(
+        (res) => {},
+        (error) => this._snack.open(error.message, "OK", { duration: 3000 })
+      )
+    );
   }
 
-
-
   openDialog(tipo: string, id?: any): void {
-    if (tipo === 'c') {
+    if (!this.pdes.length) {
+      return;
+    } else if (!id) {
+      this.pde = this.pdes[this.pdes.length - 1];
+    }
+    if (tipo === "c") {
       this.dialog.open(AddComponenteComponent, {
-        width: '450px',
-        data: { type: tipo, areas: this.areas, pdes: this.pdes, pde: this.pde, ciclo: this.ciclo }
+        width: "450px",
+        data: { type: tipo, areas: this.areas, pdes: this.pdes, pde: this.pde, ciclo: this.ciclo },
       });
     } else {
-      const comp = this.componentes.find(d => d.componente_id === id);
+      const comp = this.componentes.find((d) => d.componente_id === id);
       this.dialog.open(AddComponenteComponent, {
-        width: '450px',
-        data: { type: tipo, componente: comp, areas: this.areas, pdes: this.pdes }
+        width: "450px",
+        data: { type: tipo, componente: comp, areas: this.areas, pdes: this.pdes },
       });
     }
   }
-
 
   addG(e, comp: string) {
     this.gpComp.emit(comp);
@@ -88,12 +85,11 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   }
 
   changeColor(e) {
-    const item = document.getElementsByClassName('bg-color-yellow')[0];
+    const item = document.getElementsByClassName("bg-color-yellow")[0];
     if (item) {
       const elr = new ElementRef(item);
-      elr.nativeElement.classList.remove('bg-color-yellow');
+      elr.nativeElement.classList.remove("bg-color-yellow");
     }
-    e.target.parentNode.classList.add('bg-color-yellow');
-
+    e.target.parentNode.classList.add("bg-color-yellow");
   }
 }
