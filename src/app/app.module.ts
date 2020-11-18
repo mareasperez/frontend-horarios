@@ -18,7 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ContenidoComponent } from './components/contenido/contenido.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
-import { ComponentesComponent } from './components/componentes/componentes.component';
+import { ComponentesComponent } from './components/grupo/componente-lista/componentes.component';
 import { GrupoComponent } from './components/grupo/list-grupo/grupo.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
@@ -40,7 +40,9 @@ import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.c
 import { AddComponenteComponent } from './components/componentes/add-componente/add-componente.component';
 import { AddGrupoComponent } from './components/grupo/add-grupo/add-grupo.component';
 import { AddHorarioComponent } from './components/horarios/add-horario/add-horario.component';
+
 /* componentes de listado */
+
 import { VerfacultComponent } from './components/facultad/verfacult/verfacult.component';
 import { VerrecintoComponent } from './components/recinto/verrecinto/verrecinto.component';
 import { VerdepartamentoComponent } from './components/departamento/verdepartamento/verdepartamento.component';
