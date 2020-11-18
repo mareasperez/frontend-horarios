@@ -19,7 +19,7 @@ import { AddplanestudioComponent } from './components/planestudio/addplanestudio
 import { HomeComponent } from './components/home/home.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { HorariosAnyoComponent } from './components/reportes/horarios/horarios-anyo/horarios-anyo.component';
-import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
+import { DocHorasComponent } from './components/doc-horas/doc-horas-list/doc-horas.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
 import { CrearGrupoComponent } from './components/grupo/main-grupo/crear-grupo.component';

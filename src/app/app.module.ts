@@ -21,7 +21,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/grupo/componente-lista/componentes.component';
 import { GrupoComponent } from './components/grupo/list-grupo/grupo.component';
 import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
-import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
+import { DocHorasComponent } from './components/doc-horas/doc-horas-list/doc-horas.component';
 import { CrearGrupoComponent } from './components/grupo/main-grupo/crear-grupo.component';
 import { LogHorarioComponent } from './components/horarios/log-horario/log-horario.component';
 
@@ -36,7 +36,7 @@ import { AdddocenteComponent } from './components/docente/adddocente/adddocente.
 import { AddplanestudioComponent } from './components/planestudio/addplanestudio/addplanestudio.component';
 import { AddcarreraComponent } from './components/carrera/addcarrera/addcarrera.component';
 import { AddPlanificacionComponent } from './components/planificacion/add-planificacion/add-planificacion.component';
-import { DocHorasAddComponent } from './components/doc-horas-add/doc-horas-add.component';
+import { DocHorasAddComponent } from './components/doc-horas/doc-horas-add/doc-horas-add.component';
 import { AddComponenteComponent } from './components/componentes/add-componente/add-componente.component';
 import { AddGrupoComponent } from './components/grupo/add-grupo/add-grupo.component';
 import { AddHorarioComponent } from './components/horarios/add-horario/add-horario.component';

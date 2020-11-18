@@ -95,12 +95,10 @@ export class DocHorasComponent implements OnInit, OnDestroy {
           this.docentes = [];
           this.docentes = data;
         }));
-        
         this.subs.push(this.refPlan.subscribe(data => {
           this.planificaciones = [];
           this.planificaciones = data;
         }));
-        
         this.subs.push(this.refDH.subscribe(data => {
           this.dhs = [];
           this.dhs = data;
