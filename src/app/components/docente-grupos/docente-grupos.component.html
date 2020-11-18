@@ -18,8 +18,8 @@
     <div class="row">
       <div class="col-2" style="height: 60vh;overflow: auto;">
         <mat-list>
-          <mat-list-item class="border-radius-50 font-size-12 " *ngFor="let docente of docentesList; let i = index"
-            [class.bg-color-ligth]="i % 2 === 0" (click)="verGruposDoc(docente.docente_id)">
+          <mat-list-item class="border-radius-50 font-size-12 list-element " *ngFor="let docente of docentesList; let i = index"
+            [class.bg-color-ligth]="i % 2 === 0" (click)="verGruposDoc(docente.docente_id)" style="cursor:pointer;">
             {{docente.docente_nombre}}
           </mat-list-item>
         </mat-list>
@@ -35,7 +35,7 @@
             </mat-card-header>
             <mat-card-content>
               <mat-list class="list-grupos" *ngIf="gruposDoc(docente.docente_id).length>0; else gpVacio">
-                <mat-list-item class="font-size-12 border-radius-50"
+                <mat-list-item class="font-size-12 border-radius-50 list-element"
                   *ngFor="let grupo of gruposDoc(docente.docente_id) let i = index;"
                   [class.bg-color-ligth]="i % 2 === 0" title="{{grupo.grupo_componente | componenteNameSimple: componentes}}">
                   <b>{{grupo.grupo_tipo}}{{grupo.grupo_numero}} </b>

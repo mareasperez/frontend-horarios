@@ -53,7 +53,7 @@
       <tbody>
         <tr class="row mx-0" *ngFor="let a of horasLabel; let i = index">
           <td class="col-2">{{a}}</td>
-          <td class="col-2" *ngFor="let hora of array[i]" [ngClass]="{
+          <td class="col-2 list-element" *ngFor="let hora of array[i]" [ngClass]="{
               'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
               'bg-red-ligth': hora.horario_choque == 'd',
               'bg-warning': hora.horario_choque == 'c',
@@ -82,7 +82,7 @@
         </div>
         <mat-list class="max-h groupsList mt-2">
           <ng-container *ngFor="let gp of gruposBycarreraAnyo; let i = index;">
-            <mat-list-item class="font-size-10" *ngIf="gp.grupo_asignado == assign"
+            <mat-list-item class="font-size-10 list-element" *ngIf="gp.grupo_asignado == assign"
               [class.bg-color-ligth]="(i % 2 === 1)&&(gp!==grupoSelected)" [class.bg-color-yellow]="gp===grupoSelected"
               (click)="selectGP(gp)">
               {{gp.grupo_id |  nombreGrupo : grupos}} {{gp.grupo_id | componenteGrupo : onComponente}}<br>
