@@ -24,13 +24,13 @@
     <h5 class="col-12"><strong>Horas asignadas</strong></h5>
     <mat-form-field class="col-6" appearance="outline">
       <mat-label>Planta</mat-label>
-      <input #hp type="numer" formControlName="dh_horas_planta" matInput>
+      <input #hp type="number" formControlName="dh_horas_planta" matInput>
       <mat-error *ngIf="Form.dh_horas_planta.invalid">{{Errors.getError(Form.dh_horas_planta)}}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="col-6" appearance="outline">
       <mat-label>Parciales</mat-label>
-      <input #hh type="numer" formControlName="dh_horas_hor" matInput>
+      <input #hh type="number" formControlName="dh_horas_hor" matInput>
       <mat-error *ngIf="Form.dh_horas_hor.invalid">{{Errors.getError(Form.dh_horas_hor)}}</mat-error>
     </mat-form-field>
   </div>
