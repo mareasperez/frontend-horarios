@@ -228,43 +228,23 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       data: { hr: horario, gps: grupos, cps: this.onComponente },
     });
   }
-  selectH(e, hr: HorarioModel) {
-    if (this.horarioSelected === hr) {
-      this.horarioSelected = null;
-      this.changeColor(e);
-    }
-    else {
-      this.horarioSelected = hr;
-      this.changeColor(e);
-    }
+  selectH(hr: HorarioModel) {
+    this.horarioSelected = hr;
     if (this.grupoSelected == null) {
       return;
     }
     this.save();
   }
 
-  selectGP(e, gp: GrupoModel) {
+  selectGP(gp: GrupoModel) {
     if (gp.grupo_asignado) { return; }
     this.grupoSelected = gp;
-    this.changeColor(e);
     if (this.horarioSelected == null) {
       return;
     }
     this.save();
   }
 
-  changeColor(e) {
-    const item = document.getElementsByClassName('bg-color-yellow')[0];
-    console.log('llamado el cambio color', e);
-    if (item) {
-      const elr = new ElementRef(item);
-      console.log(item);
-      elr.nativeElement.classList.remove('bg-color-yellow');
-    }
-    if (this.horarioSelected || this.grupoSelected) {
-      e.target.classList.add('bg-color-yellow');
-    }
-  }
   save() {
     const hr = { ...this.horarioSelected };
     hr.horario_grupo = this.grupoSelected.grupo_id;
