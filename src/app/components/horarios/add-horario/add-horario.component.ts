@@ -8,40 +8,42 @@ interface DialogData {
   hr: HorarioModel;
   gps: GrupoModel[];
   cps: ComponenteModel[];
-  
+
 }
 @Component({
   selector: 'app-add-horario',
   templateUrl: './add-horario.component.html',
   styleUrls: ['./add-horario.component.scss']
 })
+// tslint:disable: variable-name
 export class AddHorarioComponent implements OnInit {
-  public componenteSelected: string = '0';
-  constructor(   
+  public componenteSelected = '0';
+  constructor(
     private _horario: HorarioService,
-     public dialogRef: MatDialogRef<AddHorarioComponent>,
+    public dialogRef: MatDialogRef<AddHorarioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private _snack: MatSnackBar
 
-) { }
+  ) { }
 
   ngOnInit() {
     console.log(this.data.hr);
-    if(!this.data.hr.horario_vacio)
-      this.componenteSelected = this.data.hr.horario_grupo
+    if (!this.data.hr.horario_vacio) {
+      this.componenteSelected = this.data.hr.horario_grupo;
+    }
   }
 
-  save(){
+  save() {
     // console.log(e);
-   if(this.componenteSelected == '0') return;
-    let horario = new HorarioModel();
+    if (this.componenteSelected == '0') { return; }
+    const horario = new HorarioModel();
     horario.horario_grupo = this.componenteSelected;
     horario.horario_vacio = false;
     this._horario.updateHorario(horario, this.data.hr.horario_id).subscribe(
-      res =>{},
-      error => this._snack.open(error.message, "OK", {duration: 3000})
-      
-    )
+      res => { },
+      error => this._snack.open(error.message, 'OK', { duration: 3000 })
+
+    );
   }
 
 }
