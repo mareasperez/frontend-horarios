@@ -1,4 +1,5 @@
 export class DocenteHorasModel {
+    // tslint:disable: variable-name
     dh_id: number;
     dh_horas_planta: number;
     dh_horas_hor: number;
