@@ -22,7 +22,7 @@ import { HorariosAnyoComponent } from './components/reportes/horarios/horarios-a
 import { DocHorasComponent } from './components/doc-horas/doc-horas.component';
 import { CargaDocenciaComponent } from './components/reportes/carga-docencia/carga-docencia.component';
 import { CargaComponentesComponent } from './components/reportes/carga-componentes/carga-componentes.component';
-import { CrearGrupoComponent } from './components/crear-grupo/crear-grupo.component';
+import { CrearGrupoComponent } from './components/grupo/main-grupo/crear-grupo.component';
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
