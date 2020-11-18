@@ -7,7 +7,7 @@ import { PlanificacionModel } from "src/app/models/planificacion.model";
 import { DocenteModel } from "src/app/models/docente.model";
 import { matErrorsMessage } from "src/app/utils/errors";
 import { MatSnackBar, MatDialog } from "@angular/material";
-import { AddGrupoComponent } from "./add-grupo/add-grupo.component";
+import { AddGrupoComponent } from "../add-grupo/add-grupo.component";
 
 @Component({
   selector: "app-grupo",
