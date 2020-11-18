@@ -3,7 +3,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { Observable, Subscription } from 'rxjs';
-import { AddPlanificacionComponent } from './add-planificacion/add-planificacion.component';
+import { AddPlanificacionComponent } from '../add-planificacion/add-planificacion.component';
 import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-planificacion',

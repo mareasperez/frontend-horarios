@@ -20,7 +20,6 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { ComponentesComponent } from './components/grupo/componente-lista/componentes.component';
 import { GrupoComponent } from './components/grupo/list-grupo/grupo.component';
-import { PlanificacionComponent } from 'src/app/components/planificacion/planificacion.component';
 import { DocHorasComponent } from './components/doc-horas/doc-horas-list/doc-horas.component';
 import { CrearGrupoComponent } from './components/grupo/main-grupo/crear-grupo.component';
 import { LogHorarioComponent } from './components/horarios/log-horario/log-horario.component';
@@ -52,6 +51,8 @@ import { VerdocenteComponent } from './components/docente/verdocente/verdocente.
 import { VerplanestudioComponent } from './components/planestudio/verplanestudio/verplanestudio.component';
 import { VercarreraComponent } from './components/carrera/vercarrera/vercarrera.component';
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
+import { PlanificacionComponent } from 'src/app/components/planificacion/list-planificacion/planificacion.component';
+
 
 /* Componentes de Reportes */
 

@@ -26,7 +26,7 @@ import { CrearGrupoComponent } from './components/grupo/main-grupo/crear-grupo.c
 import { ComponentesListComponent } from './components/componentes/componentes-list/componentes-list.component';
 import { CargasComponent } from './components/reportes/cargas/cargas.component';
 import { DocenteGruposComponent } from './components/docente-grupos/docente-grupos.component';
-import { PlanificacionComponent } from './components/planificacion/planificacion.component';
+import { PlanificacionComponent } from 'src/app/components/planificacion/list-planificacion/planificacion.component';
 import { HorariosCrudComponent } from './components/horarios/horarios-main/horarios.component';
 import { HorarioDocenteComponent } from './components/reportes/horarios/horario-docente/horario-docente.component';
 import { HorarioAulaComponent } from './components/reportes/horarios/horario-aula/horario-aula.component';
