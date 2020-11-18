@@ -18,12 +18,12 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
-import { AddHorarioComponent } from './add-horario/add-horario.component';
+import { AddHorarioComponent } from '../add-horario/add-horario.component';
 import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
 import { HttpClient } from '@angular/common/http';
-import { LogHorarioComponent } from './log-horario/log-horario.component';
+import { LogHorarioComponent } from '../log-horario/log-horario.component';
 import { CompPdeCarreraPipe } from 'src/app/pipes/comp--pde--carrera.pipe';
 
 @Component({
