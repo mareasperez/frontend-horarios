@@ -16,9 +16,6 @@ import { getItemLocalCache } from 'src/app/utils/utils';
 })
 export class ComponentesComponent implements OnInit, OnDestroy {
   // tslint:disable: variable-name
-  public ref: Observable<any[]>;
-  public refArea: Observable<any[]>;
-  public refPde: Observable<any[]>;
   @Output() public gpComp = new EventEmitter<string>();
   @Input() public componentes: ComponenteModel[] = [];
   @Input() public areas: AreaModel[] = [];
@@ -26,14 +23,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
   public pde = getItemLocalCache('pde');
   public ciclo = getItemLocalCache('ciclo');
   public componente: ComponenteModel = null;
-  public selected = '0';
-  public selected2 = '0';
-  public add = false;
-  public editing = false;
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
-  public gpadd = true;
-
   constructor(private comService: ComponenteService, private _snack: MatSnackBar, private dialog: MatDialog) {}
 
   ngOnInit() {}
@@ -79,17 +70,8 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     }
   }
 
-  addG(e, comp: string) {
-    this.gpComp.emit(comp);
-    this.changeColor(e);
-  }
-
-  changeColor(e) {
-    const item = document.getElementsByClassName('bg-color-yellow')[0];
-    if (item) {
-      const elr = new ElementRef(item);
-      elr.nativeElement.classList.remove('bg-color-yellow');
-    }
-    e.target.parentNode.classList.add('bg-color-yellow');
+  addG(comp: ComponenteModel) {
+    this.gpComp.emit(comp.componente_id);
+    this.componente = comp;
   }
 }
