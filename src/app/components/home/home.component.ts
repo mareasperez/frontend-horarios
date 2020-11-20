@@ -8,11 +8,16 @@ import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
-import { MatSnackBar } from '@angular/material';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { getItemLocalCache, setItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
 import { JwtService } from 'src/app/services/jwt.service';
+import { matErrorsMessage } from 'src/app/utils/errors';
+import { FacultadSerivice } from 'src/app/services/facultad.service';
+import { FacultadModel } from 'src/app/models/facultad.model';
+import { AdddepartamentoComponent } from '../departamento/adddepartamento/adddepartamento.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,8 +25,10 @@ import { JwtService } from 'src/app/services/jwt.service';
 })
 // tslint:disable: variable-name
 export class HomeComponent implements OnInit, OnDestroy {
+  public Errors: matErrorsMessage = new matErrorsMessage();
   private subs: Subscription[] = [];
   public showMessage = false;
+  public prepared = false;
   public departamentos: DepartamentoModel[] = [];
   public carreras: CarreraModel[] = [];
   public pdes: PlanEstudioModel[] = [];
@@ -34,8 +41,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public isLoaded = false;
   private promesas: Promise<any>[] = [];
   public planSelected = getItemLocalCache('planificacion') ? getItemLocalCache('planificacion') : '-1';
-
+  public facultades: FacultadModel[] = [];
   public form: FormGroup;
+  public formFac: FormGroup;
   constructor(
     private _carrera: CarreraService,
     private _dep: DepartamentoService,
@@ -44,9 +52,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private _snack: MatSnackBar,
     private _title: TitleService,
-    private _JwtService: JwtService
+    private _JwtService: JwtService,
+    private _facultad: FacultadSerivice,
+    private dialog: MatDialog,
+
   ) {
     this._title.setTitle('Inicio');
+    this.promesas.push(new Promise((resolve) => {
+      const sub = this._facultad.getFacultad()
+        .subscribe(
+          res => this.facultades.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._carrera.getCarrera()
         .subscribe(
@@ -93,17 +113,27 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      if (this.carreras.length > 0 && this.planificaciones.length > 0 && this.pdes.length > 0) {
+      if (/* this.carreras.length > 0 && this.planificaciones.length > 0 && this.pdes.length > 0 */ false) {
         this.isLoaded = true;
         this.createForm();
         this._carrera.successObten();
-        this.subs.push(this.refPde.subscribe(data => this.pdes = data));
-        this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
-        this.subs.push(this.refDep.subscribe(data => this.departamentos = data));
-        this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
+
+
       } else {
+        this.isLoaded = true;
         this.showMessage = true;
+        this.formFac = this.fb.group({
+          facultad_nombre: new FormControl({
+            value: this.facultades[0] ? this.facultades[0].facultad_nombre : '',
+            disabled: this.facultades.length > 0
+          },
+            [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
+        });
       }
+      this.subs.push(this.refPde.subscribe(data => this.pdes = data));
+      this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
+      this.subs.push(this.refDep.subscribe(data => this.departamentos = data));
+      this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
     });
 
   }
@@ -117,7 +147,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-
+  get FormFac() {
+    return this.formFac.controls;
+  }
   createForm() {
     this.form = this.fb.group({
       carrera: new FormControl(getItemLocalCache('carrera')),
@@ -151,10 +183,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
   }
+  crearFacultad() {
+    let fac = new FacultadModel();
+    fac = Object.assign(fac, this.formFac.value);
+    console.log(fac);
+    this._facultad.crearFacultad(fac).subscribe(res => this.facultades.push(res));
+  }
   clear() {
     const access = this._JwtService.Token;
     localStorage.clear();
     setItemLocalCache('access', access);
+  }
+  openDep(): void {
+      this.dialog.open(AdddepartamentoComponent, {
+        width: '450px',
+        data: { type: 'c' }
+      });
   }
 
 }
