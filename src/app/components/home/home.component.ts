@@ -17,6 +17,9 @@ import { matErrorsMessage } from 'src/app/utils/errors';
 import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { AdddepartamentoComponent } from '../departamento/adddepartamento/adddepartamento.component';
+import { AddcarreraComponent } from '../carrera/addcarrera/addcarrera.component';
+import { AddplanestudioComponent } from '../planestudio/addplanestudio/addplanestudio.component';
+import { AddPlanificacionComponent } from '../planificacion/add-planificacion/add-planificacion.component';
 
 @Component({
   selector: 'app-home',
@@ -195,10 +198,27 @@ export class HomeComponent implements OnInit, OnDestroy {
     setItemLocalCache('access', access);
   }
   openDep(): void {
-      this.dialog.open(AdddepartamentoComponent, {
-        width: '450px',
-        data: { type: 'c' }
-      });
+    this.dialog.open(AdddepartamentoComponent, {
+      width: '450px',
+      data: { type: 'c' }
+    });
   }
-
+  openCar(): void {
+    this.dialog.open(AddcarreraComponent, {
+      width: '450px',
+      data: { type: 'c', departamentos: this.departamentos }
+    });
+  }
+  openPde(): void {
+    this.dialog.open(AddplanestudioComponent, {
+      width: '450px',
+      data: { type: 'c' }
+    });
+  }
+  openPlan(): void {
+    this.dialog.open(AddPlanificacionComponent, {
+      width: '450px',
+      data: { type: 'c' }
+    });
+  }
 }
