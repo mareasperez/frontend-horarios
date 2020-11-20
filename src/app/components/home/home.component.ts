@@ -116,22 +116,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
-      if (/* this.carreras.length > 0 && this.planificaciones.length > 0 && this.pdes.length > 0 */ false) {
-        this.isLoaded = true;
+      this.isLoaded = true;
+      if (
+        this.facultades.length > 0
+        && this.carreras.length > 0
+        && this.planificaciones.length > 0
+        && this.pdes.length > 0
+        && this.departamentos.length > 0) {
         this.createForm();
         this._carrera.successObten();
-
-
       } else {
-        this.isLoaded = true;
         this.showMessage = true;
-        this.formFac = this.fb.group({
-          facultad_nombre: new FormControl({
-            value: this.facultades[0] ? this.facultades[0].facultad_nombre : '',
-            disabled: this.facultades.length > 0
-          },
-            [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
-        });
+        this.firstUse();
       }
       this.subs.push(this.refPde.subscribe(data => this.pdes = data));
       this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
@@ -161,6 +157,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       pde: new FormControl(getItemLocalCache('pde')),
       planificacion: new FormControl(getItemLocalCache('planificacion')),
       ciclo: new FormControl({ value: getItemLocalCache('ciclo'), disabled: this.planSelected !== '-1' ? false : true })
+    });
+  }
+  firstUse() {
+    this.formFac = this.fb.group({
+      facultad_nombre: new FormControl({
+        value: this.facultades[0] ? this.facultades[0].facultad_nombre : '',
+        disabled: this.facultades.length > 0
+      },
+        [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
     });
   }
 
