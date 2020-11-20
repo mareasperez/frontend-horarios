@@ -20,6 +20,9 @@ import { AdddepartamentoComponent } from '../departamento/adddepartamento/adddep
 import { AddcarreraComponent } from '../carrera/addcarrera/addcarrera.component';
 import { AddplanestudioComponent } from '../planestudio/addplanestudio/addplanestudio.component';
 import { AddPlanificacionComponent } from '../planificacion/add-planificacion/add-planificacion.component';
+import { RecintoService } from 'src/app/services/recinto.service';
+import { RecintoModel } from 'src/app/models/recinto.model';
+import { AddrecintoComponent } from '../recinto/addrecinto/addrecinto.component';
 
 @Component({
   selector: 'app-home',
@@ -34,11 +37,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public prepared = false;
   public departamentos: DepartamentoModel[] = [];
   public carreras: CarreraModel[] = [];
+  public recintos: RecintoModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public planificaciones: PlanificacionModel[] = [];
   //  obserbables
   public refDep: Observable<any>;
   public refPla: Observable<any>;
+  public refRec: Observable<any>;
   public refPde: Observable<any>;
   public refCarrera: Observable<any>;
   public isLoaded = false;
@@ -51,6 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _carrera: CarreraService,
     private _dep: DepartamentoService,
     private _pde: PlanEstudioService,
+    private _recinto: RecintoService,
     private _plan: PlanificacionService,
     private fb: FormBuilder,
     private _snack: MatSnackBar,
@@ -89,6 +95,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     }));
     this.promesas.push(new Promise((resolve) => {
+      const sub = this._recinto.getRecinto()
+        .subscribe(
+          res => this.recintos.push(res),
+          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          () => resolve()
+        );
+      this.subs.push(sub);
+    }));
+    this.promesas.push(new Promise((resolve) => {
       const sub = this._plan.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
@@ -110,6 +125,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.refDep = this._dep.getList();
     this.refPde = this._pde.getList();
     this.refPla = this._plan.getList();
+    this.refRec = this._recinto.getList();
     this.refCarrera = this._carrera.getList();
 
   }
@@ -122,7 +138,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         && this.carreras.length > 0
         && this.planificaciones.length > 0
         && this.pdes.length > 0
-        && this.departamentos.length > 0) {
+        && this.departamentos.length > 0
+        && this.recintos.length > 0) {
         this.createForm();
         this._carrera.successObten();
       } else {
@@ -142,6 +159,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._dep.list = [];
     this._plan.list = [];
     this._pde.list = [];
+    this._recinto.list = [];
     this.subs.map(sub => {
       sub.unsubscribe();
     });
@@ -212,6 +230,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.dialog.open(AddcarreraComponent, {
       width: '450px',
       data: { type: 'c', departamentos: this.departamentos }
+    });
+  }
+  openRec(): void {
+    this.dialog.open(AddrecintoComponent, {
+      width: '450px',
+      data: { type: 'c' }
     });
   }
   openPde(): void {
