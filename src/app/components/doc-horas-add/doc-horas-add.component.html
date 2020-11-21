@@ -35,7 +35,7 @@
     </mat-form-field>
   </div>
   <p><strong>Horas totales: {{+hp.value + +hh.value}}</strong></p>
-  <button mat-raised-button [disabled]="form.invalid" class="bg-color-green color-white"
+  <button mat-raised-button [disabled]="form.invalid" class="bg-color-green color-white mb-1"
     (click)="data.type === 'c' || data.type === 'a' ? saveDH():updateDH()">
     <mat-icon>save</mat-icon>Guardar
   </button>

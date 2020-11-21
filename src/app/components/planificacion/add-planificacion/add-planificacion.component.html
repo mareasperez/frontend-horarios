@@ -20,11 +20,11 @@
       </mat-form-field>
       <div class="row">
         <div class="col-lg-12">
-          <button class="col-12" mat-raised-button style="background-color: #00c853"
+          <button class="col-12 mb-1" mat-raised-button style="background-color: #00c853"
             (click)="data.type === 'c' ? savePlanificacion() : updatePlanificacion()" [disabled]="form.invalid">
             <mat-icon>save</mat-icon>Guardar
           </button>
-          <button class="col-12 mt-2" mat-raised-button color="warn" (click)="dialogRef.close()">
+          <button class="col-12" mat-raised-button color="warn" (click)="dialogRef.close()">
             <mat-icon>cancel</mat-icon>Cancelar
           </button>
         </div>
