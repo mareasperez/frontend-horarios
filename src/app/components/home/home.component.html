@@ -58,39 +58,43 @@
   <div class="row">
     <div class="col-3">
       <mat-card style="height: 80vh;">
-        <h2>Instrucciones de uso</h2>
+        <h2>Instrucciones de uso:</h2>
         <ol>
           <li>
             Crear Facultad
-            <mat-icon *ngIf="facultades.length == 0;">cancel</mat-icon>
-            <mat-icon *ngIf="facultades.length > 0">check_circle</mat-icon>
+            <mat-icon *ngIf="facultades.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="facultades.length > 0" style="color:green">check_circle</mat-icon>
           </li>
           <li>
             Crear Departamento
-            <mat-icon *ngIf="departamentos.length == 0;">cancel</mat-icon>
-            <mat-icon *ngIf="departamentos.length > 0">check_circle</mat-icon>
-          </li>
-          <li>
-            Crear Carrera
-            <mat-icon *ngIf="carreras.length == 0;">cancel</mat-icon>
-            <mat-icon *ngIf="carreras.length > 0">check_circle</mat-icon>
+            <mat-icon *ngIf="departamentos.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="departamentos.length > 0" style="color:green">check_circle</mat-icon>
           </li>
           <li>
             Crear Recinto
-            <mat-icon *ngIf="recintos.length == 0;">cancel</mat-icon>
-            <mat-icon *ngIf="recintos.length > 0">check_circle</mat-icon>
+            <mat-icon *ngIf="recintos.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="recintos.length > 0" style="color:green">check_circle</mat-icon>
+          </li>
+          <li>
+            Crear Carrera
+            <mat-icon *ngIf="carreras.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="carreras.length > 0" style="color:green">check_circle</mat-icon>
           </li>
           <li>
             Crear Plan de Estudio
-            <mat-icon *ngIf="pdes.length == 0;">cancel</mat-icon>
-            <mat-icon *ngIf="pdes.length > 0">check_circle</mat-icon>
+            <mat-icon *ngIf="pdes.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="pdes.length > 0" style="color:green" style="color:green">check_circle</mat-icon>
           </li>
           <li>
             Crear Planificacion
-            <mat-icon *ngIf="planificaciones.length == 0;">cancel</mat-icon>
-            <mat-icon *ngIf="planificaciones.length > 0">check_circle</mat-icon>
+            <mat-icon *ngIf="planificaciones.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="planificaciones.length > 0" style="color:green">check_circle</mat-icon>
           </li>
         </ol>
+        <mat-progress-bar mode="determinate" value="{{progreso}}"></mat-progress-bar>
+        <div class="continuar">
+          <button type="button" class="btn btn-outline-primary">Continuar</button>
+        </div>
       </mat-card>
     </div>
     <div class="col-9">
@@ -132,6 +136,29 @@
         </div>
         <div class="col-4">
           <mat-card style="height: 38vh;">
+            <mat-card-title>
+              crear Recinto
+            </mat-card-title>
+            <div *ngIf="recintos.length == 0" style="margin-right: 5%">
+              <button mat-raised-button color="primary" (click)="openRec()" style="width: auto">
+                <mat-icon>add</mat-icon> Agregar Recinto
+              </button>
+            </div>
+            <div>
+              <mat-list>
+                <mat-list-item title="recinto" *ngFor="let recinto of recintos; let i = index"
+                  [class.bg-color-ligth]="i % 2 === 0">
+                  {{recinto.recinto_nombre}}
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
             <mat-card-title>Crear una carrera</mat-card-title>
             <div *ngIf="carreras.length == 0" style="margin-right: 5%">
               <button mat-raised-button color="primary" (click)="openCar()" style="width: auto">
@@ -143,27 +170,6 @@
                 <mat-list-item title="carrera" *ngFor="let car of carreras; let i = index"
                   [class.bg-color-ligth]="i % 2 === 0">
                   {{car.carrera_nombre}}
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </mat-card>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <mat-card style="height: 38vh;">
-            <mat-card-title>
-              crear Recinto
-            </mat-card-title>
-            <div *ngIf="recintos.length == 0" style="margin-right: 5%">
-              <button mat-raised-button color="primary" (click)="openRec()" style="width: auto">
-                <mat-icon>add</mat-icon> Agregar Recinto
-              </button>
-            </div>
-            <div>
-              <mat-list>
-                <mat-list-item title="recinto" *ngFor="let recinto of recintos; let i = index" [class.bg-color-ligth]="i % 2 === 0">
-                  {{recinto.recinto_nombre}}
                 </mat-list-item>
               </mat-list>
             </div>

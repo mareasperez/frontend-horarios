@@ -32,6 +32,7 @@ import { AddrecintoComponent } from '../recinto/addrecinto/addrecinto.component'
 // tslint:disable: variable-name
 export class HomeComponent implements OnInit, OnDestroy {
   public Errors: matErrorsMessage = new matErrorsMessage();
+  private SIZE = (100 / 6);
   private subs: Subscription[] = [];
   public showMessage = false;
   public prepared = false;
@@ -40,11 +41,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   public pdes: PlanEstudioModel[] = [];
   public planificaciones: PlanificacionModel[] = [];
+  public progreso = 0;
   //  obserbables
   public refDep: Observable<any>;
   public refPla: Observable<any>;
   public refRec: Observable<any>;
   public refPde: Observable<any>;
+  public refFac: Observable<any>;
   public refCarrera: Observable<any>;
   public isLoaded = false;
   private promesas: Promise<any>[] = [];
@@ -70,7 +73,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._facultad.getFacultad()
         .subscribe(
-          res => this.facultades.push(res),
+          res => { this.facultades.push(res); this.alterProgres('i', this.facultades.length); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -79,7 +82,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._carrera.getCarrera()
         .subscribe(
-          res => this.carreras.push(res),
+          res => { this.carreras.push(res); this.alterProgres('i', this.carreras.length); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -88,7 +91,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._dep.getDepartamento()
         .subscribe(
-          res => this.departamentos.push(res),
+          res => { this.departamentos.push(res); this.alterProgres('i', this.departamentos.length); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -97,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._recinto.getRecinto()
         .subscribe(
-          res => this.recintos.push(res),
+          res => { this.recintos.push(res); this.alterProgres('i', this.recintos.length); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -106,7 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._plan.getPlanificaciones()
         .subscribe(
-          res => this.planificaciones.push(res),
+          res => { this.planificaciones.push(res), this.alterProgres('i', this.planificaciones.length); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
@@ -115,13 +118,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
-          res => this.pdes.push(res),
+          res => { this.pdes.push(res); this.alterProgres('i', this.pdes.length); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
     }));
-
+    this.refFac = this._facultad.getList();
     this.refDep = this._dep.getList();
     this.refPde = this._pde.getList();
     this.refPla = this._plan.getList();
@@ -146,12 +149,44 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.showMessage = true;
         this.firstUse();
       }
-      this.subs.push(this.refPde.subscribe(data => this.pdes = data));
-      this.subs.push(this.refCarrera.subscribe(data => this.carreras = data));
-      this.subs.push(this.refDep.subscribe(data => this.departamentos = data));
-      this.subs.push(this.refPla.subscribe(data => this.planificaciones = data));
-    });
+      this.subs.push(this.refPde.subscribe(data => {
+        const len = this.pdes.length;
+        this.pdes = data;
+        if (this.pdes.length === 0) { this.alterProgres('d'); }
+        if (this.pdes.length === 1) { if (len < 2) { this.alterProgres('c'); } }
+      }));
+      this.subs.push(this.refCarrera.subscribe(data => {
+        const len = this.carreras.length;
+        this.carreras = data;
+        if (this.carreras.length === 0) { this.alterProgres('d'); }
+        if (this.carreras.length === 1) { if (len < 2) { this.alterProgres('c'); } }
+      }));
+      this.subs.push(this.refDep.subscribe(data => {
+        const len = this.departamentos.length;
+        this.departamentos = data;
+        if (this.departamentos.length === 0) { this.alterProgres('d'); }
+        if (this.departamentos.length === 1) { if (len < 2) { this.alterProgres('c'); } }
+      }));
+      this.subs.push(this.refPla.subscribe(data => {
+        const len = this.planificaciones.length;
+        this.planificaciones = data;
+        if (this.planificaciones.length === 0) { this.alterProgres('d'); }
+        if (this.planificaciones.length === 1) { if (len < 2) { this.alterProgres('c'); } }
 
+      }));
+      this.subs.push(this.refRec.subscribe(data => {
+        const len = this.recintos.length;
+        this.recintos = data;
+        if (this.recintos.length === 0) { this.alterProgres('d'); }
+        if (this.recintos.length === 1) { if (len < 2) { this.alterProgres('c'); } }
+      }));
+      this.subs.push(this.refFac.subscribe(data => {
+        const len = this.facultades.length;
+        this.facultades = data;
+        if (this.facultades.length === 0) { this.alterProgres('d'); }
+        if (this.facultades.length === 1) { if (len < 2) { this.alterProgres('c'); } }
+      }));
+    });
   }
 
   ngOnDestroy() {
@@ -212,7 +247,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   crearFacultad() {
     let fac = new FacultadModel();
     fac = Object.assign(fac, this.formFac.value);
-    console.log(fac);
     this._facultad.crearFacultad(fac).subscribe(res => this.facultades.push(res));
   }
   clear() {
@@ -249,5 +283,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       width: '450px',
       data: { type: 'c' }
     });
+  }
+  alterProgres(tipo: string, len?: number) {
+    if (tipo === 'c') {
+      this.progreso += this.SIZE;
+    } else if (tipo === 'd') {
+      this.progreso -= this.SIZE;
+    }
+    else if (tipo === 'i') {
+      if (len > 0) { this.progreso += this.SIZE; }
+    }
+    console.log(this.progreso);
   }
 }
