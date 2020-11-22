@@ -53,11 +53,12 @@
       <tbody>
         <tr class="row mx-0" *ngFor="let a of horasLabel; let i = index">
           <td class="col-2">{{a}}</td>
-          <td class="col-2" *ngFor="let hora of array[i]" [ngClass]="{
+          <td class="col-2 list-element" *ngFor="let hora of array[i]" [ngClass]="{
               'bg-color-green': !hora.horario_choque && hora.horario_grupo != null,
               'bg-red-ligth': hora.horario_choque == 'd',
               'bg-warning': hora.horario_choque == 'c',
-              'bg-purple-ligth': hora.horario_choque == 'a'}">
+              'bg-purple-ligth': hora.horario_choque == 'a',
+              'bg-color-yellow': hora===horarioSelected}" (click)="selectH(hora)">
             <ng-container [ngTemplateOutlet]="horarioContainer" [ngTemplateOutletContext]="{hora:hora}">
             </ng-container>
           </td>
@@ -81,8 +82,9 @@
         </div>
         <mat-list class="max-h groupsList mt-2">
           <ng-container *ngFor="let gp of gruposBycarreraAnyo; let i = index;">
-            <mat-list-item class="font-size-10" *ngIf="gp.grupo_asignado == assign" [class.bg-color-ligth]="i % 2 === 1"
-              (click)="selectGP($event, gp)">
+            <mat-list-item class="font-size-10 list-element" *ngIf="gp.grupo_asignado == assign"
+              [class.bg-color-ligth]="(i % 2 === 1)&&(gp!==grupoSelected)" [class.bg-color-yellow]="gp===grupoSelected"
+              (click)="selectGP(gp)">
               {{gp.grupo_id |  nombreGrupo : grupos}} {{gp.grupo_id | componenteGrupo : onComponente}}<br>
               {{gp.grupo_docente | docenteName : docentes}} <br>
               hrs: {{gp.grupo_horas_clase}}
@@ -111,7 +113,7 @@
       {{hora.horario_grupo | nombreGrupo : grupos}}
       {{hora.horario_grupo | componenteGrupo : onComponente}}
     </span>
-    <span style="min-height: 40px; border-radius: 5px" class="h-100  w-100" (click)="selectH($event, hora)">
+    <span style="min-height: 40px; border-radius: 5px" class="h-100  w-100">
       <div *ngIf="hora.horario_grupo != null">
         {{docenteNombre(hora.horario_grupo)}} <br>
         {{getCarrera(hora.horario_grupo)}} <br>

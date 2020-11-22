@@ -1,60 +1,221 @@
-<div *ngIf="!showMessage; else messageTemplate">
-  <mat-card style="height: 80vh;">
-    <form [formGroup]="form" *ngIf="isLoaded; else stillLoading" class="font-size-12 d-flex">
-      <mat-form-field appearance="outline">
-        <mat-label>Carrera</mat-label>
-        <mat-select formControlName="carrera">
-          <mat-option [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera_nombre}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="ml-1" appearance="outline">
-        <mat-label>Departamento</mat-label>
-        <mat-select formControlName="departamento">
-          <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos">{{dep.departamento_nombre}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="ml-1" appearance="outline">
-        <mat-label>Plan de estudios</mat-label>
-        <mat-select formControlName="pde">
-          <mat-option [value]="pde.pde_id" *ngFor="let pde of pdes">{{pde.pde_nombre}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="ml-1" appearance="outline">
-        <mat-label>Planificai&oacute;n</mat-label>
-        <mat-select formControlName="planificacion" [(value)]="planSelected">
-          <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
-            semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="font-size-12 ml-1 " appearance="outline">
-        <mat-label>Ciclo</mat-label>
-        <!-- <mat-select formControlName="ciclo">
-          <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
-        </mat-select> -->
-        <mat-select formControlName="ciclo">
-          <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '1'">
-            <mat-option *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
-          </span>
-          <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '2'">
-            <mat-option *ngFor="let i of [2,4,6,8,10]" [value]="i">{{i}}</mat-option>
-          </span>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button class="bg-color-green color-white ml-1" (click)="save()">
-        <mat-icon>save</mat-icon>Guardar
-      </button>
-      <button mat-raised-button class="bg-danger color-white ml-1" (click)="clear()">
-        <mat-icon>delete_sweep</mat-icon>Limpiar
-      </button>
-    </form>
-  </mat-card>
+<div *ngIf="isLoaded; else stillLoading">
+  <div *ngIf="!showMessage; else messageTemplate">
+    <mat-card style="height: 80vh;">
+      <form [formGroup]="form" class="font-size-12 d-flex">
+        <mat-form-field appearance="outline">
+          <mat-label>Carrera</mat-label>
+          <mat-select formControlName="carrera">
+            <mat-option [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera_nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="ml-1" appearance="outline">
+          <mat-label>Departamento</mat-label>
+          <mat-select formControlName="departamento">
+            <mat-option [value]="dep.departamento_id" *ngFor="let dep of departamentos">{{dep.departamento_nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="ml-1" appearance="outline">
+          <mat-label>Plan de estudios</mat-label>
+          <mat-select formControlName="pde">
+            <mat-option [value]="pde.pde_id" *ngFor="let pde of pdes">{{pde.pde_nombre}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="ml-1" appearance="outline">
+          <mat-label>Planificaci&oacute;n</mat-label>
+          <mat-select formControlName="planificacion" [(value)]="planSelected">
+            <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
+              semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="font-size-12 ml-1 " appearance="outline">
+          <mat-label>Ciclo</mat-label>
+          <!-- <mat-select formControlName="ciclo">
+            <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
+          </mat-select> -->
+          <mat-select formControlName="ciclo">
+            <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '1'">
+              <mat-option *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
+            </span>
+            <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '2'">
+              <mat-option *ngFor="let i of [2,4,6,8,10]" [value]="i">{{i}}</mat-option>
+            </span>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button class="bg-color-green color-white ml-1" (click)="save()">
+          <mat-icon>save</mat-icon>Guardar
+        </button>
+        <button mat-raised-button class="bg-danger color-white ml-1" (click)="clear()">
+          <mat-icon>delete_sweep</mat-icon>Limpiar
+        </button>
+      </form>
+    </mat-card>
+  </div>
 </div>
 <ng-template #messageTemplate>
-<h1>Instrucciones de uso</h1>
+  <div class="row">
+    <div class="col-3">
+      <mat-card style="height: 80vh;">
+        <h2>Instrucciones de uso:</h2>
+        <ol>
+          <li>
+            Crear Facultad
+            <mat-icon *ngIf="facultades.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="facultades.length > 0" style="color:green">check_circle</mat-icon>
+          </li>
+          <li>
+            Crear Departamento
+            <mat-icon *ngIf="departamentos.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="departamentos.length > 0" style="color:green">check_circle</mat-icon>
+          </li>
+          <li>
+            Crear Recinto
+            <mat-icon *ngIf="recintos.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="recintos.length > 0" style="color:green">check_circle</mat-icon>
+          </li>
+          <li>
+            Crear Carrera
+            <mat-icon *ngIf="carreras.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="carreras.length > 0" style="color:green">check_circle</mat-icon>
+          </li>
+          <li>
+            Crear Plan de Estudio
+            <mat-icon *ngIf="pdes.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="pdes.length > 0" style="color:green" style="color:green">check_circle</mat-icon>
+          </li>
+          <li>
+            Crear Planificacion
+            <mat-icon *ngIf="planificaciones.length == 0;" style="color:red;">cancel</mat-icon>
+            <mat-icon *ngIf="planificaciones.length > 0" style="color:green">check_circle</mat-icon>
+          </li>
+        </ol>
+        <mat-progress-bar mode="determinate" value="{{progreso}}"></mat-progress-bar>
+        <div class="continuar">
+          <button type="button" class="btn btn-outline-primary">Continuar</button>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-9">
+      <div class="row" style="margin-bottom: 30px;">
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
+            <mat-card-title>Crear una facultad</mat-card-title>
+            <form [formGroup]="formFac" *ngIf="formFac" class="d-flex flex-column font-size-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="facultad_nombre" matInput placeholder="ingrese el nombre de la facultad">
+                <mat-error *ngIf="FormFac.facultad_nombre.invalid">{{Errors.getError(FormFac.facultad_nombre)}}
+                </mat-error>
+              </mat-form-field>
+              <button mat-raised-button class="bg-color-green mb-1" [hidden]="FormFac.invalid || facultades.length > 0"
+                (click)="crearFacultad()">
+                Guardar
+              </button>
+            </form>
+          </mat-card>
+        </div>
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
+            <mat-card-title>Crear un departamento</mat-card-title>
+            <div *ngIf="departamentos.length == 0" style="margin-right: 5%">
+              <button mat-raised-button color="primary" (click)="openDep()" style="width: auto">
+                <mat-icon>add</mat-icon> Agregar departamento
+              </button>
+            </div>
+            <div>
+              <mat-list>
+                <mat-list-item title="departamento" *ngFor="let dep of departamentos; let i = index"
+                  [class.bg-color-ligth]="i % 2 === 0">
+                  {{dep.departamento_nombre}}
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
+            <mat-card-title>
+              crear Recinto
+            </mat-card-title>
+            <div *ngIf="recintos.length == 0" style="margin-right: 5%">
+              <button mat-raised-button color="primary" (click)="openRec()" style="width: auto">
+                <mat-icon>add</mat-icon> Agregar Recinto
+              </button>
+            </div>
+            <div>
+              <mat-list>
+                <mat-list-item title="recinto" *ngFor="let recinto of recintos; let i = index"
+                  [class.bg-color-ligth]="i % 2 === 0">
+                  {{recinto.recinto_nombre}}
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
+            <mat-card-title>Crear una carrera</mat-card-title>
+            <div *ngIf="carreras.length == 0" style="margin-right: 5%">
+              <button mat-raised-button color="primary" (click)="openCar()" style="width: auto">
+                <mat-icon>add</mat-icon> Agregar carrera
+              </button>
+            </div>
+            <div>
+              <mat-list>
+                <mat-list-item title="carrera" *ngFor="let car of carreras; let i = index"
+                  [class.bg-color-ligth]="i % 2 === 0">
+                  {{car.carrera_nombre}}
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
+            <mat-card-title>Crear un plan de estudio</mat-card-title>
+            <div *ngIf="pdes.length == 0" style="margin-right: 5%">
+              <button mat-raised-button color="primary" (click)="openPde()" style="width: auto">
+                <mat-icon>add</mat-icon> Agregar Plan de estudio
+              </button>
+            </div>
+            <div>
+              <mat-list>
+                <mat-list-item title="pde" *ngFor="let pde of pdes; let i = index" [class.bg-color-ligth]="i % 2 === 0">
+                  {{pde.pde_nombre}}- {{pde.pde_anyo}}
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-4">
+          <mat-card style="height: 38vh;">
+            <mat-card-title>Crear una planificacion</mat-card-title>
+            <div *ngIf="planificaciones.length == 0" style="margin-right: 5%">
+              <button mat-raised-button color="primary" (click)="openPlan()" style="width: auto">
+                <mat-icon>add</mat-icon> Agregar planificacion
+              </button>
+            </div>
+            <div>
+              <mat-list>
+                <mat-list-item title="pde" *ngFor="let plan of planificaciones; let i = index"
+                  [class.bg-color-ligth]="i % 2 === 0">
+                  año {{plan.planificacion_anyo_lectivo}} semestre {{plan.planificacion_semestre}}
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>
+
+
 <ng-template #stillLoading>
   <div class="center col-2">
     <div class="google-loader">

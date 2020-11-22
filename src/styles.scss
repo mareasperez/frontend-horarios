@@ -93,15 +93,11 @@ button:focus {
 }
 
 .join {
-  display: flex;@media print {
-    .barrita{
-      visibility: hidden;
-    }
-    
-  }
+  display: flex;
   flex-direction: row;
 }
-html{
+
+html {
   height: 100%;
 }
 
@@ -432,17 +428,26 @@ $colors-list: $green $yellow $red;
   width: 60%;
   padding: 10px;
 }
+
+.list-element:hover {
+  border: 1px solid palevioletred;
+}
+
 @media print {
+
   // @page {size: landscape}
-  .barrita{
+  .barrita {
     visibility: hidden;
   }
+
   html {
     height: auto;
   }
+
   @page {
     margin: 0 !important;
   }
+
   .pdf {
     visibility: visible;
     text-align: center;

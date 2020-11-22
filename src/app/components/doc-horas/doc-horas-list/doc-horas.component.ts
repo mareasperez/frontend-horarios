@@ -95,12 +95,10 @@ export class DocHorasComponent implements OnInit, OnDestroy {
           this.docentes = [];
           this.docentes = data;
         }));
-        
         this.subs.push(this.refPlan.subscribe(data => {
           this.planificaciones = [];
           this.planificaciones = data;
         }));
-        
         this.subs.push(this.refDH.subscribe(data => {
           this.dhs = [];
           this.dhs = data;
@@ -127,7 +125,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
     if (tipo === 'c') {
       this.dialog.open(DocHorasAddComponent, {
         width: '450px',
-        data: { type: tipo, plani: this.selectedPlan, planificaciones: this.planificaciones, docentes: this.docentes }
+        data: { type: tipo, plani: this.selectedPlan, planificaciones: this.planificaciones, docentes: this.docs }
       });
     } else if (tipo === 'a') {
       this.dialog.open(DocHorasAddComponent, {

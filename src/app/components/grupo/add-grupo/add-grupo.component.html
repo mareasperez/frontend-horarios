@@ -11,12 +11,12 @@
   <div class="join">
     <mat-form-field class="w-50" appearance="outline">
       <mat-label>N<sup>o</sup></mat-label>
-      <input matInput formControlName="grupo_numero">
+      <input type="number" matInput formControlName="grupo_numero">
       <mat-error *ngIf="Form.grupo_numero.invalid">{{Errors.getError(Form.grupo_numero)}}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-50 ml-1" appearance="outline">
       <mat-label>Capacidad</mat-label>
-      <input matInput formControlName="grupo_max_capacidad">
+      <input type="number" matInput formControlName="grupo_max_capacidad">
       <mat-error *ngIf="Form.grupo_max_capacidad.invalid">{{Errors.getError(Form.grupo_max_capacidad)}}</mat-error>
     </mat-form-field>
   </div>
@@ -41,7 +41,7 @@
   <div class="join">
     <mat-form-field class="w-50 ml-1" appearance="outline">
       <mat-label>Horas </mat-label>
-      <input matInput formControlName="grupo_horas_clase">
+      <input type="number" matInput formControlName="grupo_horas_clase">
       <mat-error *ngIf="Form.grupo_horas_clase.invalid">{{Errors.getError(Form.grupo_horas_clase)}}</mat-error>
     </mat-form-field>
     <mat-checkbox formControlName="grupo_planta" class="checkBoxPlant">Grupo planta</mat-checkbox>

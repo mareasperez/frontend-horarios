@@ -18,12 +18,12 @@
   <div class="horas">
     <mat-form-field class="w-50 d-inline" appearance="outline">
       <mat-label>teoricas</mat-label>
-      <input matInput formControlName="componente_cht">
+      <input type="number" matInput formControlName="componente_cht">
       <mat-error *ngIf="Form.componente_cht.invalid">{{Errors.getError(Form.componente_cht)}}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-50 d-inline ml-1" appearance="outline">
       <mat-label> practicas</mat-label>
-      <input matInput formControlName="componente_chp">
+      <input type="number" matInput formControlName="componente_chp">
       <mat-error *ngIf="Form.componente_chp.invalid">{{Errors.getError(Form.componente_chp)}}</mat-error>
     </mat-form-field>
   </div>
@@ -38,7 +38,7 @@
 
     <mat-form-field class="w-50 ml-1" appearance="outline">
       <mat-label>Creditos</mat-label>
-      <input matInput formControlName="componente_credito">
+      <input type="number" matInput formControlName="componente_credito">
       <mat-error *ngIf="Form.componente_credito.invalid">{{Errors.getError(Form.componente_credito)}}
       </mat-error>
     </mat-form-field>

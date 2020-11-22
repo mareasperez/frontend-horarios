@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { GrupoComponent } from '../components/grupo/grupo.component';
+import { GrupoComponent } from '../components/grupo/list-grupo/grupo.component';
 import { GrupoModel } from '../models/grupo.model';
 
 @Pipe({

@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from "@angular/core";
-import { GrupoService } from "src/app/services/grupo.service";
-import { GrupoModel } from "src/app/models/grupo.model";
-import { Observable, Subscription, observable, of } from "rxjs";
-import { ComponenteModel } from "src/app/models/componente.model";
-import { PlanificacionModel } from "src/app/models/planificacion.model";
-import { DocenteModel } from "src/app/models/docente.model";
-import { matErrorsMessage } from "src/app/utils/errors";
-import { MatSnackBar, MatDialog } from "@angular/material";
-import { AddGrupoComponent } from "./add-grupo/add-grupo.component";
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { GrupoService } from 'src/app/services/grupo.service';
+import { GrupoModel } from 'src/app/models/grupo.model';
+import { Observable, Subscription, observable, of } from 'rxjs';
+import { ComponenteModel } from 'src/app/models/componente.model';
+import { PlanificacionModel } from 'src/app/models/planificacion.model';
+import { DocenteModel } from 'src/app/models/docente.model';
+import { matErrorsMessage } from 'src/app/utils/errors';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { AddGrupoComponent } from '../add-grupo/add-grupo.component';
 
 @Component({
-  selector: "app-grupo",
-  templateUrl: "./grupo.component.html",
-  styleUrls: ["./grupo.component.scss"],
+  selector: 'app-grupo',
+  templateUrl: './grupo.component.html',
+  styleUrls: ['./grupo.component.scss'],
 })
 // tslint:disable: variable-name
 export class GrupoComponent implements OnInit, OnDestroy {
@@ -28,9 +28,9 @@ export class GrupoComponent implements OnInit, OnDestroy {
   @Input() public docentes: DocenteModel[] = [];
   public docentesList: DocenteModel[] = [];
   // creacion del formGroup
-  public selected = "0";
-  public selected2 = "0";
-  public selectedComp = "0";
+  public selected = '0';
+  public selected2 = '0';
+  public selectedComp = '0';
   public componente: ComponenteModel = new ComponenteModel();
 
   // validacion de edicion o creacion
@@ -38,13 +38,13 @@ export class GrupoComponent implements OnInit, OnDestroy {
   public editing = false;
   public gpadd = true;
   public show = true;
-  ant = "0";
+  ant = '0';
   subs: Subscription[] = [];
   public Errors: matErrorsMessage = new matErrorsMessage();
 
   constructor(private _grupo: GrupoService, private _snack: MatSnackBar, private dialog: MatDialog) {
-    this.componente.componente_chp = "0";
-    this.componente.componente_cht = "0";
+    this.componente.componente_chp = '0';
+    this.componente.componente_cht = '0';
   }
   get Grupos(): GrupoModel[] {
     return this.grupos;
@@ -101,9 +101,9 @@ export class GrupoComponent implements OnInit, OnDestroy {
     grupo.grupo_numero = n > 0 ? n : 1;
     grupo.grupo_componente = this.componente.componente_id;
     grupo.grupo_horas_clase =
-      tipo === "GT" ? Number(this.componente.componente_cht) : Number(this.componente.componente_chp);
-    grupo.grupo_max_capacidad = "40";
-    grupo.grupo_modo = "S";
+      tipo === 'GT' ? Number(this.componente.componente_cht) : Number(this.componente.componente_chp);
+    grupo.grupo_max_capacidad = '40';
+    grupo.grupo_modo = 'S';
     grupo.grupo_planta = false;
     grupo.grupo_docente = null;
     grupo.grupo_id = null;
@@ -114,30 +114,30 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
   setDocente(idD, idG: string) {
     const grupo = new GrupoModel();
-    grupo.grupo_docente = idD == "0" ? null : idD;
-    let g = this.grupos.find((gp) => gp.grupo_id == idG);
-    if (g) grupo.grupo_planta = g.grupo_planta;
-    else grupo.grupo_planta = false;
+    grupo.grupo_docente = idD == '0' ? null : idD;
+    const g = this.grupos.find((gp) => gp.grupo_id == idG);
+    if (g) { grupo.grupo_planta = g.grupo_planta; }
+    else { grupo.grupo_planta = false; }
     this._grupo.updategrupo(grupo, idG).subscribe();
   }
 
   delGrupo(e: number) {
     this._grupo.deleteGrupo(e).subscribe(
       (res) => {},
-      (error) => this._snack.open(error.message, "ok", { duration: 3000 })
+      (error) => this._snack.open(error.message, 'ok', { duration: 3000 })
     );
   }
 
   openDialog(tipo: string, id?: any): void {
-    if (tipo === "c") {
+    if (tipo === 'c') {
       this.dialog.open(AddGrupoComponent, {
-        width: "450px",
+        width: '450px',
         data: { type: tipo },
       });
     } else {
       const gp = this.grupos.find((Gp) => Gp.grupo_id === id);
       this.dialog.open(AddGrupoComponent, {
-        width: "450px",
+        width: '450px',
         data: {
           type: tipo,
           grupo: gp,
@@ -155,7 +155,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
 
   docentesDePlanta(checked: boolean) {
     checked
-      ? (this.docentesList = this.docentes.filter((dc) => dc.docente_tipo_contrato == "P"))
+      ? (this.docentesList = this.docentes.filter((dc) => dc.docente_tipo_contrato == 'P'))
       : (this.docentesList = this.docentes);
   }
 }
