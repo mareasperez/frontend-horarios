@@ -19,6 +19,7 @@ import { DocenteAreaService } from 'src/app/services/docente-area.service';
 import { DocenteAreaModel } from 'src/app/models/docente.area.model';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { Title } from '@angular/platform-browser';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-crear-grupo',
@@ -75,7 +76,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     private _docente: DocenteService,
     private _docArea: DocenteAreaService,
     private _snack: MatSnackBar,
-    private _title: Title
+    private _title: TitleService
   ) {
     this._title.setTitle('Creacion de Grupos');
     this.componente.componente_id = '0';
