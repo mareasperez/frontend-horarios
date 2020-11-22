@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HorarioModel } from 'src/app/models/horario.model';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { ComponenteModel } from 'src/app/models/componente.model';

@@ -4,7 +4,7 @@ import { AulaService } from 'src/app/services/aula.service';
 import { Observable, Subscription } from 'rxjs';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
 interface DialogData {

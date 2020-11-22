@@ -5,7 +5,8 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { Observable, Subscription } from 'rxjs';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AreaService } from 'src/app/services/area.service';
 import { AreaModel } from 'src/app/models/area.model';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';

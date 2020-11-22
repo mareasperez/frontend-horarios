@@ -14,7 +14,7 @@ import { AreaService } from 'src/app/services/area.service';
 import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { AreaModel } from 'src/app/models/area.model';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocenteAreaService } from 'src/app/services/docente-area.service';
 import { DocenteAreaModel } from 'src/app/models/docente.area.model';
 import { getItemLocalCache } from 'src/app/utils/utils';

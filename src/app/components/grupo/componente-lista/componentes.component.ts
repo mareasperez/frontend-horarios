@@ -5,7 +5,8 @@ import { ComponenteModel } from 'src/app/models/componente.model';
 import { AreaModel } from 'src/app/models/area.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { matErrorsMessage } from 'src/app/utils/errors';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddComponenteComponent } from '../../componentes/add-componente/add-componente.component';
 import { getItemLocalCache } from 'src/app/utils/utils';
 

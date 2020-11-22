@@ -6,7 +6,8 @@ import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { matErrorsMessage } from 'src/app/utils/errors';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddGrupoComponent } from '../add-grupo/add-grupo.component';
 
 @Component({

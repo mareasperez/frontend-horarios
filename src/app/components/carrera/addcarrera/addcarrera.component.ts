@@ -5,7 +5,8 @@ import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { DepartamentoService } from 'src/app/services/departamento.service';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { matErrorsMessage } from 'src/app/utils/errors';
 
 interface DialogData {

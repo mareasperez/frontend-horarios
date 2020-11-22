@@ -16,7 +16,7 @@ import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // tslint:disable: class-name
 class cargaDocencia {
