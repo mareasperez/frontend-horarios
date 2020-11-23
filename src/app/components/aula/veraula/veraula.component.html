@@ -16,7 +16,7 @@
         </button>
       </span>
     </div>
-    <div class="col-9 table-scroll" *ngIf="dataSource.length>0; else stillLoading2">
+    <div class="col-9 table-scroll" *ngIf="activartabla; else stillLoading2">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> N<sup>o</sup> </th>
