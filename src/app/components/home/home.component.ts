@@ -201,20 +201,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-  get FormFac() {
-    return this.formFac.controls;
-  }
-  get Form() {
-    return this.form.controls;
-  }
+  get FormFac() { return this.formFac.controls; }
+  get Form() { return this.form.controls; }
+
   filterPde(): PlanEstudioModel[] {
     const pd = this.pdes.filter(pde => pde.pde_carrera === this.selectedCar);
-    pd.length === 0 ? this.Form.pde.disable() : this.Form.pde.enable();
+    if (pd.length === 0) { this.Form.pde.disable(); this.Form.pde.setValue(null); } else { this.Form.pde.enable(); }
     return pd;
   }
-  cicloEnable() {
-    this.Form.ciclo.enable();
-  }
+
   createForm() {
     this.form = this.fb.group({
       carrera: new FormControl(this.selectedCar),
@@ -225,6 +220,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       ciclo: new FormControl({ value: getItemLocalCache('ciclo'), disabled: this.planSelected !== '-1' ? false : true })
     });
   }
+
   firstUse() {
     this.formFac = this.fb.group({
       facultad_nombre: new FormControl({
@@ -238,23 +234,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   save() {
     const keys = Object.keys(this.form.controls);
     keys.forEach(key => {
-      switch (key) {
-        case 'carrera':
-          localStorage.setItem('carrera', this.form.controls[key].value);
-          break;
-        case 'departamento':
-          localStorage.setItem('departamento', this.form.controls[key].value);
-          break;
-        case 'pde':
-          localStorage.setItem('pde', this.form.controls[key].value);
-          break;
-        case 'planificacion':
-          localStorage.setItem('planificacion', this.form.controls[key].value);
-          break;
-        case 'ciclo':
-          localStorage.setItem('ciclo', this.form.controls[key].value);
-          break;
-      }
+      localStorage.setItem(key, this.form.controls[key].value);
     });
   }
   crearFacultad() {
