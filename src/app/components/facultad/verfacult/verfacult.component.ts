@@ -3,7 +3,7 @@ import { FacultadSerivice } from 'src/app/services/facultad.service';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TitleService } from 'src/app/services/title.service';
 @Component({
   selector: 'app-verfacult',

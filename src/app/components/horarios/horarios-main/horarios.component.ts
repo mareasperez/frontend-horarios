@@ -4,7 +4,8 @@ import { GrupoService } from 'src/app/services/grupo.service';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { Observable, Subscription } from 'rxjs';
 import { HorarioService } from 'src/app/services/horario.service';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AulaModel } from 'src/app/models/aula.model';
 import { HorarioModel } from 'src/app/models/horario.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
@@ -25,6 +26,7 @@ import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
 import { HttpClient } from '@angular/common/http';
 import { LogHorarioComponent } from '../log-horario/log-horario.component';
 import { CompPdeCarreraPipe } from 'src/app/pipes/comp--pde--carrera.pipe';
+import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'app-horarios',
@@ -101,8 +103,10 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     private _snack: MatSnackBar,
     private docenteName: DocenteNamePipe,
     private http: HttpClient,
-    private compPdeCarreraPipe: CompPdeCarreraPipe
+    private compPdeCarreraPipe: CompPdeCarreraPipe,
+    private _title: TitleService
   ) {
+    this._title.setTitle('Creacion de horarios 2.0');
     if (!this.anyoSelected) {
       this.anyoSelected = 1;
     }

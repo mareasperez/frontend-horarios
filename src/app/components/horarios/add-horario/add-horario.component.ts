@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HorarioModel } from 'src/app/models/horario.model';
 import { GrupoModel } from 'src/app/models/grupo.model';
 import { HorarioService } from 'src/app/services/horario.service';

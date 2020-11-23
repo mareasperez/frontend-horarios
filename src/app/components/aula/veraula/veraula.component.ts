@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AulaModel } from 'src/app/models/aula.model';
 import { AulaService } from 'src/app/services/aula.service';
 import { Subscription, Observable } from 'rxjs';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddaulaComponent } from '../addaula/addaula.component';
@@ -23,7 +24,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   public recintos: RecintoModel[] = [];
   private promesas: Promise<any>[] = [];
   public activartabla = false;
-  public selectedR = getItemLocalCache('recinto');
+  public selectedR: string;
   public dataSource;
   public isLoaded = false;
   public refAula: Observable<any[]>;
@@ -71,7 +72,6 @@ export class VeraulaComponent implements OnInit, OnDestroy {
           console.log('se ejecuto el subs de aula');
           this.aulas = data;
           this.getAulas(this.selectedR);
-          
         });
         this.refRecintos.subscribe((data: RecintoModel[]) => {
           this.recintos = data;
@@ -91,9 +91,8 @@ export class VeraulaComponent implements OnInit, OnDestroy {
   }
 
   getAulas(id: string) {
+    this.activartabla = false;
     this.dataSource = this.aulas.filter(aula => aula.aula_recinto === id);
-    console.log(this.dataSource);
-    this.alerts = false;
     this.activartabla = true;
   }
 

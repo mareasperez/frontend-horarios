@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CarreraService } from 'src/app/services/carrera.service';

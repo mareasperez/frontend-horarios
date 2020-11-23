@@ -14,7 +14,7 @@ import { ComponenteService } from 'src/app/services/componente.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TitleService } from 'src/app/services/title.service';
 class ReporteCargaModel {
   docente: DocenteModel;

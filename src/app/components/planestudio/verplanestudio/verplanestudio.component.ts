@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddplanestudioComponent } from '../addplanestudio/addplanestudio.component';
 import { Observable, Subscription } from 'rxjs';
 import { CarreraModel } from 'src/app/models/carrera.model';

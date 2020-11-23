@@ -12,7 +12,8 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { MatTableDataSource, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
 // tslint:disable-next-line: class-name

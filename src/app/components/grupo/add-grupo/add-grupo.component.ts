@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { GrupoModel } from "src/app/models/grupo.model";
 import { FormControl, Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { matErrorsMessage } from "src/app/utils/errors";
 import { Subscription } from "rxjs";
 import { GrupoService } from "src/app/services/grupo.service";

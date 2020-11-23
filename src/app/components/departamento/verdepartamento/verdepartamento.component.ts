@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, Pipe, PipeTransform } from '@angular/core
 import { DepartamentoModel } from 'src/app/models/departamento.model';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { Observable, Subscription, from } from 'rxjs';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdddepartamentoComponent } from 'src/app/components/departamento/adddepartamento/adddepartamento.component';
 import { FacultadModel } from 'src/app/models/facultad.model';
 import { FacultadSerivice } from 'src/app/services/facultad.service';

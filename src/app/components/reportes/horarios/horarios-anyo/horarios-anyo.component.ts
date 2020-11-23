@@ -9,7 +9,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { ComponenteService } from 'src/app/services/componente.service';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlanificacionModel } from 'src/app/models/planificacion.model';
 import { getItemLocalCache, setItemLocalCache } from 'src/app/utils/utils';
 import { HorarioService } from 'src/app/services/horario.service';
