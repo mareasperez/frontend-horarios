@@ -166,7 +166,9 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     if (!this.pdes.length) { return; }
 
     this.pdeByCarrera = this.pdes.filter((pde) => pde.pde_carrera === id);
-    this.pdeSelected = this.pdeByCarrera[this.pdeByCarrera.length - 1].pde_id;
+    if (this.pdeByCarrera.length > 0){
+      this.pdeSelected = this.pdeByCarrera[this.pdeByCarrera.length - 1].pde_id;
+    }
     if (loadComponentes) {
       this.componentesByPdeCiclo();
     }
