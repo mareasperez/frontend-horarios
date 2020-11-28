@@ -1,23 +1,31 @@
-import { Component, OnInit } from "@angular/core";
-import { JwtService } from "../../services/jwt.service";
-import { variable } from "@angular/compiler/src/output/output_ast";
+import { Component, OnInit } from '@angular/core';
+import { JwtService } from '../../services/jwt.service';
+import { DisableSideBarService } from 'src/app/services/disable-side-bar.service';
 @Component({
-  selector: "app-navbar",
-  templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.css"],
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  // tslint:disable-next-line: no-shadowed-variable
-  constructor(private JwtService: JwtService) {}
+  // tslint:disable: no-shadowed-variable
+  public disableSide: boolean;
+  constructor(
+    private JwtService: JwtService,
+    private ds: DisableSideBarService,
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.ds.onDisableSide.subscribe(res => {
+      this.disableSide = res; console.log('se emitio algo');
+    });
+  }
   logout() {
     localStorage.clear();
     this.JwtService.logout();
   }
 
   okay(): boolean {
-    var aux = this.JwtService.loggedIn;
+    const aux = this.JwtService.loggedIn;
     return aux;
   }
 }

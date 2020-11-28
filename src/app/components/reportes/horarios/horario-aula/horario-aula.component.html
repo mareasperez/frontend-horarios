@@ -53,7 +53,7 @@
       </div>
     </div>
     <div *ngIf="(selectedPlan) && (selectedRec!=undefined) && (selectedAula!=undefined)" class="pdf">
-      <span *ngIf="selectedRec.recinto_id!=-1" style="margin-right: 10px">
+      <span *ngIf="selectedRec.recinto_id!='-1'" style="margin-right: 10px">
         Recinto: {{selectedRec.recinto_nombre}}
       </span>
       <span>

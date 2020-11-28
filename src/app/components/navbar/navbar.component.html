@@ -1,13 +1,17 @@
 <mat-toolbar class="docs-nav-bar barrita row">
-  <a class="col-1 docs-button mat-button elemento" onclick="this.blur()" mat-button (click)="drawer.toggle()"><i
-      class="fa fa-bars"></i></a>
+  <a class="col-1 docs-button mat-button elemento" [disabled]="disableSide" onclick="this.blur()" mat-button
+    (click)="disableSide?null:drawer.toggle()"><i class="fa fa-bars"></i></a>
   <a class="col-1 docs-button mat-button elemento" routerLink="/" mat-button><img
       src="../../../assets/icons/unanleonicon.png" class="ima"> UNAN-Le&oacute;n</a>
   <a class="col-1 docs-button mat-button elemento" routerLink="/" mat-button disabled>JKM</a>
   <div class="col-8"></div>
   <div class="col-1 float-right">
-    <button onclick="window.print()" class="btn btn-primary btn-md" style="margin-right: 10px"><mat-icon>print</mat-icon></button>
-    <button type="button" class="btn btn-danger btn-md" (click)="logout()" *ngIf="okay()"><mat-icon>input</mat-icon></button>
+    <button onclick="window.print()" class="btn btn-primary btn-md" style="margin-right: 10px">
+      <mat-icon>print</mat-icon>
+    </button>
+    <button type="button" class="btn btn-danger btn-md" (click)="logout()" *ngIf="okay()">
+      <mat-icon>input</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 <mat-drawer-container class="example-container contenidos">

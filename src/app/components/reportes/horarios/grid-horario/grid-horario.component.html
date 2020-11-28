@@ -13,7 +13,7 @@
             {{label}}
           </td>
             <td *ngFor="let horas of array[i]" class="elemento col-2">
-              <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === isLoaded ? complexLink : simpleLink"
+              <ng-container [ngTemplateOutlet]="horas[0].horario_vacio === true ? vacio : ocupado"
                 [ngTemplateOutletContext]="{horas:horas,TYPE:TYPE}">
               </ng-container>
             </td>
@@ -52,7 +52,7 @@
 </ng-template>
 
 
-<ng-template #simpleLink let-horas='horas' let-TYPE='TYPE'>
+<ng-template #ocupado let-horas='horas' let-TYPE='TYPE'>
   <div *ngIf="horas !== undefined && horas.length>0 && !horas[0].horario_vacio">
     <div *ngFor="let hora of horas">
       <ng-container [ngSwitch]="TYPE">
@@ -81,6 +81,6 @@
   </div>
 </ng-template>
 
-<ng-template #complexLink let-hora='hora'>
+<ng-template #vacio let-hora='hora'>
   <b>-</b>
 </ng-template>
