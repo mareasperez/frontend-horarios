@@ -33,12 +33,8 @@
         <mat-form-field class="font-size-12 ml-1 " appearance="outline">
           <mat-label>Ciclo</mat-label>
           <mat-select formControlName="ciclo">
-            <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '1'">
-              <mat-option *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
-            </span>
-            <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '2'">
-              <mat-option *ngFor="let i of [2,4,6,8,10]" [value]="i">{{i}}</mat-option>
-            </span>
+            <mat-option *ngFor="let i of (planSelected | planificacionPipe : planificaciones)" [value]="i">{{i}}
+            </mat-option>
           </mat-select>
         </mat-form-field>
         <button mat-raised-button class="bg-color-green color-white ml-1" (click)="save()">
@@ -90,7 +86,8 @@
         </ol>
         <mat-progress-bar mode="determinate" value="{{progreso}}"></mat-progress-bar>
         <div class="continuar">
-          <button type="button" class="btn btn-outline-primary" (click)="createForm();" [disabled]="progreso<100">Continuar</button>
+          <button type="button" class="btn btn-outline-primary" (click)="createForm();"
+            [disabled]="progreso<100">Continuar</button>
         </div>
       </mat-card>
     </div>
