@@ -24,6 +24,7 @@ import { AddPlanificacionComponent } from '../planificacion/add-planificacion/ad
 import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddrecintoComponent } from '../recinto/addrecinto/addrecinto.component';
+import { DisableSideBarService } from 'src/app/services/disable-side-bar.service';
 
 @Component({
   selector: 'app-home',
@@ -69,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _JwtService: JwtService,
     private _facultad: FacultadSerivice,
     private dialog: MatDialog,
-
+    private ds: DisableSideBarService,
   ) {
     this._title.setTitle('Inicio');
     this.promesas.push(new Promise((resolve) => {
@@ -193,6 +194,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   get FormFac() { return this.formFac.controls; }
   get Form() { return this.form.controls; }
 
+
   filterPde(): PlanEstudioModel[] {
     const pd = this.pdes.filter(pde => pde.pde_carrera === this.selectedCar);
     if (pd.length === 0) { this.Form.pde.disable(); this.Form.pde.setValue(null); } else { this.Form.pde.enable(); }
@@ -203,9 +205,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.progreso >= 100) {
       this.showMessage = false;
       this.createFormFull();
+      this.ds.onDisableSide.emit(false);
     } else {
       this.showMessage = true;
       this.createFormFist();
+      this.ds.onDisableSide.emit(true);
     }
 
   }
