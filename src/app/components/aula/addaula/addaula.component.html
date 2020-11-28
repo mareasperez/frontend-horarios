@@ -9,7 +9,7 @@
       <div class="row">
         <mat-form-field appearance="outline" class="col-9">
           <mat-label>Recinto</mat-label>
-          <mat-select formControlName="aula_recinto" [disabled]="this.data.idr != '0'" [(value)]="selected">
+          <mat-select formControlName="aula_recinto">
             <mat-option *ngFor="let recinto of Recintos" [value]="recinto.recinto_id">{{ recinto.recinto_nombre }}
             </mat-option>
           </mat-select>
@@ -28,8 +28,8 @@
         <span class="w-50 ml-1">
           <mat-label class="d-block mx-1">Tipo</mat-label>
           <mat-radio-group formControlName="aula_tipo" appearance="outline">
-            <mat-radio-button value=true>Laboratorio</mat-radio-button>
-            <mat-radio-button class="ml-1" value=false>Aula</mat-radio-button>
+            <mat-radio-button [value]=true>Laboratorio</mat-radio-button>
+            <mat-radio-button class="ml-1" [value]=false>Aula</mat-radio-button>
             <mat-error *ngIf="Form.aula_tipo.invalid">{{Errors.getError(Form.aula_tipo)}}</mat-error>
           </mat-radio-group>
         </span>
