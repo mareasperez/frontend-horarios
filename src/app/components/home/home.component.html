@@ -4,7 +4,7 @@
       <form [formGroup]="form" class="font-size-12 d-flex">
         <mat-form-field appearance="outline">
           <mat-label>Carrera</mat-label>
-          <mat-select formControlName="carrera">
+          <mat-select formControlName="carrera" [(value)]="selectedCar">
             <mat-option [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera_nombre}}
             </mat-option>
           </mat-select>
@@ -19,12 +19,12 @@
         <mat-form-field class="ml-1" appearance="outline">
           <mat-label>Plan de estudios</mat-label>
           <mat-select formControlName="pde">
-            <mat-option [value]="pde.pde_id" *ngFor="let pde of pdes">{{pde.pde_nombre}}</mat-option>
+            <mat-option [value]="pde.pde_id" *ngFor="let pde of filterPde()">{{pde.pde_nombre}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="ml-1" appearance="outline">
           <mat-label>Planificaci&oacute;n</mat-label>
-          <mat-select formControlName="planificacion" [(value)]="planSelected">
+          <mat-select formControlName="planificacion" [(value)]="planSelected" (selectionChange)="Form.ciclo.enable();">
             <mat-option [value]="plan.planificacion_id" *ngFor="let plan of planificaciones">
               semestre {{plan.planificacion_semestre}} | año {{plan.planificacion_anyo_lectivo}}
             </mat-option>
@@ -32,9 +32,6 @@
         </mat-form-field>
         <mat-form-field class="font-size-12 ml-1 " appearance="outline">
           <mat-label>Ciclo</mat-label>
-          <!-- <mat-select formControlName="ciclo">
-            <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}}</mat-option>
-          </mat-select> -->
           <mat-select formControlName="ciclo">
             <span *ngIf="(planSelected | planificacionPipe : planificaciones) == '1'">
               <mat-option *ngFor="let i of [1,3,5,7,9]" [value]="i">{{i}}</mat-option>
@@ -93,7 +90,7 @@
         </ol>
         <mat-progress-bar mode="determinate" value="{{progreso}}"></mat-progress-bar>
         <div class="continuar">
-          <button type="button" class="btn btn-outline-primary">Continuar</button>
+          <button type="button" class="btn btn-outline-primary" (click)="createForm();" [disabled]="progreso<100">Continuar</button>
         </div>
       </mat-card>
     </div>

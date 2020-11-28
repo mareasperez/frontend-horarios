@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public isLoaded = false;
   private promesas: Promise<any>[] = [];
   public planSelected = getItemLocalCache('planificacion') ? getItemLocalCache('planificacion') : '-1';
+  public selectedCar = getItemLocalCache('carrera') ? getItemLocalCache('carrera') : null;
   public facultades: FacultadModel[] = [];
   public form: FormGroup;
   public formFac: FormGroup;
@@ -74,54 +75,54 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       const sub = this._facultad.getFacultad()
         .subscribe(
-          res => { this.facultades.push(res); this.alterProgres('i', this.facultades.length); },
+          res => { this.facultades.push(res); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
+          () => { resolve(); this.alterProgres('i', this.facultades.length); }
         );
       this.subs.push(sub);
     }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._carrera.getCarrera()
         .subscribe(
-          res => { this.carreras.push(res); this.alterProgres('i', this.carreras.length); },
+          res => { this.carreras.push(res); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
+          () => { resolve(); this.alterProgres('i', this.carreras.length); }
         );
       this.subs.push(sub);
     }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._dep.getDepartamento()
         .subscribe(
-          res => { this.departamentos.push(res); this.alterProgres('i', this.departamentos.length); },
+          res => { this.departamentos.push(res); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
+          () => { resolve(); this.alterProgres('i', this.departamentos.length); }
         );
       this.subs.push(sub);
     }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._recinto.getRecinto()
         .subscribe(
-          res => { this.recintos.push(res); this.alterProgres('i', this.recintos.length); },
+          res => { this.recintos.push(res); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
+          () => { resolve(); this.alterProgres('i', this.recintos.length); }
         );
       this.subs.push(sub);
     }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._plan.getPlanificaciones()
         .subscribe(
-          res => { this.planificaciones.push(res), this.alterProgres('i', this.planificaciones.length); },
+          res => { this.planificaciones.push(res); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
+          () => { resolve(); this.alterProgres('i', this.planificaciones.length); }
         );
       this.subs.push(sub);
     }));
     this.promesas.push(new Promise((resolve) => {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
-          res => { this.pdes.push(res); this.alterProgres('i', this.pdes.length); },
+          res => { this.pdes.push(res); },
           error => this._snack.open(error.message, 'OK', { duration: 3000 }),
-          () => resolve()
+          () => { resolve(); this.alterProgres('i', this.pdes.length); }
         );
       this.subs.push(sub);
     }));
@@ -137,19 +138,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
       this.isLoaded = true;
-      if (
-        this.facultades.length > 0
-        && this.carreras.length > 0
-        && this.planificaciones.length > 0
-        && this.pdes.length > 0
-        && this.departamentos.length > 0
-        && this.recintos.length > 0) {
-        this.createForm();
-        this._carrera.successObten();
-      } else {
-        this.showMessage = true;
-        this.firstUse();
-      }
+      this._carrera.successObten();
+      this.createForm();
       this.subs.push(this.refPde.subscribe(data => {
         const len = this.pdes.length;
         this.pdes = data;
@@ -200,20 +190,35 @@ export class HomeComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-  get FormFac() {
-    return this.formFac.controls;
+  get FormFac() { return this.formFac.controls; }
+  get Form() { return this.form.controls; }
+
+  filterPde(): PlanEstudioModel[] {
+    const pd = this.pdes.filter(pde => pde.pde_carrera === this.selectedCar);
+    if (pd.length === 0) { this.Form.pde.disable(); this.Form.pde.setValue(null); } else { this.Form.pde.enable(); }
+    return pd;
   }
+
   createForm() {
+    if (this.progreso >= 100) {
+      this.showMessage = false;
+      this.createFormFull();
+    } else {
+      this.showMessage = true;
+      this.createFormFist();
+    }
+
+  }
+  createFormFull() {
     this.form = this.fb.group({
-      carrera: new FormControl(getItemLocalCache('carrera')),
-      // departamento: new FormControl(getItemLocalCache("departamento")),
+      carrera: new FormControl(this.selectedCar),
       departamento: new FormControl({ value: this._dep.list[0].departamento_id, disabled: true }),
-      pde: new FormControl(getItemLocalCache('pde')),
+      pde: new FormControl({ value: getItemLocalCache('pde'), disabled: this.selectedCar == null ? true : false }),
       planificacion: new FormControl(getItemLocalCache('planificacion')),
       ciclo: new FormControl({ value: getItemLocalCache('ciclo'), disabled: this.planSelected !== '-1' ? false : true })
     });
   }
-  firstUse() {
+  createFormFist() {
     this.formFac = this.fb.group({
       facultad_nombre: new FormControl({
         value: this.facultades[0] ? this.facultades[0].facultad_nombre : '',
@@ -222,27 +227,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
     });
   }
-
   save() {
     const keys = Object.keys(this.form.controls);
     keys.forEach(key => {
-      switch (key) {
-        case 'carrera':
-          localStorage.setItem('carrera', this.form.controls[key].value);
-          break;
-        case 'departamento':
-          localStorage.setItem('departamento', this.form.controls[key].value);
-          break;
-        case 'pde':
-          localStorage.setItem('pde', this.form.controls[key].value);
-          break;
-        case 'planificacion':
-          localStorage.setItem('planificacion', this.form.controls[key].value);
-          break;
-        case 'ciclo':
-          localStorage.setItem('ciclo', this.form.controls[key].value);
-          break;
-      }
+      localStorage.setItem(key, this.form.controls[key].value);
     });
   }
   crearFacultad() {
@@ -294,6 +282,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     else if (tipo === 'i') {
       if (len > 0) { this.progreso += this.SIZE; }
     }
-    console.log(this.progreso);
+    console.log('llamada tipo:', tipo, ' ', this.progreso);
   }
 }
