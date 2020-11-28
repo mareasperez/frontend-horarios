@@ -138,19 +138,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     Promise.all(this.promesas).then(() => {
       this.isLoaded = true;
-      if (
-        this.facultades.length > 0
-        && this.carreras.length > 0
-        && this.planificaciones.length > 0
-        && this.pdes.length > 0
-        && this.departamentos.length > 0
-        && this.recintos.length > 0) {
-        this.createForm();
-        this._carrera.successObten();
-      } else {
-        this.showMessage = true;
-        this.firstUse();
-      }
+      this._carrera.successObten();
+      this.createForm();
       this.subs.push(this.refPde.subscribe(data => {
         const len = this.pdes.length;
         this.pdes = data;
@@ -211,17 +200,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   createForm() {
+    if (this.progreso >= 100) {
+      this.showMessage = false;
+      this.createFormFull();
+    } else {
+      this.showMessage = true;
+      this.createFormFist();
+    }
+
+  }
+  createFormFull() {
     this.form = this.fb.group({
       carrera: new FormControl(this.selectedCar),
-      // departamento: new FormControl(getItemLocalCache("departamento")),
       departamento: new FormControl({ value: this._dep.list[0].departamento_id, disabled: true }),
       pde: new FormControl({ value: getItemLocalCache('pde'), disabled: this.selectedCar == null ? true : false }),
       planificacion: new FormControl(getItemLocalCache('planificacion')),
       ciclo: new FormControl({ value: getItemLocalCache('ciclo'), disabled: this.planSelected !== '-1' ? false : true })
     });
   }
-
-  firstUse() {
+  createFormFist() {
     this.formFac = this.fb.group({
       facultad_nombre: new FormControl({
         value: this.facultades[0] ? this.facultades[0].facultad_nombre : '',
@@ -230,7 +227,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
     });
   }
-
   save() {
     const keys = Object.keys(this.form.controls);
     keys.forEach(key => {

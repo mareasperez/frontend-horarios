@@ -90,7 +90,7 @@
         </ol>
         <mat-progress-bar mode="determinate" value="{{progreso}}"></mat-progress-bar>
         <div class="continuar">
-          <button type="button" class="btn btn-outline-primary">Continuar</button>
+          <button type="button" class="btn btn-outline-primary" (click)="createForm();" [disabled]="progreso<100">Continuar</button>
         </div>
       </mat-card>
     </div>
