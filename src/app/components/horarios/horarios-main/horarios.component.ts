@@ -10,7 +10,7 @@ import { AulaModel } from 'src/app/models/aula.model';
 import { HorarioModel } from 'src/app/models/horario.model';
 import { ComponenteModel } from 'src/app/models/componente.model';
 import { ComponenteService } from 'src/app/services/componente.service';
-import { getItemLocalCache, Horas } from 'src/app/utils/utils';
+import { getItemLocalCache, Horas, setItemLocalCache } from 'src/app/utils/utils';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraService } from 'src/app/services/carrera.service';
@@ -34,6 +34,8 @@ import { TitleService } from 'src/app/services/title.service';
   styleUrls: ['./horarios.component.scss'],
 })
 // tslint:disable: variable-name
+// tslint:disable: triple-equals
+
 export class HorariosCrudComponent implements OnInit, OnDestroy {
   //#region propiedades
   public grupos: GrupoModel[] = [];
@@ -45,7 +47,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   public planificaciones: PlanificacionModel[] = [];
   public recintos: RecintoModel[] = [];
   public docentes: DocenteModel[] = [];
-
+  public docenteServicio: DocenteModel;
   public gruposByComp: GrupoModel[] = [];
   public gruposBycarreraAnyo: GrupoModel[] = [];
   public compsByPde: ComponenteModel[] = [];
@@ -102,7 +104,6 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private _snack: MatSnackBar,
     private docenteName: DocenteNamePipe,
-    private http: HttpClient,
     private compPdeCarreraPipe: CompPdeCarreraPipe,
     private _title: TitleService
   ) {
@@ -126,6 +127,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.servicos();
     this.setHorariosTable();
     Promise.all(this.promesas).then((res) => {
+      this.docenteServicio = this.docentes.find(docente => (docente.docente_nombre).toLowerCase() === 'servicio');
       this.subs.push(this.refPde.subscribe((data) => (this.pdes = data)));
       this.subs.push(this.refCarrera.subscribe((data) => (this.carreras = data)));
       this.subs.push(this.refPla.subscribe((data) => (this.planificaciones = data)));
@@ -233,7 +235,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     });
   }
   selectH(hr: HorarioModel) {
-    this.horarioSelected = hr;
+    this.horarioSelected !== hr ? this.horarioSelected = hr : this.horarioSelected = null;
     if (this.grupoSelected == null) {
       return;
     }
@@ -242,7 +244,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
 
   selectGP(gp: GrupoModel) {
     if (gp.grupo_asignado) { return; }
-    this.grupoSelected = gp;
+    this.grupoSelected !== gp ? this.grupoSelected = gp : this.grupoSelected = null;
     if (this.horarioSelected == null) {
       return;
     }
@@ -283,9 +285,8 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.subs.push(sub);
   }
   horarioByAula() {
-    if (!this.planSelected || !this.aulaSelected) {
-      return;
-    }
+    if (!this.planSelected || !this.aulaSelected) { return; }
+    if (this.aulaSelected) { setItemLocalCache('aula', this.aulaSelected); }
     this.horarioSelected = null;
     this.grupoSelected = null;
     this.horariosByAula = this.horarios.filter((hr) => hr.horario_aula == this.aulaSelected);
@@ -321,34 +322,35 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   }
 
   choque(hr?: HorarioModel) {
-    this.horarios.forEach((hr) => {
-      if (hr.horario_grupo != null) {
-        const gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
-        const cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
-        hr.horario_ciclo = String(cp.componente_ciclo);
-        this._horario.getChoques(hr, gp, cp).subscribe((res: any) => {
-          if (res.detail) {
-            return;
+    // this.horarios.forEach((hr) => {
+    if (hr.horario_grupo != null) {
+      const gp = this.grupos.find((gp) => gp.grupo_id == hr.horario_grupo);
+      const cp = this.componentes.find((cp) => cp.componente_id == gp.grupo_componente);
+      hr.horario_ciclo = String(cp.componente_ciclo);
+      if (gp.grupo_docente === this.docenteServicio.docente_id) { gp.grupo_docente = null; }
+      this._horario.getChoques(hr, gp, cp).subscribe((res: any) => {
+        if (res.detail) {
+          return;
+        }
+        if (res.horario.length > 1) {
+          switch (res.tipo) {
+            case 'd':
+              hr.horario_choque = 'd';
+              hr.horario_infochoque = res.horario;
+              break;
+            case 'c':
+              hr.horario_choque = 'c';
+              hr.horario_infochoque = res.horario;
+              break;
+            case 'a':
+              hr.horario_choque = 'a';
+              hr.horario_infochoque = res.horario;
+              break;
           }
-          if (res.horario.length > 1) {
-            switch (res.tipo) {
-              case 'd':
-                hr.horario_choque = 'd';
-                hr.horario_infochoque = res.horario;
-                break;
-              case 'c':
-                hr.horario_choque = 'c';
-                hr.horario_infochoque = res.horario;
-                break;
-              case 'a':
-                hr.horario_choque = 'a';
-                hr.horario_infochoque = res.horario;
-                break;
-            }
-          }
-        });
-      }
-    });
+        }
+      });
+    }
+    // });
   }
 
   // se llama al componenete log-horario que se encarga de mostrar si hay choques en el horarios seleccionado con el grupo seleccionado
@@ -393,31 +395,19 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
         return;
       }
       switch (dia.horario_dia) {
-        case 'Lunes':
-          i = 0;
-          break;
-        case 'Martes':
-          i = 1;
-          break;
-        case 'Miercoles':
-          i = 2;
-          break;
-        case 'Jueves':
-          i = 3;
-          break;
-        case 'Viernes':
-          i = 4;
-          break;
-        default:
-          console.log('No such day exists!', dia);
-          break;
+        case 'Lunes': i = 0; break;
+        case 'Martes': i = 1; break;
+        case 'Miercoles': i = 2; break;
+        case 'Jueves': i = 3; break;
+        case 'Viernes': i = 4; break;
+        default: console.log('No such day exists!', dia); break;
       }
       j = dia.horario_hora - 7;
       this.array[j][i] = dia;
       i = 0;
       j = 0;
+      this.choque(dia);
     }
-    this.choque();
   }
 
 
