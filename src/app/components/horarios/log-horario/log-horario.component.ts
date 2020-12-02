@@ -7,6 +7,8 @@ import { AulaModel } from 'src/app/models/aula.model';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { HorarioService } from 'src/app/services/horario.service';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 interface DialogData {
   hr: HorarioModel;
   gps: GrupoModel[];
@@ -23,7 +25,7 @@ interface DialogData {
 export class LogHorarioComponent implements OnInit, OnDestroy {
   public grupos: GrupoModel[] = [];
   private subs: Subscription[] = [];
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private _horario: HorarioService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private _horario: HorarioService, private _snack: MatSnackBar) { }
 
   ngOnInit() {
     this.grupos = this.data.hr.horario_infochoque.reduce(this.reducer.bind(this), []);
@@ -43,10 +45,10 @@ export class LogHorarioComponent implements OnInit, OnDestroy {
 
   getAula(id) {
     return new Promise((resolve) => {
-      const sub = this._horario.getHorarioByFilter('horario_grupo', id).subscribe(res => {
-        const aula = this.data.aulas.find(au => au.aula_id == res[0].horario_aula).aula_nombre;
-        resolve(aula);
-      });
+      const sub = this._horario.getHorarioByFilter('horario_grupo', id)
+        .subscribe(
+          res => { const aula = this.data.aulas.find(au => au.aula_id == res[0].horario_aula).aula_nombre; resolve(aula); },
+          (error: HttpErrorResponse) => { this._snack.open(error.error.detail, 'OK', { duration: 3000 }) });
       this.subs.push(sub);
     });
   }

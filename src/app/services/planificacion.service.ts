@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlanificacionModel } from '../models/planificacion.model';
 import { MainService } from './main.service';
@@ -7,7 +7,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class PlanificacionService extends MainService {
-  public resource = 'planificacion'
+  public resource = 'planificacion';
   constructor(Http: HttpClient) {
     super(Http);
   }
@@ -27,6 +27,8 @@ export class PlanificacionService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -47,6 +49,8 @@ export class PlanificacionService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
