@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject, observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, of, Subject, observable, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { wsModel } from 'src/app/models/ws.model';
 import { Api } from 'src/app/models/api.model';
+import { catchError } from 'rxjs/operators';
 declare let alertify: any;
 
 @Injectable()
@@ -11,7 +12,7 @@ export class MainService {
   public client: HttpClient;
   public api = Api;
   public list: any[] = [];
-  public list$ = new Subject<any[]>()
+  public list$ = new Subject<any[]>();
 
   public resource: string;
   constructor(client: HttpClient) {
@@ -44,7 +45,7 @@ export class MainService {
     return this.client.put(`${this.getUrl()}${id}`, body, head);
   }
 
-  delete(id: any): Observable<any>{
+  delete(id: any): Observable<any> {
     const head: any = {};
     if (confirm('¿Esta seguro que desea eliminar?')) {
       head['Content-Type'] = 'application/json';
