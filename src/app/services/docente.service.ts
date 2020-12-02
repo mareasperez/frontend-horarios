@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DocenteModel } from '../models/docente.model';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MainService } from './main.service';
 import { wsModel } from '../models/ws.model';
 
@@ -27,6 +27,8 @@ export class DocenteService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -41,6 +43,8 @@ export class DocenteService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -69,30 +73,32 @@ export class DocenteService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
 
   updateList(data: wsModel) {
-    console.log(data)
+    console.log(data);
     let docente = new DocenteModel();
     docente = Object.assign(docente, data.data);
     switch (data.event) {
       case 'c':
-        console.log("Crear")
-        //console.log(docente);
+        console.log('Crear');
+        // console.log(docente);
         this.list.push(docente);
         this.list$.next(this.list);
         break;
       case 'u':
-        console.log("update")
+        console.log('update');
 
         const index = this.list.map(el => el.docente_id).indexOf(docente.docente_id);
         this.list.splice(index, 1, docente);
         this.list$.next(this.list);
         break;
       case 'd':
-        console.log("delete")
+        console.log('delete');
         this.list = this.list.filter(el => el.docente_id !== docente.docente_id);
         this.list$.next(this.list);
         break;
