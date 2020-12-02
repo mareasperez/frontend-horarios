@@ -34,6 +34,9 @@ export class JwtService {
     // true or false
     return !this.jwtHelper.isTokenExpired(token);
   }
+  public get username(){
+   return this.jwtHelper.decodeToken(this.Token).username;
+  }
   public get Token(): string {
     return localStorage.getItem('access');
   }

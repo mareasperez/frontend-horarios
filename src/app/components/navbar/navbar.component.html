@@ -1,16 +1,21 @@
 <mat-toolbar class="docs-nav-bar barrita row">
   <a class="col-1 docs-button mat-button elemento" [disabled]="disableSide" onclick="this.blur()" mat-button
-    (click)="disableSide?null:drawer.toggle()" matTooltip="Abrir barra lateral de navegación"><i class="fa fa-bars"></i></a>
+    (click)="disableSide?null:drawer.toggle()" matTooltip="Abrir barra lateral de navegación"><i
+      class="fa fa-bars"></i></a>
   <a class="col-1 docs-button mat-button elemento" routerLink="/" mat-button><img
       src="../../../assets/icons/unanleonicon.png" class="ima"> UNAN-Le&oacute;n</a>
   <a class="col-1 docs-button mat-button elemento" routerLink="/" mat-button disabled>JKM</a>
-  <div class="col-8"></div>
-  <div class="col-1 float-right">
+  <div class="col-7"></div>
+  <div class="col-2 float-right">
+    <button mat-button [matMenuTriggerFor]="menu">{{user}}
+      <span class="material-icons">account_box</span></button>
+    <mat-menu #menu="matMenu">
+      <button type="button" class="btn btn-danger btn-md" (click)="logout()" *ngIf="okay()" style="text-align: center;">
+        <mat-icon>input</mat-icon>
+      </button>
+    </mat-menu>
     <button onclick="window.print()" class="btn btn-primary btn-md" style="margin-right: 10px">
       <mat-icon>print</mat-icon>
-    </button>
-    <button type="button" class="btn btn-danger btn-md" (click)="logout()" *ngIf="okay()">
-      <mat-icon>input</mat-icon>
     </button>
   </div>
 </mat-toolbar>
