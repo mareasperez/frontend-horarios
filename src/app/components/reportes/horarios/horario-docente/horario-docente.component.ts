@@ -20,6 +20,7 @@ import { CarreraService } from 'src/app/services/carrera.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { RecintoService } from 'src/app/services/recinto.service';
 import { TitleService } from 'src/app/services/title.service';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-horario-docente',
   templateUrl: './horario-docente.component.html',
@@ -66,7 +67,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(
           plan => this.planificaciones.push(plan),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -82,7 +83,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._docente.getDocente().subscribe(
           docente => this.docentes.push(docente),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -91,7 +92,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._grupo.getGrupos().subscribe(
           grupo => this.grupos.push(grupo),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -100,7 +101,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._componente.getComponentes().subscribe(
           componente => this.componentes.push(componente),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -109,7 +110,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._aula.getAula().subscribe(
           aula => this.aulas.push(aula),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -118,7 +119,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._pde.getPlanEstudio().subscribe(
           pde => this.pdes.push(pde),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -127,7 +128,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._carrera.getCarrera().subscribe(
           carrera => this.carreras.push(carrera),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -136,7 +137,7 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._recinto.getRecinto().subscribe(
           recinto => this.recintos.push(recinto),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -169,7 +170,10 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
     if (this.selectedDoc && this.selectedPlan) {
       new Promise<any>((resolve, reject) => {
         this._horario.getHorarioByPlan('docente', this.selectedDoc.docente_id, this.selectedPlan.planificacion_id)
-          .subscribe(res => resolve(res));
+          .subscribe(
+            res => resolve(res),
+            (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
+          );
       })
         .then((horarios: HorarioModel[]) => {
           this.horarios = horarios;
@@ -177,41 +181,4 @@ export class HorarioDocenteComponent implements OnInit, OnDestroy {
         });
     }
   }
-  // async fun(horarios: HorarioModel[]) {
-  //   let i = 0; let j = 0;
-  //   const vacio = new HorarioModel();
-  //   vacio.horario_vacio = true;
-  //   for (let aux = 0; aux < 6; aux++) {
-  //     this.array[aux] = [];
-  //   }
-  //   for (let aux = 0; aux < 5; aux++) {
-  //     for (let aux2 = 0; aux2 < 6; aux2++) {
-  //       this.array[aux2][aux] = vacio;
-  //     }
-  //   }
-  //   for (const dia of horarios) {
-  //     switch (dia.horario_dia) {
-  //       case 'Lunes': i = 0; break;
-  //       case 'Martes': i = 1; break;
-  //       case 'Miercoles': i = 2; break;
-  //       case 'Jueves': i = 3; break;
-  //       case 'Viernes': i = 4; break;
-  //       default: console.log('No such day exists!', dia); break;
-  //     }
-  //     switch (dia.horario_hora) {
-  //       case 7: j = 0; break;
-  //       case 9: j = 1; break;
-  //       case 11: j = 2; break;
-  //       case 13: j = 3; break;
-  //       case 15: j = 4; break;
-  //       case 17: j = 5; break;
-  //       default: console.log('No such hour exists!', dia); break;
-  //     }
-  //     console.log(dia);
-  //     this.array[j][i] = dia;
-  //     i = 0;
-  //     j = 0;
-  //   }
-  // }
-
 }

@@ -17,6 +17,7 @@ import { PlanificacionService } from 'src/app/services/planificacion.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { TitleService } from 'src/app/services/title.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 // tslint:disable: class-name
 class cargaDocencia {
@@ -66,7 +67,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve) => {
         this._planificaciones.getPlanificaciones().subscribe(
           res => this.planificaciones.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve());
       })
     );
@@ -75,7 +76,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve) => {
         this._carrera.getCarrera().subscribe(
           res => this.carreras.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve());
       })
     );
@@ -85,7 +86,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve) => {
         this._docente.getDocente().subscribe(
           res => this.docentes.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve());
       })
     );
@@ -93,7 +94,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve) => {
         this._comp.getComponentes().subscribe(
           res => this.comp.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
           );
       })
@@ -102,7 +103,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve) => {
         this._pde.getPlanEstudio().subscribe(
           res => this.pde.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -111,7 +112,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._grupo.getGrupos().subscribe(
           res => this.grupos.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
           );
       })
@@ -121,7 +122,7 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._dep.getDepartamento().subscribe(
           res => this.dep.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
           );
       })
@@ -140,7 +141,6 @@ export class CargaDocenciaComponent implements OnInit, OnDestroy {
         console.log('else');
         this.showMessage = true;
       }
-      
     }); // end then
   }
 

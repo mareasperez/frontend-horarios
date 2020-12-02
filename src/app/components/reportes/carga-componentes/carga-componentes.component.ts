@@ -127,7 +127,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
         this.isLoaded = true;
         this._planificacion.successObten();
         console.log(this.planificaciones);
-      if (this.selected !== '0') { this.groupByPlan(this.selected); }
+        if (this.selected !== '0') { this.groupByPlan(this.selected); }
       } else {
         this.showMessage = true;
       }
