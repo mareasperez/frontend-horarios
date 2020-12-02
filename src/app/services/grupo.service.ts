@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { GrupoModel } from '../models/grupo.model';
 import { MainService } from './main.service';
 import { wsModel } from '../models/ws.model';
@@ -16,7 +16,6 @@ export class GrupoService extends MainService {
       this.get().subscribe(data => {
         if (!data.detail) {
           data.grupos.forEach(el => {
-            // console.log(el);
             let grupo = new GrupoModel();
             grupo = Object.assign(grupo, el);
             this.list.push(grupo);
@@ -26,6 +25,8 @@ export class GrupoService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -46,6 +47,8 @@ export class GrupoService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -74,6 +77,8 @@ export class GrupoService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }

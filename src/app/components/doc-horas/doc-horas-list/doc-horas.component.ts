@@ -120,7 +120,10 @@ export class DocHorasComponent implements OnInit, OnDestroy {
 
   delDH(id) {
     this._doc_hr.deleteDcHora(id)
-      .subscribe(res => console.log(res), (error: HttpErrorResponse) => { this._snack.open(error.error.detail, 'OK', { duration: 3000 }) });
+      .subscribe(
+        res => console.log(res),
+        (error: HttpErrorResponse) => { this._snack.open(error.error.detail, 'OK', { duration: 3000 }); },
+      );
   }
 
   openDialog(tipo: string, docente?: DocenteModel, id?: string): void {

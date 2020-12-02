@@ -23,7 +23,7 @@ import { AddHorarioComponent } from '../add-horario/add-horario.component';
 import { DocenteService } from 'src/app/services/docente.service';
 import { DocenteModel } from 'src/app/models/docente.model';
 import { DocenteNamePipe } from 'src/app/pipes/docente-name.pipe';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { LogHorarioComponent } from '../log-horario/log-horario.component';
 import { CompPdeCarreraPipe } from 'src/app/pipes/comp--pde--carrera.pipe';
 import { TitleService } from 'src/app/services/title.service';
@@ -348,7 +348,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
               break;
           }
         }
-      });
+      }, (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }));
     }
     // });
   }
