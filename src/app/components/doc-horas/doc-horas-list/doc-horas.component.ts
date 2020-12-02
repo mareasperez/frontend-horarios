@@ -49,7 +49,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       const sub = this._doc_hr.getDcHoras()
         .subscribe(
           res => this.dhs.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -60,7 +60,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       const sub = this._docente.getDocente()
         .subscribe(
           res => this.docentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -70,7 +70,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);

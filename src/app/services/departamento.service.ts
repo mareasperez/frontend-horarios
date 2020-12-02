@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DepartamentoModel } from '../models/departamento.model';
 import { MainService } from './main.service';
@@ -14,12 +14,10 @@ export class DepartamentoService extends MainService {
     }
 
     getDepartamento(): Observable<DepartamentoModel> {
-
         return new Observable(observer => {
             this.get().subscribe(data => {
                 if (!data.detail) {
                     data.departamento.forEach(el => {
-                        // console.log(el)
                         let Departamento = new DepartamentoModel();
                         Departamento = Object.assign(Departamento, el);
                         this.list.push(Departamento);
@@ -29,6 +27,8 @@ export class DepartamentoService extends MainService {
                     this.errorObten(data.detail);
                 }
                 observer.complete();
+            }, (error: HttpErrorResponse) => {
+                observer.error(error);
             });
         });
     }
@@ -44,9 +44,11 @@ export class DepartamentoService extends MainService {
                 if (!response.detail) {
                     this.realizado();
                     observer.next(response);
-                  } else {
+                } else {
                     this.errorObten(response.detail);
-                  }
+                }
+            }, (error: HttpErrorResponse) => {
+                observer.error(error);
             });
         });
     }
@@ -73,6 +75,8 @@ export class DepartamentoService extends MainService {
                 } else {
                     this.errorObten(data.detail);
                 }
+            }, (error: HttpErrorResponse) => {
+                observer.error(error);
             });
         });
     }

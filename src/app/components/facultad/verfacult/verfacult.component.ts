@@ -61,7 +61,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
               this.dataSource.push(elemen);
             });
           },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
       );
     });
@@ -78,7 +78,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
   deleteFaculta(id: string) {
     this.facultadService.deleteFacultad(id).subscribe(
       res => { console.log(res); },
-      error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
     );
   }
 
@@ -106,7 +106,7 @@ export class VerfacultComponent implements OnInit, OnDestroy {
     this.facultadService.updateFacultad(facultad, data.facultad_id)
       .subscribe(
         res => { console.log('updated', res); },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 

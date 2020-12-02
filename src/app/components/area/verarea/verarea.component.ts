@@ -37,7 +37,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
           res => {
             this.areas.push(res);
           },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -75,7 +75,7 @@ export class VerareaComponent implements OnInit, OnDestroy {
     this.sub = this._area.deleteArea(id)
       .subscribe(
         res => { },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 

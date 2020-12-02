@@ -97,7 +97,7 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
       this._doc_hr.crearDcHora(dh)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
 
@@ -111,7 +111,7 @@ export class DocHorasAddComponent implements OnInit, OnDestroy {
       this._doc_hr.updateDcHora(dh, dh.dh_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CarreraModel } from '../models/carrera.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MainService } from './main.service';
 import { wsModel } from '../models/ws.model';
@@ -29,6 +29,8 @@ export class CarreraService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -49,6 +51,8 @@ export class CarreraService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -78,6 +82,8 @@ export class CarreraService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }

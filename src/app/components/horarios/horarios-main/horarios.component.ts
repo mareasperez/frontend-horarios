@@ -258,7 +258,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       const sub = this._horario.updateHorario(hr, hr.horario_id).subscribe(
         (res) => { },
         (error) => {
-          this._snack.open(error.message, 'OK', { duration: 3000 });
+          this._snack.open(error.error.detail, 'OK', { duration: 3000 });
           this.horarioSelected = this.grupoSelected = null;
         }
       );
@@ -269,7 +269,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
       const sub = this._horario.crearHorario(hr).subscribe(
         (res) => { },
         (error) => {
-          this._snack.open(error.message, 'OK', { duration: 3000 });
+          this._snack.open(error.error.detail, 'OK', { duration: 3000 });
           this.horarioSelected = this.grupoSelected = null;
         }
       );
@@ -280,7 +280,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
   rmHorario(hr: HorarioModel) {
     const sub = this._horario.deleteHorario(hr.horario_id).subscribe(
       (res) => { },
-      (error) => this._snack.open(error.message, 'OK', { duration: 3000 })
+      (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 })
     );
     this.subs.push(sub);
   }
@@ -436,7 +436,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
           this._horario.list = res.horario;
         },
 
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -450,7 +450,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
           this.grupos = res.grupo;
           this._grupo.list = res.grupo;
         },
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -487,7 +487,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve, reject) => {
       const sub = this._aula.getAula().subscribe(
         (res) => this.aulas.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -496,7 +496,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve, reject) => {
       const sub = this._componente.getComponentes().subscribe(
         (res) => this.componentes.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -505,7 +505,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve, reject) => {
       const sub = this._pde.getPlanEstudio().subscribe(
         (res) => this.pdes.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -514,7 +514,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve, reject) => {
       const sub = this._carrera.getCarrera().subscribe(
         (res) => this.carreras.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -523,7 +523,7 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve, reject) => {
       const sub = this._planificacion.getPlanificaciones().subscribe(
         (res) => this.planificaciones.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -531,14 +531,14 @@ export class HorariosCrudComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise((resolve) => {
       this._recinto.getRecinto().subscribe(
         (res) => this.recintos.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
     }));
     this.promesas.push(new Promise((resolve, reject) => {
       const sub = this._docente.getDocente().subscribe(
         (res) => this.docentes.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);

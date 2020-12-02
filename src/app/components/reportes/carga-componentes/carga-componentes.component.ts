@@ -62,7 +62,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
       const sub = this._grupo.getGrupos()
         .subscribe(
           grupo => this.grupos.push(grupo),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -73,7 +73,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
         .subscribe(
           docente =>
             this.docentes.push(docente),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -83,7 +83,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
       const sub = this._comp.getComponentes()
         .subscribe(comp =>
           this.comps.push(comp),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -93,7 +93,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
       const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           pl => this.planificaciones.push(pl),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       console.log(this.planificaciones);
@@ -114,7 +114,7 @@ export class CargaComponentesComponent implements OnInit, OnDestroy {
       const sub = this._carrera.getCarrera()
         .subscribe(
           carrera => this.carreras.push(carrera),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);

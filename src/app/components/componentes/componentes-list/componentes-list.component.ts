@@ -15,6 +15,7 @@ import { CarreraService } from 'src/app/services/carrera.service';
 import { getItemLocalCache } from 'src/app/utils/utils';
 import { Router } from '@angular/router';
 import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-componentes-list',
@@ -57,7 +58,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
           res => this.pdes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -66,7 +67,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
       const sub = this._comp.getComponentes()
         .subscribe(
           res => this.componentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -76,7 +77,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
       const sub = this._area.getAreas()
         .subscribe(
           res => this.areas.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -85,7 +86,7 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
       const sub = this._carrera.getCarrera()
         .subscribe(
           res => this.carreras.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -159,12 +160,13 @@ export class ComponentesListComponent implements OnInit, OnDestroy {
 
   }
   delComponente(e) {
-    this.subs.push(this._comp.deleteComponente(e).subscribe());
+    this.subs.push(this._comp.deleteComponente(e)
+      .subscribe(res => { }, (error: HttpErrorResponse) => { this._snack.open(error.error.detail, 'OK', { duration: 3000 }); }));
   }
 
   openDialog(tipo: string, id?: any): void {
     if (tipo === 'c') {
-      const dialogRef = this.dialog.open(AddComponenteComponent, {
+      this.dialog.open(AddComponenteComponent, {
         width: '450px',
         data: { type: tipo, pde: this.pdeSelected, areas: this.areas, pdes: this.pdes, ciclo: this.cicloSelected }
       });

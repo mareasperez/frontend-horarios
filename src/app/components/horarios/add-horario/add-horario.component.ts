@@ -42,7 +42,7 @@ export class AddHorarioComponent implements OnInit {
     horario.horario_vacio = false;
     this._horario.updateHorario(horario, this.data.hr.horario_id).subscribe(
       res => { },
-      error => this._snack.open(error.message, 'OK', { duration: 3000 })
+      error => this._snack.open(error.error.detail, 'OK', { duration: 3000 })
 
     );
   }

@@ -60,7 +60,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       const sub = this._docente.getDocente()
         .subscribe(
           res => this.docentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -69,7 +69,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       const sub = this._componete.getComponentes()
         .subscribe(
           res => this.componentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -78,7 +78,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       const sub = this._dohr.getDcHoras()
         .subscribe(
           res => this.docHoras.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -88,7 +88,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
       const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -207,7 +207,7 @@ export class DocenteGruposComponent implements OnInit, OnDestroy {
               this._grupo.list = Array<GrupoModel>();
             }
           },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);

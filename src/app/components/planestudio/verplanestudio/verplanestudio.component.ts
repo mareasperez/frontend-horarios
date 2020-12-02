@@ -41,7 +41,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
     this.promesas.push(new Promise<void>((resolve) => {
       const sub = this._Carrera.getCarrera().subscribe(
         res => this.carreras.push(res),
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -53,7 +53,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
             this.pde.push(plan);
             this.dataSource = this.pde;
           },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -89,7 +89,7 @@ export class VerplanestudioComponent implements OnInit, OnDestroy {
       this._pde.deletePde(id)
         .subscribe(
           res => this.dataSource = this.dataSource.filter(p => p.pde_id !== id),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }

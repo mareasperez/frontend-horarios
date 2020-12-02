@@ -31,7 +31,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
       const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -68,7 +68,7 @@ export class PlanificacionComponent implements OnInit, OnDestroy {
     this._planificacion.deletePlanificacion(id)
       .subscribe(
         res => { },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 

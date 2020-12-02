@@ -10,6 +10,7 @@ import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { PlanEstudioModel } from 'src/app/models/planEstudio';
 import { AreaModel } from 'src/app/models/area.model';
 import { Subscription, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 interface DialogData {
   type: string;
   pde?: PlanEstudioModel;
@@ -55,11 +56,11 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.refAreas.subscribe(
       res => { this.areas = []; this.areas = res; },
-      error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
     );
     this.refPdes.subscribe(
       pd => this.pdes = pd,
-      error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+      error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
     );
     this.createForm();
   }
@@ -116,8 +117,7 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
           this.add = false;
           this.dialogRef.close();
         },
-        error => this._snack.open(error, 'OK', { duration: 3000 })
-
+        (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 })
       );
     this.subs.push(sub);
 
@@ -133,7 +133,7 @@ export class AddComponenteComponent implements OnInit, OnDestroy {
           this.add = false;
           this.dialogRef.close();
         },
-        error => this._snack.open(error, 'OK', { duration: 3000 })
+        (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 })
       );
     this.subs.push(sub);
 

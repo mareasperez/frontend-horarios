@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AulaModel } from '../models/aula.model';
 import { MainService } from './main.service';
 import { wsModel } from '../models/ws.model';
@@ -27,6 +27,8 @@ export class AulaService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -46,6 +48,8 @@ export class AulaService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }

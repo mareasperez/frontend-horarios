@@ -78,7 +78,7 @@ export class AddplanestudioComponent implements OnInit {
       this.plan$.crearPlanEstudio(plan)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -90,7 +90,7 @@ export class AddplanestudioComponent implements OnInit {
       this.plan$.updatePlanEstudio(plan, plan.pde_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }

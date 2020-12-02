@@ -82,7 +82,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
       this.departamentoService.crearDepartamento(dep)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -95,7 +95,7 @@ export class AdddepartamentoComponent implements OnInit, OnDestroy {
       this.departamentoService.updateDepartamento(dep, dep.departamento_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }

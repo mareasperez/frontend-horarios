@@ -125,7 +125,7 @@ export class GrupoComponent implements OnInit, OnDestroy {
   delGrupo(e: number) {
     this._grupo.deleteGrupo(e).subscribe(
       (res) => {},
-      (error) => this._snack.open(error.message, 'ok', { duration: 3000 })
+      (error) => this._snack.open(error.error.detail, 'ok', { duration: 3000 })
     );
   }
 

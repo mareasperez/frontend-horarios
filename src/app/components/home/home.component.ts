@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._facultad.getFacultad()
         .subscribe(
           res => { this.facultades.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.facultades.length); }
         );
       this.subs.push(sub);
@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._carrera.getCarrera()
         .subscribe(
           res => { this.carreras.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.carreras.length); }
         );
       this.subs.push(sub);
@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._dep.getDepartamento()
         .subscribe(
           res => { this.departamentos.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.departamentos.length); }
         );
       this.subs.push(sub);
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._recinto.getRecinto()
         .subscribe(
           res => { this.recintos.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.recintos.length); }
         );
       this.subs.push(sub);
@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._plan.getPlanificaciones()
         .subscribe(
           res => { this.planificaciones.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.planificaciones.length); }
         );
       this.subs.push(sub);
@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
           res => { this.pdes.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.pdes.length); }
         );
       this.subs.push(sub);

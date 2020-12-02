@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ComponenteModel } from '../models/componente.model';
 import { MainService } from './main.service';
@@ -26,6 +26,8 @@ export class ComponenteService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -40,6 +42,8 @@ export class ComponenteService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -84,8 +88,7 @@ export class ComponenteService extends MainService {
 
   }
 
-  getComponetesByPdeCiclo(busqueda:{pde:string, ciclo:string}){
-    return this.client.post<{componente:ComponenteModel[]}>(`${this.getUrl()}busqueda`,{busqueda: busqueda});
-
+  getComponetesByPdeCiclo(busqueda: { pde: string, ciclo: string }) {
+    return this.client.post<{ componente: ComponenteModel[] }>(`${this.getUrl()}busqueda`, { busqueda });
   }
 }
