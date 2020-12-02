@@ -114,7 +114,8 @@
           <mat-card style="height: 38vh;">
             <mat-card-title>Crear un departamento</mat-card-title>
             <div *ngIf="departamentos.length == 0" style="margin-right: 5%">
-              <button mat-raised-button color="primary" (click)="openDep()" style="width: auto">
+              <button mat-raised-button [disabled]="!(facultades.length>0)" color="primary" (click)="openDep()"
+                style="width: auto">
                 <mat-icon>add</mat-icon> Agregar departamento
               </button>
             </div>
@@ -134,7 +135,8 @@
               crear Recinto
             </mat-card-title>
             <div *ngIf="recintos.length == 0" style="margin-right: 5%">
-              <button mat-raised-button color="primary" (click)="openRec()" style="width: auto">
+              <button mat-raised-button [disabled]="!(facultades.length>0)" color="primary" (click)="openRec()"
+                style="width: auto">
                 <mat-icon>add</mat-icon> Agregar Recinto
               </button>
             </div>
@@ -155,7 +157,8 @@
           <mat-card style="height: 38vh;">
             <mat-card-title>Crear una carrera</mat-card-title>
             <div *ngIf="carreras.length == 0" style="margin-right: 5%">
-              <button mat-raised-button color="primary" (click)="openCar()" style="width: auto">
+              <button mat-raised-button color="primary" [disabled]="!(departamentos.length>0)" (click)="openCar()"
+                style="width: auto">
                 <mat-icon>add</mat-icon> Agregar carrera
               </button>
             </div>
@@ -173,7 +176,8 @@
           <mat-card style="height: 38vh;">
             <mat-card-title>Crear un plan de estudio</mat-card-title>
             <div *ngIf="pdes.length == 0" style="margin-right: 5%">
-              <button mat-raised-button color="primary" (click)="openPde()" style="width: auto">
+              <button mat-raised-button color="primary" [disabled]="!(carreras.length>0)" (click)="openPde()"
+                style="width: auto">
                 <mat-icon>add</mat-icon> Agregar Plan de estudio
               </button>
             </div>
