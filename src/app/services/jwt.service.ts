@@ -7,17 +7,18 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class JwtService {
-  constructor(private httpClient: HttpClient, public jwtHelper: JwtHelperService) { }
+  constructor(private httpClient: HttpClient, public jwtHelper: JwtHelperService) {}
 
   login(username: string, password: string) {
-    return this.httpClient.post<{ token: string }>(environment.API_Auth, { username, password }).pipe(tap(res => {
-      console.log(res.token);
-      localStorage.setItem('access', String(res.token));
-    }));
+    return this.httpClient.post<{ access: string }>(environment.API_Auth, { username, password }).pipe(
+      tap((res) => {
+        console.log(res.access);
+        localStorage.setItem('access', String(res.access));
+      })
+    );
   }
 
   logout() {
@@ -32,7 +33,10 @@ export class JwtService {
     const token = localStorage.getItem('access');
     // Check whether the token is expired and return
     // true or false
-    return !this.jwtHelper.isTokenExpired(token);
+    if (!!token) {
+      return !this.jwtHelper.isTokenExpired(token);
+    }
+    return false;
   }
   public get Token(): string {
     return localStorage.getItem('access');
