@@ -7,6 +7,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matErrorsMessage } from 'src/app/utils/errors';
+import { MatSnackBar, _SnackBarContainer } from '@angular/material/snack-bar';
 interface DialogData {
   type: string;
   idr?: string;
@@ -19,6 +20,7 @@ interface DialogData {
   templateUrl: './addaula.component.html',
   styleUrls: ['./addaula.component.scss']
 })
+// tslint:disable: variable-name
 export class AddaulaComponent implements OnInit, OnDestroy {
   public ref: Observable<any[]>;
   public Recintos: RecintoModel[] = [];
@@ -32,7 +34,8 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     private recintoS: RecintoService,
     public dialogRef: MatDialogRef<AddaulaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _snack: MatSnackBar
   ) {
     // console.log(this.data.recintos);
     this.Recintos = this.data.recintos;
@@ -80,7 +83,8 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     let aul = new AulaModel();
     aul = Object.assign(aul, this.form.value);
     console.log(aul);
-    this.subs.push(this.aulaService.crearAula(aul).subscribe(res => this.dialogRef.close()));
+    this.subs.push(this.aulaService.crearAula(aul)
+      .subscribe(res => this.dialogRef.close(), error => this._snack.open(error.error.detail, 'OK', { duration: 3000 })));
   }
   updateAula() {
     console.log('update');
@@ -89,7 +93,6 @@ export class AddaulaComponent implements OnInit, OnDestroy {
     console.log(aul);
     this.subs.push(
       this.aulaService.updateAula(aul, aul.aula_id)
-        .subscribe(res => this.dialogRef.close())
-    );
+        .subscribe(res => this.dialogRef.close(), error => this._snack.open(error.error.detail, 'OK', { duration: 3000 })));
   }
 }

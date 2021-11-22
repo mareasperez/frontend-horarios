@@ -41,7 +41,7 @@ export class VerdocenteComponent implements OnInit {
       this._Departamento.getDepartamento()
         .subscribe(
           res => this.departamentos.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
     }));
@@ -52,7 +52,7 @@ export class VerdocenteComponent implements OnInit {
             this.docentes.push(res);
             this.dataSource = this.docentes;
           },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
     }));
@@ -83,7 +83,7 @@ export class VerdocenteComponent implements OnInit {
     this.DocenteService.deleteDocente(id)
       .subscribe(
         res => { },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 

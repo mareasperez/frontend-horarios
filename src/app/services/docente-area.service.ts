@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { DocenteAreaModel } from '../models/docente.area.model';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MainService } from './main.service';
 import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class DocenteAreaService extends MainService {
-  public resource = 'doar'
+  public resource = 'doar';
   constructor(httpclient: HttpClient) {
     super(httpclient);
   }
@@ -28,6 +28,8 @@ export class DocenteAreaService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -42,6 +44,8 @@ export class DocenteAreaService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -57,7 +61,7 @@ export class DocenteAreaService extends MainService {
   getByDocente(filtro: string, id: string | number): Observable<DocenteAreaModel> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe(data => {
-        if (!data.detail){
+        if (!data.detail) {
           data.docenteArea.forEach(el => {
             let docenteArea = new DocenteAreaModel();
             docenteArea = Object.assign(docenteArea, el);
@@ -66,6 +70,8 @@ export class DocenteAreaService extends MainService {
           });
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }

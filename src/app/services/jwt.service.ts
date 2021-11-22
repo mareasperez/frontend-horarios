@@ -38,6 +38,9 @@ export class JwtService {
     }
     return false;
   }
+  public get username(){
+   return this.jwtHelper.decodeToken(this.Token).username;
+  }
   public get Token(): string {
     return localStorage.getItem('access');
   }

@@ -9,6 +9,7 @@ import { DisableSideBarService } from 'src/app/services/disable-side-bar.service
 export class NavbarComponent implements OnInit {
   // tslint:disable: no-shadowed-variable
   public disableSide: boolean;
+  public user: string;
   constructor(
     private JwtService: JwtService,
     private ds: DisableSideBarService,
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit {
     this.ds.onDisableSide.subscribe(res => {
       this.disableSide = res; console.log('se emitio algo');
     });
+    this.user = this.JwtService.username;
   }
   logout() {
     localStorage.clear();

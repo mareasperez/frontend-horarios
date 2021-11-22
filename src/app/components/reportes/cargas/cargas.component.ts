@@ -16,6 +16,7 @@ import { DocenteHorasModel } from 'src/app/models/docente.horas.model';
 import { DocenteHorasService } from 'src/app/services/docente-horas.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TitleService } from 'src/app/services/title.service';
+import { HttpErrorResponse } from '@angular/common/http';
 class ReporteCargaModel {
   docente: DocenteModel;
   grupos: Array<GrupoModel>;
@@ -65,14 +66,14 @@ export class CargasComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(
           plan => this.planificaciones.push(plan),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve());
       }));
     this.promesas.push(
       new Promise((resolve, reject) => {
         this._docente.getDocente().subscribe(
           docente => this.docentes.push(docente),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       }));
@@ -80,7 +81,7 @@ export class CargasComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._componente.getComponentes().subscribe(
           componente => this.componentes.push(componente),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -89,7 +90,7 @@ export class CargasComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._pde.getPlanEstudio().subscribe(
           pde => this.pdes.push(pde),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -98,7 +99,7 @@ export class CargasComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._carrera.getCarrera().subscribe(
           carrera => this.carreras.push(carrera),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -107,7 +108,7 @@ export class CargasComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._pde.getPlanEstudio().subscribe(
           pde => this.pdes.push(pde),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -116,7 +117,7 @@ export class CargasComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     Promise.all(this.promesas).then(async res => {
-      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.docentes.length > 0){
+      if (this.planificaciones.length > 0 && this.carreras.length > 0 && this.docentes.length > 0) {
         this.isLoaded = true;
       } else {
         this.showMessage = true;
@@ -150,7 +151,7 @@ export class CargasComponent implements OnInit, OnDestroy {
       this._grupos.getGrupoByFilter('grupo_planificacion', this.selectedPlan.planificacion_id)
         .subscribe(
           res => this.grupos.push(res),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve());
     }));
     promesas.push(
@@ -158,7 +159,7 @@ export class CargasComponent implements OnInit, OnDestroy {
         this._doho.getDocenteHoraByFilter('dh_planificacion', this.selectedPlan.planificacion_id)
           .subscribe(
             res => this.doho.push(res),
-            error => this._snack.open(error, 'OK', { duration: 3000 }),
+            (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
             () => resolve());
       })
     );
@@ -186,12 +187,13 @@ export class CargasComponent implements OnInit, OnDestroy {
       reporte.horas = dh;
     }
     switch (this.query) {
-      case 'horario': {
-        grupos = this.grupos.filter(grupo => (grupo.grupo_docente === docente.docente_id) && (!grupo.grupo_planta));
+      case 'horaria': {
+        console.log(docente);
+        grupos = this.grupos.filter(grupo => ((grupo.grupo_docente === docente.docente_id) && (docente.docente_tipo_contrato === 'H')));
         break;
       }
       case 'planta': {
-        grupos = this.grupos.filter(grupo => (grupo.grupo_docente === docente.docente_id) && (grupo.grupo_planta));
+        grupos = this.grupos.filter(grupo => ((grupo.grupo_docente === docente.docente_id) && (docente.docente_tipo_contrato === 'P')));
         break;
       }
       default: {
@@ -202,7 +204,5 @@ export class CargasComponent implements OnInit, OnDestroy {
       reporte.grupos = grupos;
       this.reportes.push(reporte);
     }
-    // console.log(this.reportes);
-
   }
 }

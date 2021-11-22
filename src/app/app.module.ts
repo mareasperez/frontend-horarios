@@ -76,7 +76,6 @@ import { RecintoService } from './services/recinto.service';
 import { PlanificacionService } from './services/planificacion.service';
 import { HorarioService } from './services/horario.service';
 import { JwtService } from './services/jwt.service';
-import { PensumService } from './services/pensum.service';
 import { WsService } from './services/ws.service';
 import { AreaService } from './services/area.service';
 import { AulaService } from './services/aula.service';
@@ -223,7 +222,6 @@ import { RedirIfFailPipe } from './pipes/redir-if-fail.pipe';
     PlanificacionService,
     HorarioService,
     JwtService,
-    PensumService,
     WsService,
     AreaService,
     AulaService,

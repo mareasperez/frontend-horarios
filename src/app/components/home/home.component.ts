@@ -25,6 +25,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { RecintoModel } from 'src/app/models/recinto.model';
 import { AddrecintoComponent } from '../recinto/addrecinto/addrecinto.component';
 import { DisableSideBarService } from 'src/app/services/disable-side-bar.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -77,7 +78,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._facultad.getFacultad()
         .subscribe(
           res => { this.facultades.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.facultades.length); }
         );
       this.subs.push(sub);
@@ -86,7 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._carrera.getCarrera()
         .subscribe(
           res => { this.carreras.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.carreras.length); }
         );
       this.subs.push(sub);
@@ -95,7 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._dep.getDepartamento()
         .subscribe(
           res => { this.departamentos.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.departamentos.length); }
         );
       this.subs.push(sub);
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._recinto.getRecinto()
         .subscribe(
           res => { this.recintos.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.recintos.length); }
         );
       this.subs.push(sub);
@@ -113,7 +114,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._plan.getPlanificaciones()
         .subscribe(
           res => { this.planificaciones.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.planificaciones.length); }
         );
       this.subs.push(sub);
@@ -122,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const sub = this._pde.getPlanEstudio()
         .subscribe(
           res => { this.pdes.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => { resolve(); this.alterProgres('i', this.pdes.length); }
         );
       this.subs.push(sub);
@@ -240,7 +241,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   crearFacultad() {
     let fac = new FacultadModel();
     fac = Object.assign(fac, this.formFac.value);
-    this._facultad.crearFacultad(fac).subscribe(res => this.facultades.push(res));
+    this._facultad.crearFacultad(fac)
+    .subscribe(
+     res => this.facultades.push(res),
+      (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
+    );
   }
   clear() {
     const access = this._JwtService.Token;

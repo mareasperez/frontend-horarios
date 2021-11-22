@@ -110,7 +110,7 @@ export class AddGrupoComponent implements OnInit, OnDestroy {
         this.add = false;
         this.dialogRef.close();
       },
-      (error) => this._snack.open(error.message, "OK", { duration: 3000 })
+      (error) => this._snack.open(error.error.detail, "OK", { duration: 3000 })
     );
   }
 
@@ -125,7 +125,7 @@ export class AddGrupoComponent implements OnInit, OnDestroy {
         this.add = false;
         this.dialogRef.close();
       },
-      (error) => this._snack.open(error.message, "OK", { duration: 3000 })
+      (error) => this._snack.open(error.error.detail, "OK", { duration: 3000 })
     );
   }
 

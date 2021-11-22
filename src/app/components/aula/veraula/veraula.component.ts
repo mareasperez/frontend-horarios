@@ -46,7 +46,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       this.AulaService.getAula()
         .subscribe(
           res => { this.aulas.push(res); },
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
 
         );
@@ -55,7 +55,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
       this._recinto.getRecinto()
         .subscribe(
           res => this.recintos.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
     }));
@@ -100,7 +100,7 @@ export class VeraulaComponent implements OnInit, OnDestroy {
     this.sub = this.AulaService.deleteAula(id)
       .subscribe(
         res => { },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 

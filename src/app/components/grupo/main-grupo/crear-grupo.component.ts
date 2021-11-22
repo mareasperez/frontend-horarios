@@ -122,7 +122,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
             this.componentesByPdeCiclo();
             this.componentes = data;
           },
-          (error) => this._snack.open(error.message, 'ok', { duration: 3000 })
+          (error) => this._snack.open(error.error.detail, 'ok', { duration: 3000 })
         )
       );
       this.subs.push(
@@ -132,7 +132,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
 
             this.grupos = data;
           },
-          (error) => this._snack.open(error.message, 'ok', { duration: 3000 })
+          (error) => this._snack.open(error.error.detail, 'ok', { duration: 3000 })
         )
       );
       this.subs.push(this.refPde.subscribe((data) => (this.pdes = data)));
@@ -187,7 +187,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
             this.componentes = res.componente;
             this._componente.list = res.componente;
           },
-          (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -210,7 +210,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
           this.componente = cp;
           this.docenteByArea(cp.componente_area);
         },
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 })
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 })
       );
     this.subs.push(sub);
   }
@@ -230,7 +230,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     const p3 = new Promise((resolve, reject) => {
       const sub = this._planificacion.getPlanificaciones().subscribe(
         (res) => this.planificaciones.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -239,7 +239,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     const p4 = new Promise((resolve, reject) => {
       const sub = this._pde.getPlanEstudio().subscribe(
         (res) => this.pdes.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -248,7 +248,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     const p5 = new Promise((resolve, reject) => {
       const sub = this._carrera.getCarrera().subscribe(
         (res) => this.carreras.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -257,7 +257,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     const p7 = new Promise((resolve, reject) => {
       const sub = this._docente.getDocente().subscribe(
         (res) => this.docentes.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -266,7 +266,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     const p8 = new Promise((resolve, reject) => {
       const sub = this._area.getAreas().subscribe(
         (res) => this.areas.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);
@@ -275,7 +275,7 @@ export class CrearGrupoComponent implements OnInit, OnDestroy {
     const p9 = new Promise((resolve, reject) => {
       const sub = this._docArea.getDcArea().subscribe(
         (res) => this.docsByArea.push(res),
-        (error) => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        (error) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
       this.subs.push(sub);

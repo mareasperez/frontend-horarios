@@ -44,7 +44,7 @@ export class AddareaComponent implements OnInit, OnDestroy {
     this.sub = this.areaService.updateArea(this.area, this.area.area_id)
       .subscribe(
         res => this.dialogRef.close(),
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 
@@ -53,7 +53,7 @@ export class AddareaComponent implements OnInit, OnDestroy {
     this.sub = this.areaService.crearArea(this.area)
       .subscribe(
         res => this.dialogRef.close(),
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
 
       );
 

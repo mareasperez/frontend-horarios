@@ -77,7 +77,7 @@ export class AddrecintoComponent implements OnInit {
       this.recintoService.crearRecinto(rec)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -88,7 +88,7 @@ export class AddrecintoComponent implements OnInit {
       this.recintoService.updateRecinto(rec, rec.recinto_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }

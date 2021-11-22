@@ -19,7 +19,7 @@ import { RecintoService } from 'src/app/services/recinto.service';
 import { PlanEstudioService } from 'src/app/services/plan-estudio.service';
 import { CarreraModel } from 'src/app/models/carrera.model';
 import { CarreraService } from 'src/app/services/carrera.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { TitleService } from 'src/app/services/title.service';
 
 @Component({
@@ -51,7 +51,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
   // valores seteados por el usuario
   public selectedPlan: PlanificacionModel;
   public selectedCarr: CarreraModel;
-  public selectedAnyo: number = 0;
+  public selectedAnyo = 0;
   public TYPE = 'Anyo';
   constructor(
     private _planificacion: PlanificacionService,
@@ -72,7 +72,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._planificacion.getPlanificaciones().subscribe(
           plan => this.planificaciones.push(plan),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve());
       }).then(res => {
         this.selectedPlan = this.planificaciones.find(plan => plan.planificacion_id === getItemLocalCache('planificacion'));
@@ -86,7 +86,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._docente.getDocente().subscribe(
           docente => this.docentes.push(docente),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       }));
@@ -94,7 +94,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._componente.getComponentes().subscribe(
           componente => this.componentes.push(componente),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -103,7 +103,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._recinto.getRecinto().subscribe(
           recinto => this.recintos.push(recinto),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -112,7 +112,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._pde.getPlanEstudio().subscribe(
           pde => this.pdes.push(pde),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -121,7 +121,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._carrera.getCarrera().subscribe(
           carrera => this.carreras.push(carrera),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -130,7 +130,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._aula.getAula().subscribe(
           aula => this.aulas.push(aula),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -139,7 +139,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       new Promise((resolve, reject) => {
         this._pde.getPlanEstudio().subscribe(
           pde => this.pdes.push(pde),
-          error => this._snack.open(error, 'OK', { duration: 3000 }),
+          (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       })
@@ -188,7 +188,7 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
           alert('no hay grupos asigandos en el año seleccionado para la carrera seleccionada');
           console.log(res.detail);
         }
-      });
+      }, (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }));
     }
   }
 
@@ -199,7 +199,9 @@ export class HorariosAnyoComponent implements OnInit, OnDestroy {
       let i = 0;
       this.grupos.map((grupo) => {
         new Promise<any>((resolve, reject) => {
-          this._horario.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe(res => { resolve(res); i++; });
+          this._horario.getHorarioByFilter('horario_grupo', grupo.grupo_id).subscribe
+            (res => { resolve(res); i++; },
+              (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }));
         }).then((horario: HorarioModel[]) => {
           horario.forEach((h: HorarioModel) => this.horarios.push(h));
           if (i === lastIndex) {

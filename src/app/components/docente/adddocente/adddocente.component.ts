@@ -53,7 +53,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     const p = new Promise<void>((resolve) => {
       this._area.getAreas().subscribe(
         res => this.areas.push(res),
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         () => resolve()
       );
     });
@@ -62,7 +62,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
         this._doc_ar.getByDocente('docente_id', this.data.doc.docente_id)
           .subscribe(
             res => this.doc_areas.push(res),
-            error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+            error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
             () => resolve()
           );
         this.refDocAreas = this._doc_ar.getList();
@@ -130,7 +130,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       this.docenteService.crearDocente(doc)
         .subscribe(
           res => this.post_areas(res.id),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
 
@@ -143,7 +143,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
       this.docenteService.updateDocente(doc, doc.docente_id)
         .subscribe(
           res => this.post_areas(doc.docente_id),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
 
@@ -155,7 +155,7 @@ export class AdddocenteComponent implements OnInit, OnDestroy {
     this._doc_ar.client.put(`${this._doc_ar.getUrl()}docente_id=${docenteID}`, body)
       .subscribe(
         res => this.dialogRef.close(),
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 

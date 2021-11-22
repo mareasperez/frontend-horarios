@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RecintoModel } from '../models/recinto.model';
 import { MainService } from './main.service';
@@ -7,7 +7,7 @@ import { wsModel } from '../models/ws.model';
 
 @Injectable()
 export class RecintoService extends MainService {
-  public resource = 'recinto'
+  public resource = 'recinto';
   constructor(recintoHttp: HttpClient) {
     super(recintoHttp);
   }
@@ -21,13 +21,15 @@ export class RecintoService extends MainService {
             // console.log(el)
             let recinto = new RecintoModel();
             recinto = Object.assign(recinto, el);
-            this.list.push(recinto)
+            this.list.push(recinto);
             observer.next(recinto);
           });
         } else {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -48,6 +50,8 @@ export class RecintoService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -70,18 +74,18 @@ export class RecintoService extends MainService {
       case 'c':
         // console.log("Crear")
         this.list.push(recinto);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'u':
         //  console.log("update")
         const index = this.list.map(el => el.recinto_id).indexOf(recinto.recinto_id);
         this.list.splice(index, 1, recinto);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
       case 'd':
         // console.log("delete")
         this.list = this.list.filter(el => el.recinto_id !== recinto.recinto_id);
-        this.list$.next(this.list)
+        this.list$.next(this.list);
         break;
 
     }
@@ -102,6 +106,8 @@ export class RecintoService extends MainService {
           this.errorObten(data.detail);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }

@@ -55,7 +55,7 @@ export class AddPlanificacionComponent implements OnInit {
       this._planificacion.crearPlanificacion(plan)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -67,7 +67,7 @@ export class AddPlanificacionComponent implements OnInit {
       this._planificacion.updatePlanificacion(plan, plan.planificacion_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HorarioModel } from '../models/horario.model';
 import { MainService } from './main.service';
@@ -48,6 +48,8 @@ export class HorarioService extends MainService {
         } else {
           this.errorObten(response.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -64,7 +66,7 @@ export class HorarioService extends MainService {
   getHorarioByFilter(filtro: string, id: string | number): Observable<HorarioModel[]> {
     return new Observable(observer => {
       this.getByFiltro(filtro, id).subscribe((data: any) => {
-        let horarios = [];
+        const horarios = [];
         // console.log(data);
         if (!data.detail) {
           data.horario.forEach(el => {
@@ -80,6 +82,8 @@ export class HorarioService extends MainService {
           observer.next(horarios);
         }
         observer.complete();
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }
@@ -87,7 +91,7 @@ export class HorarioService extends MainService {
   getHorarioByPlan(query: string, filtro: string | number, id: string | number): Observable<HorarioModel[]> {
     return new Observable(observer => {
       this.getByPlan(query, filtro, id).subscribe((data: any) => {
-        let horarios = [];
+        const horarios = [];
         console.log(data);
         if (!data.detail) {
           data.horario.forEach(el => {
@@ -99,6 +103,8 @@ export class HorarioService extends MainService {
         } else {
           this.errorObten(data.detail);
         }
+      }, (error: HttpErrorResponse) => {
+        observer.error(error);
       });
     });
   }

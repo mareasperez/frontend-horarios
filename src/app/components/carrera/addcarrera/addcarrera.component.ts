@@ -48,7 +48,7 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
       this.refDepartamento
         .subscribe(
           deps => this.departamentos = deps,
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
     this.createForm();
@@ -84,7 +84,7 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
       this.carreraService.crearCarrera(car)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }
@@ -97,7 +97,7 @@ export class AddcarreraComponent implements OnInit, OnDestroy {
       this.carreraService.updateCarrera(car, car.carrera_id)
         .subscribe(
           res => this.dialogRef.close(),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
         )
     );
   }

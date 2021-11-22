@@ -13,6 +13,7 @@ import { Title } from '@angular/platform-browser';
 import { setItemLocalCache, getItemLocalCache } from 'src/app/utils/utils';
 import { RedirIfFailPipe } from 'src/app/pipes/redir-if-fail.pipe';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-doc-horas',
@@ -49,7 +50,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       const sub = this._doc_hr.getDcHoras()
         .subscribe(
           res => this.dhs.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -60,7 +61,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       const sub = this._docente.getDocente()
         .subscribe(
           res => this.docentes.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -70,7 +71,7 @@ export class DocHorasComponent implements OnInit, OnDestroy {
       const sub = this._planificacion.getPlanificaciones()
         .subscribe(
           res => this.planificaciones.push(res),
-          error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+          error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
           () => resolve()
         );
       this.subs.push(sub);
@@ -118,7 +119,11 @@ export class DocHorasComponent implements OnInit, OnDestroy {
   }
 
   delDH(id) {
-    this._doc_hr.deleteDcHora(id).subscribe(res => console.log(res));
+    this._doc_hr.deleteDcHora(id)
+      .subscribe(
+        res => console.log(res),
+        (error: HttpErrorResponse) => { this._snack.open(error.error.detail, 'OK', { duration: 3000 }); },
+      );
   }
 
   openDialog(tipo: string, docente?: DocenteModel, id?: string): void {

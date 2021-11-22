@@ -68,10 +68,14 @@
     <div class="col-4">
       <mat-card *ngIf="gruposBycarreraAnyo.length && aulaSelected" class="sticky">
         <div class="row px-2">
-          <div class="col-6 leyenda bg-color-green">Sin choque</div>
-          <div class="col-6 leyenda bg-red-ligth">Choque docente</div>
-          <div class="col-6 leyenda bg-warning">Choque componente</div>
-          <div class="col-6 leyenda bg-purple-ligth">Choque ciclo</div>
+          <div class="col-6 leyenda bg-color-green" matTooltip="El horario no tienen ninguna incidencia de choques">Sin
+            choque</div>
+          <div class="col-6 leyenda bg-red-ligth"
+            matTooltip="El docente esta asiganado a mas de un grupo en el mismo dia y hora">Choque docente</div>
+          <div class="col-6 leyenda bg-warning"
+            matTooltip="Hay mas de un grupo del mismo componente en el mismo dia y hora">Choque componente</div>
+          <div class="col-6 leyenda bg-purple-ligth"
+            matTooltip="Hay mas de un grupo del mismo ciclo con hora y dia igual">Choque ciclo</div>
         </div>
         <strong>Componetes</strong>
         <div>
@@ -128,7 +132,7 @@
         <button mat-icon-button color="warn" (click)="rmHorario(hora)">
           <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button color="secundary" *ngIf="hora.horario_choque != ''" (click)="infoChoque(hora)">
+        <button mat-icon-button color="secundary" *ngIf="hora.horario_choque" (click)="infoChoque(hora)">
           <mat-icon>info</mat-icon>
         </button>
       </span>

@@ -9,6 +9,7 @@ import { matErrorsMessage } from 'src/app/utils/errors';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddGrupoComponent } from '../add-grupo/add-grupo.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-grupo',
@@ -110,7 +111,11 @@ export class GrupoComponent implements OnInit, OnDestroy {
     grupo.grupo_id = null;
     grupo.grupo_tipo = tipo;
     grupo.grupo_planificacion = this.planificacion;
-    this._grupo.crearGrupo(grupo).subscribe();
+    this._grupo.crearGrupo(grupo)
+      .subscribe(
+        (res) => { },
+        (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
+      );
   }
 
   setDocente(idD, idG: string) {
@@ -119,14 +124,19 @@ export class GrupoComponent implements OnInit, OnDestroy {
     const g = this.grupos.find((gp) => gp.grupo_id == idG);
     if (g) { grupo.grupo_planta = g.grupo_planta; }
     else { grupo.grupo_planta = false; }
-    this._grupo.updategrupo(grupo, idG).subscribe();
+    this._grupo.updategrupo(grupo, idG)
+      .subscribe(
+        (res) => { },
+        (error: HttpErrorResponse) => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
+      );
   }
 
   delGrupo(e: number) {
-    this._grupo.deleteGrupo(e).subscribe(
-      (res) => {},
-      (error) => this._snack.open(error.message, 'ok', { duration: 3000 })
-    );
+    this._grupo.deleteGrupo(e)
+      .subscribe(
+        (res) => { },
+        (error) => this._snack.open(error.error.detail, 'ok', { duration: 3000 })
+      );
   }
 
   openDialog(tipo: string, id?: any): void {

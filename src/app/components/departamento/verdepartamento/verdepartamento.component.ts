@@ -89,7 +89,7 @@ export class VerdepartamentoComponent implements OnInit, OnDestroy {
     this.sub = this._departamento.deleteDepartamento(id)
       .subscribe(
         res => { },
-        error => this._snack.open(error.message, 'OK', { duration: 3000 }),
+        error => this._snack.open(error.error.detail, 'OK', { duration: 3000 }),
       );
   }
 
