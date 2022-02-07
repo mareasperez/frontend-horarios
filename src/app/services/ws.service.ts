@@ -17,7 +17,7 @@ import { Api, ip } from '../models/api.model';
 import { HorarioService } from './horario.service';
 declare let alertify: any;
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 // tslint:disable: variable-name
 // tslint:disable: no-shadowed-variable
@@ -39,18 +39,21 @@ export class WsService {
     private _dcAr: DocenteAreaService,
     private _horario: HorarioService,
     private AulaService: AulaService
-  ) { }
+  ) {}
   private MAX_RECONNECTION = 5;
   private contador = 0;
 
   setsock() {
-    this.socket = new WebSocket(`ws://${ip}/ws/?token=${this.jwt.Token}`);
-    // console.log((`ws://${ip}:8000/ws/?token=${this.jwt.Token}`));
+    const wsScheme = window.location.protocol == 'https:' ? 'wss' : 'ws';
+    this.socket = new WebSocket(`${wsScheme}://${ip}/ws/?token=${this.jwt.Token}`);
+    //  console.log((`ws://${ip}:8000/ws/?token=${this.jwt.Token}`));
 
     this.socket.onopen = () => {
       console.log('WebSockets connection created for Socket Service');
       if (this.contador > 1) {
-        alertify.success('WebSocket reconectado, si hay multiples usuarios trabajando es recomendable recargar la pagina');
+        alertify.success(
+          'WebSocket reconectado, si hay multiples usuarios trabajando es recomendable recargar la pagina'
+        );
       }
       this.contador = 1;
     };
@@ -117,7 +120,8 @@ export class WsService {
           resolve();
         });
       } else {
-        alertify.confirm('Recargar pagina')
+        alertify
+          .confirm('Recargar pagina')
           .set('onok', () => {
             window.location.reload();
           })
@@ -128,6 +132,4 @@ export class WsService {
       this.socket.onopen(null);
     }
   }
-
-
 }
